@@ -138,6 +138,7 @@ The platform-ops migration must establish:
 - basic plan-limit enforcement hooks for published jobs
 - server-side workflow notifications and email-hook deliveries for key lifecycle events
 - platform snapshot and moderation RPC helpers for in-app admin operations
+- internal-console access helpers that distinguish developer tooling from platform RBAC
 
 ### Security strategy
 - RLS enabled on exposed tables
@@ -186,6 +187,18 @@ Use local state or lightweight store only for:
 - theme if later needed
 
 Avoid using a client state store as a shadow backend.
+
+### Product surface strategy
+Keep the frontend split into three visible surfaces:
+- public landing/discovery/auth
+- authenticated product workflows for candidates and employers
+- internal console routes for operational tooling only
+
+The internal console may reuse product primitives, but it must remain route-isolated and must not be the default customer entrypoint.
+
+Implementation note:
+- `auth` must use its own route tree and shell, separate from both public marketing and authenticated dashboard shells
+- candidate and employer routes may share primitives, but they should not share the same navigation chrome by default
 
 ---
 

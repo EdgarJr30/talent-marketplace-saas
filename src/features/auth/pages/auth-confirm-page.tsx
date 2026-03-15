@@ -95,7 +95,7 @@ export function AuthConfirmPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">{errorMessage ?? 'Error inesperado.'}</p>
-          <Button onClick={() => void navigate('/auth', { replace: true })}>Volver a Auth</Button>
+          <Button onClick={() => void navigate('/auth/sign-in', { replace: true })}>Volver a acceso</Button>
         </CardContent>
       </Card>
     )

@@ -196,19 +196,36 @@ export function PipelineBoardPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#fecdd3_0,transparent_30%),linear-gradient(135deg,#fff1f2,white_42%,#eef2ff_82%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(225,29,72,0.18)_0,transparent_28%),linear-gradient(135deg,rgba(36,12,20,0.96),rgba(9,9,11,0.94)_44%,rgba(10,16,36,0.95))]">
-        <CardHeader className="space-y-3">
-          <Badge variant="soft">ATS-lite</Badge>
+      <Card className="overflow-hidden border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)]">
+        <CardHeader className="space-y-4">
+          <div className="inline-flex w-fit items-center rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700">
+            ATS-lite
+          </div>
           <CardTitle>Opera applicants por stage con historial auditable</CardTitle>
           <CardDescription>
-            Esta fase conecta las applications con un pipeline real para recruiters y hiring managers.
+            Una superficie mas clara para recruiters y hiring managers, con filtros, detalle lateral y acciones
+            operativas consistentes.
           </CardDescription>
         </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Applicants visibles</p>
+            <p className="mt-2 text-2xl font-semibold text-zinc-950">{filteredApplications.length}</p>
+          </div>
+          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Stages activos</p>
+            <p className="mt-2 text-2xl font-semibold text-zinc-950">{boardQuery.data.stages.length}</p>
+          </div>
+          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Vacantes con pipeline</p>
+            <p className="mt-2 text-2xl font-semibold text-zinc-950">{tenantJobs.length}</p>
+          </div>
+        </CardContent>
       </Card>
 
       <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="space-y-4">
-          <Card>
+          <Card className="bg-white">
             <CardHeader>
               <CardTitle>Filtros del pipeline</CardTitle>
               <CardDescription>Filtra por candidato, vacante, stage o estado antes de revisar o exportar.</CardDescription>
@@ -265,7 +282,7 @@ export function PipelineBoardPage() {
             const stageApplications = filteredApplications.filter((application) => application.current_stage_id === stage.id)
 
             return (
-              <Card key={stage.id} className="min-h-[240px]">
+              <Card key={stage.id} className="min-h-[240px] bg-white">
                 <CardHeader>
                   <div className="flex items-center justify-between gap-3">
                     <CardTitle className="text-lg">{stage.name}</CardTitle>
@@ -282,7 +299,7 @@ export function PipelineBoardPage() {
                         onClick={() => setSelectedApplicationId(application.id)}
                         className={`grid w-full gap-2 rounded-[24px] border px-4 py-4 text-left transition ${
                           selectedApplicationId === application.id
-                            ? 'border-primary-300 bg-primary-50/60 dark:border-primary-700 dark:bg-primary-950/30'
+                            ? 'border-emerald-300 bg-emerald-50'
                             : 'border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/80'
                         }`}
                       >
@@ -315,7 +332,7 @@ export function PipelineBoardPage() {
         </div>
         </div>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Actividad del applicant</CardTitle>
             <CardDescription>Selecciona una application para moverla, anotar contexto o asignar rating.</CardDescription>
@@ -327,14 +344,14 @@ export function PipelineBoardPage() {
               </div>
             ) : (
               <>
-                <div className="rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
                   <p className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
                     {visibleSelectedApplication.candidate_display_name_snapshot}
                   </p>
                   <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{visibleSelectedApplication.job_posting?.title}</p>
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Mover stage</p>
                   <Select
                     value={visibleSelectedApplication.current_stage_id ?? ''}
@@ -364,7 +381,7 @@ export function PipelineBoardPage() {
                   />
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Agregar nota</p>
                   <Textarea rows={4} value={newNote} onChange={(event) => setNewNote(event.target.value)} placeholder="Contexto, decision o siguiente paso" />
                   <Button onClick={() => noteMutation.mutate()} disabled={noteMutation.isPending || newNote.trim().length === 0}>
@@ -372,7 +389,7 @@ export function PipelineBoardPage() {
                   </Button>
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Rating</p>
                   <Select value={score} onChange={(event) => setScore(event.target.value)}>
                     <option value="1">1/5</option>

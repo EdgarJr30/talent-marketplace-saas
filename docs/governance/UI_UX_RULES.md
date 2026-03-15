@@ -36,6 +36,7 @@ When a future redesign changes these rules, the new decision must still be bench
 6. **Accessibility is part of quality.** It is not an optional polish pass.
 7. **One primary action at a time.** Each screen or action zone should make the next step obvious.
 8. **Apple-grade clarity is the visual bar.** Interfaces should favor calm hierarchy, generous spacing, obvious affordances, and polished restraint over busy dashboards.
+9. **Customer-facing entrypoints must look like product, not tooling.** Public landing and shell surfaces must avoid exposing QA or operations language by default.
 
 ## 3.1 Mandatory UI libraries
 The project must standardize on the same libraries for reusable UI building blocks.
@@ -237,6 +238,12 @@ The product should feel:
 - structured
 - lightweight
 - restrained
+
+Surface-direction rule:
+- Public landing and marketing-facing entrypoints may use richer, darker, more atmospheric composition when it improves product perception.
+- Authenticated operational surfaces should default to cleaner, brighter, calmer layouts that prioritize readability, task flow, and repeated daily use.
+- Authentication must live in its own isolated shell. Login and sign-up cannot inherit employer sidebars, internal console navigation, or any dashboard chrome.
+- Navigation must be contextual by audience: public, auth, candidate, employer, and internal surfaces each need their own navigation model.
 - polished
 
 Apple-inspired UI rules:
@@ -245,6 +252,17 @@ Apple-inspired UI rules:
 3. Prefer strong hierarchy and content grouping over heavy borders everywhere.
 4. Prefer obvious native-feeling actions over clever or experimental interaction patterns.
 5. Use motion, blur, tint, elevation, and softness with restraint; they should support hierarchy, not dominate it.
+
+### 8.4 Product landing requirements
+1. The public root route must function as a real product landing, not a development or configuration dashboard.
+2. The landing should include:
+- hero
+- audience/value framing
+- workflow or feature explanation
+- pricing section
+- final CTA region
+3. A donation section or donation CTA may be present as UI/UX-only groundwork, but it must still feel intentional and visually integrated.
+4. Internal QA, launch-readiness, or foundations tools must never appear in the public landing experience for standard users.
 
 ### 8.2 Color rules
 1. Pastel accents are allowed only as controlled brand surfaces, highlights, chips, or secondary emphasis.

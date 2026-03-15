@@ -34,7 +34,7 @@ export function RequireAuth({ children }: PropsWithChildren) {
   }
 
   if (!session.isAuthenticated) {
-    return <Navigate replace to="/auth" />
+    return <Navigate replace to="/auth/sign-in" />
   }
 
   return children
@@ -53,7 +53,7 @@ export function RequirePermission({
   }
 
   if (!session.isAuthenticated) {
-    return <Navigate replace to="/auth" />
+    return <Navigate replace to="/auth/sign-in" />
   }
 
   if (!session.permissions.includes(permission)) {
@@ -61,6 +61,29 @@ export function RequirePermission({
       <GuardFeedback
         title="Acceso restringido"
         description="Tu sesion no tiene el permiso requerido para abrir esta ruta."
+      />
+    )
+  }
+
+  return children
+}
+
+export function RequireInternalAccess({ children }: PropsWithChildren) {
+  const session = useAppSession()
+
+  if (session.isLoading) {
+    return <GuardFeedback title="Validando acceso interno" description="Estamos comprobando tu acceso al workspace interno." />
+  }
+
+  if (!session.isAuthenticated) {
+    return <Navigate replace to="/auth/sign-in" />
+  }
+
+  if (!session.canAccessInternalConsole) {
+    return (
+      <GuardFeedback
+        title="Acceso interno restringido"
+        description="Solo administradores de plataforma y developers internos pueden abrir esta zona."
       />
     )
   }

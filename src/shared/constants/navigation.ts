@@ -1,126 +1,124 @@
 import type { NavigationItem } from '@/shared/types/navigation'
 
-export const navigationItems: NavigationItem[] = [
+export const publicNavigationItems: NavigationItem[] = [
   {
     title: 'Inicio',
     titleKey: 'navigation.home.title',
     href: '/',
-    description: 'Base del proyecto',
+    description: 'Landing del producto',
     descriptionKey: 'navigation.home.description'
-  },
-  {
-    title: 'Acceso',
-    titleKey: 'navigation.access.title',
-    href: '/auth',
-    description: 'Registro e inicio de sesion',
-    descriptionKey: 'navigation.access.description'
-  },
-  {
-    title: 'Perfil',
-    titleKey: 'navigation.onboarding.title',
-    href: '/onboarding',
-    description: 'Datos base del usuario',
-    descriptionKey: 'navigation.onboarding.description',
-    requiresAuth: true
-  },
-  {
-    title: 'Perfil candidato',
-    titleKey: 'navigation.candidate.title',
-    href: '/candidate/profile',
-    description: 'CV y completitud',
-    descriptionKey: 'navigation.candidate.description',
-    requiresAuth: true
-  },
-  {
-    title: 'Recruiter',
-    titleKey: 'navigation.recruiterRequest.title',
-    href: '/recruiter-request',
-    description: 'Solicitud de validacion',
-    descriptionKey: 'navigation.recruiterRequest.description',
-    requiresAuth: true
   },
   {
     title: 'Jobs',
     titleKey: 'navigation.jobs.title',
     href: '/jobs',
-    description: 'Vacantes y discovery',
+    description: 'Vacantes publicas',
     descriptionKey: 'navigation.jobs.description'
-  },
+  }
+]
+
+export const candidateNavigationItems: NavigationItem[] = [
   {
-    title: 'Talento',
-    titleKey: 'navigation.talent.title',
-    href: '/talent',
-    description: 'Directorio candidato',
-    descriptionKey: 'navigation.talent.description',
-    requiresAuth: true,
-    requiredPermission: 'candidate_directory:read'
-  },
-  {
-    title: 'Applications',
-    titleKey: 'navigation.applications.title',
-    href: '/applications',
-    description: 'Historial y applicants',
-    descriptionKey: 'navigation.applications.description',
+    title: 'Onboarding',
+    href: '/onboarding',
+    description: 'Completa tu identidad base',
     requiresAuth: true
   },
   {
-    title: 'Pipeline',
-    titleKey: 'navigation.pipeline.title',
-    href: '/pipeline',
-    description: 'ATS-lite',
-    descriptionKey: 'navigation.pipeline.description',
-    requiresAuth: true,
-    requiredPermission: 'application:read'
+    title: 'Mi perfil',
+    href: '/candidate/profile',
+    description: 'Perfil profesional y CV',
+    requiresAuth: true
   },
   {
+    title: 'Jobs',
+    href: '/jobs',
+    description: 'Explora vacantes'
+  },
+  {
+    title: 'Aplicaciones',
+    href: '/applications',
+    description: 'Tus postulaciones',
+    requiresAuth: true
+  },
+  {
+    title: 'Recruiter',
+    href: '/recruiter-request',
+    description: 'Solicitar validacion employer',
+    requiresAuth: true
+  }
+]
+
+export const employerNavigationItems: NavigationItem[] = [
+  {
     title: 'Workspace',
-    titleKey: 'navigation.workspace.title',
     href: '/workspace',
-    description: 'Tenant y company',
-    descriptionKey: 'navigation.workspace.description',
+    description: 'Empresa, branding y miembros',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
-    title: 'RBAC',
-    titleKey: 'navigation.rbac.title',
+    title: 'Vacantes',
+    href: '/jobs/manage',
+    description: 'Gestiona jobs y discovery',
+    requiresAuth: true,
+    requiredPermission: 'workspace:read'
+  },
+  {
+    title: 'Talento',
+    href: '/talent',
+    description: 'Buscar candidatos visibles',
+    requiresAuth: true,
+    requiredPermission: 'candidate_directory:read'
+  },
+  {
+    title: 'Pipeline',
+    href: '/pipeline',
+    description: 'Applicants, notas y stages',
+    requiresAuth: true,
+    requiredPermission: 'application:read'
+  },
+  {
+    title: 'Roles',
     href: '/rbac',
     description: 'Roles y permisos',
-    descriptionKey: 'navigation.rbac.description',
     requiresAuth: true,
     requiredPermission: 'role:read'
+  }
+]
+
+export const internalNavigationItems: NavigationItem[] = [
+  {
+    title: 'Console',
+    href: '/internal',
+    description: 'Centro interno',
+    requiresAuth: true
   },
   {
     title: 'Approvals',
-    titleKey: 'navigation.approvals.title',
-    href: '/admin/recruiter-requests',
-    description: 'Revision de recruiters',
-    descriptionKey: 'navigation.approvals.description',
+    href: '/internal/approvals',
+    description: 'Recruiter requests',
     requiresAuth: true,
     requiredPermission: 'recruiter_request:review'
   },
   {
-    title: 'Plataforma',
-    titleKey: 'navigation.platform.title',
-    href: '/admin/platform',
-    description: 'Ops y planes',
-    descriptionKey: 'navigation.platform.description',
+    title: 'Platform',
+    href: '/internal/platform',
+    description: 'Planes y ops',
     requiresAuth: true,
     requiredPermission: 'platform_dashboard:read'
   },
   {
     title: 'Moderation',
-    titleKey: 'navigation.moderation.title',
-    href: '/admin/moderation',
+    href: '/internal/moderation',
     description: 'Trust and safety',
-    descriptionKey: 'navigation.moderation.description',
     requiresAuth: true,
     requiredPermission: 'moderation:read'
   },
   {
-    title: 'Errores',
-    href: '/admin/errors',
-    description: 'Revision operativa',
+    title: 'Errors',
+    href: '/internal/errors',
+    description: 'Error review',
     requiresAuth: true,
     requiredPermission: 'audit_log:read'
   }

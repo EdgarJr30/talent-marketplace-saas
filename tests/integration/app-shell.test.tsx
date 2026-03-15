@@ -5,8 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { AppProviders } from '@/app/providers/app-providers'
 import { appRoutes } from '@/app/router/routes'
 
-describe('app shell', () => {
-  it('renders the project shell and hides restricted navigation items for guests', async () => {
+describe('route shells', () => {
+  it('renders the public shell without authenticated dashboard navigation for guests', async () => {
     const router = createMemoryRouter(appRoutes, {
       initialEntries: ['/']
     })
@@ -17,15 +17,26 @@ describe('app shell', () => {
       </AppProviders>
     )
 
-    expect(await screen.findByText('Talent Marketplace SaaS')).toBeInTheDocument()
-    expect(screen.getAllByRole('link', { name: /Inicio|Home/i }).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('link', { name: /Acceso|Access/i }).length).toBeGreaterThan(0)
-    expect(screen.getAllByRole('link', { name: /Jobs/i }).length).toBeGreaterThan(0)
-    expect(screen.queryAllByRole('link', { name: /Applications/i })).toHaveLength(0)
-    expect(screen.queryAllByRole('link', { name: /Pipeline/i })).toHaveLength(0)
-    expect(screen.queryAllByRole('link', { name: /Approvals/i })).toHaveLength(0)
-    expect(screen.queryAllByRole('link', { name: /Plataforma|Platform/i })).toHaveLength(0)
-    expect(screen.queryAllByRole('link', { name: /Moderation|Moderacion/i })).toHaveLength(0)
-    expect(screen.queryAllByRole('link', { name: /Talento|Talent/i })).toHaveLength(0)
+    expect(await screen.findByText('Talent Marketplace')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Jobs' })).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: 'Crear cuenta' }).length).toBeGreaterThan(0)
+    expect(screen.queryByText('Workspace')).not.toBeInTheDocument()
+    expect(screen.queryByText('Internal console')).not.toBeInTheDocument()
+  })
+
+  it('renders auth as an isolated shell', async () => {
+    const router = createMemoryRouter(appRoutes, {
+      initialEntries: ['/auth/sign-in']
+    })
+
+    render(
+      <AppProviders>
+        <RouterProvider router={router} />
+      </AppProviders>
+    )
+
+    expect(await screen.findByText('Entra a tu cuenta')).toBeInTheDocument()
+    expect(screen.queryByText('Workspace')).not.toBeInTheDocument()
+    expect(screen.queryByText('Pipeline')).not.toBeInTheDocument()
   })
 })

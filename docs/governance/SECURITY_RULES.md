@@ -73,6 +73,7 @@ Security includes protecting:
 13. Operational app errors that reach the user should be logged to Supabase in a dedicated reviewable store without blocking the main UX flow.
 14. Candidate CV files must stay in a private bucket with ownership-based path policies and signed URL access.
 15. Email workflow processors must authenticate with a server-side secret or equivalent non-browser credential and must keep provider keys only in Edge Function secrets.
+16. Internal QA, foundations, and operational tooling must never be publicly exposed by default in the customer-facing app shell or landing routes.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.

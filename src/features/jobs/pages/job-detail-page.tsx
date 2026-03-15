@@ -124,7 +124,7 @@ export function JobDetailPage() {
                   {job.isSaved ? 'Quitar guardado' : 'Guardar vacante'}
                 </Button>
               ) : (
-                <Link className={linkButtonClassName} to="/auth">
+                <Link className={linkButtonClassName} to="/auth/sign-in">
                   Inicia sesion para guardar
                 </Link>
               )}

@@ -195,6 +195,10 @@ The MVP should **not** initially include:
 - offline fallback
 - resilient loading and retry states
 - actionable error states with technical logging for admin follow-up
+- public product landing with client-ready positioning
+- visible SaaS pricing section for commercial review, even before billing is connected
+- donation section and donation CTA as UI/UX-only surfaces until payment logic ships
+- internal console isolated from the client-facing product experience
 
 ---
 

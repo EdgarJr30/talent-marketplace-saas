@@ -105,6 +105,7 @@
 7. A permission removed from a role must immediately affect guarded actions, subject to session refresh mechanics.
 8. Navigation must not expose protected destinations unless intentionally designed.
 9. Candidate directory search and full candidate detail require explicit tenant permissions separate from application review.
+10. Internal developer access is a separate operational flag and must not implicitly grant platform or tenant permissions.
 
 ---
 
@@ -162,6 +163,9 @@
 6. Loading, empty, error, success, and disabled states are not optional.
 7. Error states must be actionable: the user should understand what failed, why it failed, and what to do next.
 8. User-facing platform errors must explain the real business or operational cause only when that cause is actually known from verified evidence. If the platform cannot determine the cause yet, the UI must say so explicitly and must not invent explanations.
+9. The public root experience must behave as a commercial product landing, not as an internal control panel.
+10. The public landing must include visible SaaS pricing and a donation surface even before payment processing is implemented, as long as the UI makes clear that payment logic is not active yet.
+11. Internal test, foundations, and launch-operations tooling must be visually and route-wise isolated from the customer-facing product experience.
 
 ---
 

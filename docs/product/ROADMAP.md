@@ -179,6 +179,8 @@ Operational maturity for launch.
 - seeded free/growth plan catalog plus tenant subscription bootstrap
 - platform feature-flag controls for launch operations
 - release checklist and mobile smoke coverage
+- client-ready public landing with SaaS pricing and donation sections
+- internal console isolation for operational and QA-only tooling
 
 ### Exit criteria
 - core workflow notifications exist
@@ -186,6 +188,7 @@ Operational maturity for launch.
 - moderation actions work
 - basic plan enforcement hooks exist
 - platform admins can inspect launch-health counters from inside the app
+- customer-facing entrypoints no longer expose internal launch tooling
 
 ---
 

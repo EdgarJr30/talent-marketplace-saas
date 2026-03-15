@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { filterNavigationItems, hasPermission } from '@/lib/permissions/guards'
-import { navigationItems } from '@/shared/constants/navigation'
+import { candidateNavigationItems, employerNavigationItems, internalNavigationItems } from '@/shared/constants/navigation'
 
 describe('permission guards', () => {
   it('allows access when the required permission exists', () => {
@@ -10,7 +10,7 @@ describe('permission guards', () => {
 
   it('filters navigation items that the current session cannot access', () => {
     const visibleItems = filterNavigationItems(
-      navigationItems,
+      [...candidateNavigationItems, ...employerNavigationItems, ...internalNavigationItems],
       [
         'workspace:read',
         'job:read',
@@ -24,19 +24,31 @@ describe('permission guards', () => {
     )
 
     expect(visibleItems.map((item) => item.title)).toEqual([
-      'Inicio',
-      'Acceso',
-      'Perfil',
-      'Perfil candidato',
-      'Recruiter',
+      'Onboarding',
+      'Mi perfil',
       'Jobs',
-      'Talento',
-      'Applications',
-      'Pipeline',
+      'Aplicaciones',
+      'Recruiter',
       'Workspace',
-      'RBAC',
-      'Plataforma',
-      'Errores'
+      'Vacantes',
+      'Talento',
+      'Pipeline',
+      'Roles',
+      'Console',
+      'Platform',
+      'Errors'
+    ])
+  })
+
+  it('keeps internal navigation restricted when platform permissions are missing', () => {
+    const visibleInternal = filterNavigationItems(
+      internalNavigationItems,
+      [],
+      true
+    )
+
+    expect(visibleInternal.map((item) => item.title)).toEqual([
+      'Console'
     ])
   })
 })

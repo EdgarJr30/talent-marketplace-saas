@@ -240,55 +240,58 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#dbeafe_0,transparent_30%),linear-gradient(135deg,#eff6ff,white_38%,#f0fdf4_76%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(30,64,175,0.24)_0,transparent_28%),linear-gradient(135deg,rgba(9,18,33,0.96),rgba(9,9,11,0.94)_42%,rgba(8,24,20,0.95))]">
-        <CardHeader className="space-y-3">
-          <Badge variant="soft">Employer foundations</Badge>
+      <Card className="overflow-hidden border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#f5f9ff)]">
+        <CardHeader className="space-y-4">
+          <div className="inline-flex w-fit items-center rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700">
+            Employer workspace
+          </div>
           <CardTitle>Configura la identidad operativa de tu workspace</CardTitle>
           <CardDescription>
-            Este modulo deja usable la presencia de empresa, el branding base y el control de miembros antes de abrir
-            jobs, sourcing y pipeline.
+            Deja lista la presencia de empresa, el branding base y la colaboracion del equipo antes de abrir jobs,
+            sourcing y pipeline.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/75">
+            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Tenant slug</p>
               <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{bundle.tenant.slug}</p>
             </div>
-            <div className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/75">
+            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Estado</p>
               <p className="mt-2 text-lg font-semibold capitalize text-zinc-950 dark:text-zinc-50">
                 {bundle.tenant.status}
               </p>
             </div>
-            <div className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/75">
+            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Miembros activos</p>
               <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{activeMembershipCount}</p>
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-white/70 bg-white/88 p-5 dark:border-zinc-800 dark:bg-zinc-950/80">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Launch readiness</p>
-            <div className="mt-3 grid gap-2">
-              <div className="rounded-2xl bg-sky-50 px-3 py-2 text-sm text-sky-800 dark:bg-sky-950/40 dark:text-sky-200">
-                Company profile editable con RLS real.
-              </div>
-              <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
-                Roles de membresia gestionados desde la app.
-              </div>
-              <div className="rounded-2xl bg-violet-50 px-3 py-2 text-sm text-violet-800 dark:bg-violet-950/40 dark:text-violet-200">
-                Invitaciones internas soportan estado invited y auditoria por tenant.
-              </div>
-              <div className="rounded-2xl bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                Logo y multimedia viven en Supabase Storage con limite de 5 MB.
-              </div>
+          <div className="rounded-[30px] border border-zinc-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.05)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Workspace status</p>
+            <div className="mt-4 grid gap-3">
+              {[
+                { glyph: 'CP', text: 'Company profile editable con datos listos para jobs y discovery.' },
+                { glyph: 'MB', text: 'Miembros y roles operan sobre memberships reales del tenant.' },
+                { glyph: 'RB', text: 'Invitaciones pendientes y cambios de rol quedan auditados.' },
+                { glyph: 'MD', text: 'Branding y multimedia viven en Storage privado con reglas de upload.' }
+              ].map((item) => (
+                <div key={item.text} className="flex items-start gap-3 rounded-[22px] bg-zinc-50 px-4 py-4 text-sm leading-6 text-zinc-700">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 text-[11px] font-semibold tracking-[0.18em] text-white">
+                    {item.glyph}
+                  </div>
+                  <p>{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
         </CardContent>
       </Card>
 
       <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Company profile</CardTitle>
             <CardDescription>
@@ -361,7 +364,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               />
             </label>
 
-            <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+            <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Logo del workspace</p>
@@ -394,7 +397,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Equipo y roles</CardTitle>
             <CardDescription>
@@ -402,7 +405,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+            <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Invitar miembro</p>
@@ -449,7 +452,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               const activeRoleId = membership.membership_roles?.find((item) => item.role)?.role?.id ?? ''
 
               return (
-                <div key={membership.id} className="rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                <div key={membership.id} className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">

@@ -1814,6 +1814,7 @@ export type Database = {
           email: string | null
           full_name: string
           id: string
+          is_internal_developer: boolean
           last_sign_in_at: string | null
           locale: string | null
           phone: string | null
@@ -1828,6 +1829,7 @@ export type Database = {
           email?: string | null
           full_name?: string
           id: string
+          is_internal_developer?: boolean
           last_sign_in_at?: string | null
           locale?: string | null
           phone?: string | null
@@ -1842,6 +1844,7 @@ export type Database = {
           email?: string | null
           full_name?: string
           id?: string
+          is_internal_developer?: boolean
           last_sign_in_at?: string | null
           locale?: string | null
           phone?: string | null
@@ -1875,6 +1878,10 @@ export type Database = {
       }
       has_platform_permission: {
         Args: { permission_code: string }
+        Returns: boolean
+      }
+      can_access_internal_console: {
+        Args: never
         Returns: boolean
       }
       has_tenant_permission: {
