@@ -113,6 +113,12 @@ Do not leave platform failures with generic copy when the underlying business or
 ### R-028 — Admin error review must identify the affected user
 When an authenticated user triggers a logged app error, the admin error panel must expose a legible user reference from the existing `user_id` relation so support knows who needs follow-up. Do not leave support with only raw technical metadata when the database already knows the affected user.
 
+### R-029 — Client APIs must use shared controlled error normalization
+Do not redefine lightweight local error mappers in feature APIs when a shared controlled-error helper already exists. Client-side Supabase and network APIs must preserve the real underlying message through the shared error normalization layer, and meaningful catch paths must either log to `app_error_logs` or intentionally degrade with a documented reason.
+
+### R-030 — Never invent an error cause
+Under no circumstance may the platform invent, guess, or fabricate the cause of an error. If the real cause is not known from verified evidence, the UI and logs must say that the cause is still undetermined and preserve only factual technical context.
+
 ---
 
 ## Maintenance rule

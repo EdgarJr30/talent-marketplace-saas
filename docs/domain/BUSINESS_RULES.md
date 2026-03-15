@@ -143,7 +143,7 @@
 5. Mobile-first behavior is required for all primary workflows.
 6. Loading, empty, error, success, and disabled states are not optional.
 7. Error states must be actionable: the user should understand what failed, why it failed, and what to do next.
-8. User-facing platform errors must explain the real business or operational cause whenever that cause is known; avoid generic unexpected-error copy when the platform can identify the reason.
+8. User-facing platform errors must explain the real business or operational cause only when that cause is actually known from verified evidence. If the platform cannot determine the cause yet, the UI must say so explicitly and must not invent explanations.
 
 ---
 
