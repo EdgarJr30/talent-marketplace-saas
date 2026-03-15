@@ -14,7 +14,9 @@ import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
   createWorkspaceAssetUrl,
   fetchWorkspaceBundle,
+  inviteWorkspaceMember,
   replaceMembershipPrimaryRole,
+  revokeWorkspaceInvite,
   updateWorkspaceProfile,
   uploadWorkspaceLogo,
   type WorkspaceBundle
@@ -47,6 +49,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
   const [sizeRange, setSizeRange] = useState(profile?.size_range ?? '')
   const [description, setDescription] = useState(profile?.description ?? '')
   const [isPublic, setIsPublic] = useState(profile?.is_public ?? true)
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRoleId, setInviteRoleId] = useState('')
 
   const saveProfileMutation = useMutation({
     mutationFn: async () => {
@@ -158,6 +162,59 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
     }
   })
 
+  const inviteMemberMutation = useMutation({
+    mutationFn: async () => {
+      return inviteWorkspaceMember({
+        tenantId: bundle.tenant.id,
+        email: inviteEmail,
+        roleId: inviteRoleId || null
+      })
+    },
+    onSuccess: async () => {
+      setInviteEmail('')
+      setInviteRoleId('')
+      await queryClient.invalidateQueries({ queryKey: WORKSPACE_QUERY_KEY })
+      toast.success('Invitacion creada', {
+        description: 'La membresia quedo en estado invited y ya aparece en el workspace.'
+      })
+    },
+    onError: async (error) => {
+      await reportErrorWithToast({
+        title: 'No pudimos invitar al miembro',
+        source: 'workspace.invite-member',
+        route: '/workspace',
+        userId: session.authUser?.id ?? null,
+        error,
+        userMessage:
+          'No pudimos crear la invitacion. Verifica que el correo ya pertenezca a un usuario registrado en la plataforma.'
+      })
+    }
+  })
+
+  const revokeInviteMutation = useMutation({
+    mutationFn: async (membershipId: string) => {
+      return revokeWorkspaceInvite({
+        membershipId,
+        tenantId: bundle.tenant.id
+      })
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: WORKSPACE_QUERY_KEY })
+      toast.success('Invitacion revocada', {
+        description: 'La membresia invitada quedo revocada y auditada.'
+      })
+    },
+    onError: async (error) => {
+      await reportErrorWithToast({
+        title: 'No pudimos revocar la invitacion',
+        source: 'workspace.revoke-invite',
+        route: '/workspace',
+        userId: session.authUser?.id ?? null,
+        error
+      })
+    }
+  })
+
   async function openLogoPreview() {
     if (!profile?.logo_path) {
       return
@@ -178,6 +235,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
   }
 
   const assignableRoles = bundle.roles.filter((role) => role.tenant_id === null || role.tenant_id === bundle.tenant.id)
+  const activeMembershipCount = bundle.memberships.filter((membership) => membership.status === 'active').length
+  const invitedMembershipCount = bundle.memberships.filter((membership) => membership.status === 'invited').length
 
   return (
     <div className="space-y-6">
@@ -204,7 +263,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </div>
             <div className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/75">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Miembros activos</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{bundle.memberships.length}</p>
+              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{activeMembershipCount}</p>
             </div>
           </div>
 
@@ -216,6 +275,9 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               </div>
               <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
                 Roles de membresia gestionados desde la app.
+              </div>
+              <div className="rounded-2xl bg-violet-50 px-3 py-2 text-sm text-violet-800 dark:bg-violet-950/40 dark:text-violet-200">
+                Invitaciones internas soportan estado invited y auditoria por tenant.
               </div>
               <div className="rounded-2xl bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
                 Logo y multimedia viven en Supabase Storage con limite de 5 MB.
@@ -340,6 +402,49 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
+            <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Invitar miembro</p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    El usuario debe haberse registrado antes como usuario normal en la plataforma.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline">{activeMembershipCount} activos</Badge>
+                  <Badge variant="outline">{invitedMembershipCount} invitados</Badge>
+                </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-[1fr_0.7fr_auto] sm:items-end">
+                <label className="grid gap-2 text-sm">
+                  <span>Email del miembro</span>
+                  <Input
+                    type="email"
+                    placeholder="persona@empresa.com"
+                    value={inviteEmail}
+                    onChange={(event) => setInviteEmail(event.target.value)}
+                  />
+                </label>
+                <label className="grid gap-2 text-sm">
+                  <span>Rol inicial</span>
+                  <Select value={inviteRoleId} onChange={(event) => setInviteRoleId(event.target.value)}>
+                    <option value="">Selecciona un rol</option>
+                    {assignableRoles.map((role) => (
+                      <option key={role.id} value={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </Select>
+                </label>
+                <Button
+                  onClick={() => inviteMemberMutation.mutate()}
+                  disabled={inviteMemberMutation.isPending || inviteEmail.trim().length === 0 || inviteRoleId.length === 0}
+                >
+                  {inviteMemberMutation.isPending ? 'Invitando...' : 'Invitar'}
+                </Button>
+              </div>
+            </div>
+
             {bundle.memberships.map((membership) => {
               const activeRoleId = membership.membership_roles?.find((item) => item.role)?.role?.id ?? ''
 
@@ -381,6 +486,17 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                         'Sin rol activo'}
                     </div>
                   </div>
+                  {membership.status === 'invited' ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => revokeInviteMutation.mutate(membership.id)}
+                        disabled={revokeInviteMutation.isPending}
+                      >
+                        Revocar invitacion
+                      </Button>
+                    </div>
+                  ) : null}
                 </div>
               )
             })}

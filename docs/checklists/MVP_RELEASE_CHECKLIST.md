@@ -1,0 +1,40 @@
+# MVP Release Checklist
+
+## Core loop smoke
+- Registro de usuario base en `/auth`
+- Callback de confirmacion de email en `/auth/confirm`
+- Onboarding base en `/onboarding`
+- Solicitud recruiter en `/recruiter-request`
+- Aprobacion admin en `/admin/recruiter-requests`
+- Workspace employer en `/workspace`
+- Creacion y publish de job en `/jobs`
+- Apply flow en `/jobs/:slug/apply`
+- Pipeline recruiter en `/pipeline`
+
+## PWA readiness
+- Manifest instalable visible en mobile
+- Service worker registra sin errores
+- `/offline` responde como fallback cuando la app pierde red
+- Navegacion movil principal sigue usable en `home`, `jobs`, `applications`, `pipeline`, `workspace`
+
+## Storage and private media
+- Avatar, logos y documentos privados respetan el limite de 5 MB
+- Signed URLs abren correctamente para assets privados
+- CV principal se puede subir, abrir y eliminar
+
+## Notifications and email hooks
+- Los eventos workflow crean filas en `notifications`
+- Los eventos workflow crean filas en `notification_deliveries`
+- `process-email-deliveries` mueve deliveries `pending` a `sent` o `failed`
+- `notification_delivery_logs` deja rastro suficiente para diagnosticar fallos
+
+## Employer operations
+- Invitacion de miembro por email existente deja `memberships.status = invited`
+- Revocar invitacion cambia el estado a `revoked`
+- Export CSV de applicants funciona para roles con `application:export`
+- Filtros de pipeline no rompen seleccion, conteos ni permisos
+
+## Candidate utilities
+- Saved jobs sigue funcionando con perfil candidato
+- Job alerts se pueden crear, pausar, reactivar y eliminar
+- El candidato puede seguir aplicando aunque no sea visible a recruiters

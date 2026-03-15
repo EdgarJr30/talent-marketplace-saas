@@ -121,3 +121,54 @@ export async function listTenantApplications(tenantId: string) {
 
   return response.data ?? []
 }
+
+function toCsvCell(value: string | null | undefined) {
+  const normalized = (value ?? '').replaceAll('"', '""')
+  return `"${normalized}"`
+}
+
+export function exportApplicationsCsv(
+  applications: Array<{
+    candidate_display_name_snapshot?: string | null
+    candidate_email_snapshot?: string | null
+    submitted_at?: string | null
+    status_public?: string | null
+    current_stage_id?: string | null
+    job_posting?: { title?: string | null } | null
+    candidate_profile?: { desired_role?: string | null } | null
+  }>,
+  stageNameById?: Record<string, string>
+) {
+  const header = [
+    'candidate_name',
+    'candidate_email',
+    'desired_role',
+    'job_title',
+    'status_public',
+    'stage',
+    'submitted_at'
+  ]
+
+  const rows = applications.map((application) =>
+    [
+      application.candidate_display_name_snapshot ?? '',
+      application.candidate_email_snapshot ?? '',
+      application.candidate_profile?.desired_role ?? '',
+      application.job_posting?.title ?? '',
+      application.status_public ?? '',
+      application.current_stage_id ? stageNameById?.[application.current_stage_id] ?? application.current_stage_id : '',
+      application.submitted_at ?? ''
+    ]
+      .map((value) => toCsvCell(value))
+      .join(',')
+  )
+
+  const csv = [header.join(','), ...rows].join('\n')
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const anchor = document.createElement('a')
+  anchor.href = url
+  anchor.download = `applications-export-${new Date().toISOString().slice(0, 10)}.csv`
+  anchor.click()
+  URL.revokeObjectURL(url)
+}

@@ -14,6 +14,7 @@ Testing is a required safety layer, not a polish step.
 4. When a bug or correction reveals risk, add a regression test whenever practical.
 5. Fast feedback matters: lint, typecheck, unit, and integration checks must be runnable by default from the repository root.
 6. CI must mirror the same primary verification command used locally so quality gates do not drift.
+7. Launch-readiness gaps must add either browser smoke coverage in `tests/e2e/` or a documented blocker in the same task.
 
 ---
 
@@ -51,6 +52,7 @@ Test the repo contract itself:
 ### E2E smoke tests
 E2E coverage becomes mandatory as soon as auth, job application, and ATS flows are interactive.
 These tests should prioritize mobile viewport coverage for the core hiring loop.
+Minimum smoke coverage now includes auth callback shell, onboarding, recruiter request, jobs discovery, applications, and pipeline surfaces.
 
 ### Manual QA
 Manual checks remain required for:
@@ -112,6 +114,7 @@ src/features/*/tests/   feature-local tests when co-location helps
 8. If test coverage is intentionally deferred, document the gap in the same task.
 9. Test names should describe business intent, not implementation trivia.
 10. The `main` branch must stay gated by a successful CI quality run even when preview and production deploys are handled by a hosting platform.
+11. Manual release checks must stay codified in `docs/checklists/MVP_RELEASE_CHECKLIST.md`.
 
 ---
 
@@ -123,6 +126,8 @@ The repository must keep these commands meaningful:
 - `npm run test:unit`
 - `npm run test:integration`
 - `npm run test:contract`
+- `npm run test:e2e`
+- `npm run test:e2e:smoke`
 - `npm run version:plan`
 - `npm run verify`
 

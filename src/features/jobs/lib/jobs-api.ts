@@ -11,6 +11,14 @@ export interface JobPostingBundle {
   savedJobIds: string[]
 }
 
+export interface JobAlertDraft {
+  label: string
+  frequency: string
+  query?: string
+  workplaceType?: string
+  countryCode?: string
+}
+
 function requireSupabase() {
   if (!supabase) {
     throw new Error('Supabase no esta configurado. Completa VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY.')
@@ -310,4 +318,113 @@ export async function fetchSavedJobs(candidateProfileId: string) {
   }
 
   return response.data ?? []
+}
+
+export async function listJobAlerts(candidateProfileId: string) {
+  const client = requireSupabase()
+  const response = await client
+    .from('job_alerts')
+    .select('*')
+    .eq('candidate_profile_id', candidateProfileId)
+    .order('created_at', { ascending: false })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data ?? []
+}
+
+export async function createJobAlert(input: {
+  candidateProfileId: string
+  alert: JobAlertDraft
+}) {
+  const client = requireSupabase()
+  const response = await client
+    .from('job_alerts')
+    .insert({
+      candidate_profile_id: input.candidateProfileId,
+      label: input.alert.label.trim(),
+      frequency: input.alert.frequency.trim().toLowerCase(),
+      criteria_json: {
+        query: input.alert.query?.trim() || null,
+        workplaceType: input.alert.workplaceType?.trim() || null,
+        countryCode: input.alert.countryCode?.trim().toUpperCase() || null
+      }
+    })
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function updateJobAlert(input: {
+  jobAlertId: string
+  candidateProfileId: string
+  patch: Partial<JobAlertDraft> & { isActive?: boolean }
+}) {
+  const client = requireSupabase()
+  const existingResponse = await client
+    .from('job_alerts')
+    .select('*')
+    .eq('id', input.jobAlertId)
+    .eq('candidate_profile_id', input.candidateProfileId)
+    .single()
+
+  if (existingResponse.error) {
+    throw existingResponse.error
+  }
+
+  const existingCriteria = (existingResponse.data.criteria_json ?? {}) as Record<string, unknown>
+  const response = await client
+    .from('job_alerts')
+    .update({
+      label: input.patch.label?.trim() || existingResponse.data.label,
+      frequency: input.patch.frequency?.trim().toLowerCase() || existingResponse.data.frequency,
+      is_active: input.patch.isActive ?? existingResponse.data.is_active,
+      criteria_json: {
+        query:
+          input.patch.query !== undefined
+            ? input.patch.query.trim() || null
+            : (typeof existingCriteria.query === 'string' ? existingCriteria.query : null),
+        workplaceType:
+          input.patch.workplaceType !== undefined
+            ? input.patch.workplaceType.trim() || null
+            : (typeof existingCriteria.workplaceType === 'string' ? existingCriteria.workplaceType : null),
+        countryCode:
+          input.patch.countryCode !== undefined
+            ? input.patch.countryCode.trim().toUpperCase() || null
+            : (typeof existingCriteria.countryCode === 'string' ? existingCriteria.countryCode : null)
+      }
+    })
+    .eq('id', input.jobAlertId)
+    .eq('candidate_profile_id', input.candidateProfileId)
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function deleteJobAlert(input: {
+  jobAlertId: string
+  candidateProfileId: string
+}) {
+  const client = requireSupabase()
+  const response = await client
+    .from('job_alerts')
+    .delete()
+    .eq('id', input.jobAlertId)
+    .eq('candidate_profile_id', input.candidateProfileId)
+
+  if (response.error) {
+    throw response.error
+  }
 }

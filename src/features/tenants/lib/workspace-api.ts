@@ -231,3 +231,42 @@ export async function replaceMembershipPrimaryRole(input: {
 
   return fetchWorkspaceBundle(input.tenantId)
 }
+
+export async function inviteWorkspaceMember(input: {
+  tenantId: string
+  email: string
+  roleId?: string | null
+}) {
+  const client = requireSupabase()
+  const response = await (client as typeof client & {
+    rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: Error | null }>
+  }).rpc('invite_tenant_member', {
+    p_tenant_id: input.tenantId,
+    p_email: input.email.trim().toLowerCase(),
+    p_role_id: input.roleId ?? null
+  })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data as Tables<'memberships'>
+}
+
+export async function revokeWorkspaceInvite(input: {
+  membershipId: string
+  tenantId: string
+}) {
+  const client = requireSupabase()
+  const response = await (client as typeof client & {
+    rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: Error | null }>
+  }).rpc('revoke_membership_invite', {
+    p_membership_id: input.membershipId
+  })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data as Tables<'memberships'>
+}

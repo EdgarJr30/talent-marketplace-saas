@@ -228,6 +228,11 @@ Audit important RBAC events:
 - role deleted
 - permission attached/detached
 - member invited
+- member invite revoked
+
+Launch defaults:
+- `member:invite` only covers inviting users who already exist in the platform identity layer.
+- `application:export` is the gate for applicant CSV downloads from `/applications` and `/pipeline`.
 - role assigned to member
 - role removed from member
 - notification-management grants changed

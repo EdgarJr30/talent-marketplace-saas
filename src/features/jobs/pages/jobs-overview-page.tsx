@@ -16,10 +16,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import { fetchMyCandidateProfile } from '@/features/candidate-profile/lib/candidate-profile-api'
 import {
+  createJobAlert,
   createOrUpdateJobPosting,
+  deleteJobAlert,
+  listJobAlerts,
   listPublicJobs,
   listTenantJobs,
   toggleSavedJob,
+  updateJobAlert,
   updateJobPostingStatus,
   type JobPostingBundle
 } from '@/features/jobs/lib/jobs-api'
@@ -387,6 +391,8 @@ export function JobsOverviewPage() {
   const [workplaceFilter, setWorkplaceFilter] = useState('')
   const [countryFilter, setCountryFilter] = useState('')
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
+  const [alertLabel, setAlertLabel] = useState('')
+  const [alertFrequency, setAlertFrequency] = useState('weekly')
 
   const candidateProfileQuery = useQuery({
     queryKey: ['candidate-profile', 'mine', 'jobs-page'],
@@ -397,6 +403,11 @@ export function JobsOverviewPage() {
     queryKey: ['workspace', 'jobs-page', session.primaryMembership?.tenantId],
     enabled: canManageJobs && Boolean(session.primaryMembership?.tenantId),
     queryFn: async () => fetchWorkspaceBundle(session.primaryMembership!.tenantId)
+  })
+  const jobAlertsQuery = useQuery({
+    queryKey: ['job-alerts', candidateProfileQuery.data?.profile?.id ?? null],
+    enabled: Boolean(candidateProfileQuery.data?.profile?.id),
+    queryFn: async () => listJobAlerts(candidateProfileQuery.data!.profile!.id)
   })
   const publicJobsQuery = useQuery({
     queryKey: [
@@ -471,6 +482,104 @@ export function JobsOverviewPage() {
         userMessage: session.isAuthenticated
           ? 'No pudimos guardar o quitar esta vacante.'
           : 'Inicia sesion y completa tu perfil candidato para guardar vacantes.'
+      })
+    }
+  })
+
+  const createJobAlertMutation = useMutation({
+    mutationFn: async () => {
+      const candidateProfileId = candidateProfileQuery.data?.profile?.id
+
+      if (!candidateProfileId) {
+        throw new Error('Necesitas un perfil candidato para crear alertas de jobs.')
+      }
+
+      return createJobAlert({
+        candidateProfileId,
+        alert: {
+          label: alertLabel,
+          frequency: alertFrequency,
+          query: publicQuery,
+          workplaceType: workplaceFilter,
+          countryCode: countryFilter
+        }
+      })
+    },
+    onSuccess: async () => {
+      setAlertLabel('')
+      setAlertFrequency('weekly')
+      await queryClient.invalidateQueries({ queryKey: ['job-alerts'] })
+      toast.success('Alerta guardada', {
+        description: 'Tus criterios de discovery quedaron guardados para reutilizarlos luego.'
+      })
+    },
+    onError: async (error) => {
+      await reportErrorWithToast({
+        title: 'No pudimos crear la alerta',
+        source: 'jobs.create-alert',
+        route: '/jobs',
+        userId: session.authUser?.id ?? null,
+        error
+      })
+    }
+  })
+
+  const toggleJobAlertMutation = useMutation({
+    mutationFn: async (input: { alertId: string; isActive: boolean }) => {
+      const candidateProfileId = candidateProfileQuery.data?.profile?.id
+
+      if (!candidateProfileId) {
+        throw new Error('Necesitas un perfil candidato para actualizar alertas.')
+      }
+
+      return updateJobAlert({
+        jobAlertId: input.alertId,
+        candidateProfileId,
+        patch: {
+          isActive: input.isActive
+        }
+      })
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['job-alerts'] })
+    },
+    onError: async (error) => {
+      await reportErrorWithToast({
+        title: 'No pudimos actualizar la alerta',
+        source: 'jobs.toggle-alert',
+        route: '/jobs',
+        userId: session.authUser?.id ?? null,
+        error
+      })
+    }
+  })
+
+  const deleteJobAlertMutation = useMutation({
+    mutationFn: async (alertId: string) => {
+      const candidateProfileId = candidateProfileQuery.data?.profile?.id
+
+      if (!candidateProfileId) {
+        throw new Error('Necesitas un perfil candidato para eliminar alertas.')
+      }
+
+      return deleteJobAlert({
+        jobAlertId: alertId,
+        candidateProfileId
+      })
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['job-alerts'] })
+      toast.success('Alerta eliminada', {
+        description: 'La alerta ya no seguira activa para este perfil candidato.'
+      })
+    },
+    onError: async (error) => {
+      await reportErrorWithToast({
+        title: 'No pudimos eliminar la alerta',
+        source: 'jobs.delete-alert',
+        route: '/jobs',
+        userId: session.authUser?.id ?? null,
+        error
       })
     }
   })
@@ -678,9 +787,110 @@ export function JobsOverviewPage() {
               <p className="font-semibold text-zinc-950 dark:text-zinc-50">Screening groundwork</p>
               <p className="mt-1">Las preguntas screening quedan persistidas para el apply flow de la fase siguiente.</p>
             </div>
+            <div className="rounded-[24px] bg-zinc-50 px-4 py-4 text-sm text-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300">
+              <p className="font-semibold text-zinc-950 dark:text-zinc-50">Job alerts</p>
+              <p className="mt-1">Los candidatos pueden guardar criterios basicos y activarlos o pausarlos desde esta misma vista.</p>
+            </div>
           </CardContent>
         </Card>
       </section>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Job alerts guardadas</CardTitle>
+          <CardDescription>
+            Guarda un set de filtros basicos para volver rapido a este discovery. El MVP mantiene estas alertas como CRUD propio del candidato.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!candidateProfileQuery.data?.profile ? (
+            <div className="rounded-[24px] border border-dashed border-zinc-300 px-4 py-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
+              Completa tu perfil candidato para crear job alerts y guardar discovery reutilizable.
+            </div>
+          ) : (
+            <>
+              <div className="grid gap-3 sm:grid-cols-[1fr_0.5fr_auto] sm:items-end">
+                <label className="grid gap-2 text-sm">
+                  <span>Etiqueta</span>
+                  <Input
+                    value={alertLabel}
+                    onChange={(event) => setAlertLabel(event.target.value)}
+                    placeholder="Ingeniero electrico remoto"
+                  />
+                </label>
+                <label className="grid gap-2 text-sm">
+                  <span>Frecuencia</span>
+                  <Select value={alertFrequency} onChange={(event) => setAlertFrequency(event.target.value)}>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                  </Select>
+                </label>
+                <Button
+                  onClick={() => createJobAlertMutation.mutate()}
+                  disabled={createJobAlertMutation.isPending || alertLabel.trim().length === 0}
+                >
+                  {createJobAlertMutation.isPending ? 'Guardando...' : 'Guardar alerta actual'}
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {jobAlertsQuery.isLoading ? (
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Cargando alertas...</p>
+                ) : jobAlertsQuery.error ? (
+                  <p className="text-sm text-rose-600 dark:text-rose-300">{toErrorMessage(jobAlertsQuery.error)}</p>
+                ) : jobAlertsQuery.data?.length ? (
+                  jobAlertsQuery.data.map((alert) => {
+                    const criteria = (alert.criteria_json ?? {}) as Record<string, unknown>
+
+                    return (
+                      <div key={alert.id} className="rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">{alert.label}</p>
+                            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                              {alert.frequency} · {(criteria.query as string | null) || 'sin keyword'} ·{' '}
+                              {(criteria.workplaceType as string | null) || 'cualquier modalidad'} ·{' '}
+                              {(criteria.countryCode as string | null) || 'cualquier pais'}
+                            </p>
+                          </div>
+                          <Badge variant={alert.is_active ? 'soft' : 'outline'}>
+                            {alert.is_active ? 'Activa' : 'Pausada'}
+                          </Badge>
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() =>
+                              toggleJobAlertMutation.mutate({
+                                alertId: alert.id,
+                                isActive: !alert.is_active
+                              })
+                            }
+                            disabled={toggleJobAlertMutation.isPending}
+                          >
+                            {alert.is_active ? 'Pausar' : 'Activar'}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => deleteJobAlertMutation.mutate(alert.id)}
+                            disabled={deleteJobAlertMutation.isPending}
+                          >
+                            Eliminar
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  })
+                ) : (
+                  <div className="rounded-[24px] border border-dashed border-zinc-300 px-4 py-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
+                    Todavia no has guardado job alerts para este perfil.
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

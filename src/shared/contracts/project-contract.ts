@@ -16,6 +16,7 @@ export const requiredRuleFiles = [
   'docs/governance/SECURITY_RULES.md',
   'docs/governance/VERSIONING_RULES.md',
   'docs/product/BENCHMARK.md',
+  'docs/checklists/MVP_RELEASE_CHECKLIST.md',
   'README.md'
 ] as const
 
@@ -41,7 +42,8 @@ export const requiredDirectories = [
   'src/styles',
   'src/test',
   'supabase',
-  'tests'
+  'tests',
+  'tests/e2e'
 ] as const
 
 export const requiredPwaFiles = ['public/manifest.webmanifest', 'public/sw.js'] as const

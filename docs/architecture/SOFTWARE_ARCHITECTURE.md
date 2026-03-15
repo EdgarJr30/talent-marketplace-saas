@@ -562,6 +562,7 @@ Examples:
 ### 11.3 Use Edge Functions for:
 - third-party integrations
 - email sending orchestration
+- `process-email-deliveries` edge worker with provider config in Supabase secrets
 - webhook receivers
 - secrets handling
 - admin-only secure operations
@@ -736,6 +737,7 @@ The system should be able to answer:
 - who published or archived a job
 - who changed a candidate stage
 - who invited a company member
+- whether a workspace invite is still `invited` or already `revoked`
 - who changed subscription-sensitive settings
 
 ---

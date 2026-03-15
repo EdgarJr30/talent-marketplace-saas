@@ -6,11 +6,12 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
-import { listMyApplications, listTenantApplications } from '@/features/applications/lib/applications-api'
+import { exportApplicationsCsv, listMyApplications, listTenantApplications } from '@/features/applications/lib/applications-api'
 
 export function ApplicationsOverviewPage() {
   const session = useAppSession()
   const canReviewApplications = session.permissions.includes('application:read')
+  const canExportApplications = session.permissions.includes('application:export')
 
   const myApplicationsQuery = useQuery({
     queryKey: ['applications', 'mine', session.authUser?.id ?? null],
@@ -82,6 +83,11 @@ export function ApplicationsOverviewPage() {
             <CardDescription>Los miembros con `application:read` ya pueden revisar candidatos aplicados por vacante.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
+            {canExportApplications && tenantApplicationsQuery.data?.length ? (
+              <Button variant="outline" onClick={() => exportApplicationsCsv(tenantApplicationsQuery.data)}>
+                Exportar applicants CSV
+              </Button>
+            ) : null}
             {!canReviewApplications ? (
               <div className="rounded-[24px] border border-dashed border-zinc-300 px-4 py-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
                 Esta bandeja se habilita cuando tu membership employer tiene permiso para revisar applications.

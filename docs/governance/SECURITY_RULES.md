@@ -72,6 +72,7 @@ Security includes protecting:
 12. Web push VAPID keys and contact metadata must live only in Supabase Edge Function secrets, never in browser code except the public key.
 13. Operational app errors that reach the user should be logged to Supabase in a dedicated reviewable store without blocking the main UX flow.
 14. Candidate CV files must stay in a private bucket with ownership-based path policies and signed URL access.
+15. Email workflow processors must authenticate with a server-side secret or equivalent non-browser credential and must keep provider keys only in Edge Function secrets.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.
@@ -146,6 +147,7 @@ OSINT may be used only for legitimate moderation, fraud prevention, trust verifi
 - client error logging into Supabase and admin visibility of those logs
 - in-app admin management of operational errors, including resolved vs pending tracking
 - notification delivery logging and push subscription ownership
+- email delivery processor authorization and sent/failed auditability
 - moderation-case authorization, tenant/job side effects, and plan-limit enforcement hooks
 - notification click/read tracking across service worker, client, and database RPC boundaries
 - documentation integrity for security-sensitive changes

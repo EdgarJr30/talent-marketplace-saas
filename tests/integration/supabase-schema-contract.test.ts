@@ -46,6 +46,10 @@ const platformOpsMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315103000_platform_ops_foundations.sql'
 )
+const mvpLaunchReadinessMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315120000_mvp_launch_readiness.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -61,6 +65,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(atsLiteMigrationPath)).toBe(true)
     expect(existsSync(atsLiteFixMigrationPath)).toBe(true)
     expect(existsSync(platformOpsMigrationPath)).toBe(true)
+    expect(existsSync(mvpLaunchReadinessMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -194,5 +199,15 @@ describe('supabase schema contract', () => {
     expect(migration).toContain('create or replace function public.open_moderation_case(')
     expect(migration).toContain('create or replace function public.apply_moderation_action(')
     expect(migration).toContain('create trigger job_postings_assert_publish_limit')
+  })
+
+  it('keeps the launch-readiness migration for invites and email processing helpers in place', () => {
+    const migration = readFileSync(mvpLaunchReadinessMigrationPath, 'utf8')
+
+    expect(migration).toContain('create or replace function public.invite_tenant_member(')
+    expect(migration).toContain('create or replace function public.revoke_membership_invite(')
+    expect(migration).toContain("'member_invited'")
+    expect(migration).toContain("'member_invite_revoked'")
+    expect(migration).toContain("grant execute on function public.invite_tenant_member(uuid, text, uuid) to authenticated;")
   })
 })

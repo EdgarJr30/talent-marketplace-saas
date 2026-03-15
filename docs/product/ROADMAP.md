@@ -86,6 +86,7 @@ Enable company workspace setup.
 - team management views
 - workspace settings
 - membership role reassignment from the app
+- member invitation flow for already-registered platform users
 
 ### Exit criteria
 - tenant can configure company presence
@@ -104,7 +105,7 @@ Ship public vacancy publishing and candidate discovery.
 - public job detail
 - search/filter
 - saved jobs
-- basic alerts groundwork
+- basic alerts UI and CRUD
 - recruiter-facing candidate directory for opt-in profiles
 - recruiter candidate detail view with RBAC-protected full profile access
 
@@ -149,6 +150,7 @@ Let teams manage applicants in structured stages.
 - ratings
 - activity history
 - permission-aware actions
+- simple recruiter filters and CSV export for authorized roles
 - seeded system stages with tenant override capacity
 - candidate-facing public status synced from internal stage decisions
 - auditable pipeline mutations for moves, notes, and ratings
@@ -169,15 +171,18 @@ Operational maturity for launch.
 ### Deliverables
 - in-app notifications
 - email event hooks
+- email delivery processor edge function with durable sent/failed status updates
 - moderation dashboard baseline
 - plan/limits hooks
 - admin dashboards baseline
 - workflow notifications emitted from durable server-side events
 - seeded free/growth plan catalog plus tenant subscription bootstrap
 - platform feature-flag controls for launch operations
+- release checklist and mobile smoke coverage
 
 ### Exit criteria
 - core workflow notifications exist
+- pending email deliveries can be processed into sent/failed states with auditable logs
 - moderation actions work
 - basic plan enforcement hooks exist
 - platform admins can inspect launch-health counters from inside the app

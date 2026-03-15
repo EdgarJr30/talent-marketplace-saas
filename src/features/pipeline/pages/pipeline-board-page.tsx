@@ -7,8 +7,10 @@ import { useAppSession } from '@/app/providers/app-session-provider'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { exportApplicationsCsv } from '@/features/applications/lib/applications-api'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
   addApplicationNote,
@@ -27,6 +29,10 @@ export function PipelineBoardPage() {
   const [stageNote, setStageNote] = useState('')
   const [newNote, setNewNote] = useState('')
   const [score, setScore] = useState('4')
+  const [candidateQuery, setCandidateQuery] = useState('')
+  const [jobFilter, setJobFilter] = useState('')
+  const [stageFilter, setStageFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
 
   const boardQuery = useQuery({
     queryKey: ['pipeline-board', tenantId],
@@ -41,6 +47,7 @@ export function PipelineBoardPage() {
   })
 
   const selectedApplication = boardQuery.data?.applications.find((application) => application.id === selectedApplicationId) ?? null
+  const canExportApplications = session.permissions.includes('application:export')
 
   const moveMutation = useMutation({
     mutationFn: moveApplicationStage,
@@ -164,6 +171,29 @@ export function PipelineBoardPage() {
     )
   }
 
+  const filteredApplications = boardQuery.data.applications.filter((application) => {
+    const normalizedCandidateQuery = candidateQuery.trim().toLowerCase()
+    const candidateMatches =
+      normalizedCandidateQuery.length === 0 ||
+      application.candidate_display_name_snapshot.toLowerCase().includes(normalizedCandidateQuery) ||
+      (application.candidate_email_snapshot ?? '').toLowerCase().includes(normalizedCandidateQuery)
+
+    const jobMatches = jobFilter.length === 0 || application.job_posting?.id === jobFilter
+    const stageMatches = stageFilter.length === 0 || application.current_stage_id === stageFilter
+    const statusMatches = statusFilter.length === 0 || application.status_public === statusFilter
+
+    return candidateMatches && jobMatches && stageMatches && statusMatches
+  })
+
+  const stageNameById = Object.fromEntries(boardQuery.data.stages.map((stage) => [stage.id, stage.name]))
+  const tenantJobs = Array.from(
+    new Map(
+      boardQuery.data.applications
+        .flatMap((application) => (application.job_posting?.id ? [[application.job_posting.id, application.job_posting]] : []))
+    ).values()
+  )
+  const visibleSelectedApplication = filteredApplications.find((application) => application.id === selectedApplicationId) ?? selectedApplication
+
   return (
     <div className="space-y-6">
       <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#fecdd3_0,transparent_30%),linear-gradient(135deg,#fff1f2,white_42%,#eef2ff_82%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(225,29,72,0.18)_0,transparent_28%),linear-gradient(135deg,rgba(36,12,20,0.96),rgba(9,9,11,0.94)_44%,rgba(10,16,36,0.95))]">
@@ -177,9 +207,62 @@ export function PipelineBoardPage() {
       </Card>
 
       <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Filtros del pipeline</CardTitle>
+              <CardDescription>Filtra por candidato, vacante, stage o estado antes de revisar o exportar.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+              <Input
+                placeholder="Buscar candidato o email"
+                value={candidateQuery}
+                onChange={(event) => setCandidateQuery(event.target.value)}
+              />
+              <Select value={jobFilter} onChange={(event) => setJobFilter(event.target.value)}>
+                <option value="">Todas las vacantes</option>
+                {tenantJobs.map((job) => (
+                  <option key={job.id} value={job.id}>
+                    {job.title}
+                  </option>
+                ))}
+              </Select>
+              <Select value={stageFilter} onChange={(event) => setStageFilter(event.target.value)}>
+                <option value="">Todos los stages</option>
+                {boardQuery.data.stages.map((stage) => (
+                  <option key={stage.id} value={stage.id}>
+                    {stage.name}
+                  </option>
+                ))}
+              </Select>
+              <Select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                <option value="">Todos los estados</option>
+                <option value="submitted">submitted</option>
+                <option value="in_review">in_review</option>
+                <option value="interview">interview</option>
+                <option value="offer">offer</option>
+                <option value="hired">hired</option>
+                <option value="rejected">rejected</option>
+              </Select>
+              {canExportApplications ? (
+                <Button
+                  variant="outline"
+                  onClick={() => exportApplicationsCsv(filteredApplications, stageNameById)}
+                  disabled={filteredApplications.length === 0}
+                >
+                  Exportar CSV
+                </Button>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-zinc-300 px-4 py-3 text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                  `application:export` habilita export.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {boardQuery.data.stages.map((stage) => {
-            const stageApplications = boardQuery.data.applications.filter((application) => application.current_stage_id === stage.id)
+            const stageApplications = filteredApplications.filter((application) => application.current_stage_id === stage.id)
 
             return (
               <Card key={stage.id} className="min-h-[240px]">
@@ -230,6 +313,7 @@ export function PipelineBoardPage() {
             )
           })}
         </div>
+        </div>
 
         <Card>
           <CardHeader>
@@ -237,26 +321,28 @@ export function PipelineBoardPage() {
             <CardDescription>Selecciona una application para moverla, anotar contexto o asignar rating.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {!selectedApplication ? (
+            {!visibleSelectedApplication ? (
               <div className="rounded-[24px] border border-dashed border-zinc-300 px-4 py-8 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
                 Elige un applicant del tablero para operar el pipeline.
               </div>
             ) : (
               <>
                 <div className="rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
-                  <p className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">{selectedApplication.candidate_display_name_snapshot}</p>
-                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{selectedApplication.job_posting?.title}</p>
+                  <p className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+                    {visibleSelectedApplication.candidate_display_name_snapshot}
+                  </p>
+                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{visibleSelectedApplication.job_posting?.title}</p>
                 </div>
 
                 <div className="grid gap-3 rounded-[24px] border border-zinc-200 p-4 dark:border-zinc-800">
                   <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Mover stage</p>
                   <Select
-                    value={selectedApplication.current_stage_id ?? ''}
+                    value={visibleSelectedApplication.current_stage_id ?? ''}
                     onChange={(event) => {
                       const nextStageId = event.target.value
                       if (nextStageId) {
                         moveMutation.mutate({
-                          applicationId: selectedApplication.id,
+                          applicationId: visibleSelectedApplication.id,
                           toStageId: nextStageId,
                           note: stageNote
                         })

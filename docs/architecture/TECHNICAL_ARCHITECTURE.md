@@ -127,6 +127,7 @@ The applications migration must establish:
 
 The ATS-lite migration must establish:
 - `pipeline_stages`, `application_stage_history`, `application_notes`, and `application_ratings`
+- client-side recruiter filters and CSV export over tenant-authorized application datasets
 - a server-validated `move_application_stage(...)` RPC for permission-safe stage transitions
 - deterministic synchronization between internal stages and candidate-facing `status_public`
 - auditable collaboration artifacts for notes and ratings
@@ -223,6 +224,7 @@ Add structured logs/events for critical flows where possible.
 - `app_error_logs` stores user-visible client/runtime failures with route, source, severity, user message, and technical metadata for admin review.
 - platform admins review those logs from an in-app error inbox and can mark incidents as corrected or reopen them when follow-up is still needed.
 - Notification persistence is split into `notifications`, `notification_preferences`, `push_subscriptions`, `notification_deliveries`, and `notification_delivery_logs`.
+- `process-email-deliveries` is the operational Edge Function that drains pending email deliveries and records sent/failed outcomes.
 - Browser subscriptions are registered from the client through SQL RPC helpers, not ad hoc table writes.
 - Push dispatch runs through the `send-notification` Edge Function so VAPID secrets stay server-side while delivery status remains in Postgres.
 - The current repository migration extends an already-existing remote identity/RBAC baseline. Backfill missing baseline migrations into `supabase/migrations/` before altering that identity layer again.

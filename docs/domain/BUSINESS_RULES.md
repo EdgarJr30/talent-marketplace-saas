@@ -45,6 +45,7 @@
 4. Branding assets such as logos must follow file and storage rules.
 5. Public company pages expose only intentionally public data.
 6. A tenant may invite multiple internal members.
+7. Employer member invitations are only valid for users who already registered as standard platform users; MVP does not create tenant invites for unknown emails.
 7. Employer-side candidate sourcing is allowed even when the candidate has not applied yet, but only for visible opt-in profiles.
 
 ---
@@ -73,6 +74,8 @@
 3. If duplicate applications are blocked, the user must receive clear feedback.
 4. Application submission must snapshot relevant candidate-submitted data required for historical integrity.
 5. Candidate status visibility must reflect the actual pipeline state or its public mapping.
+6. Candidate job alerts are owned by the candidate profile and must remain private to that profile owner.
+7. Recruiter CSV export must include only fields already authorized by `application:export` and tenant-scoped application visibility.
 6. Only authorized tenant members may view or act on applications for their tenant jobs.
 7. Application review and talent sourcing are related but distinct flows.
 8. Duplicate applications for the same candidate and job must be blocked at the database layer, not only in the UI.

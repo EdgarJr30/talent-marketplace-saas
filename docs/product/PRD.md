@@ -173,6 +173,7 @@ The MVP should **not** initially include:
 ## 8.8 Notifications
 - in-app notifications
 - email notifications
+- auditable email delivery processing for workflow notifications
 - new applicant alerts
 - stage/status updates
 - recruiter-request review updates
@@ -185,6 +186,7 @@ The MVP should **not** initially include:
 - usage counters / plan hooks
 - feature flag toggles for launch operations
 - seeded plan catalog with tenant subscription baseline
+- release checklist plus mobile smoke coverage for launch QA
 
 ## 8.10 PWA foundations
 - installable shell
@@ -206,6 +208,9 @@ A standard user must be able to submit a recruiter request with company data, an
 ### FR-3 RBAC administration
 Tenant owners/admins must be able to manage tenant roles and assign permissions from the app.
 
+### FR-3.2 Employer team invitations
+Authorized tenant users must be able to invite already-registered platform users into the workspace, assign an initial role, and revoke pending invites.
+
 ### FR-3.1 Admin error operations
 Platform admins with the proper permission must be able to review user-facing platform errors from inside the app, inspect their context, and mark whether each issue is already corrected or still pending.
 
@@ -224,6 +229,9 @@ Authorized tenant users must be able to create, publish, edit, close, and archiv
 ### FR-7 Search/discovery
 Candidates must be able to browse/search/filter vacancies.
 
+### FR-7.1 Candidate job alerts
+Candidates must be able to save, pause, reactivate, and delete basic job alerts based on discovery filters.
+
 ### FR-8 Application submission
 Candidates must be able to submit applications using existing profile data.
 
@@ -238,6 +246,9 @@ Authorized tenant users must be able to move applications across stages.
 
 ### FR-10.1 ATS collaboration artifacts
 Authorized tenant users must be able to add internal notes and ratings to applications, and those artifacts must remain attributable and auditable.
+
+### FR-10.2 ATS export
+Authorized tenant users with the export permission must be able to download a CSV of applicants with the minimum launch fields.
 
 ### FR-11 Notifications
 Relevant actors must receive notifications for major workflow events.
@@ -306,13 +317,17 @@ Meaningful user-facing failures must provide actionable feedback in the UI and a
 The MVP can be considered launch-ready when:
 - a company can sign up and configure workspace
 - tenant roles can be managed from the app
+- already-registered users can be invited into a tenant and pending invites can be revoked
 - a job can be published publicly
 - a candidate can create a full profile and upload CV
+- a candidate can save and manage at least one job alert
 - a candidate can apply from mobile without major friction
 - a hiring team can review and move applications through stages
 - a hiring team can leave notes and ratings while preserving auditable activity history
+- an authorized recruiter can filter pipeline applicants and export the filtered set to CSV
 - key flows are permission-safe and tenant-safe
 - the app is installable as a PWA
+- workflow email deliveries can leave `pending` and land in `sent` or `failed` with technical logs
 - loading/error/empty states exist across core screens
 
 ---

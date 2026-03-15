@@ -131,6 +131,12 @@ Do not regress the hiring workflow back to opaque application state toggles. Eve
 ### R-034 — Launch operations must remain server-driven and auditable
 Do not move workflow notifications, moderation side effects, or plan-limit enforcement into client-only logic. Core launch-readiness operations must stay durable in Supabase through audited tables, server-side hooks, or reviewed RPCs so admins can trust them even when a browser session fails.
 
+### R-035 — Employer invitations must stay tied to registered platform users
+Do not reintroduce opaque unknown-email workspace invitations for the MVP. Employer invitations must target users who already registered as standard platform users, preserve the `invited` membership state, and allow revocation from the workspace.
+
+### R-036 — Launch readiness must keep alerts, export, and email delivery processing
+Do not regress job alerts back to schema-only groundwork, applicant export back to a dormant permission, or email hooks back to permanent `pending` deliveries. The MVP must keep candidate-managed job alerts, recruiter CSV export for authorized roles, and an auditable email processor that resolves deliveries to `sent` or `failed`.
+
 ---
 
 ## Maintenance rule

@@ -177,7 +177,7 @@ Technical log line for provider attempts, failures, and retries.
 |---|---|
 | users | id, email, status, avatar_path, created_at |
 | tenants | id, slug, name, status, created_at |
-| memberships | id, tenant_id, user_id, status, joined_at |
+| memberships | id, tenant_id, user_id, status, invited_by_user_id nullable, joined_at |
 | platform_roles | id, code, name, is_system |
 | tenant_roles | id, tenant_id nullable for system templates, code, name, is_system |
 | permissions | id, code, resource, action, scope |
@@ -230,6 +230,11 @@ Technical log line for provider attempts, failures, and retries.
 | notification_delivery_logs | id, delivery_id, log_level, message, metadata |
 | moderation_cases | id, entity_type, entity_id, tenant_id nullable, status, severity, reason, opened_by_user_id, assigned_to_user_id nullable |
 | moderation_actions | id, moderation_case_id, action_type, actor_user_id, note nullable, payload, created_at |
+
+Launch-readiness notes:
+- `memberships.status = invited` is a first-class MVP state used by employer invitations and invite revocation.
+- `job_alerts.criteria_json` stores the current MVP discovery filters: query, workplace type, and country code.
+- Email workflow notifications remain durable in `notification_deliveries` until the processor marks them `sent` or `failed` and writes `notification_delivery_logs`.
 
 ---
 
