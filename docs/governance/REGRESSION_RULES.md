@@ -122,6 +122,9 @@ Under no circumstance may the platform invent, guess, or fabricate the cause of 
 ### R-031 — Talent sourcing is part of the MVP and must remain opt-in
 Do not regress the product back to an applications-only marketplace. The MVP must allow authorized employer users to search candidates directly even if they have not applied, but only when the candidate explicitly opted into recruiter visibility.
 
+### R-032 — Jobs discovery must stay public before applications ship
+Do not hide published jobs behind tenant-only or authenticated-only routing. The MVP must expose public jobs listing and detail views before the application flow is finished, while keeping employer CRUD and saved-jobs ownership under the proper permissions and profile rules.
+
 ---
 
 ## Maintenance rule

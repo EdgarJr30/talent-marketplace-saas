@@ -72,6 +72,7 @@ Manual checks remain required for:
 - candidate profile persistence, completeness updates, and CV storage access
 - candidate visibility opt-in and recruiter talent search permission gates
 - job lifecycle transitions
+- public jobs listing/detail visibility and saved-jobs ownership rules
 - application submission
 - duplicate application policy
 - pipeline stage transitions

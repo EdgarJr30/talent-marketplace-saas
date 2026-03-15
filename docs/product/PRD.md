@@ -150,6 +150,7 @@ The MVP should **not** initially include:
 - screening questions
 - recruiter-side candidate directory for visible opt-in profiles
 - full candidate profile review from employer side without requiring an application first
+- public `/jobs` listing and `/jobs/:slug` detail routes usable before the apply flow ships
 
 ## 8.6 Applications
 - fast apply with stored profile

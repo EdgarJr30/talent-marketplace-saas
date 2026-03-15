@@ -113,6 +113,12 @@ The employer/talent discovery migration must establish:
 - tenant permissions for candidate directory search and full sourced-profile review
 - RPC helpers for recruiter candidate search and full profile detail with audit logging
 
+The jobs/discovery migration must establish:
+- `job_postings`, `job_screening_questions`, `saved_jobs`, and `job_alerts`
+- public read access for published jobs through RLS
+- tenant-authorized CRUD for draft/published jobs
+- candidate-owned saved-job records and screening-question groundwork for the apply flow
+
 ### Security strategy
 - RLS enabled on exposed tables
 - helper functions for permission checks

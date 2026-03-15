@@ -522,6 +522,200 @@ export type Database = {
           }
         ]
       }
+      job_alerts: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          criteria_json: Json
+          frequency: string
+          id: string
+          is_active: boolean
+          label: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          criteria_json?: Json
+          frequency?: string
+          id?: string
+          is_active?: boolean
+          label: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          criteria_json?: Json
+          frequency?: string
+          id?: string
+          is_active?: boolean
+          label?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_alerts_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      job_postings: {
+        Row: {
+          archived_at: string | null
+          city_name: string | null
+          closed_at: string | null
+          company_profile_id: string
+          country_code: string | null
+          created_at: string
+          created_by_user_id: string | null
+          description: string
+          employment_type: Database['public']['Enums']['job_employment_type']
+          experience_level: string | null
+          expires_at: string | null
+          id: string
+          is_featured: boolean
+          published_at: string | null
+          salary_currency: string | null
+          salary_max_amount: number | null
+          salary_min_amount: number | null
+          salary_visible: boolean
+          slug: string
+          status: Database['public']['Enums']['job_posting_status']
+          summary: string
+          tenant_id: string
+          title: string
+          updated_at: string
+          workplace_type: Database['public']['Enums']['job_workplace_type']
+        }
+        Insert: {
+          archived_at?: string | null
+          city_name?: string | null
+          closed_at?: string | null
+          company_profile_id: string
+          country_code?: string | null
+          created_at?: string
+          created_by_user_id?: string | null
+          description: string
+          employment_type?: Database['public']['Enums']['job_employment_type']
+          experience_level?: string | null
+          expires_at?: string | null
+          id?: string
+          is_featured?: boolean
+          published_at?: string | null
+          salary_currency?: string | null
+          salary_max_amount?: number | null
+          salary_min_amount?: number | null
+          salary_visible?: boolean
+          slug: string
+          status?: Database['public']['Enums']['job_posting_status']
+          summary: string
+          tenant_id: string
+          title: string
+          updated_at?: string
+          workplace_type?: Database['public']['Enums']['job_workplace_type']
+        }
+        Update: {
+          archived_at?: string | null
+          city_name?: string | null
+          closed_at?: string | null
+          company_profile_id?: string
+          country_code?: string | null
+          created_at?: string
+          created_by_user_id?: string | null
+          description?: string
+          employment_type?: Database['public']['Enums']['job_employment_type']
+          experience_level?: string | null
+          expires_at?: string | null
+          id?: string
+          is_featured?: boolean
+          published_at?: string | null
+          salary_currency?: string | null
+          salary_max_amount?: number | null
+          salary_min_amount?: number | null
+          salary_visible?: boolean
+          slug?: string
+          status?: Database['public']['Enums']['job_posting_status']
+          summary?: string
+          tenant_id?: string
+          title?: string
+          updated_at?: string
+          workplace_type?: Database['public']['Enums']['job_workplace_type']
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_postings_company_profile_id_fkey'
+            columns: ['company_profile_id']
+            isOneToOne: false
+            referencedRelation: 'company_profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'job_postings_created_by_user_id_fkey'
+            columns: ['created_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'job_postings_tenant_id_fkey'
+            columns: ['tenant_id']
+            isOneToOne: false
+            referencedRelation: 'tenants'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      job_screening_questions: {
+        Row: {
+          answer_type: Database['public']['Enums']['job_screening_answer_type']
+          created_at: string
+          helper_text: string | null
+          id: string
+          is_required: boolean
+          job_posting_id: string
+          options_json: Json
+          question_text: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          answer_type?: Database['public']['Enums']['job_screening_answer_type']
+          created_at?: string
+          helper_text?: string | null
+          id?: string
+          is_required?: boolean
+          job_posting_id: string
+          options_json?: Json
+          question_text: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          answer_type?: Database['public']['Enums']['job_screening_answer_type']
+          created_at?: string
+          helper_text?: string | null
+          id?: string
+          is_required?: boolean
+          job_posting_id?: string
+          options_json?: Json
+          question_text?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'job_screening_questions_job_posting_id_fkey'
+            columns: ['job_posting_id']
+            isOneToOne: false
+            referencedRelation: 'job_postings'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       membership_roles: {
         Row: {
           assigned_at: string
@@ -819,6 +1013,42 @@ export type Database = {
             columns: ['reviewed_by_user_id']
             isOneToOne: false
             referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      saved_jobs: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          id: string
+          job_posting_id: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          id?: string
+          job_posting_id: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          id?: string
+          job_posting_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'saved_jobs_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'saved_jobs_job_posting_id_fkey'
+            columns: ['job_posting_id']
+            isOneToOne: false
+            referencedRelation: 'job_postings'
             referencedColumns: ['id']
           }
         ]
@@ -1123,6 +1353,10 @@ export type Database = {
     }
     Enums: {
       app_error_severity: 'info' | 'warning' | 'error' | 'fatal'
+      job_employment_type: 'full_time' | 'part_time' | 'contract' | 'temporary' | 'internship'
+      job_posting_status: 'draft' | 'published' | 'closed' | 'archived'
+      job_screening_answer_type: 'short_text' | 'long_text' | 'yes_no' | 'single_select'
+      job_workplace_type: 'on_site' | 'hybrid' | 'remote'
       membership_status: 'active' | 'invited' | 'suspended' | 'revoked'
       permission_scope: 'platform' | 'tenant' | 'self'
       recruiter_request_status:
@@ -1247,6 +1481,10 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      job_employment_type: ['full_time', 'part_time', 'contract', 'temporary', 'internship'],
+      job_posting_status: ['draft', 'published', 'closed', 'archived'],
+      job_screening_answer_type: ['short_text', 'long_text', 'yes_no', 'single_select'],
+      job_workplace_type: ['on_site', 'hybrid', 'remote'],
       membership_status: ['active', 'invited', 'suspended', 'revoked'],
       permission_scope: ['platform', 'tenant', 'self'],
       recruiter_request_status: ['submitted', 'under_review', 'approved', 'rejected', 'cancelled'],

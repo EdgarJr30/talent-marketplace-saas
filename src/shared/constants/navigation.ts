@@ -44,9 +44,7 @@ export const navigationItems: NavigationItem[] = [
     titleKey: 'navigation.jobs.title',
     href: '/jobs',
     description: 'Vacantes y discovery',
-    descriptionKey: 'navigation.jobs.description',
-    requiresAuth: true,
-    requiredPermission: 'job:read'
+    descriptionKey: 'navigation.jobs.description'
   },
   {
     title: 'Talento',

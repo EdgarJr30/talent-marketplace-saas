@@ -6,6 +6,7 @@ import { AuthPage } from '@/features/auth/pages/auth-page'
 import { OnboardingPage } from '@/features/auth/pages/onboarding-page'
 import { CandidateProfilePage } from '@/features/candidate-profile/pages/candidate-profile-page'
 import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-review-page'
+import { JobDetailPage } from '@/features/jobs/pages/job-detail-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
 import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-overview-page'
 import { RbacOverviewPage } from '@/features/rbac/pages/rbac-overview-page'
@@ -60,11 +61,11 @@ export const appRoutes: RouteObject[] = [
       },
       {
         path: 'jobs',
-        element: (
-          <RequirePermission permission="job:read">
-            <JobsOverviewPage />
-          </RequirePermission>
-        )
+        element: <JobsOverviewPage />
+      },
+      {
+        path: 'jobs/:jobSlug',
+        element: <JobDetailPage />
       },
       {
         path: 'talent',

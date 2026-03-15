@@ -62,6 +62,8 @@
 6. Jobs may have screening questions.
 7. Salary visibility may be optional based on tenant preference and plan.
 8. Expiration behavior must be consistent and documented.
+9. Published jobs must remain publicly discoverable even for guest users.
+10. Candidates may save published jobs without immediately entering the application flow.
 
 ---
 

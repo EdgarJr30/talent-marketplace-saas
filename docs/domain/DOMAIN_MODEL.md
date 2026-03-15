@@ -208,6 +208,8 @@ Technical log line for provider attempts, failures, and retries.
 | talent_directory_search | tenant permission-gated search surface over visible `candidate_profiles` plus skills, languages, and work history |
 | job_postings | id, tenant_id, title, slug, status, workplace_type, employment_type, location, salary_visible, expires_at |
 | job_screening_questions | id, job_posting_id, question_text, answer_type, is_required |
+| saved_jobs | id, candidate_profile_id, job_posting_id |
+| job_alerts | id, candidate_profile_id, criteria_json, frequency, is_active |
 | applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, status_public, current_stage_id, submitted_at |
 | application_answers | id, application_id, screening_question_id, answer_text/json |
 | pipeline_stages | id, tenant_id nullable, code, name, position, is_system |

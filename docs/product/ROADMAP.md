@@ -113,6 +113,7 @@ Ship public vacancy publishing and candidate discovery.
 - candidate can browse jobs on mobile
 - public listing/detail works cleanly
 - authorized recruiters can search visible candidates without waiting for an application
+- candidates can save published jobs before the application phase is enabled
 
 ---
 

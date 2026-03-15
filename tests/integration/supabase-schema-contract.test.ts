@@ -26,6 +26,10 @@ const employerTalentMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315043000_employer_workspace_and_talent_search.sql'
 )
+const jobsDiscoveryMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315054500_jobs_and_public_discovery.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -36,6 +40,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(storageAlignmentMigrationPath)).toBe(true)
     expect(existsSync(candidateFoundationsMigrationPath)).toBe(true)
     expect(existsSync(employerTalentMigrationPath)).toBe(true)
+    expect(existsSync(jobsDiscoveryMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -110,5 +115,17 @@ describe('supabase schema contract', () => {
     expect(migration).toContain("create or replace function public.search_candidate_profiles(")
     expect(migration).toContain("create or replace function public.get_candidate_profile_for_tenant(")
     expect(migration).toContain("'candidate_profile_viewed'")
+  })
+
+  it('keeps jobs and public discovery foundations aligned with the schema contract', () => {
+    const migration = readFileSync(jobsDiscoveryMigrationPath, 'utf8')
+
+    expect(migration).toContain('create type public.job_posting_status as enum')
+    expect(migration).toContain('create table if not exists public.job_postings')
+    expect(migration).toContain('create table if not exists public.job_screening_questions')
+    expect(migration).toContain('create table if not exists public.saved_jobs')
+    expect(migration).toContain('create table if not exists public.job_alerts')
+    expect(migration).toContain('create policy "job_postings_public_or_tenant_read"')
+    expect(migration).toContain("select private.attach_audit_trigger('public', 'job_postings')")
   })
 })
