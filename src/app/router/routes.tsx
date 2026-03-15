@@ -1,5 +1,7 @@
 import type { RouteObject } from 'react-router-dom'
 
+import { ApplicationsOverviewPage } from '@/features/applications/pages/applications-overview-page'
+import { JobApplicationPage } from '@/features/applications/pages/job-application-page'
 import { AppShell } from '@/app/layouts/app-shell'
 import { AuthConfirmPage } from '@/features/auth/pages/auth-confirm-page'
 import { AuthPage } from '@/features/auth/pages/auth-page'
@@ -66,6 +68,22 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'jobs/:jobSlug',
         element: <JobDetailPage />
+      },
+      {
+        path: 'jobs/:jobSlug/apply',
+        element: (
+          <RequireAuth>
+            <JobApplicationPage />
+          </RequireAuth>
+        )
+      },
+      {
+        path: 'applications',
+        element: (
+          <RequireAuth>
+            <ApplicationsOverviewPage />
+          </RequireAuth>
+        )
       },
       {
         path: 'talent',

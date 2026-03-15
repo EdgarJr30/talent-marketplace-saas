@@ -159,6 +159,8 @@ The MVP should **not** initially include:
 - application confirmation
 - candidate application history
 - employer applicant list
+- duplicate application prevention with clear feedback
+- application snapshots that preserve the candidate-facing submission context
 
 ## 8.7 ATS-lite
 - default stages

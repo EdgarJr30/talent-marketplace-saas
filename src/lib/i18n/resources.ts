@@ -33,6 +33,10 @@ export const resources = {
           title: 'Talento',
           description: 'Directorio candidato'
         },
+        applications: {
+          title: 'Applications',
+          description: 'Historial y applicants'
+        },
         workspace: {
           title: 'Workspace',
           description: 'Tenant y company'
@@ -274,6 +278,10 @@ export const resources = {
         talent: {
           title: 'Talent',
           description: 'Candidate directory'
+        },
+        applications: {
+          title: 'Applications',
+          description: 'History and applicants'
         },
         workspace: {
           title: 'Workspace',

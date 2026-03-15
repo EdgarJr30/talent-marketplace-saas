@@ -119,6 +119,12 @@ The jobs/discovery migration must establish:
 - tenant-authorized CRUD for draft/published jobs
 - candidate-owned saved-job records and screening-question groundwork for the apply flow
 
+The applications migration must establish:
+- `applications` and `application_answers`
+- a server-validated `submit_application(...)` RPC for duplicate prevention and screening validation
+- candidate-owned application history plus tenant-authorized applicant review
+- submission snapshots that preserve key candidate data at apply time
+
 ### Security strategy
 - RLS enabled on exposed tables
 - helper functions for permission checks

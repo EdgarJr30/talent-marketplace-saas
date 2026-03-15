@@ -75,6 +75,7 @@ Manual checks remain required for:
 - public jobs listing/detail visibility and saved-jobs ownership rules
 - application submission
 - duplicate application policy
+- candidate application history and employer applicant visibility
 - pipeline stage transitions
 - audit-sensitive actions
 - operational error logging into Supabase for meaningful client failures

@@ -23,6 +23,7 @@ describe('permission guards', () => {
       'Recruiter',
       'Jobs',
       'Talento',
+      'Applications',
       'Workspace',
       'RBAC',
       'Errores'

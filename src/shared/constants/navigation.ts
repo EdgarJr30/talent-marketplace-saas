@@ -56,6 +56,14 @@ export const navigationItems: NavigationItem[] = [
     requiredPermission: 'candidate_directory:read'
   },
   {
+    title: 'Applications',
+    titleKey: 'navigation.applications.title',
+    href: '/applications',
+    description: 'Historial y applicants',
+    descriptionKey: 'navigation.applications.description',
+    requiresAuth: true
+  },
+  {
     title: 'Workspace',
     titleKey: 'navigation.workspace.title',
     href: '/workspace',

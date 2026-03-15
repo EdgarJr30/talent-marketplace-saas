@@ -127,11 +127,14 @@ Enable end-to-end application submission.
 - confirmation states
 - candidate application history
 - employer applicant list
+- duplicate prevention at database level
+- application snapshots for candidate-facing historical integrity
 
 ### Exit criteria
 - candidate can apply from mobile
 - employer sees submitted applications
 - duplicate policy is enforced correctly
+- screening answers persist together with the application
 
 ---
 

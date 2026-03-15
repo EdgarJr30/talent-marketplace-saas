@@ -80,6 +80,124 @@ export type Database = {
           }
         ]
       }
+      application_answers: {
+        Row: {
+          answer_json: Json | null
+          answer_text: string | null
+          application_id: string
+          created_at: string
+          id: string
+          screening_question_id: string
+          updated_at: string
+        }
+        Insert: {
+          answer_json?: Json | null
+          answer_text?: string | null
+          application_id: string
+          created_at?: string
+          id?: string
+          screening_question_id: string
+          updated_at?: string
+        }
+        Update: {
+          answer_json?: Json | null
+          answer_text?: string | null
+          application_id?: string
+          created_at?: string
+          id?: string
+          screening_question_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_answers_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_answers_screening_question_id_fkey'
+            columns: ['screening_question_id']
+            isOneToOne: false
+            referencedRelation: 'job_screening_questions'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      applications: {
+        Row: {
+          candidate_display_name_snapshot: string
+          candidate_email_snapshot: string | null
+          candidate_headline_snapshot: string | null
+          candidate_profile_id: string
+          candidate_summary_snapshot: string | null
+          cover_letter: string | null
+          created_at: string
+          id: string
+          job_posting_id: string
+          status_public: Database['public']['Enums']['application_public_status']
+          submitted_at: string
+          submitted_resume_filename: string | null
+          submitted_resume_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          candidate_display_name_snapshot: string
+          candidate_email_snapshot?: string | null
+          candidate_headline_snapshot?: string | null
+          candidate_profile_id: string
+          candidate_summary_snapshot?: string | null
+          cover_letter?: string | null
+          created_at?: string
+          id?: string
+          job_posting_id: string
+          status_public?: Database['public']['Enums']['application_public_status']
+          submitted_at?: string
+          submitted_resume_filename?: string | null
+          submitted_resume_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          candidate_display_name_snapshot?: string
+          candidate_email_snapshot?: string | null
+          candidate_headline_snapshot?: string | null
+          candidate_profile_id?: string
+          candidate_summary_snapshot?: string | null
+          cover_letter?: string | null
+          created_at?: string
+          id?: string
+          job_posting_id?: string
+          status_public?: Database['public']['Enums']['application_public_status']
+          submitted_at?: string
+          submitted_resume_filename?: string | null
+          submitted_resume_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'applications_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'applications_job_posting_id_fkey'
+            columns: ['job_posting_id']
+            isOneToOne: false
+            referencedRelation: 'job_postings'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'applications_submitted_resume_id_fkey'
+            columns: ['submitted_resume_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_resumes'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       audit_logs: {
         Row: {
           actor_user_id: string | null
@@ -1352,6 +1470,7 @@ export type Database = {
       }
     }
     Enums: {
+      application_public_status: 'submitted' | 'in_review' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'hired'
       app_error_severity: 'info' | 'warning' | 'error' | 'fatal'
       job_employment_type: 'full_time' | 'part_time' | 'contract' | 'temporary' | 'internship'
       job_posting_status: 'draft' | 'published' | 'closed' | 'archived'
@@ -1481,6 +1600,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      application_public_status: ['submitted', 'in_review', 'interviewing', 'offer', 'rejected', 'withdrawn', 'hired'],
       job_employment_type: ['full_time', 'part_time', 'contract', 'temporary', 'internship'],
       job_posting_status: ['draft', 'published', 'closed', 'archived'],
       job_screening_answer_type: ['short_text', 'long_text', 'yes_no', 'single_select'],

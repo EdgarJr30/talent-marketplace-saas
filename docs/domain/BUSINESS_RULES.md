@@ -75,6 +75,7 @@
 5. Candidate status visibility must reflect the actual pipeline state or its public mapping.
 6. Only authorized tenant members may view or act on applications for their tenant jobs.
 7. Application review and talent sourcing are related but distinct flows.
+8. Duplicate applications for the same candidate and job must be blocked at the database layer, not only in the UI.
 
 ---
 

@@ -111,6 +111,11 @@ export function JobDetailPage() {
             <div className="mt-4 flex flex-col gap-3">
               <Button disabled>Apply llega en la siguiente fase</Button>
               {session.isAuthenticated ? (
+                <Link className={cn(linkButtonClassName, 'bg-primary-500 text-white hover:bg-primary-400 hover:text-white border-transparent')} to={`/jobs/${jobSlug}/apply`}>
+                  Apply now
+                </Link>
+              ) : null}
+              {session.isAuthenticated ? (
                 <Button
                   variant="outline"
                   onClick={() => saveMutation.mutate(!job.isSaved)}
