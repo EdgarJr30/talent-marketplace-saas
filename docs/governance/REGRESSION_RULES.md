@@ -125,6 +125,9 @@ Do not regress the product back to an applications-only marketplace. The MVP mus
 ### R-032 — Jobs discovery must stay public before applications ship
 Do not hide published jobs behind tenant-only or authenticated-only routing. The MVP must expose public jobs listing and detail views before the application flow is finished, while keeping employer CRUD and saved-jobs ownership under the proper permissions and profile rules.
 
+### R-033 — ATS movement must stay auditable and status-driven
+Do not regress the hiring workflow back to opaque application state toggles. Every application must keep an explicit current pipeline stage, stage changes must write auditable history, and candidate-facing public status must stay synchronized from the verified stage mapping instead of ad hoc UI-only updates.
+
 ---
 
 ## Maintenance rule

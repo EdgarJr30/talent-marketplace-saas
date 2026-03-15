@@ -149,11 +149,16 @@ Let teams manage applicants in structured stages.
 - ratings
 - activity history
 - permission-aware actions
+- seeded system stages with tenant override capacity
+- candidate-facing public status synced from internal stage decisions
+- auditable pipeline mutations for moves, notes, and ratings
 
 ### Exit criteria
 - hiring team can operate a simple pipeline
 - candidate status can be surfaced appropriately
 - stage history is auditable
+- notes and ratings remain attributable to the author
+- pipeline actions stay gated by tenant permissions in UI and Postgres
 
 ---
 

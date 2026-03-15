@@ -210,10 +210,10 @@ Technical log line for provider attempts, failures, and retries.
 | job_screening_questions | id, job_posting_id, question_text, answer_type, is_required |
 | saved_jobs | id, candidate_profile_id, job_posting_id |
 | job_alerts | id, candidate_profile_id, criteria_json, frequency, is_active |
-| applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, status_public, cover_letter, candidate snapshots, submitted_at |
+| applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, current_stage_id nullable, status_public, cover_letter, candidate snapshots, submitted_at |
 | application_answers | id, application_id, screening_question_id, answer_text/json |
-| pipeline_stages | id, tenant_id nullable, code, name, position, is_system |
-| application_stage_history | id, application_id, from_stage_id nullable, to_stage_id, changed_by_user_id, changed_at |
+| pipeline_stages | id, tenant_id nullable, code, name, position, color_token, is_system |
+| application_stage_history | id, application_id, from_stage_id nullable, to_stage_id, changed_by_user_id, note nullable, changed_at |
 | application_notes | id, application_id, author_user_id, body, visibility |
 | application_ratings | id, application_id, author_user_id, score, rubric_json nullable |
 

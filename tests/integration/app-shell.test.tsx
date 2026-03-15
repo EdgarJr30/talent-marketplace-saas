@@ -22,6 +22,7 @@ describe('app shell', () => {
     expect(screen.getAllByRole('link', { name: /Acceso|Access/i }).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('link', { name: /Jobs/i }).length).toBeGreaterThan(0)
     expect(screen.queryAllByRole('link', { name: /Applications/i })).toHaveLength(0)
+    expect(screen.queryAllByRole('link', { name: /Pipeline/i })).toHaveLength(0)
     expect(screen.queryAllByRole('link', { name: /Approvals/i })).toHaveLength(0)
     expect(screen.queryAllByRole('link', { name: /Moderation|Moderacion/i })).toHaveLength(0)
     expect(screen.queryAllByRole('link', { name: /Talento|Talent/i })).toHaveLength(0)

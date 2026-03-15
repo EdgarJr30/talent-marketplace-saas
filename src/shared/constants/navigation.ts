@@ -64,6 +64,15 @@ export const navigationItems: NavigationItem[] = [
     requiresAuth: true
   },
   {
+    title: 'Pipeline',
+    titleKey: 'navigation.pipeline.title',
+    href: '/pipeline',
+    description: 'ATS-lite',
+    descriptionKey: 'navigation.pipeline.description',
+    requiresAuth: true,
+    requiredPermission: 'application:read'
+  },
+  {
     title: 'Workspace',
     titleKey: 'navigation.workspace.title',
     href: '/workspace',

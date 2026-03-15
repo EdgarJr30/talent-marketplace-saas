@@ -11,6 +11,7 @@ import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-
 import { JobDetailPage } from '@/features/jobs/pages/job-detail-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
 import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-overview-page'
+import { PipelineBoardPage } from '@/features/pipeline/pages/pipeline-board-page'
 import { RbacOverviewPage } from '@/features/rbac/pages/rbac-overview-page'
 import { RecruiterRequestPage } from '@/features/recruiter-requests/pages/recruiter-request-page'
 import { RecruiterReviewPage } from '@/features/recruiter-requests/pages/recruiter-review-page'
@@ -83,6 +84,14 @@ export const appRoutes: RouteObject[] = [
           <RequireAuth>
             <ApplicationsOverviewPage />
           </RequireAuth>
+        )
+      },
+      {
+        path: 'pipeline',
+        element: (
+          <RequirePermission permission="application:read">
+            <PipelineBoardPage />
+          </RequirePermission>
         )
       },
       {

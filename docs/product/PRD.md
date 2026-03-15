@@ -232,6 +232,9 @@ Authorized tenant users must be able to search visible candidate profiles and op
 ### FR-10 Pipeline movement
 Authorized tenant users must be able to move applications across stages.
 
+### FR-10.1 ATS collaboration artifacts
+Authorized tenant users must be able to add internal notes and ratings to applications, and those artifacts must remain attributable and auditable.
+
 ### FR-11 Notifications
 Relevant actors must receive notifications for major workflow events.
 
@@ -300,6 +303,7 @@ The MVP can be considered launch-ready when:
 - a candidate can create a full profile and upload CV
 - a candidate can apply from mobile without major friction
 - a hiring team can review and move applications through stages
+- a hiring team can leave notes and ratings while preserving auditable activity history
 - key flows are permission-safe and tenant-safe
 - the app is installable as a PWA
 - loading/error/empty states exist across core screens

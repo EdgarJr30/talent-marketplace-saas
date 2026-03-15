@@ -87,6 +87,8 @@
 5. Rejection/hiring actions may require explicit confirmation depending on UX.
 6. Important status changes should notify candidates when policy allows.
 7. The system should preserve auditability of who moved which candidate and when.
+8. Internal ATS notes and ratings are tenant-collaboration artifacts and are never public candidate content.
+9. Candidate-facing application status may be derived from the internal stage mapping, but the mapping must stay explicit and deterministic.
 
 ---
 

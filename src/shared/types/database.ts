@@ -134,6 +134,7 @@ export type Database = {
           candidate_summary_snapshot: string | null
           cover_letter: string | null
           created_at: string
+          current_stage_id: string | null
           id: string
           job_posting_id: string
           status_public: Database['public']['Enums']['application_public_status']
@@ -150,6 +151,7 @@ export type Database = {
           candidate_summary_snapshot?: string | null
           cover_letter?: string | null
           created_at?: string
+          current_stage_id?: string | null
           id?: string
           job_posting_id: string
           status_public?: Database['public']['Enums']['application_public_status']
@@ -166,6 +168,7 @@ export type Database = {
           candidate_summary_snapshot?: string | null
           cover_letter?: string | null
           created_at?: string
+          current_stage_id?: string | null
           id?: string
           job_posting_id?: string
           status_public?: Database['public']['Enums']['application_public_status']
@@ -183,6 +186,13 @@ export type Database = {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'applications_current_stage_id_fkey'
+            columns: ['current_stage_id']
+            isOneToOne: false
+            referencedRelation: 'pipeline_stages'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'applications_job_posting_id_fkey'
             columns: ['job_posting_id']
             isOneToOne: false
@@ -194,6 +204,155 @@ export type Database = {
             columns: ['submitted_resume_id']
             isOneToOne: false
             referencedRelation: 'candidate_resumes'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      application_notes: {
+        Row: {
+          application_id: string
+          author_user_id: string
+          body: string
+          created_at: string
+          id: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          application_id: string
+          author_user_id: string
+          body: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          application_id?: string
+          author_user_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_notes_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_notes_author_user_id_fkey'
+            columns: ['author_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      application_ratings: {
+        Row: {
+          application_id: string
+          author_user_id: string
+          created_at: string
+          id: string
+          rubric_json: Json | null
+          score: number
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          author_user_id: string
+          created_at?: string
+          id?: string
+          rubric_json?: Json | null
+          score: number
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          author_user_id?: string
+          created_at?: string
+          id?: string
+          rubric_json?: Json | null
+          score?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_ratings_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_ratings_author_user_id_fkey'
+            columns: ['author_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      application_stage_history: {
+        Row: {
+          application_id: string
+          changed_at: string
+          changed_by_user_id: string
+          from_stage_id: string | null
+          id: string
+          note: string | null
+          to_stage_id: string
+        }
+        Insert: {
+          application_id: string
+          changed_at?: string
+          changed_by_user_id: string
+          from_stage_id?: string | null
+          id?: string
+          note?: string | null
+          to_stage_id: string
+        }
+        Update: {
+          application_id?: string
+          changed_at?: string
+          changed_by_user_id?: string
+          from_stage_id?: string | null
+          id?: string
+          note?: string | null
+          to_stage_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'application_stage_history_application_id_fkey'
+            columns: ['application_id']
+            isOneToOne: false
+            referencedRelation: 'applications'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_stage_history_changed_by_user_id_fkey'
+            columns: ['changed_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_stage_history_from_stage_id_fkey'
+            columns: ['from_stage_id']
+            isOneToOne: false
+            referencedRelation: 'pipeline_stages'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'application_stage_history_to_stage_id_fkey'
+            columns: ['to_stage_id']
+            isOneToOne: false
+            referencedRelation: 'pipeline_stages'
             referencedColumns: ['id']
           }
         ]
@@ -978,6 +1137,50 @@ export type Database = {
         }
         Relationships: []
       }
+      pipeline_stages: {
+        Row: {
+          code: string
+          color_token: string
+          created_at: string
+          id: string
+          is_system: boolean
+          name: string
+          position: number
+          tenant_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          color_token?: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          name: string
+          position: number
+          tenant_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          color_token?: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          name?: string
+          position?: number
+          tenant_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'pipeline_stages_tenant_id_fkey'
+            columns: ['tenant_id']
+            isOneToOne: false
+            referencedRelation: 'tenants'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       platform_role_permissions: {
         Row: {
           created_at: string
@@ -1464,6 +1667,36 @@ export type Database = {
         SetofOptions: {
           from: '*'
           to: 'recruiter_requests'
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      move_application_stage: {
+        Args: {
+          p_application_id: string
+          p_note?: string
+          p_to_stage_id: string
+        }
+        Returns: {
+          candidate_display_name_snapshot: string
+          candidate_email_snapshot: string | null
+          candidate_headline_snapshot: string | null
+          candidate_profile_id: string
+          candidate_summary_snapshot: string | null
+          cover_letter: string | null
+          created_at: string
+          current_stage_id: string | null
+          id: string
+          job_posting_id: string
+          status_public: Database['public']['Enums']['application_public_status']
+          submitted_at: string
+          submitted_resume_filename: string | null
+          submitted_resume_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: '*'
+          to: 'applications'
           isOneToOne: true
           isSetofReturn: false
         }

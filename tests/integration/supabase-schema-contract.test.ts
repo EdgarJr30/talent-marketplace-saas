@@ -34,6 +34,14 @@ const applicationsMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315070000_applications_foundations.sql'
 )
+const atsLiteMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315083000_ats_lite_pipeline.sql'
+)
+const atsLiteFixMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315090000_ats_lite_stage_history_fix.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -46,6 +54,8 @@ describe('supabase schema contract', () => {
     expect(existsSync(employerTalentMigrationPath)).toBe(true)
     expect(existsSync(jobsDiscoveryMigrationPath)).toBe(true)
     expect(existsSync(applicationsMigrationPath)).toBe(true)
+    expect(existsSync(atsLiteMigrationPath)).toBe(true)
+    expect(existsSync(atsLiteFixMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -143,5 +153,26 @@ describe('supabase schema contract', () => {
     expect(migration).toContain("create or replace function public.submit_application(")
     expect(migration).toContain('unique (job_posting_id, candidate_profile_id)')
     expect(migration).toContain("select private.attach_audit_trigger('public', 'applications')")
+  })
+
+  it('keeps ats-lite pipeline foundations aligned with the schema contract', () => {
+    const migration = readFileSync(atsLiteMigrationPath, 'utf8')
+
+    expect(migration).toContain('create table if not exists public.pipeline_stages')
+    expect(migration).toContain('create table if not exists public.application_stage_history')
+    expect(migration).toContain('create table if not exists public.application_notes')
+    expect(migration).toContain('create table if not exists public.application_ratings')
+    expect(migration).toContain('add column if not exists current_stage_id uuid')
+    expect(migration).toContain("create or replace function public.move_application_stage(")
+    expect(migration).toContain("select private.attach_audit_trigger('public', 'application_stage_history')")
+  })
+
+  it('keeps the ats stage-history fix in place so transitions preserve the prior stage', () => {
+    const migration = readFileSync(atsLiteFixMigrationPath, 'utf8')
+
+    expect(migration).toContain('v_previous_stage_id uuid;')
+    expect(migration).toContain('v_previous_stage_id := v_application.current_stage_id;')
+    expect(migration).toContain('from_stage_id,')
+    expect(migration).toContain('v_previous_stage_id,')
   })
 })

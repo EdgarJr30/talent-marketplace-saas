@@ -77,6 +77,7 @@ Manual checks remain required for:
 - duplicate application policy
 - candidate application history and employer applicant visibility
 - pipeline stage transitions
+- ATS notes, ratings, and stage-history attribution
 - audit-sensitive actions
 - operational error logging into Supabase for meaningful client failures
 - user-facing error explanation quality for known platform failures, explicit uncertainty when the cause is not yet known, and admin error-state management

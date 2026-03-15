@@ -125,6 +125,12 @@ The applications migration must establish:
 - candidate-owned application history plus tenant-authorized applicant review
 - submission snapshots that preserve key candidate data at apply time
 
+The ATS-lite migration must establish:
+- `pipeline_stages`, `application_stage_history`, `application_notes`, and `application_ratings`
+- a server-validated `move_application_stage(...)` RPC for permission-safe stage transitions
+- deterministic synchronization between internal stages and candidate-facing `status_public`
+- auditable collaboration artifacts for notes and ratings
+
 ### Security strategy
 - RLS enabled on exposed tables
 - helper functions for permission checks

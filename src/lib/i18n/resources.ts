@@ -37,6 +37,10 @@ export const resources = {
           title: 'Applications',
           description: 'Historial y applicants'
         },
+        pipeline: {
+          title: 'Pipeline',
+          description: 'ATS-lite'
+        },
         workspace: {
           title: 'Workspace',
           description: 'Tenant y company'
@@ -57,9 +61,9 @@ export const resources = {
       shell: {
         offlineBanner:
           'Modo offline activo. La shell sigue disponible y las mutaciones deben reintentarse cuando vuelva la red.',
-        phaseBadge: 'Fase 4',
+        phaseBadge: 'Fase 6',
         description:
-          'Base mobile-first, PWA-first, RBAC-first y Supabase-first con employer foundations, candidate identity y discovery de talento.',
+          'Base mobile-first, PWA-first, RBAC-first y Supabase-first con employer workspace, jobs, applications y ATS-lite auditable.',
         liveSession: 'Sesion activa',
         guestSession: 'Sesion invitada',
         authenticatedBadge: 'Autenticado',
@@ -68,7 +72,7 @@ export const resources = {
         adminBadge: 'Admin reviewer',
         navNote: 'Las rutas y la navegacion ya respetan auth, permisos y estados visibles del MVP.',
         eyebrow: 'Recruiting SaaS Platform',
-        title: 'Employer y talent discovery del MVP',
+        title: 'ATS-lite y hiring workflow del MVP',
         profileAction: 'Perfil',
         candidateAction: 'Perfil candidato',
         recruiterAction: 'Solicitud recruiter',
@@ -283,6 +287,10 @@ export const resources = {
           title: 'Applications',
           description: 'History and applicants'
         },
+        pipeline: {
+          title: 'Pipeline',
+          description: 'ATS-lite'
+        },
         workspace: {
           title: 'Workspace',
           description: 'Tenant and company'
@@ -303,7 +311,7 @@ export const resources = {
       shell: {
         offlineBanner:
           'Offline mode is active. The shell remains available and mutations should retry when the network returns.',
-        phaseBadge: 'Phase 4',
+        phaseBadge: 'Phase 6',
         description:
           'Mobile-first, PWA-first, RBAC-first, and Supabase-first baseline with employer foundations, candidate identity, and talent discovery.',
         liveSession: 'Live session',
