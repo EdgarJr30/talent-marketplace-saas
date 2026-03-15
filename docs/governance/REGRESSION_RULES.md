@@ -110,6 +110,9 @@ Keep root-level operating instructions concise so routine Codex tasks consume le
 ### R-027 — Platform errors need real explanations and mandatory logging
 Do not leave platform failures with generic copy when the underlying business or operational reason is known. User-facing errors must explain the actual cause whenever possible, every meaningful visible error must be persisted into `app_error_logs`, and platform admins must be able to manage those errors from an in-app panel by marking them corrected or not corrected.
 
+### R-028 — Admin error review must identify the affected user
+When an authenticated user triggers a logged app error, the admin error panel must expose a legible user reference from the existing `user_id` relation so support knows who needs follow-up. Do not leave support with only raw technical metadata when the database already knows the affected user.
+
 ---
 
 ## Maintenance rule

@@ -7,8 +7,8 @@ import { useAppSession } from '@/app/providers/app-session-provider'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { listAppErrorLogs, updateAppErrorResolution, type AppErrorLogRecord } from '@/lib/errors/api'
 import { reportErrorWithToast } from '@/lib/errors/error-reporting'
-import { listAppErrorLogs, updateAppErrorResolution } from '@/lib/errors/api'
 import type { Tables } from '@/shared/types/database'
 
 const APP_ERROR_LOGS_QUERY_KEY = ['admin', 'app-error-logs'] as const
@@ -21,6 +21,22 @@ function formatValue(value: string | null) {
   }
 
   return value
+}
+
+function formatUserLabel(user: AppErrorLogRecord['affected_user']) {
+  if (!user) {
+    return 'No identificado'
+  }
+
+  return user.display_name || user.full_name || user.email || user.id
+}
+
+function formatUserDetail(user: AppErrorLogRecord['affected_user']) {
+  if (!user) {
+    return 'El error ocurrio sin una referencia legible del usuario.'
+  }
+
+  return user.email || user.full_name || user.id
 }
 
 function ErrorSeverityBadge({ severity }: { severity: Tables<'app_error_logs'>['severity'] }) {
@@ -108,7 +124,7 @@ export function ErrorLogReviewPage() {
             <p className="mt-2 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{resolvedCount}</p>
           </div>
           <div className="rounded-3xl border border-zinc-200 bg-white/85 px-4 py-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400">
-            La ruta, el origen tecnico y el mensaje visible quedan juntos para facilitar soporte y priorizacion.
+            La bandeja muestra tambien el usuario afectado para que soporte sepa a quien contactar cuando el error viene de una sesion autenticada.
           </div>
         </CardContent>
       </Card>
@@ -174,16 +190,26 @@ export function ErrorLogReviewPage() {
             <CardContent className="space-y-4">
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
+                  <p className="font-semibold text-zinc-900 dark:text-zinc-50">Usuario afectado</p>
+                  <p className="mt-1">{formatUserLabel(errorLog.affected_user)}</p>
+                  <p>{formatUserDetail(errorLog.affected_user)}</p>
+                  <p>ID: {formatValue(errorLog.user_id)}</p>
+                </div>
+                <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
                   <p className="font-semibold text-zinc-900 dark:text-zinc-50">Contexto</p>
                   <p className="mt-1">Ruta: {formatValue(errorLog.route)}</p>
                   <p>Origen: {errorLog.source}</p>
                   <p>Codigo: {formatValue(errorLog.error_code)}</p>
                 </div>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2">
                 <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
                   <p className="font-semibold text-zinc-900 dark:text-zinc-50">Seguimiento</p>
                   <p className="mt-1">Detectado: {new Date(errorLog.created_at).toLocaleString()}</p>
                   <p>Corregido en: {errorLog.resolved_at ? new Date(errorLog.resolved_at).toLocaleString() : 'Pendiente'}</p>
-                  <p>Resuelto por: {formatValue(errorLog.resolved_by_user_id)}</p>
+                  <p>Resuelto por: {formatUserLabel(errorLog.resolved_by_user)}</p>
+                  <p>ID resolver: {formatValue(errorLog.resolved_by_user_id)}</p>
                 </div>
               </div>
 

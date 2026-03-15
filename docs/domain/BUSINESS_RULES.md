@@ -173,7 +173,7 @@
 5. Every meaningful mutation inside the app must leave a durable audit trail with actor, target entity, and change context.
 6. Security-sensitive changes must update related tests and documentation in the same task.
 7. User-facing errors from meaningful app flows must be durably logged to Supabase so platform admins can investigate and remediate operational issues.
-8. Platform admins must have an in-app operational panel where they can review logged errors and mark whether each error is already corrected or still pending.
+8. Platform admins must have an in-app operational panel where they can review logged errors, identify the affected user when the session is known, and mark whether each error is already corrected or still pending.
 
 ---
 
