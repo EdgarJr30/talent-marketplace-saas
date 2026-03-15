@@ -4,6 +4,7 @@ import { AppShell } from '@/app/layouts/app-shell'
 import { AuthConfirmPage } from '@/features/auth/pages/auth-confirm-page'
 import { AuthPage } from '@/features/auth/pages/auth-page'
 import { OnboardingPage } from '@/features/auth/pages/onboarding-page'
+import { CandidateProfilePage } from '@/features/candidate-profile/pages/candidate-profile-page'
 import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-review-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
 import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-overview-page'
@@ -45,6 +46,14 @@ export const appRoutes: RouteObject[] = [
         element: (
           <RequireAuth>
             <RecruiterRequestPage />
+          </RequireAuth>
+        )
+      },
+      {
+        path: 'candidate/profile',
+        element: (
+          <RequireAuth>
+            <CandidateProfilePage />
           </RequireAuth>
         )
       },

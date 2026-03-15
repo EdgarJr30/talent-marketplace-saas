@@ -71,6 +71,7 @@ Security includes protecting:
 11. Notification channels must persist delivery attempts and technical logs in Postgres.
 12. Web push VAPID keys and contact metadata must live only in Supabase Edge Function secrets, never in browser code except the public key.
 13. Operational app errors that reach the user should be logged to Supabase in a dedicated reviewable store without blocking the main UX flow.
+14. Candidate CV files must stay in a private bucket with ownership-based path policies and signed URL access.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.

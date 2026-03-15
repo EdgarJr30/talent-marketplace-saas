@@ -101,6 +101,11 @@ The initial identity migration must establish:
 - platform and tenant RBAC tables with auditable assignments
 - private storage buckets for user media, company assets, and verification documents
 
+The candidate foundations migration must establish:
+- `candidate_profiles` and related candidate section tables
+- `candidate-resumes` as a private storage bucket for CV files
+- database-driven completeness calculation triggered by candidate row changes
+
 ### Security strategy
 - RLS enabled on exposed tables
 - helper functions for permission checks
@@ -167,6 +172,8 @@ Track:
 - recruiter request submission failures
 - recruiter approval failures
 - tenant creation failures
+- candidate profile persistence failures
+- candidate resume upload failures
 - role assignment failures
 - job publish failures
 - application submission failures

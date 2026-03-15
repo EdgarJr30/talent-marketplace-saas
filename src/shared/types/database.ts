@@ -128,6 +128,332 @@ export type Database = {
           }
         ]
       }
+      candidate_educations: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          degree_name: string
+          end_date: string | null
+          field_of_study: string | null
+          id: string
+          institution_name: string
+          is_current: boolean
+          sort_order: number
+          start_date: string | null
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          degree_name: string
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution_name: string
+          is_current?: boolean
+          sort_order?: number
+          start_date?: string | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          degree_name?: string
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution_name?: string
+          is_current?: boolean
+          sort_order?: number
+          start_date?: string | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_educations_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_experiences: {
+        Row: {
+          candidate_profile_id: string
+          city_name: string | null
+          company_name: string
+          country_code: string | null
+          created_at: string
+          employment_type: string | null
+          end_date: string | null
+          id: string
+          is_current: boolean
+          role_title: string
+          sort_order: number
+          start_date: string
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          city_name?: string | null
+          company_name: string
+          country_code?: string | null
+          created_at?: string
+          employment_type?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          role_title: string
+          sort_order?: number
+          start_date: string
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          city_name?: string | null
+          company_name?: string
+          country_code?: string | null
+          created_at?: string
+          employment_type?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean
+          role_title?: string
+          sort_order?: number
+          start_date?: string
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_experiences_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_languages: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          id: string
+          language_name: string
+          proficiency_label: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          id?: string
+          language_name: string
+          proficiency_label: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          id?: string
+          language_name?: string
+          proficiency_label?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_languages_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_links: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          id: string
+          label: string | null
+          link_type: string
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          link_type?: string
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          link_type?: string
+          sort_order?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_links_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_profiles: {
+        Row: {
+          city_name: string | null
+          completeness_score: number
+          country_code: string | null
+          created_at: string
+          desired_role: string | null
+          headline: string | null
+          id: string
+          summary: string | null
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          city_name?: string | null
+          completeness_score?: number
+          country_code?: string | null
+          created_at?: string
+          desired_role?: string | null
+          headline?: string | null
+          id?: string
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          city_name?: string | null
+          completeness_score?: number
+          country_code?: string | null
+          created_at?: string
+          desired_role?: string | null
+          headline?: string | null
+          id?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_profiles_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_resumes: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          file_size_bytes: number
+          filename: string
+          id: string
+          is_default: boolean
+          mime_type: string
+          storage_path: string
+          updated_at: string
+          uploaded_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          file_size_bytes: number
+          filename: string
+          id?: string
+          is_default?: boolean
+          mime_type: string
+          storage_path: string
+          updated_at?: string
+          uploaded_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          file_size_bytes?: number
+          filename?: string
+          id?: string
+          is_default?: boolean
+          mime_type?: string
+          storage_path?: string
+          updated_at?: string
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_resumes_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      candidate_skills: {
+        Row: {
+          candidate_profile_id: string
+          created_at: string
+          id: string
+          proficiency_label: string | null
+          skill_name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          candidate_profile_id: string
+          created_at?: string
+          id?: string
+          proficiency_label?: string | null
+          skill_name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          candidate_profile_id?: string
+          created_at?: string
+          id?: string
+          proficiency_label?: string | null
+          skill_name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidate_skills_candidate_profile_id_fkey'
+            columns: ['candidate_profile_id']
+            isOneToOne: false
+            referencedRelation: 'candidate_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       company_profiles: {
         Row: {
           company_email: string | null

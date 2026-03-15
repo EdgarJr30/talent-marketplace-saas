@@ -69,6 +69,7 @@ Manual checks remain required for:
 - recruiter request approval and tenant bootstrap
 - first platform owner bootstrap
 - upload validation for file type, 5 MB size cap, and exact user-facing rejection copy
+- candidate profile persistence, completeness updates, and CV storage access
 - job lifecycle transitions
 - application submission
 - duplicate application policy

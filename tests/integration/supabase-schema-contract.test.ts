@@ -18,6 +18,10 @@ const storageAlignmentMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315023000_align_storage_mime_support_and_limits.sql'
 )
+const candidateFoundationsMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315031500_candidate_profile_foundations.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -26,6 +30,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(notificationsMigrationPath)).toBe(true)
     expect(existsSync(pushWorkflowMigrationPath)).toBe(true)
     expect(existsSync(storageAlignmentMigrationPath)).toBe(true)
+    expect(existsSync(candidateFoundationsMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -78,5 +83,16 @@ describe('supabase schema contract', () => {
     expect(migration).toContain("'image/svg+xml'")
     expect(migration).toContain("'application/pdf'")
     expect(migration).toContain('file_size_limit = 5242880')
+  })
+
+  it('keeps the candidate profile foundations migration in place', () => {
+    const migration = readFileSync(candidateFoundationsMigrationPath, 'utf8')
+
+    expect(migration).toContain('create table if not exists public.candidate_profiles')
+    expect(migration).toContain('create table if not exists public.candidate_resumes')
+    expect(migration).toContain("insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)")
+    expect(migration).toContain("'candidate-resumes'")
+    expect(migration).toContain('create or replace function public.set_candidate_profile_completeness()')
+    expect(migration).toContain("select private.attach_audit_trigger('public', 'candidate_profiles')")
   })
 })

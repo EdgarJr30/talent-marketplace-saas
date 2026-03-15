@@ -31,6 +31,8 @@
 4. A candidate may apply to many jobs.
 5. A candidate must be able to review application history.
 6. Sensitive candidate data must be accessible only to authorized parties.
+7. Candidate identity remains global even if the same user later gains recruiter or tenant memberships.
+8. Candidate profile completeness must be derived from persisted candidate data so later workflows can trust it.
 
 ---
 

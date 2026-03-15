@@ -25,8 +25,16 @@ export const RECRUITER_DOCUMENT_MIME_TYPES = [
   'image/webp'
 ] as const
 
+export const CANDIDATE_RESUME_MIME_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+] as const
+
 const MIME_TYPE_EXTENSION_MAP: Record<string, string[]> = {
   'application/pdf': ['pdf'],
+  'application/msword': ['doc'],
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['docx'],
   'image/jpeg': ['jpg', 'jpeg'],
   'image/png': ['png'],
   'image/svg+xml': ['svg'],

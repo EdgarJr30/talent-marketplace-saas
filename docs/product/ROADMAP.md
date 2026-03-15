@@ -63,11 +63,13 @@ Enable reusable candidate identity.
 - CV upload
 - profile completeness
 - candidate dashboard
+- private `candidate-resumes` storage bucket with self-service access policies
 
 ### Exit criteria
 - candidate can complete profile
 - CV upload works
 - profile can be reused later in applications
+- completeness score is updated from persisted candidate data, not only from client state
 
 ---
 

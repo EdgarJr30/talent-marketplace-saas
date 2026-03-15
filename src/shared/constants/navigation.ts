@@ -24,6 +24,14 @@ export const navigationItems: NavigationItem[] = [
     requiresAuth: true
   },
   {
+    title: 'Perfil candidato',
+    titleKey: 'navigation.candidate.title',
+    href: '/candidate/profile',
+    description: 'CV y completitud',
+    descriptionKey: 'navigation.candidate.description',
+    requiresAuth: true
+  },
+  {
     title: 'Recruiter',
     titleKey: 'navigation.recruiterRequest.title',
     href: '/recruiter-request',

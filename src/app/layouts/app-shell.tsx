@@ -153,6 +153,9 @@ export function AppShell() {
                     <Button variant="outline" onClick={() => void navigate('/onboarding')}>
                       {t('shell.profileAction')}
                     </Button>
+                    <Button variant="outline" onClick={() => void navigate('/candidate/profile')}>
+                      {t('shell.candidateAction')}
+                    </Button>
                     <Button variant="outline" onClick={() => void navigate('/recruiter-request')}>
                       {t('shell.recruiterAction')}
                     </Button>

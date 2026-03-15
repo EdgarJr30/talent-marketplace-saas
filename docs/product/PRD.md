@@ -121,6 +121,7 @@ The MVP should **not** initially include:
 - links / portfolio
 - CV upload
 - profile completeness
+- candidate profile dashboard with reusable sections and default CV selection
 - CV rejection feedback that explains file-size limits and how to fix the problem
 
 ## 8.3 Company workspace
@@ -198,7 +199,7 @@ Tenant owners/admins must be able to manage tenant roles and assign permissions 
 Platform admins with the proper permission must be able to review user-facing platform errors from inside the app, inspect their context, and mark whether each issue is already corrected or still pending.
 
 ### FR-4 Candidate profile
-Candidates must be able to create, edit, and reuse a structured profile.
+Candidates must be able to create, edit, and reuse a structured profile with headline, summary, location, desired role, work history, education, skills, languages, and relevant links.
 
 ### FR-5 CV/document management
 Candidates must be able to upload and manage CV files, with explicit type and size validation, a maximum size of **5 MB**, and user-facing rejection messages that explain the reason and next step.

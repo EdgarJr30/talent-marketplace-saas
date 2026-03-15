@@ -6,6 +6,8 @@ import { supabase } from '@/lib/supabase/client'
 import { isPermissionCode, type PermissionCode } from '@/shared/constants/permissions'
 import type { Tables } from '@/shared/types/database'
 
+export type PrivateStorageBucket = 'candidate-resumes' | 'user-media' | 'verification-documents'
+
 export interface AppMembership {
   id: string
   tenantId: string
@@ -344,7 +346,7 @@ export async function updateUserProfile(values: {
 }
 
 export async function uploadPrivateFile(options: {
-  bucket: 'user-media' | 'verification-documents'
+  bucket: PrivateStorageBucket
   ownerUserId: string
   file: File
   prefix: string
@@ -374,7 +376,19 @@ export async function uploadPrivateFile(options: {
   return uploadResponse.data.path
 }
 
-export async function createPrivateFileUrl(bucket: 'user-media' | 'verification-documents', path: string) {
+export async function removePrivateFile(options: {
+  bucket: PrivateStorageBucket
+  path: string
+}) {
+  const client = requireSupabase()
+  const response = await client.storage.from(options.bucket).remove([normalizeStoragePath(options.path)])
+
+  if (response.error) {
+    throw response.error
+  }
+}
+
+export async function createPrivateFileUrl(bucket: PrivateStorageBucket, path: string) {
   const client = requireSupabase()
   const response = await client.storage.from(bucket).createSignedUrl(path, 60 * 10)
 

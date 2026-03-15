@@ -19,6 +19,7 @@ describe('permission guards', () => {
       'Inicio',
       'Acceso',
       'Perfil',
+      'Perfil candidato',
       'Recruiter',
       'Jobs',
       'Workspace',

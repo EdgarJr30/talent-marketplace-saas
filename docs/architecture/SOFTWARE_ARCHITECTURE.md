@@ -360,6 +360,8 @@ Responsibilities:
 - skills
 - CV upload
 - profile completeness
+- default CV selection
+- database-derived completeness score
 - application history
 - saved jobs
 
@@ -498,6 +500,7 @@ Examples:
 Candidate permissions may be simpler but still structured:
 - manage_profile
 - upload_cv
+- set_default_candidate_resume
 - apply_to_jobs
 - save_jobs
 - manage_preferences

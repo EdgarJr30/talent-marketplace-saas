@@ -44,9 +44,24 @@ Approval request submitted by a standard user to become an employer-side operato
 ## 2.2 Candidate Domain
 ### CandidateProfile
 Structured professional identity of a user acting as a candidate.
+Current MVP shape:
+- headline
+- summary
+- city_name
+- country_code
+- desired_role
+- visibility
+- completeness_score
 
 ### CandidateResume
 Uploaded CV or resume file metadata.
+Current MVP shape:
+- storage_path
+- filename
+- mime_type
+- file_size_bytes
+- is_default
+- uploaded_at
 
 ### CandidateExperience
 Work history entries.
@@ -175,13 +190,13 @@ Technical log line for provider attempts, failures, and retries.
 ### Candidate
 | Entity | Key fields |
 |---|---|
-| candidate_profiles | id, user_id, headline, summary, location, visibility, completeness_score |
-| candidate_resumes | id, candidate_profile_id, storage_path, filename, mime_type, is_default |
-| candidate_experiences | id, candidate_profile_id, company, title, start_date, end_date |
-| candidate_educations | id, candidate_profile_id, institution, degree, start_date, end_date |
-| candidate_skills | id, candidate_profile_id, skill_name, level nullable |
-| candidate_languages | id, candidate_profile_id, language_name, level |
-| candidate_links | id, candidate_profile_id, type, url |
+| candidate_profiles | id, user_id, headline, summary, city_name, country_code, desired_role, visibility, completeness_score |
+| candidate_resumes | id, candidate_profile_id, storage_path, filename, mime_type, file_size_bytes, is_default, uploaded_at |
+| candidate_experiences | id, candidate_profile_id, company_name, role_title, employment_type, start_date, end_date, is_current, summary |
+| candidate_educations | id, candidate_profile_id, institution_name, degree_name, field_of_study, start_date, end_date |
+| candidate_skills | id, candidate_profile_id, skill_name, proficiency_label nullable |
+| candidate_languages | id, candidate_profile_id, language_name, proficiency_label |
+| candidate_links | id, candidate_profile_id, link_type, label nullable, url |
 | saved_jobs | id, candidate_profile_id, job_posting_id |
 | job_alerts | id, candidate_profile_id, criteria_json, frequency, is_active |
 
@@ -224,6 +239,7 @@ Technical log line for provider attempts, failures, and retries.
 7. Role changes must be auditable.
 8. User corrections to domain assumptions must update this model.
 9. Notification channel attempts and row-level state mutations must be recoverable from audit history.
+10. Candidate profile completeness should stay derivable from database state after row changes in profile sections or resumes.
 
 ---
 
