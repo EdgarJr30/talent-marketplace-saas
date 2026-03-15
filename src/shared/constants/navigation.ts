@@ -49,6 +49,15 @@ export const navigationItems: NavigationItem[] = [
     requiredPermission: 'job:read'
   },
   {
+    title: 'Talento',
+    titleKey: 'navigation.talent.title',
+    href: '/talent',
+    description: 'Directorio candidato',
+    descriptionKey: 'navigation.talent.description',
+    requiresAuth: true,
+    requiredPermission: 'candidate_directory:read'
+  },
+  {
     title: 'Workspace',
     titleKey: 'navigation.workspace.title',
     href: '/workspace',

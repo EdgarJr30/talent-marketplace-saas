@@ -116,6 +116,7 @@ export async function saveCandidateProfileBundle(input: {
     cityName?: string
     countryCode?: string
     desiredRole?: string
+    isVisibleToRecruiters?: boolean
   }
   experiences: Array<{
     companyName: string
@@ -161,7 +162,8 @@ export async function saveCandidateProfileBundle(input: {
         summary: input.profile.summary ?? null,
         city_name: input.profile.cityName ?? null,
         country_code: input.profile.countryCode ?? null,
-        desired_role: input.profile.desiredRole ?? null
+        desired_role: input.profile.desiredRole ?? null,
+        is_visible_to_recruiters: input.profile.isVisibleToRecruiters ?? false
       },
       {
         onConflict: 'user_id'
@@ -281,6 +283,33 @@ export async function saveCandidateProfileBundle(input: {
   }
 
   return fetchMyCandidateProfile(input.userId)
+}
+
+export async function updateCandidateVisibility(input: {
+  userId: string
+  isVisibleToRecruiters: boolean
+}) {
+  const client = requireSupabase()
+  const response = await client
+    .from('candidate_profiles')
+    .upsert(
+      {
+        user_id: input.userId,
+        is_visible_to_recruiters: input.isVisibleToRecruiters,
+        visibility_updated_at: new Date().toISOString()
+      },
+      {
+        onConflict: 'user_id'
+      }
+    )
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
 }
 
 export async function uploadCandidateResume(input: {

@@ -120,7 +120,9 @@ Platform roles with `audit_log:read` must also be able to access the in-app oper
 - `application:add_note`
 - `application:rate`
 - `application:export`
+- `candidate_directory:read`
 - `candidate_profile:read_limited`
+- `candidate_profile:read_full`
 - `candidate_resume:read`
 - `member:invite`
 - `member:read`
@@ -147,6 +149,7 @@ Platform roles with `audit_log:read` must also be able to access the in-app oper
 7. Role changes must generate audit logs.
 8. Permission changes must be effective consistently across UI and server-side access rules.
 9. Notification-management permissions must control who can create notifications, manage push subscriptions by tenant context, and inspect delivery logs.
+10. Candidate sourcing permissions must be distinct from application review permissions.
 
 ---
 
@@ -206,6 +209,8 @@ All permission changes must remain aligned with `docs/governance/SECURITY_RULES.
 | Create jobs | ✅ | ✅ | ✅ | ❌ | ❌ |
 | Publish/close jobs | ✅ | ✅ | ✅ | ❌ | ❌ |
 | View applications | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Search visible candidates | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Open full sourced candidate profile | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Move stage | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Add notes | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Rate candidates | ✅ | ✅ | ✅ | ✅ | ✅ |

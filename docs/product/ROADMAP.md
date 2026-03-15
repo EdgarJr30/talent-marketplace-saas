@@ -63,6 +63,7 @@ Enable reusable candidate identity.
 - CV upload
 - profile completeness
 - candidate dashboard
+- opt-in visibility toggle for recruiter discovery
 - private `candidate-resumes` storage bucket with self-service access policies
 
 ### Exit criteria
@@ -70,6 +71,7 @@ Enable reusable candidate identity.
 - CV upload works
 - profile can be reused later in applications
 - completeness score is updated from persisted candidate data, not only from client state
+- candidate can choose whether the profile appears in recruiter sourcing
 
 ---
 
@@ -83,10 +85,12 @@ Enable company workspace setup.
 - locations/basic metadata
 - team management views
 - workspace settings
+- membership role reassignment from the app
 
 ### Exit criteria
 - tenant can configure company presence
 - team/admin screens work with RBAC
+- workspace branding assets live in Supabase Storage under tenant-aware policies
 
 ---
 
@@ -101,11 +105,14 @@ Ship public vacancy publishing and candidate discovery.
 - search/filter
 - saved jobs
 - basic alerts groundwork
+- recruiter-facing candidate directory for opt-in profiles
+- recruiter candidate detail view with RBAC-protected full profile access
 
 ### Exit criteria
 - authorized tenant can publish job
 - candidate can browse jobs on mobile
 - public listing/detail works cleanly
+- authorized recruiters can search visible candidates without waiting for an application
 
 ---
 

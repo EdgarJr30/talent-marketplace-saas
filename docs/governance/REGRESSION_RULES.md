@@ -119,6 +119,9 @@ Do not redefine lightweight local error mappers in feature APIs when a shared co
 ### R-030 — Never invent an error cause
 Under no circumstance may the platform invent, guess, or fabricate the cause of an error. If the real cause is not known from verified evidence, the UI and logs must say that the cause is still undetermined and preserve only factual technical context.
 
+### R-031 — Talent sourcing is part of the MVP and must remain opt-in
+Do not regress the product back to an applications-only marketplace. The MVP must allow authorized employer users to search candidates directly even if they have not applied, but only when the candidate explicitly opted into recruiter visibility.
+
 ---
 
 ## Maintenance rule

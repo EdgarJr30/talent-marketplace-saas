@@ -33,6 +33,8 @@
 6. Sensitive candidate data must be accessible only to authorized parties.
 7. Candidate identity remains global even if the same user later gains recruiter or tenant memberships.
 8. Candidate profile completeness must be derived from persisted candidate data so later workflows can trust it.
+9. Candidate visibility for recruiter discovery must be opt-in and disabled by default.
+10. A candidate may stay hidden from recruiter search and still apply normally to jobs.
 
 ---
 
@@ -43,6 +45,7 @@
 4. Branding assets such as logos must follow file and storage rules.
 5. Public company pages expose only intentionally public data.
 6. A tenant may invite multiple internal members.
+7. Employer-side candidate sourcing is allowed even when the candidate has not applied yet, but only for visible opt-in profiles.
 
 ---
 
@@ -69,6 +72,7 @@
 4. Application submission must snapshot relevant candidate-submitted data required for historical integrity.
 5. Candidate status visibility must reflect the actual pipeline state or its public mapping.
 6. Only authorized tenant members may view or act on applications for their tenant jobs.
+7. Application review and talent sourcing are related but distinct flows.
 
 ---
 
@@ -92,6 +96,7 @@
 6. A role change must be auditable.
 7. A permission removed from a role must immediately affect guarded actions, subject to session refresh mechanics.
 8. Navigation must not expose protected destinations unless intentionally designed.
+9. Candidate directory search and full candidate detail require explicit tenant permissions separate from application review.
 
 ---
 

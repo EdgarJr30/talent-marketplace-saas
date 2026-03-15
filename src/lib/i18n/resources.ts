@@ -29,6 +29,10 @@ export const resources = {
           title: 'Jobs',
           description: 'Vacantes y discovery'
         },
+        talent: {
+          title: 'Talento',
+          description: 'Directorio candidato'
+        },
         workspace: {
           title: 'Workspace',
           description: 'Tenant y company'
@@ -49,9 +53,9 @@ export const resources = {
       shell: {
         offlineBanner:
           'Modo offline activo. La shell sigue disponible y las mutaciones deben reintentarse cuando vuelva la red.',
-        phaseBadge: 'Fase 2',
+        phaseBadge: 'Fase 4',
         description:
-          'Base mobile-first, PWA-first, RBAC-first y Supabase-first con identidad y foundations candidatas para el marketplace de talento.',
+          'Base mobile-first, PWA-first, RBAC-first y Supabase-first con employer foundations, candidate identity y discovery de talento.',
         liveSession: 'Sesion activa',
         guestSession: 'Sesion invitada',
         authenticatedBadge: 'Autenticado',
@@ -60,7 +64,7 @@ export const resources = {
         adminBadge: 'Admin reviewer',
         navNote: 'Las rutas y la navegacion ya respetan auth, permisos y estados visibles del MVP.',
         eyebrow: 'Recruiting SaaS Platform',
-        title: 'Identidad y candidato del MVP',
+        title: 'Employer y talent discovery del MVP',
         profileAction: 'Perfil',
         candidateAction: 'Perfil candidato',
         recruiterAction: 'Solicitud recruiter',
@@ -267,6 +271,10 @@ export const resources = {
           title: 'Jobs',
           description: 'Vacancies and discovery'
         },
+        talent: {
+          title: 'Talent',
+          description: 'Candidate directory'
+        },
         workspace: {
           title: 'Workspace',
           description: 'Tenant and company'
@@ -287,9 +295,9 @@ export const resources = {
       shell: {
         offlineBanner:
           'Offline mode is active. The shell remains available and mutations should retry when the network returns.',
-        phaseBadge: 'Phase 2',
+        phaseBadge: 'Phase 4',
         description:
-          'Mobile-first, PWA-first, RBAC-first, and Supabase-first baseline with identity and candidate foundations for the talent marketplace.',
+          'Mobile-first, PWA-first, RBAC-first, and Supabase-first baseline with employer foundations, candidate identity, and talent discovery.',
         liveSession: 'Live session',
         guestSession: 'Guest session',
         authenticatedBadge: 'Authenticated',
@@ -298,7 +306,7 @@ export const resources = {
         adminBadge: 'Admin reviewer',
         navNote: 'Routes and navigation already honor auth, permissions, and visible MVP states.',
         eyebrow: 'Recruiting SaaS Platform',
-        title: 'MVP identity and candidate foundations',
+        title: 'MVP employer and talent discovery foundations',
         profileAction: 'Profile',
         candidateAction: 'Candidate profile',
         recruiterAction: 'Recruiter request',

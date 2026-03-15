@@ -50,7 +50,8 @@ Current MVP shape:
 - city_name
 - country_code
 - desired_role
-- visibility
+- is_visible_to_recruiters
+- visibility_updated_at
 - completeness_score
 
 ### CandidateResume
@@ -190,7 +191,7 @@ Technical log line for provider attempts, failures, and retries.
 ### Candidate
 | Entity | Key fields |
 |---|---|
-| candidate_profiles | id, user_id, headline, summary, city_name, country_code, desired_role, visibility, completeness_score |
+| candidate_profiles | id, user_id, headline, summary, city_name, country_code, desired_role, is_visible_to_recruiters, visibility_updated_at, completeness_score |
 | candidate_resumes | id, candidate_profile_id, storage_path, filename, mime_type, file_size_bytes, is_default, uploaded_at |
 | candidate_experiences | id, candidate_profile_id, company_name, role_title, employment_type, start_date, end_date, is_current, summary |
 | candidate_educations | id, candidate_profile_id, institution_name, degree_name, field_of_study, start_date, end_date |
@@ -204,6 +205,7 @@ Technical log line for provider attempts, failures, and retries.
 | Entity | Key fields |
 |---|---|
 | company_profiles | id, tenant_id, logo_path, description, industry, size_range, website |
+| talent_directory_search | tenant permission-gated search surface over visible `candidate_profiles` plus skills, languages, and work history |
 | job_postings | id, tenant_id, title, slug, status, workplace_type, employment_type, location, salary_visible, expires_at |
 | job_screening_questions | id, job_posting_id, question_text, answer_type, is_required |
 | applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, status_public, current_stage_id, submitted_at |

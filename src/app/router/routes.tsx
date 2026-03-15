@@ -11,6 +11,7 @@ import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-o
 import { RbacOverviewPage } from '@/features/rbac/pages/rbac-overview-page'
 import { RecruiterRequestPage } from '@/features/recruiter-requests/pages/recruiter-request-page'
 import { RecruiterReviewPage } from '@/features/recruiter-requests/pages/recruiter-review-page'
+import { TalentDirectoryPage } from '@/features/talent/pages/talent-directory-page'
 import { WorkspaceOverviewPage } from '@/features/tenants/pages/workspace-overview-page'
 import { RequireAuth, RequirePermission } from '@/lib/auth/guards'
 import { HomePage } from '@/pages/home-page'
@@ -62,6 +63,14 @@ export const appRoutes: RouteObject[] = [
         element: (
           <RequirePermission permission="job:read">
             <JobsOverviewPage />
+          </RequirePermission>
+        )
+      },
+      {
+        path: 'talent',
+        element: (
+          <RequirePermission permission="candidate_directory:read">
+            <TalentDirectoryPage />
           </RequirePermission>
         )
       },

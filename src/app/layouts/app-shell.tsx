@@ -156,6 +156,16 @@ export function AppShell() {
                     <Button variant="outline" onClick={() => void navigate('/candidate/profile')}>
                       {t('shell.candidateAction')}
                     </Button>
+                    {session.permissions.includes('workspace:read') ? (
+                      <Button variant="outline" onClick={() => void navigate('/workspace')}>
+                        Workspace
+                      </Button>
+                    ) : null}
+                    {session.permissions.includes('candidate_directory:read') ? (
+                      <Button variant="outline" onClick={() => void navigate('/talent')}>
+                        Talento
+                      </Button>
+                    ) : null}
                     <Button variant="outline" onClick={() => void navigate('/recruiter-request')}>
                       {t('shell.recruiterAction')}
                     </Button>

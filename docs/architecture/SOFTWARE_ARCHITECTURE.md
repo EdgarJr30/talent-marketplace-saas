@@ -753,6 +753,7 @@ Storage rules:
 - tenant isolation must be respected where applicable
 - file naming must be deterministic and safe
 - sensitive files must not be publicly exposed by default
+- recruiter-facing sourcing must never bypass candidate visibility settings
 
 ---
 
@@ -764,6 +765,7 @@ The platform should be designed to support:
 - job search
 - company search
 - candidate filtering for recruiters
+- candidate full-profile sourcing for recruiters when visibility is opt-in
 - application filtering by stage/status
 - saved search patterns later
 - analytics-ready filtering dimensions

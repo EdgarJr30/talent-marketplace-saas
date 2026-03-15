@@ -19,6 +19,7 @@ import {
   fetchMyCandidateProfile,
   saveCandidateProfileBundle,
   setDefaultCandidateResume,
+  updateCandidateVisibility,
   type CandidateProfileBundle,
   uploadCandidateResume
 } from '@/features/candidate-profile/lib/candidate-profile-api'
@@ -164,6 +165,7 @@ function CandidateProfileEditor({
   const [languages, setLanguages] = useState<CandidateLanguageDraft[]>(() => toLanguageDrafts(bundle))
   const [links, setLinks] = useState<CandidateLinkDraft[]>(() => toLinkDrafts(bundle))
   const [resumeFileError, setResumeFileError] = useState<string | null>(null)
+  const [isVisibleToRecruiters, setIsVisibleToRecruiters] = useState(() => bundle.profile?.is_visible_to_recruiters ?? false)
 
   const form = useForm<CandidateProfileFormValues>({
     resolver: zodResolver(candidateProfileSchema),
@@ -189,7 +191,8 @@ function CandidateProfileEditor({
           desiredRole: values.desiredRole?.trim() || undefined,
           cityName: values.cityName?.trim() || undefined,
           countryCode: values.countryCode?.trim() || undefined,
-          summary: values.summary?.trim() || undefined
+          summary: values.summary?.trim() || undefined,
+          isVisibleToRecruiters
         },
         experiences: sanitizeCandidateExperienceList(experiences).map((item) => ({
           companyName: item.companyName,
@@ -323,6 +326,38 @@ function CandidateProfileEditor({
     }
   })
 
+  const visibilityMutation = useMutation({
+    mutationFn: async (nextValue: boolean) => {
+      if (!session.authUser) {
+        throw new Error('Necesitas una sesion activa para cambiar tu visibilidad.')
+      }
+
+      return updateCandidateVisibility({
+        userId: session.authUser.id,
+        isVisibleToRecruiters: nextValue
+      })
+    },
+    onSuccess: async (_, nextValue) => {
+      setIsVisibleToRecruiters(nextValue)
+      await queryClient.invalidateQueries({ queryKey: CANDIDATE_PROFILE_QUERY_KEY })
+      toast.success(nextValue ? 'Perfil visible para recruiters' : 'Perfil oculto para recruiters', {
+        description: nextValue
+          ? 'Tu perfil ya puede aparecer en busquedas employer fuera de applications.'
+          : 'Tu perfil deja de aparecer en el directorio de talento, pero todavia puedes aplicar a vacantes.'
+      })
+    },
+    onError: async (error) => {
+      setIsVisibleToRecruiters(bundle.profile?.is_visible_to_recruiters ?? false)
+      await reportErrorWithToast({
+        title: 'No pudimos actualizar la visibilidad de tu perfil',
+        source: 'candidate-profile.visibility',
+        route: '/candidate/profile',
+        userId: session.authUser?.id ?? null,
+        error
+      })
+    }
+  })
+
   const profile = bundle.profile
   const resumes = bundle.resumes
   const completenessScore = profile?.completeness_score ?? 0
@@ -388,6 +423,9 @@ function CandidateProfileEditor({
                 <div className="rounded-2xl bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
                   Experiencia, educacion, skills, idiomas y links como bloques editables.
                 </div>
+                <div className="rounded-2xl bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                  Puedes activar visibilidad opt-in para que empresas te encuentren aun sin haber aplicado.
+                </div>
               </div>
             </div>
           </div>
@@ -405,6 +443,29 @@ function CandidateProfileEditor({
               <Badge variant="outline">{sanitizeCandidateSkillList(skills).length} skills</Badge>
               <Badge variant="outline">{sanitizeCandidateLanguageList(languages).length} idiomas</Badge>
               <Badge variant="outline">{sanitizeCandidateExperienceList(experiences).length} experiencias</Badge>
+              <Badge variant={isVisibleToRecruiters ? 'soft' : 'outline'}>
+                {isVisibleToRecruiters ? 'Visible para recruiters' : 'No visible en directorio'}
+              </Badge>
+            </div>
+            <div className="mt-4 rounded-[24px] border border-zinc-200 px-4 py-4 dark:border-zinc-800">
+              <label className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <input
+                  type="checkbox"
+                  checked={isVisibleToRecruiters}
+                  disabled={visibilityMutation.isPending}
+                  onChange={(event) => {
+                    const nextValue = event.target.checked
+                    setIsVisibleToRecruiters(nextValue)
+                    visibilityMutation.mutate(nextValue)
+                  }}
+                />
+                <span>
+                  Permitir que recruiters con permiso encuentren este perfil en el directorio de talento.
+                  <span className="mt-1 block text-xs text-zinc-500">
+                    Esto no afecta tu capacidad de aplicar a vacantes si prefieres mantener el perfil oculto.
+                  </span>
+                </span>
+              </label>
             </div>
           </div>
         </CardContent>

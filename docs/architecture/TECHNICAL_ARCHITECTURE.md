@@ -39,6 +39,7 @@ src/
     tenants/
     rbac/
     candidate-profile/
+    talent/
     companies/
     jobs/
     applications/
@@ -105,6 +106,12 @@ The candidate foundations migration must establish:
 - `candidate_profiles` and related candidate section tables
 - `candidate-resumes` as a private storage bucket for CV files
 - database-driven completeness calculation triggered by candidate row changes
+
+The employer/talent discovery migration must establish:
+- employer workspace editing over `company_profiles`
+- candidate opt-in discovery fields on `candidate_profiles`
+- tenant permissions for candidate directory search and full sourced-profile review
+- RPC helpers for recruiter candidate search and full profile detail with audit logging
 
 ### Security strategy
 - RLS enabled on exposed tables

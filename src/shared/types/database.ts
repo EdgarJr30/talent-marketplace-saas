@@ -328,10 +328,11 @@ export type Database = {
           desired_role: string | null
           headline: string | null
           id: string
+          is_visible_to_recruiters: boolean
           summary: string | null
           updated_at: string
           user_id: string
-          visibility: string
+          visibility_updated_at: string
         }
         Insert: {
           city_name?: string | null
@@ -341,10 +342,11 @@ export type Database = {
           desired_role?: string | null
           headline?: string | null
           id?: string
+          is_visible_to_recruiters?: boolean
           summary?: string | null
           updated_at?: string
           user_id: string
-          visibility?: string
+          visibility_updated_at?: string
         }
         Update: {
           city_name?: string | null
@@ -354,10 +356,11 @@ export type Database = {
           desired_role?: string | null
           headline?: string | null
           id?: string
+          is_visible_to_recruiters?: boolean
           summary?: string | null
           updated_at?: string
           user_id?: string
-          visibility?: string
+          visibility_updated_at?: string
         }
         Relationships: [
           {

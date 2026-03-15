@@ -138,6 +138,7 @@ OSINT may be used only for legitimate moderation, fraud prevention, trust verifi
 - storage access rules
 - upload size/type enforcement and user-facing rejection messaging
 - job/application workflow authorization
+- candidate directory visibility enforcement and recruiter permission checks
 - audit trigger coverage and audit log readability
 - client error logging into Supabase and admin visibility of those logs
 - in-app admin management of operational errors, including resolved vs pending tracking

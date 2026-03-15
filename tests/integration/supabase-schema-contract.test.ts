@@ -22,6 +22,10 @@ const candidateFoundationsMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315031500_candidate_profile_foundations.sql'
 )
+const employerTalentMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260315043000_employer_workspace_and_talent_search.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -31,6 +35,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(pushWorkflowMigrationPath)).toBe(true)
     expect(existsSync(storageAlignmentMigrationPath)).toBe(true)
     expect(existsSync(candidateFoundationsMigrationPath)).toBe(true)
+    expect(existsSync(employerTalentMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -94,5 +99,16 @@ describe('supabase schema contract', () => {
     expect(migration).toContain("'candidate-resumes'")
     expect(migration).toContain('create or replace function public.set_candidate_profile_completeness()')
     expect(migration).toContain("select private.attach_audit_trigger('public', 'candidate_profiles')")
+  })
+
+  it('keeps employer foundations and talent search opt-in aligned with the schema contract', () => {
+    const migration = readFileSync(employerTalentMigrationPath, 'utf8')
+
+    expect(migration).toContain('add column if not exists is_visible_to_recruiters boolean not null default false')
+    expect(migration).toContain("'candidate_directory:read'")
+    expect(migration).toContain("'candidate_profile:read_full'")
+    expect(migration).toContain("create or replace function public.search_candidate_profiles(")
+    expect(migration).toContain("create or replace function public.get_candidate_profile_for_tenant(")
+    expect(migration).toContain("'candidate_profile_viewed'")
   })
 })

@@ -122,6 +122,7 @@ The MVP should **not** initially include:
 - CV upload
 - profile completeness
 - candidate profile dashboard with reusable sections and default CV selection
+- recruiter visibility toggle that is opt-in by the candidate
 - CV rejection feedback that explains file-size limits and how to fix the problem
 
 ## 8.3 Company workspace
@@ -130,6 +131,7 @@ The MVP should **not** initially include:
 - industry, size, locations
 - team members
 - workspace settings
+- role reassignment for tenant memberships from inside the app
 
 ## 8.4 Role and permission management
 - view built-in roles
@@ -146,6 +148,8 @@ The MVP should **not** initially include:
 - saved jobs
 - salary visibility toggle
 - screening questions
+- recruiter-side candidate directory for visible opt-in profiles
+- full candidate profile review from employer side without requiring an application first
 
 ## 8.6 Applications
 - fast apply with stored profile
@@ -201,6 +205,9 @@ Platform admins with the proper permission must be able to review user-facing pl
 ### FR-4 Candidate profile
 Candidates must be able to create, edit, and reuse a structured profile with headline, summary, location, desired role, work history, education, skills, languages, and relevant links.
 
+### FR-4.1 Candidate visibility
+Candidates must be able to control whether their profile appears in recruiter talent search, and the default state must be opt-in disabled.
+
 ### FR-5 CV/document management
 Candidates must be able to upload and manage CV files, with explicit type and size validation, a maximum size of **5 MB**, and user-facing rejection messages that explain the reason and next step.
 
@@ -215,6 +222,9 @@ Candidates must be able to submit applications using existing profile data.
 
 ### FR-9 Application review
 Authorized tenant users must be able to review applications and candidate details.
+
+### FR-9.1 Talent sourcing
+Authorized tenant users must be able to search visible candidate profiles and open full candidate details outside the application workflow.
 
 ### FR-10 Pipeline movement
 Authorized tenant users must be able to move applications across stages.
