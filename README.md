@@ -71,6 +71,27 @@ talent-marketplace-saas/
 - La base PWA evita dependencias con vulnerabilidades conocidas y usa integracion propia de `manifest` + `service worker`.
 - La base `database-first` arranca con una migracion inicial de identidad/RBAC, aprobacion de recruiters y buckets privados de Supabase Storage.
 
+### Flujo de trabajo de bajo consumo
+
+Para gastar menos creditos por tarea:
+
+- pide una sola meta concreta por solicitud
+- menciona archivos o features exactos cuando los conozcas
+- si solo quieres diagnostico, dilo explicitamente
+- pide validacion minima cuando no haga falta correr todo el proyecto
+- evita pedir revisiones globales del repo salvo que de verdad quieras una auditoria amplia
+
+Plantilla rapida:
+
+```text
+Objetivo:
+Alcance:
+Restricciones:
+Validacion esperada:
+```
+
+Referencia corta: `docs/checklists/CODEX_TASK_BRIEF.md`
+
 ### Comandos
 
 ```bash

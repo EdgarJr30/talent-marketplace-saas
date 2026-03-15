@@ -30,6 +30,7 @@ This folder contains the canonical Markdown documentation for the repository.
 
 ### `checklists/`
 - `checklists/README.md`
+- `checklists/CODEX_TASK_BRIEF.md`
 
 ## Local operational READMEs
 - `../src/README.md`

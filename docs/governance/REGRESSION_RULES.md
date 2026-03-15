@@ -104,6 +104,9 @@ All multimedia and document uploads must enforce a maximum size of 5 MB, optimiz
 ### R-025 — Meaningful errors must be user-visible and logged
 Do not hide operational failures behind generic messages. Meaningful errors must be captured with actionable user feedback and logged durably to Supabase so platform admins can review and fix them later.
 
+### R-026 — Repo guidance must stay context-efficient
+Keep root-level operating instructions concise so routine Codex tasks consume less context and fewer credits. Put durable detail in the canonical files under `docs/`, use progressive disclosure when reading documentation, and prefer short task briefs over broad repeated repo summaries.
+
 ---
 
 ## Maintenance rule

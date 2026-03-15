@@ -14,6 +14,7 @@ Documentation is a living contract, not an afterthought.
 4. A task is incomplete if implementation and documentation diverge.
 5. If a new recurring rule emerges, it must be recorded in the appropriate rule file and in `docs/governance/REGRESSION_RULES.md` if it originated from an explicit user correction.
 6. Canonical project docs live under `docs/` grouped by concern, while the repository root stays limited to entrypoint docs such as `README.md` and `AGENTS.md`.
+7. Keep `AGENTS.md` concise and operational. Detailed product, architecture, and governance content should be referenced from `docs/` instead of duplicated at the repo root.
 
 ---
 
@@ -54,6 +55,7 @@ Update:
 - `docs/governance/CODING_RULES.md`
 - `docs/README.md`
 - `README.md`
+- `AGENTS.md` if the root operating model or task-intake expectations change
 - `docs/governance/TESTING_RULES.md` if verification or structure changes
 - `docs/governance/SECURITY_RULES.md` if risk posture changes
 
@@ -97,7 +99,8 @@ When a change request arrives:
 3. Update all affected documents in the same task.
 4. Add or revise tests if the change alters important behavior or safeguards.
 5. If references to file names, folders, modules, or permissions changed, update every document that mentions them, including `docs/README.md`.
-6. Never leave a known documentation mismatch for “later” once the implementation already changed.
+6. If repo guidance grew enough to increase task friction or context cost, compact `AGENTS.md` and move detail back into the relevant canonical docs.
+7. Never leave a known documentation mismatch for “later” once the implementation already changed.
 
 ---
 
