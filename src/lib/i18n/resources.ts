@@ -2,7 +2,7 @@ export const resources = {
   es: {
     translation: {
       app: {
-        name: 'Talent Marketplace SaaS'
+        name: 'ASI Rep. Dominicana'
       },
       navigation: {
         home: {
@@ -256,7 +256,7 @@ export const resources = {
   en: {
     translation: {
       app: {
-        name: 'Talent Marketplace SaaS'
+        name: 'ASI Rep. Dominicana'
       },
       navigation: {
         home: {

@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { BrandLockup } from '@/components/ui/app-brand'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
@@ -15,9 +16,12 @@ export function AuthShell() {
     <div className="tm-shell">
       <header className="border-b bg-[color:var(--app-surface-elevated)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <button className="tm-kicker" type="button" onClick={() => void navigate('/')}>
-            <span className="h-2 w-2 rounded-full bg-primary-500" />
-            Talent Marketplace
+          <button
+            className="rounded-[22px] border bg-[var(--app-surface)] px-3 py-2 shadow-sm transition hover:border-primary-200"
+            type="button"
+            onClick={() => void navigate('/')}
+          >
+            <BrandLockup className="w-[110px] sm:w-[126px]" />
           </button>
 
           <div className="flex items-center gap-2 sm:gap-3">

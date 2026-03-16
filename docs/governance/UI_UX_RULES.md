@@ -281,6 +281,7 @@ Apple-inspired UI rules:
 7. Cards, sheets, and panels may use subtle white layering and shadows, but the overall page background must still read as white first.
 8. Dark mode must mirror the same hierarchy through semantic theme tokens instead of feature-local ad hoc dark palettes.
 9. The brand palette should feel vivid, polished, and intentional. Do not default the customer-facing product identity to muddy or dull green-dominant branding unless a documented brand decision explicitly requires it.
+10. When the platform brand is `ASI`, shared theme tokens should anchor on the logo palette: royal blue as the primary action color, deeper navy-blue for emphasis, and silver-gray as the supporting neutral accent.
 
 ### 8.3 Contrast rules
 1. Follow WCAG 2.2 AA by default.

@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { BrandMark } from '@/components/ui/app-brand'
 import { AppBottomNav, AppSidebarNav, type AppNavItem } from '@/components/ui/app-shell-navigation'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -35,7 +36,8 @@ export function EmployerShell() {
       <div className="mx-auto flex min-h-screen max-w-[1420px] gap-6 px-4 pb-28 pt-4 sm:px-6 lg:px-8">
         <AppSidebarNav
           activeHref={location.pathname}
-          brand="Para equipos"
+          brand="ASI para equipos"
+          brandMark={<BrandMark />}
           description="Publica vacantes, descubre talento y coordina contrataciones con una experiencia clara."
           footer={
             <Button className="w-full" variant="outline" onClick={() => void navigate('/jobs')}>

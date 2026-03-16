@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { BrandLockup } from '@/components/ui/app-brand'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { cn } from '@/lib/utils/cn'
@@ -65,12 +66,12 @@ export function PublicShell() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
           <Link className="flex items-center gap-3 text-left" to="/">
-            <span className="flex size-11 items-center justify-center rounded-2xl border border-white/60 bg-white/80 text-sm font-semibold text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur">
-              TM
+            <span className="rounded-[22px] border border-white/70 bg-white/88 px-3 py-2 shadow-[var(--app-shadow-card)] backdrop-blur">
+              <BrandLockup className="w-[92px] sm:w-[108px]" />
             </span>
-            <div className="space-y-0.5">
-              <p className="text-sm font-semibold text-[var(--app-text)]">Talent Marketplace</p>
-              <p className="text-xs text-[var(--app-text-muted)]">Encuentra oportunidades y haz crecer tu equipo con más claridad</p>
+            <div className="hidden space-y-0.5 sm:block">
+              <p className="text-sm font-semibold text-[var(--app-text)]">Plataforma ASI</p>
+              <p className="text-xs text-[var(--app-text-muted)]">Talento, vacantes y trabajo en equipo con una identidad más clara</p>
             </div>
           </Link>
 

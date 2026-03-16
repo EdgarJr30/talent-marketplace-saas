@@ -1,5 +1,14 @@
-const APP_SHELL_CACHE = 'talent-marketplace-shell-v1'
-const APP_SHELL_ASSETS = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg', '/icons/app-icon.svg']
+const APP_SHELL_CACHE = 'asi-platform-shell-v2'
+const APP_SHELL_ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.webmanifest',
+  '/favicon.png',
+  '/icons/app-icon-192.png',
+  '/icons/app-icon-512.png',
+  '/brand/asi-logo-light.png',
+  '/brand/asi-logo-white-transparent.png'
+]
 const STATIC_DESTINATIONS = new Set(['style', 'script', 'font', 'image', 'manifest'])
 
 function buildNotificationUrl(data = {}) {
@@ -32,7 +41,7 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('push', (event) => {
   const payload = event.data ? event.data.json() : {}
-  const notificationTitle = payload.title || 'Talent Marketplace SaaS'
+  const notificationTitle = payload.title || 'ASI Rep. Dominicana'
   const notificationBody = payload.body || 'You have a new update waiting in the app.'
   const data = {
     actionUrl: payload.actionUrl || '/',
@@ -44,8 +53,8 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(notificationTitle, {
       body: notificationBody,
-      icon: '/icons/app-icon.svg',
-      badge: '/icons/app-icon.svg',
+      icon: '/icons/app-icon-192.png',
+      badge: '/icons/app-icon-192.png',
       tag: payload.notificationId || `push-${Date.now()}`,
       renotify: true,
       data

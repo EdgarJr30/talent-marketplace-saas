@@ -5,37 +5,37 @@
 @theme {
   --font-sans: "Manrope", "Segoe UI", sans-serif;
 
-  --color-primary-50: #fff3ee;
-  --color-primary-100: #ffe3d6;
-  --color-primary-200: #ffc7ab;
-  --color-primary-300: #ff9f78;
-  --color-primary-400: #ff7b4d;
-  --color-primary-500: #ff6433;
-  --color-primary-600: #e34d21;
-  --color-primary-700: #bd3b1a;
+  --color-primary-50: #eff3ff;
+  --color-primary-100: #dfe7ff;
+  --color-primary-200: #c6d4ff;
+  --color-primary-300: #9fb6ff;
+  --color-primary-400: #6f8ef4;
+  --color-primary-500: #4f6ed8;
+  --color-primary-600: #3955b8;
+  --color-primary-700: #2b418f;
 
-  --color-secondary-50: #fff7e7;
-  --color-secondary-100: #ffeabf;
-  --color-secondary-200: #ffd98a;
-  --color-secondary-300: #ffc557;
-  --color-secondary-400: #ffb127;
-  --color-secondary-500: #f79a00;
-  --color-secondary-600: #d77b00;
+  --color-secondary-50: #f4f6fb;
+  --color-secondary-100: #e8edf5;
+  --color-secondary-200: #d4dce8;
+  --color-secondary-300: #b7c3d5;
+  --color-secondary-400: #90a0b9;
+  --color-secondary-500: #6d7f9a;
+  --color-secondary-600: #55657f;
 
-  --color-accent-50: #eef4ff;
-  --color-accent-100: #dce8ff;
-  --color-accent-200: #bed3ff;
-  --color-accent-300: #94b5ff;
-  --color-accent-400: #6893ff;
-  --color-accent-500: #456fff;
-  --color-accent-600: #3556db;
+  --color-accent-50: #edf2ff;
+  --color-accent-100: #dbe5ff;
+  --color-accent-200: #bfd0ff;
+  --color-accent-300: #9bb4ff;
+  --color-accent-400: #7190ef;
+  --color-accent-500: #506fd6;
+  --color-accent-600: #3d57a7;
 
-  --color-peach-50: #fff1f6;
-  --color-peach-100: #ffdce8;
-  --color-peach-200: #ffb7d0;
-  --color-peach-300: #ff8db1;
-  --color-peach-400: #ff5f90;
-  --color-peach-500: #f23a74;
+  --color-peach-50: #f4f7ff;
+  --color-peach-100: #e8eeff;
+  --color-peach-200: #d5e0ff;
+  --color-peach-300: #b8c9ff;
+  --color-peach-400: #93acff;
+  --color-peach-500: #6f89ef;
 
   --radius-card: 1.5rem;
   --radius-panel: 1.25rem;
@@ -45,44 +45,44 @@
 :root {
   color-scheme: light;
   --app-canvas: #ffffff;
-  --app-canvas-strong: #fff9f6;
+  --app-canvas-strong: #f4f7ff;
   --app-surface: #ffffff;
-  --app-surface-muted: #fff8f4;
+  --app-surface-muted: #f6f8fd;
   --app-surface-elevated: rgba(255, 255, 255, 0.94);
-  --app-border: rgba(78, 63, 104, 0.14);
-  --app-border-strong: rgba(78, 63, 104, 0.22);
-  --app-text: #1a1730;
-  --app-text-muted: #5f5874;
-  --app-text-subtle: #847d98;
-  --app-shadow-soft: 0 18px 40px rgba(64, 45, 95, 0.08);
-  --app-shadow-card: 0 12px 30px rgba(55, 37, 82, 0.08);
-  --app-shadow-floating: 0 30px 72px rgba(51, 32, 79, 0.14);
-  --app-ring: rgba(69, 111, 255, 0.24);
+  --app-border: rgba(48, 74, 138, 0.14);
+  --app-border-strong: rgba(48, 74, 138, 0.24);
+  --app-text: #15203b;
+  --app-text-muted: #586680;
+  --app-text-subtle: #8290ab;
+  --app-shadow-soft: 0 18px 40px rgba(25, 42, 86, 0.08);
+  --app-shadow-card: 0 12px 30px rgba(25, 42, 86, 0.08);
+  --app-shadow-floating: 0 30px 72px rgba(24, 39, 78, 0.14);
+  --app-ring: rgba(57, 85, 184, 0.24);
   --app-success-surface: #eef8f4;
   --app-info-surface: #eef4ff;
-  --app-warning-surface: #fff6e4;
+  --app-warning-surface: #f5f7fc;
   --app-danger-surface: #fff0f6;
 }
 
 .dark {
   color-scheme: dark;
-  --app-canvas: #0f1220;
-  --app-canvas-strong: #151a2d;
-  --app-surface: #171d31;
-  --app-surface-muted: #1d243b;
-  --app-surface-elevated: rgba(24, 30, 49, 0.9);
-  --app-border: rgba(215, 221, 255, 0.12);
-  --app-border-strong: rgba(215, 221, 255, 0.19);
-  --app-text: #f4f5fb;
-  --app-text-muted: #c3c8dc;
-  --app-text-subtle: #9198b3;
+  --app-canvas: #091127;
+  --app-canvas-strong: #101934;
+  --app-surface: #101d3f;
+  --app-surface-muted: #152551;
+  --app-surface-elevated: rgba(14, 25, 55, 0.9);
+  --app-border: rgba(182, 198, 255, 0.14);
+  --app-border-strong: rgba(182, 198, 255, 0.22);
+  --app-text: #f4f7ff;
+  --app-text-muted: #c9d3ee;
+  --app-text-subtle: #92a2c8;
   --app-shadow-soft: 0 18px 44px rgba(0, 0, 0, 0.3);
   --app-shadow-card: 0 16px 34px rgba(0, 0, 0, 0.24);
   --app-shadow-floating: 0 28px 70px rgba(0, 0, 0, 0.36);
-  --app-ring: rgba(104, 141, 255, 0.34);
+  --app-ring: rgba(111, 142, 244, 0.34);
   --app-success-surface: rgba(91, 208, 163, 0.12);
-  --app-info-surface: rgba(104, 141, 255, 0.16);
-  --app-warning-surface: rgba(247, 154, 0, 0.16);
+  --app-info-surface: rgba(111, 142, 244, 0.18);
+  --app-warning-surface: rgba(135, 153, 201, 0.16);
   --app-danger-surface: rgba(242, 58, 116, 0.16);
 }
 
@@ -107,10 +107,10 @@
 
   .dark body {
     background-image:
-      radial-gradient(circle at top left, rgba(255, 100, 51, 0.16), transparent 24%),
-      radial-gradient(circle at top right, rgba(69, 111, 255, 0.2), transparent 22%),
-      radial-gradient(circle at bottom center, rgba(242, 58, 116, 0.12), transparent 18%),
-      linear-gradient(180deg, rgba(15, 18, 32, 1) 0%, rgba(20, 25, 44, 1) 100%);
+      radial-gradient(circle at top left, rgba(57, 85, 184, 0.26), transparent 24%),
+      radial-gradient(circle at top right, rgba(111, 142, 244, 0.18), transparent 22%),
+      radial-gradient(circle at bottom center, rgba(144, 160, 185, 0.12), transparent 18%),
+      linear-gradient(180deg, rgba(9, 17, 39, 1) 0%, rgba(16, 25, 52, 1) 100%);
   }
 
   #root {

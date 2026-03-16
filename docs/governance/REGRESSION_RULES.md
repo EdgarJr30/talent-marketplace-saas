@@ -162,7 +162,7 @@ Do not hide theme changes behind internal-only settings or remove the user-facin
 Do not ship public landing navigation, hero copy, feature copy, pricing text, FAQ entries, or footer labels copied directly from Tailwind demos or other starter templates. Customer-facing routes must use product-specific content tied to real platform flows, routes, and domain language.
 
 ### R-045 — The brand palette must not regress to dull green-first product chrome
-Do not default the customer-facing app back to muddy, dull, or green-dominant branding. Shared theme tokens should favor a more vivid, polished palette and reserve green for semantic success use only when it improves clarity.
+Do not default the customer-facing app back to muddy, dull, or green-dominant branding. The ASI customer-facing identity should stay anchored in the logo palette: royal blue primary actions, deeper navy emphasis, and silver-gray support tones, while green stays reserved for semantic success use only when it improves clarity.
 
 ### R-046 — Customer-facing copy must stay benefit-first and non-technical
 Do not fill public, auth, candidate, or employer surfaces with implementation language such as `RBAC`, `RLS`, `tenant`, `membership`, `Supabase`, audits, or platform-ops jargon unless the user must act on that exact concept. Customer-facing copy should explain value, outcomes, and next steps in commercial product language.

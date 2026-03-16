@@ -51,6 +51,7 @@ export function AppSidebarNav({
   title,
   description,
   brand,
+  brandMark,
   items,
   activeHref,
   onNavigate,
@@ -59,6 +60,7 @@ export function AppSidebarNav({
   title: string
   description: string
   brand: string
+  brandMark?: ReactNode
   items: AppNavItem[]
   activeHref: string
   onNavigate: (href: string) => void
@@ -67,7 +69,10 @@ export function AppSidebarNav({
   return (
     <aside className="hidden w-[296px] shrink-0 rounded-[28px] border bg-[var(--app-surface-elevated)] p-5 shadow-[var(--app-shadow-soft)] lg:flex lg:flex-col">
       <div className="space-y-4">
-        <div className="tm-kicker w-fit">{brand}</div>
+        <div className="flex items-center gap-3">
+          {brandMark ?? null}
+          <div className="tm-kicker w-fit">{brand}</div>
+        </div>
         <div className="space-y-2">
           <p className="text-[1.5rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[1.65rem]">{title}</p>
           <p className="text-sm leading-6 text-[var(--app-text-muted)]">{description}</p>
@@ -118,7 +123,7 @@ export function AppBottomNav({
   onNavigate: (href: string) => void
 }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 border-t bg-[color:var(--app-surface-elevated)] px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-10px_26px_rgba(60,42,88,0.12)] backdrop-blur-xl lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 border-t bg-[color:var(--app-surface-elevated)] px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-10px_26px_rgba(24,39,78,0.14)] backdrop-blur-xl lg:hidden">
       <div className="grid grid-cols-4 gap-2">
         {items.map((item) => {
           const Icon = resolveIcon(item)

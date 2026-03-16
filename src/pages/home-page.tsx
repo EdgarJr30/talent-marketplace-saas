@@ -207,7 +207,7 @@ const pricingSections = [
 
 const faqs = [
   {
-    question: 'Qué hace diferente a Talent Marketplace?',
+    question: 'Qué hace diferente a ASI?',
     answer:
       'Reúne candidatos, vacantes y trabajo en equipo en una experiencia más clara para aplicar, contratar y dar seguimiento sin tantas vueltas.'
   },
@@ -312,7 +312,7 @@ export function HomePage() {
           className="absolute inset-x-0 top-0 -z-10 h-[54rem] opacity-90"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 12% 14%, rgba(255, 100, 51, 0.2), transparent 24%), radial-gradient(circle at 86% 10%, rgba(69, 111, 255, 0.18), transparent 24%), radial-gradient(circle at 82% 34%, rgba(247, 154, 0, 0.16), transparent 20%)'
+              'radial-gradient(circle at 12% 14%, rgba(57, 85, 184, 0.2), transparent 24%), radial-gradient(circle at 86% 10%, rgba(111, 142, 244, 0.16), transparent 24%), radial-gradient(circle at 82% 34%, rgba(143, 160, 185, 0.16), transparent 20%)'
           }}
         />
 
@@ -326,8 +326,8 @@ export function HomePage() {
                 Publica vacantes, descubre talento y mueve cada proceso con una experiencia más clara y atractiva
               </h1>
               <p className="mt-7 max-w-2xl text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
-                Talent Marketplace conecta candidatos y empresas en un mismo producto para que descubrir oportunidades,
-                contratar mejor y colaborar en equipo se sienta simple desde el primer vistazo.
+                ASI conecta candidatos y empresas en un mismo producto para que descubrir oportunidades, contratar
+                mejor y colaborar en equipo se sienta simple desde el primer vistazo.
               </p>
 
               <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -562,7 +562,7 @@ export function HomePage() {
                 className="absolute inset-x-0 bottom-[-10rem] hidden h-72 rounded-full blur-3xl lg:block"
                 style={{
                   background:
-                    'radial-gradient(circle at center, rgba(255, 100, 51, 0.26), transparent 54%), radial-gradient(circle at 78% 42%, rgba(69, 111, 255, 0.24), transparent 48%)'
+                    'radial-gradient(circle at center, rgba(57, 85, 184, 0.24), transparent 54%), radial-gradient(circle at 78% 42%, rgba(111, 142, 244, 0.2), transparent 48%)'
                 }}
               />
 
@@ -848,7 +848,7 @@ export function HomePage() {
             <div
               aria-hidden="true"
               className="absolute right-0 bottom-0 h-48 w-48 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle at center, rgba(255, 100, 51, 0.24), transparent 64%)' }}
+              style={{ background: 'radial-gradient(circle at center, rgba(57, 85, 184, 0.2), transparent 64%)' }}
             />
             <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="max-w-2xl">
@@ -916,8 +916,8 @@ export function HomePage() {
           </div>
 
           <p className="mt-10 text-center text-sm leading-6 text-[var(--app-text-muted)]">
-            &copy; {footerYear} Talent Marketplace SaaS. Vacantes públicas, perfiles reutilizables y trabajo en equipo
-            en una experiencia de hiring mucho más clara.
+            &copy; {footerYear} ASI Rep. Dominicana. Vacantes públicas, perfiles reutilizables y trabajo en equipo en
+            una experiencia de hiring mucho más clara.
           </p>
         </div>
       </footer>

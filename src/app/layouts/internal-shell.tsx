@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { BrandMark } from '@/components/ui/app-brand'
 import { AppSidebarNav } from '@/components/ui/app-shell-navigation'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -19,7 +20,8 @@ export function InternalShell() {
       <div className="mx-auto flex min-h-screen max-w-[1420px] gap-6 px-4 pb-16 pt-4 sm:px-6 lg:px-8">
         <AppSidebarNav
           activeHref={location.pathname}
-          brand="Internal only"
+          brand="ASI interno"
+          brandMark={<BrandMark panelClassName="bg-[var(--app-text)]" />}
           description="Zona restringida para operaciones, aprobaciones, moderación y seguimiento técnico."
           footer={
             <Button className="w-full" variant="outline" onClick={() => void navigate('/')}>

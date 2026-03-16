@@ -281,13 +281,13 @@ export function RecruiterRequestPage() {
             <form className="space-y-4" onSubmit={(event) => void form.handleSubmit((values) => submitMutation.mutate(values))(event)}>
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Nombre comercial</span>
-                <Input placeholder="Talent Marketplace DR" {...form.register('requestedCompanyName')} />
+                <Input placeholder="ASI Rep. Dominicana" {...form.register('requestedCompanyName')} />
                 <p className="text-xs text-rose-600 dark:text-rose-300">{form.formState.errors.requestedCompanyName?.message}</p>
               </label>
 
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Razon social</span>
-                <Input placeholder="Talent Marketplace Dominicana SRL" {...form.register('requestedCompanyLegalName')} />
+                <Input placeholder="ASI Republica Dominicana SRL" {...form.register('requestedCompanyLegalName')} />
               </label>
 
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
