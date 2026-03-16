@@ -79,7 +79,7 @@ export function ModerationOverviewPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#ffe4e6_0,transparent_30%),linear-gradient(135deg,#fff1f2,white_42%,#eff6ff_82%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(225,29,72,0.18)_0,transparent_26%),linear-gradient(135deg,rgba(36,12,20,0.96),rgba(9,9,11,0.95)_44%,rgba(10,17,34,0.95))]">
+      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">Moderation ops</Badge>
           <CardTitle>Moderacion y trust operations</CardTitle>

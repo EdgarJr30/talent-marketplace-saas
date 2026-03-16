@@ -106,7 +106,7 @@ export function ErrorLogReviewPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="border-primary-100 bg-[linear-gradient(160deg,#eef2ff,white_42%,#ecfeff)] dark:border-zinc-800 dark:bg-[linear-gradient(160deg,rgba(14,18,34,0.96),rgba(9,9,11,0.94)_42%,rgba(8,22,28,0.95))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">Admin errors</Badge>
           <CardTitle>Bandeja administrativa de errores</CardTitle>

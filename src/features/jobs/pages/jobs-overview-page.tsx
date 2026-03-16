@@ -11,7 +11,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
+import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import { fetchMyCandidateProfile } from '@/features/candidate-profile/lib/candidate-profile-api'
@@ -586,51 +588,25 @@ export function JobsOverviewPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#fde68a_0,transparent_30%),linear-gradient(135deg,#fffbeb,white_40%,#ecfeff_78%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(180,83,9,0.24)_0,transparent_28%),linear-gradient(135deg,rgba(39,23,7,0.96),rgba(9,9,11,0.94)_44%,rgba(9,24,28,0.95))]">
-        <CardHeader className="space-y-3">
-          <Badge variant="soft">Jobs and discovery</Badge>
-          <CardTitle>Publica vacantes y descubre oportunidades desde la misma app</CardTitle>
-          <CardDescription>
-            Esta fase abre el marketplace publico de jobs y deja a employers gestionar drafts, publication y cierre con
-            reglas RBAC reales.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-[24px] border border-white/70 bg-white/90 p-4 dark:border-zinc-800 dark:bg-zinc-950/75">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Discovery publico</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">
-                {publicJobsQuery.data?.jobs.length ?? 0} vacantes visibles
-              </p>
-            </div>
-            <div className="rounded-[24px] border border-white/70 bg-white/90 p-4 dark:border-zinc-800 dark:bg-zinc-950/75">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Jobs del tenant</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{tenantJobsQuery.data?.length ?? 0}</p>
-            </div>
-            <div className="rounded-[24px] border border-white/70 bg-white/90 p-4 dark:border-zinc-800 dark:bg-zinc-950/75">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Saved jobs</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">
-                {publicJobsQuery.data?.savedJobIds.length ?? 0}
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-[28px] border border-white/70 bg-white/88 p-5 dark:border-zinc-800 dark:bg-zinc-950/80">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Reglas activas</p>
-            <div className="mt-3 grid gap-2">
-              <div className="rounded-2xl bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                Drafts no son publicos hasta `published`.
-              </div>
-              <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
-                Saved jobs dependen del perfil candidato, no solo de auth.
-              </div>
-              <div className="rounded-2xl bg-sky-50 px-3 py-2 text-sm text-sky-800 dark:bg-sky-950/40 dark:text-sky-200">
-                Las preguntas screening quedan listas para la siguiente fase de applications.
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <PageHeader
+        eyebrow="Jobs"
+        title={canManageJobs ? 'Gestiona tus vacantes y cuida el discovery publico desde el mismo producto' : 'Descubre oportunidades con una experiencia clara y directa'}
+        description={
+          canManageJobs
+            ? 'Los jobs del tenant y el marketplace público comparten reglas reales, pero ahora cada vista se siente como producto y no como panel mixto.'
+            : 'Explora vacantes publicadas, guarda las que te interesan y revisa detalles sin ruido operativo.'
+        }
+      >
+        <StatCard label="Discovery" value={`${publicJobsQuery.data?.jobs.length ?? 0} jobs`} helper="Vacantes publicadas visibles en el marketplace." />
+        <StatCard label="Tenant jobs" value={tenantJobsQuery.data?.length ?? 0} helper="Drafts, publicadas o cerradas dentro de tu empresa." />
+        <StatCard label="Saved jobs" value={publicJobsQuery.data?.savedJobIds.length ?? 0} helper="Guardadas por el candidato para volver más tarde." />
+        <StatCard
+          className="bg-[var(--app-surface-muted)]"
+          label="Reglas"
+          value="Estado real"
+          helper="Un draft no es público hasta publicarlo y las preguntas de screening quedan listas para aplicar."
+        />
+      </PageHeader>
 
       {canManageJobs && workspaceQuery.data ? (
         <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">

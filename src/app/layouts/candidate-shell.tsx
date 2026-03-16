@@ -1,10 +1,15 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { AppBottomNav, AppSidebarNav, type AppNavItem } from '@/components/ui/app-shell-navigation'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { filterNavigationItems } from '@/lib/permissions/guards'
-import { cn } from '@/lib/utils/cn'
 import { candidateNavigationItems } from '@/shared/constants/navigation'
+
+function findNavItem(items: typeof candidateNavigationItems, href: string) {
+  return items.find((item) => item.href === href)
+}
 
 export function CandidateShell() {
   const navigate = useNavigate()
@@ -12,58 +17,73 @@ export function CandidateShell() {
   const session = useAppSession()
   const visibleNavigation = filterNavigationItems(candidateNavigationItems, session.permissions, session.isAuthenticated)
 
+  const primaryNav: AppNavItem[] = ['/jobs', '/applications', '/candidate/profile', '/onboarding']
+    .map((href) => findNavItem(visibleNavigation, href))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) => (item.href === '/onboarding' ? { ...item, title: 'More' } : item))
+
+  const sidebarNav: AppNavItem[] = [
+    ...['/candidate/profile', '/applications', '/jobs']
+      .map((href) => findNavItem(visibleNavigation, href))
+      .filter((item): item is NonNullable<typeof item> => Boolean(item)),
+    ...['/onboarding', '/recruiter-request']
+      .map((href) => findNavItem(visibleNavigation, href))
+      .filter((item): item is NonNullable<typeof item> => Boolean(item))
+  ]
+
+  const currentItem = sidebarNav.find((item) => item.href === location.pathname)
+
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f6f8fb_0%,#eef2f7_100%)]">
-      <header className="sticky top-0 z-20 border-b border-zinc-200/80 bg-white/92 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="text-lg font-semibold text-zinc-950">Tu espacio de talento</p>
-            <p className="text-sm text-zinc-500">Perfil reusable, vacantes y seguimiento de tus aplicaciones.</p>
-          </div>
+    <div className="tm-shell">
+      <div className="mx-auto flex min-h-screen max-w-[1380px] gap-6 px-4 pb-28 pt-4 sm:px-6 lg:px-8">
+        <AppSidebarNav
+          activeHref={location.pathname}
+          brand="Candidate app"
+          description="Perfil reusable, oportunidades y seguimiento claro desde una experiencia mobile-first."
+          footer={
+            <Button className="w-full" variant="outline" onClick={() => void navigate('/recruiter-request')}>
+              Solicitar acceso employer
+            </Button>
+          }
+          items={sidebarNav}
+          title="Tu espacio"
+          onNavigate={(href) => void navigate(href)}
+        />
 
-          <div className="hidden items-center gap-3 md:flex">
-            {visibleNavigation.map((item) => (
-              <button
-                key={item.href}
-                className={cn(
-                  'rounded-full px-4 py-2 text-sm font-medium transition',
-                  location.pathname === item.href ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950'
-                )}
-                type="button"
-                onClick={() => void navigate(item.href)}
-              >
-                {item.title}
-              </button>
-            ))}
-          </div>
+        <div className="flex min-h-screen flex-1 flex-col gap-5">
+          <header className="tm-shell-panel sticky top-4 z-20 rounded-[24px]">
+            <div className="flex flex-col gap-4 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
+                  Candidate flow
+                </p>
+                <p className="text-lg font-semibold tracking-tight text-[var(--app-text)]">
+                  {currentItem?.title ?? 'Tu espacio de talento'}
+                </p>
+                <p className="text-sm text-[var(--app-text-muted)]">
+                  {currentItem?.description ?? 'Mantén tu perfil al día, aplica rápido y revisa tu avance sin fricción.'}
+                </p>
+              </div>
 
-          <Button variant="outline" onClick={() => void navigate('/jobs')}>
-            Ver jobs
-          </Button>
+              <div className="flex flex-wrap gap-3">
+                <ThemeToggle />
+                <Button variant="outline" onClick={() => void navigate('/jobs')}>
+                  Explorar jobs
+                </Button>
+                <Button variant="ghost" onClick={() => void navigate('/onboarding')}>
+                  Onboarding
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1">
+            <Outlet />
+          </main>
         </div>
-      </header>
+      </div>
 
-      <main className="mx-auto max-w-[1280px] px-4 pb-28 pt-6 sm:px-6 lg:px-8">
-        <Outlet />
-      </main>
-
-      <nav className="fixed bottom-0 left-0 right-0 z-20 border-t border-zinc-200 bg-white/96 px-3 py-2 backdrop-blur-xl md:hidden">
-        <div className="grid grid-cols-4 gap-2">
-          {visibleNavigation.slice(0, 4).map((item) => (
-            <button
-              key={item.href}
-              className={cn(
-                'rounded-2xl px-3 py-3 text-center text-xs font-semibold transition',
-                location.pathname === item.href ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100'
-              )}
-              type="button"
-              onClick={() => void navigate(item.href)}
-            >
-              {item.title}
-            </button>
-          ))}
-        </div>
-      </nav>
+      <AppBottomNav activeHref={location.pathname} items={primaryNav} onNavigate={(href) => void navigate(href)} />
     </div>
   )
 }

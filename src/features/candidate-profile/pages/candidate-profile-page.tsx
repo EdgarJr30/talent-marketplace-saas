@@ -10,7 +10,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
+import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
@@ -384,89 +386,87 @@ function CandidateProfileEditor({
 
   return (
     <div className="space-y-6">
-      <Card className="border-primary-100 bg-[radial-gradient(circle_at_top_left,#dcfce7_0,transparent_28%),linear-gradient(135deg,#f0fdf4,white_38%,#eff6ff_76%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(6,78,59,0.22)_0,transparent_28%),linear-gradient(135deg,rgba(8,26,19,0.96),rgba(9,9,11,0.94)_40%,rgba(10,20,32,0.95))]">
-        <CardHeader className="space-y-3">
-          <Badge variant="soft">Candidate profile</Badge>
-          <CardTitle>Construye tu perfil candidato reusable</CardTitle>
+      <PageHeader
+        eyebrow="Candidate profile"
+        title="Construye un perfil reusable para aplicar y también para ser descubierto"
+        description="Tu identidad candidata vive fuera del tenant. Aquí mantienes tu CV, tu resumen profesional y la visibilidad opt-in para recruiters."
+      >
+        <StatCard
+          helper={session.profile?.email}
+          label="Cuenta"
+          value={session.profile?.display_name ?? session.profile?.full_name ?? 'Perfil candidato'}
+        />
+        <StatCard
+          helper="Mientras más completo esté el perfil, más rápido será aplicar después."
+          label="Completitud"
+          value={`${completenessScore}%`}
+        />
+        <StatCard label="CVs" value={resumes.length} helper={`Storage privado con límite de ${MAX_UPLOAD_SIZE_LABEL}.`} />
+        <StatCard
+          className="bg-[var(--app-surface-muted)]"
+          helper={isVisibleToRecruiters ? 'Visible para recruiters autorizados.' : 'Aún no visible en el directorio employer.'}
+          label="Visibilidad"
+          value={isVisibleToRecruiters ? 'Activa' : 'Privada'}
+        />
+      </PageHeader>
+
+      <Card className="bg-[var(--app-surface-muted)]">
+        <CardHeader>
+          <CardTitle>Checklist viva del perfil</CardTitle>
           <CardDescription>
-            Esta capa prepara el perfil profesional, el CV y la completitud que luego reutilizaremos en jobs y applications.
+            Mantén estas piezas al día para que aplicar sea rápido y tu perfil se vea sólido cuando te busquen.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[24px] border border-white/70 bg-white/85 p-4 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/75">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Cuenta candidata</p>
-                <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-                  {session.profile?.display_name ?? session.profile?.full_name}
-                </p>
-                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{session.profile?.email}</p>
-              </div>
-              <div className="rounded-[24px] border border-white/70 bg-white/85 p-4 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/75">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Completitud</p>
-                <p className="mt-2 text-3xl font-semibold text-zinc-900 dark:text-zinc-50">{completenessScore}%</p>
-                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                  Mientras mas completo este el perfil, mas rapido sera aplicar despues.
-                </p>
-              </div>
-            </div>
-
-            <div className="rounded-[28px] border border-white/70 bg-white/85 p-5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/75">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Checklist viva</p>
-              <div className="mt-4 grid gap-2">
-                <div className={`rounded-2xl px-3 py-2 text-sm ${completionTone}`}>
-                  Perfil base profesional y metadatos de ubicacion conectados a la cuenta.
-                </div>
-                <div className="rounded-2xl bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                  CV privado en Storage con maximo {MAX_UPLOAD_SIZE_LABEL}, listo para reuso futuro.
-                </div>
-                <div className="rounded-2xl bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                  Experiencia, educacion, skills, idiomas y links como bloques editables.
-                </div>
-                <div className="rounded-2xl bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                  Puedes activar visibilidad opt-in para que empresas te encuentren aun sin haber aplicado.
-                </div>
-              </div>
-            </div>
+        <CardContent className="grid gap-2 sm:grid-cols-2">
+          <div className={`rounded-2xl px-3 py-3 text-sm ${completionTone}`}>
+            Perfil base profesional y metadatos de ubicación conectados a la cuenta.
           </div>
+          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+            CV privado en Storage, listo para reuso futuro.
+          </div>
+          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+            Experiencia, educación, skills, idiomas y links como bloques editables.
+          </div>
+          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+            Activa visibilidad opt-in si quieres que empresas te encuentren sin haber aplicado.
+          </div>
+        </CardContent>
+      </Card>
 
-          <div className="rounded-[28px] border border-zinc-200 bg-white/90 p-5 dark:border-zinc-800 dark:bg-zinc-950/80">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Estado del candidato</p>
-            <h3 className="mt-3 text-xl font-semibold text-zinc-950 dark:text-zinc-50">
-              Tu identidad global vive fuera del tenant
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-              Este perfil te acompana como candidato aunque tambien tengas acceso recruiter o multiples memberships.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Badge variant="outline">{resumes.length > 0 ? `${resumes.length} CVs` : 'Sin CV'}</Badge>
-              <Badge variant="outline">{sanitizeCandidateSkillList(skills).length} skills</Badge>
-              <Badge variant="outline">{sanitizeCandidateLanguageList(languages).length} idiomas</Badge>
-              <Badge variant="outline">{sanitizeCandidateExperienceList(experiences).length} experiencias</Badge>
-              <Badge variant={isVisibleToRecruiters ? 'soft' : 'outline'}>
-                {isVisibleToRecruiters ? 'Visible para recruiters' : 'No visible en directorio'}
-              </Badge>
-            </div>
-            <div className="mt-4 rounded-[24px] border border-zinc-200 px-4 py-4 dark:border-zinc-800">
-              <label className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <input
-                  type="checkbox"
-                  checked={isVisibleToRecruiters}
-                  disabled={visibilityMutation.isPending}
-                  onChange={(event) => {
-                    const nextValue = event.target.checked
-                    setIsVisibleToRecruiters(nextValue)
-                    visibilityMutation.mutate(nextValue)
-                  }}
-                />
-                <span>
-                  Permitir que recruiters con permiso encuentren este perfil en el directorio de talento.
-                  <span className="mt-1 block text-xs text-zinc-500">
-                    Esto no afecta tu capacidad de aplicar a vacantes si prefieres mantener el perfil oculto.
-                  </span>
+      <Card>
+        <CardHeader>
+          <CardTitle>Estado del candidato</CardTitle>
+          <CardDescription>Tu perfil te acompaña aunque también tengas acceso employer o múltiples memberships.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="outline">{resumes.length > 0 ? `${resumes.length} CVs` : 'Sin CV'}</Badge>
+            <Badge variant="outline">{sanitizeCandidateSkillList(skills).length} skills</Badge>
+            <Badge variant="outline">{sanitizeCandidateLanguageList(languages).length} idiomas</Badge>
+            <Badge variant="outline">{sanitizeCandidateExperienceList(experiences).length} experiencias</Badge>
+            <Badge variant={isVisibleToRecruiters ? 'soft' : 'outline'}>
+              {isVisibleToRecruiters ? 'Visible para recruiters' : 'No visible en directorio'}
+            </Badge>
+          </div>
+          <div className="mt-4 rounded-[24px] border px-4 py-4">
+            <label className="flex items-start gap-3 text-sm text-[var(--app-text-muted)]">
+              <input
+                type="checkbox"
+                checked={isVisibleToRecruiters}
+                disabled={visibilityMutation.isPending}
+                onChange={(event) => {
+                  const nextValue = event.target.checked
+                  setIsVisibleToRecruiters(nextValue)
+                  visibilityMutation.mutate(nextValue)
+                }}
+              />
+              <span>
+                Permitir que recruiters con permiso encuentren este perfil en el directorio de talento.
+                <span className="mt-1 block text-xs text-[var(--app-text-subtle)]">
+                  Esto no afecta tu capacidad de aplicar a vacantes si prefieres mantener el perfil oculto.
                 </span>
-              </label>
-            </div>
+              </span>
+            </label>
           </div>
         </CardContent>
       </Card>
@@ -523,7 +523,7 @@ function CandidateProfileEditor({
           <CardHeader>
             <CardTitle>CV privado</CardTitle>
             <CardDescription>
-              Sube versiones reutilizables. El bucket `candidate-resumes` es privado y limita cada archivo a {MAX_UPLOAD_SIZE_LABEL}.
+              Sube versiones reutilizables. Cada archivo se guarda de forma privada y mantiene un límite de {MAX_UPLOAD_SIZE_LABEL}.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

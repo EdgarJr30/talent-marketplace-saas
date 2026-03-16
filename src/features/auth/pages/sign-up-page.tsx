@@ -36,9 +36,9 @@ export function SignUpPage() {
     return (
       <Card className="mx-auto max-w-3xl">
         <CardHeader>
-          <CardTitle>Supabase aun no esta configurado</CardTitle>
+          <CardTitle>El registro aun no esta disponible</CardTitle>
           <CardDescription>
-            Completa `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` para habilitar registro, onboarding y aprobaciones.
+            Estamos terminando de preparar el servicio de autenticacion para habilitar registro, onboarding y aprobaciones.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -80,16 +80,16 @@ export function SignUpPage() {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+    <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
       <AuthHeroPanel
         eyebrow="Registro"
         title="Crea tu cuenta base y entra al producto por el camino correcto desde el primer dia"
-        description="Nadie entra como recruiter directo. Primero se crea la cuenta, luego se completa el perfil y despues se solicita validacion employer si aplica."
+        description="Primero nace la cuenta, luego el perfil y despues la validacion employer si aplica. Asi el recorrido se siente claro desde el inicio."
       />
 
-      <Card className="border-zinc-200 bg-white">
+      <Card className="bg-[var(--app-surface)]">
         <CardHeader className="space-y-3">
-          <div className="inline-flex w-fit items-center rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-700">
+          <div className="tm-kicker w-fit">
             Crear cuenta
           </div>
           <CardTitle>Crea tu usuario base</CardTitle>
@@ -99,19 +99,19 @@ export function SignUpPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
-            <label className="space-y-2 text-sm font-medium text-zinc-800">
+            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
               <span>Nombre completo</span>
               <Input placeholder="Edgar Perez" {...form.register('fullName')} />
               <FieldError message={form.formState.errors.fullName?.message} />
             </label>
 
-            <label className="space-y-2 text-sm font-medium text-zinc-800">
+            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
               <span>Email</span>
               <Input autoComplete="email" placeholder="tu@correo.com" type="email" {...form.register('email')} />
               <FieldError message={form.formState.errors.email?.message} />
             </label>
 
-            <label className="space-y-2 text-sm font-medium text-zinc-800">
+            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
               <span>Contrasena</span>
               <Input autoComplete="new-password" placeholder="Minimo 8 caracteres" type="password" {...form.register('password')} />
               <FieldError message={form.formState.errors.password?.message} />
@@ -122,9 +122,9 @@ export function SignUpPage() {
             </Button>
           </form>
 
-          <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 px-4 py-4 text-sm leading-6 text-zinc-600">
+          <div className="rounded-[24px] border bg-[var(--app-surface)] px-4 py-4 text-sm leading-6 text-[var(--app-text-muted)]">
             Ya tienes cuenta?{' '}
-            <Link className="font-semibold text-emerald-700" to="/auth/sign-in">
+            <Link className="font-semibold text-primary-700" to="/auth/sign-in">
               Inicia sesion
             </Link>
           </div>

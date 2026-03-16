@@ -184,7 +184,7 @@ export function OnboardingPage() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-      <Card className="border-primary-100 bg-[linear-gradient(160deg,#fefce8,white_40%,#eff6ff)] dark:border-zinc-800 dark:bg-[linear-gradient(160deg,rgba(24,21,10,0.96),rgba(9,9,11,0.94)_42%,rgba(12,19,28,0.95))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">Standard onboarding</Badge>
           <CardTitle>Completa tu perfil base de plataforma</CardTitle>
@@ -232,7 +232,7 @@ export function OnboardingPage() {
               <p className="text-xs text-zinc-500">
                 Acepta SVG, PNG, JPG y WEBP. Las imagenes raster se comprimen antes de subirlas y el limite es {MAX_UPLOAD_SIZE_LABEL}.
               </p>
-              <p className="text-xs text-zinc-500">Se guarda en el bucket privado `user-media`.</p>
+              <p className="text-xs text-zinc-500">Se guarda de forma privada y solo queda visible para ti dentro de tu cuenta.</p>
               {isPreparingAvatar ? (
                 <p className="text-xs text-zinc-500">Optimizando avatar antes de subir...</p>
               ) : null}

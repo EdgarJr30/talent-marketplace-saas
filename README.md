@@ -17,9 +17,11 @@ Construir una base escalable para:
 - React 19 + TypeScript + Vite
 - Tailwind CSS v4
 - Supabase
+- `lucide-react` para iconografia compartida
+- `src/components/ui` como design system local alineado a `shadcn/ui`
 - `i18next` + `react-i18next` para multi idioma
 - `react-hook-form` + `@hookform/resolvers` para formularios
-- `next-themes` para dark mode
+- `next-themes` para light/dark mode sobre tokens semanticos compartidos
 - `sonner` para feedback y notificaciones UX
 - PWA instalable con `manifest.webmanifest` y `service worker` propio
 - Arquitectura modular monolith orientada por dominio
@@ -196,6 +198,9 @@ Build a scalable foundation for:
 - React 19 + TypeScript + Vite
 - Tailwind CSS v4
 - Supabase
+- `lucide-react` for shared product iconography
+- `src/components/ui` as the local `shadcn/ui`-aligned design system
+- `next-themes` for token-driven light and dark mode
 - Installable PWA with a first-party `manifest.webmanifest` and service worker
 - Domain-oriented modular monolith architecture
 

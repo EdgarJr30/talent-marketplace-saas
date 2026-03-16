@@ -186,7 +186,7 @@ export function FoundationSettingsForm() {
 
   return (
     <section className="grid gap-4 lg:grid-cols-[1.35fr_0.95fr]">
-      <Card className="border-primary-100 bg-[linear-gradient(180deg,rgba(236,253,245,0.9),rgba(255,255,255,0.96))] dark:border-zinc-800 dark:bg-[linear-gradient(180deg,rgba(10,18,16,0.96),rgba(9,9,11,0.94))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">{t('foundations.title')}</Badge>
           <CardTitle>{t('foundations.title')}</CardTitle>

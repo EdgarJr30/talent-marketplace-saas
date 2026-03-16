@@ -113,7 +113,7 @@ export function JobApplicationPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#d1fae5_0,transparent_30%),linear-gradient(135deg,#f0fdf4,white_42%,#eff6ff_80%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(5,150,105,0.22)_0,transparent_28%),linear-gradient(135deg,rgba(7,26,18,0.96),rgba(9,9,11,0.94)_44%,rgba(11,19,34,0.95))]">
+      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
         <CardHeader className="space-y-3">
           <Badge variant="soft">Apply flow</Badge>
           <CardTitle>Postula a {jobQuery.data.title}</CardTitle>

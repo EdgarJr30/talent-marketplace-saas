@@ -24,17 +24,17 @@ describe('permission guards', () => {
     )
 
     expect(visibleItems.map((item) => item.title)).toEqual([
-      'Onboarding',
-      'Mi perfil',
       'Jobs',
       'Aplicaciones',
-      'Recruiter',
-      'Workspace',
-      'Vacantes',
-      'Talento',
+      'Perfil',
+      'Onboarding',
+      'Acceso employer',
+      'Company',
+      'Jobs',
+      'Candidates',
       'Pipeline',
       'Roles',
-      'Console',
+      'Overview',
       'Platform',
       'Errors'
     ])
@@ -48,7 +48,7 @@ describe('permission guards', () => {
     )
 
     expect(visibleInternal.map((item) => item.title)).toEqual([
-      'Console'
+      'Overview'
     ])
   })
 })

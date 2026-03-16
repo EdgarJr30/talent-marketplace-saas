@@ -35,7 +35,7 @@ export function BootstrapOwnerPage() {
       await reportErrorWithToast({
         title: 'No se pudo reclamar el rol inicial',
         source: 'auth.bootstrap-first-platform-owner',
-        route: '/auth/bootstrap-owner',
+        route: '/internal/bootstrap-owner',
         userId: session.authUser?.id ?? null,
         error,
         description,
@@ -57,7 +57,7 @@ export function BootstrapOwnerPage() {
       await reportErrorWithToast({
         title: 'No se pudo cerrar la sesion',
         source: 'auth.bootstrap.sign-out',
-        route: '/auth/bootstrap-owner',
+        route: '/internal/bootstrap-owner',
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),

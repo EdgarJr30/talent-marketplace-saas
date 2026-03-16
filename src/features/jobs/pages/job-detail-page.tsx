@@ -88,7 +88,7 @@ export function JobDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#bfdbfe_0,transparent_32%),linear-gradient(135deg,#eff6ff,white_40%,#f0fdf4_78%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(30,64,175,0.24)_0,transparent_28%),linear-gradient(135deg,rgba(9,18,33,0.96),rgba(9,9,11,0.94)_44%,rgba(8,24,20,0.95))]">
+      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
         <CardHeader className="space-y-3">
           <Badge variant="soft">Public job detail</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">{job.title}</CardTitle>

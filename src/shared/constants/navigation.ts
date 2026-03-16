@@ -2,10 +2,10 @@ import type { NavigationItem } from '@/shared/types/navigation'
 
 export const publicNavigationItems: NavigationItem[] = [
   {
-    title: 'Inicio',
+    title: 'Producto',
     titleKey: 'navigation.home.title',
     href: '/',
-    description: 'Landing del producto',
+    description: 'Landing comercial del producto',
     descriptionKey: 'navigation.home.description'
   },
   {
@@ -19,55 +19,55 @@ export const publicNavigationItems: NavigationItem[] = [
 
 export const candidateNavigationItems: NavigationItem[] = [
   {
-    title: 'Onboarding',
-    href: '/onboarding',
-    description: 'Completa tu identidad base',
-    requiresAuth: true
-  },
-  {
-    title: 'Mi perfil',
-    href: '/candidate/profile',
-    description: 'Perfil profesional y CV',
-    requiresAuth: true
-  },
-  {
     title: 'Jobs',
     href: '/jobs',
-    description: 'Explora vacantes'
+    description: 'Explora oportunidades publicas'
   },
   {
     title: 'Aplicaciones',
     href: '/applications',
-    description: 'Tus postulaciones',
+    description: 'Seguimiento de tus postulaciones',
     requiresAuth: true
   },
   {
-    title: 'Recruiter',
+    title: 'Perfil',
+    href: '/candidate/profile',
+    description: 'Perfil profesional, CV y visibilidad',
+    requiresAuth: true
+  },
+  {
+    title: 'Onboarding',
+    href: '/onboarding',
+    description: 'Datos base de tu cuenta',
+    requiresAuth: true
+  },
+  {
+    title: 'Acceso employer',
     href: '/recruiter-request',
-    description: 'Solicitar validacion employer',
+    description: 'Solicita validacion de empresa',
     requiresAuth: true
   }
 ]
 
 export const employerNavigationItems: NavigationItem[] = [
   {
-    title: 'Workspace',
+    title: 'Company',
     href: '/workspace',
-    description: 'Empresa, branding y miembros',
+    description: 'Identidad, equipo y presencia de empresa',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
-    title: 'Vacantes',
+    title: 'Jobs',
     href: '/jobs/manage',
-    description: 'Gestiona jobs y discovery',
+    description: 'Publica y administra vacantes',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
-    title: 'Talento',
+    title: 'Candidates',
     href: '/talent',
-    description: 'Buscar candidatos visibles',
+    description: 'Descubre talento visible',
     requiresAuth: true,
     requiredPermission: 'candidate_directory:read'
   },
@@ -89,9 +89,9 @@ export const employerNavigationItems: NavigationItem[] = [
 
 export const internalNavigationItems: NavigationItem[] = [
   {
-    title: 'Console',
+    title: 'Overview',
     href: '/internal',
-    description: 'Centro interno',
+    description: 'Centro operativo interno',
     requiresAuth: true
   },
   {

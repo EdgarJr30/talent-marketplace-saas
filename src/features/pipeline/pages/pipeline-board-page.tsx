@@ -8,7 +8,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
+import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { exportApplicationsCsv } from '@/features/applications/lib/applications-api'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
@@ -196,32 +198,15 @@ export function PipelineBoardPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#f8fafc)]">
-        <CardHeader className="space-y-4">
-          <div className="inline-flex w-fit items-center rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700">
-            ATS-lite
-          </div>
-          <CardTitle>Opera applicants por stage con historial auditable</CardTitle>
-          <CardDescription>
-            Una superficie mas clara para recruiters y hiring managers, con filtros, detalle lateral y acciones
-            operativas consistentes.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Applicants visibles</p>
-            <p className="mt-2 text-2xl font-semibold text-zinc-950">{filteredApplications.length}</p>
-          </div>
-          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Stages activos</p>
-            <p className="mt-2 text-2xl font-semibold text-zinc-950">{boardQuery.data.stages.length}</p>
-          </div>
-          <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Vacantes con pipeline</p>
-            <p className="mt-2 text-2xl font-semibold text-zinc-950">{tenantJobs.length}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <PageHeader
+        eyebrow="Pipeline"
+        title="Opera applicants por stage con una vista más clara y accionable"
+        description="Recruiters y hiring managers comparten una superficie limpia para filtrar, revisar detalle y mover candidatos sin perder contexto."
+      >
+        <StatCard label="Applicants" value={filteredApplications.length} helper="Visibles después de aplicar filtros." />
+        <StatCard label="Stages" value={boardQuery.data.stages.length} helper="Etapas activas configuradas para el tenant." />
+        <StatCard label="Jobs" value={tenantJobs.length} helper="Vacantes que hoy tienen applicants en pipeline." />
+      </PageHeader>
 
       <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="space-y-4">

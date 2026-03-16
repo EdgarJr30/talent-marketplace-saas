@@ -5,13 +5,16 @@ import { cn } from '@/lib/utils/cn'
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: 'bg-emerald-500 text-white shadow-[0_10px_24px_rgba(16,185,129,0.18)] hover:bg-emerald-400',
-  secondary: 'bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-200',
+  primary:
+    'border border-primary-600 bg-primary-600 text-white shadow-[0_12px_26px_rgba(76,143,105,0.18)] hover:border-primary-700 hover:bg-primary-700',
+  secondary:
+    'border border-accent-200 bg-accent-50 text-accent-600 shadow-sm hover:border-accent-300 hover:bg-accent-100 dark:border-accent-500/25 dark:bg-accent-500/10 dark:text-accent-200 dark:hover:bg-accent-500/16',
   outline:
-    'border border-zinc-300 bg-white text-zinc-900 shadow-sm hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:border-emerald-500 dark:hover:text-emerald-300',
+    'border bg-[var(--app-surface)] text-[var(--app-text)] shadow-sm hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 dark:hover:border-primary-400 dark:hover:bg-primary-500/12 dark:hover:text-primary-200',
   ghost:
-    'bg-transparent text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900',
-  danger: 'bg-rose-500 text-white hover:bg-rose-400'
+    'border border-transparent bg-transparent text-[var(--app-text-muted)] hover:bg-[var(--app-surface-muted)] hover:text-[var(--app-text)]',
+  danger:
+    'border border-rose-300 bg-rose-500 text-white shadow-[0_12px_26px_rgba(244,114,182,0.18)] hover:border-rose-400 hover:bg-rose-600 dark:border-rose-500/30 dark:bg-rose-500/90'
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -23,7 +26,7 @@ export function Button({ className, type = 'button', variant = 'primary', ...pro
     <button
       type={type}
       className={cn(
-        'inline-flex h-12 items-center justify-center rounded-2xl px-4 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 disabled:cursor-not-allowed disabled:opacity-60',
+        'inline-flex h-12 items-center justify-center gap-2 rounded-[20px] px-4 text-sm font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-canvas)] disabled:cursor-not-allowed disabled:opacity-60',
         buttonVariants[variant],
         className
       )}

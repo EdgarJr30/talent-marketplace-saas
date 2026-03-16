@@ -8,7 +8,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
+import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
@@ -240,55 +242,21 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#f5f9ff)]">
-        <CardHeader className="space-y-4">
-          <div className="inline-flex w-fit items-center rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-medium text-sky-700">
-            Employer workspace
-          </div>
-          <CardTitle>Configura la identidad operativa de tu workspace</CardTitle>
-          <CardDescription>
-            Deja lista la presencia de empresa, el branding base y la colaboracion del equipo antes de abrir jobs,
-            sourcing y pipeline.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Tenant slug</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{bundle.tenant.slug}</p>
-            </div>
-            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Estado</p>
-              <p className="mt-2 text-lg font-semibold capitalize text-zinc-950 dark:text-zinc-50">
-                {bundle.tenant.status}
-              </p>
-            </div>
-            <div className="rounded-[24px] border border-zinc-200 bg-white px-4 py-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Miembros activos</p>
-              <p className="mt-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">{activeMembershipCount}</p>
-            </div>
-          </div>
-
-          <div className="rounded-[30px] border border-zinc-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.05)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Workspace status</p>
-            <div className="mt-4 grid gap-3">
-              {[
-                { glyph: 'CP', text: 'Company profile editable con datos listos para jobs y discovery.' },
-                { glyph: 'MB', text: 'Miembros y roles operan sobre memberships reales del tenant.' },
-                { glyph: 'RB', text: 'Invitaciones pendientes y cambios de rol quedan auditados.' },
-                { glyph: 'MD', text: 'Branding y multimedia viven en Storage privado con reglas de upload.' }
-              ].map((item) => (
-                <div key={item.text} className="flex items-start gap-3 rounded-[22px] bg-zinc-50 px-4 py-4 text-sm leading-6 text-zinc-700">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 text-[11px] font-semibold tracking-[0.18em] text-white">
-                    {item.glyph}
-                  </div>
-                  <p>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <PageHeader
+        eyebrow="Company"
+        title="Configura la identidad de tu empresa y prepara el workspace para operar hiring"
+        description="La presencia de empresa, el branding y el equipo viven aquí antes de abrir jobs, candidate discovery y pipeline."
+      >
+        <StatCard label="Tenant" value={bundle.tenant.slug} helper="Slug operativo y público del workspace." />
+        <StatCard label="Estado" value={bundle.tenant.status} helper="Estado actual del tenant employer." />
+        <StatCard label="Miembros" value={activeMembershipCount} helper="Membresías activas dentro del workspace." />
+        <StatCard
+          className="bg-[var(--app-surface-muted)]"
+          helper="Invitaciones, cambios de rol y branding quedan auditados y aislados por tenant."
+          label="Gobierno"
+          value={invitedMembershipCount > 0 ? `${invitedMembershipCount} invitaciones` : 'Listo'}
+        />
+      </PageHeader>
 
       <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <Card className="bg-white">

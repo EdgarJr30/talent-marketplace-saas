@@ -41,15 +41,15 @@ export function InternalConsolePage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-sky-100 bg-[radial-gradient(circle_at_top_left,#e0f2fe_0,transparent_35%),linear-gradient(140deg,#f8fafc,white_36%,#eff6ff_65%,#f0fdf4)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(14,58,88,0.35)_0,transparent_26%),linear-gradient(140deg,rgba(6,14,24,0.98),rgba(9,9,11,0.95)_42%,rgba(8,20,28,0.95)_72%,rgba(7,18,15,0.92))]">
+      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
         <CardHeader className="space-y-3">
-          <Badge variant="soft">Internal console</Badge>
+          <Badge variant="soft">Internal only</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">
-            Workspace interno para pruebas, observabilidad y operaciones controladas
+            Centro interno para operaciones, observabilidad y gobierno de plataforma
           </CardTitle>
           <CardDescription className="max-w-2xl">
             Esta zona no forma parte de la experiencia cliente. Solo la usan admins de plataforma y developers internos
-            para validar notificaciones, revisar incidencias y operar workflows sensibles.
+            para revisar incidencias, validar flujos sensibles y operar tareas restringidas.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
@@ -104,7 +104,7 @@ export function InternalConsolePage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="outline" onClick={() => void navigate('/auth/bootstrap-owner')}>
+          <Button variant="outline" onClick={() => void navigate('/internal/bootstrap-owner')}>
             Abrir bootstrap owner
           </Button>
         </CardContent>

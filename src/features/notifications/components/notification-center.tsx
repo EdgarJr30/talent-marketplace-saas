@@ -104,7 +104,7 @@ export function NotificationCenter() {
 
   return (
     <section className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-      <Card className="border-sky-100 bg-[linear-gradient(180deg,rgba(239,246,255,0.92),rgba(255,255,255,0.96))] dark:border-zinc-800 dark:bg-[linear-gradient(180deg,rgba(8,18,30,0.95),rgba(9,9,11,0.94))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">{t('notifications.title')}</Badge>
           <CardTitle>{t('notifications.title')}</CardTitle>

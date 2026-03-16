@@ -73,14 +73,6 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'confirm',
         element: <AuthConfirmPage />
-      },
-      {
-        path: 'bootstrap-owner',
-        element: (
-          <RequireAuth>
-            <BootstrapOwnerPage />
-          </RequireAuth>
-        )
       }
     ]
   },
@@ -199,8 +191,16 @@ export const appRoutes: RouteObject[] = [
             <ErrorLogReviewPage />
           </RequirePermission>
         )
+      },
+      {
+        path: 'bootstrap-owner',
+        element: <BootstrapOwnerPage />
       }
     ]
+  },
+  {
+    path: '/auth/bootstrap-owner',
+    element: <Navigate replace to="/internal/bootstrap-owner" />
   },
   {
     path: '/admin/recruiter-requests',

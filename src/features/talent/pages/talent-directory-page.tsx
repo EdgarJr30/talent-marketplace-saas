@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/ui/page-header'
+import { StatCard } from '@/components/ui/stat-card'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
   fetchCandidateDirectoryDetail,
@@ -94,49 +96,43 @@ export function TalentDirectoryPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-primary-100 bg-[radial-gradient(circle_at_top_left,#cffafe_0,transparent_30%),linear-gradient(135deg,#f0fdfa,white_42%,#eef2ff_78%)] dark:border-zinc-800 dark:bg-[radial-gradient(circle_at_top_left,rgba(8,145,178,0.24)_0,transparent_28%),linear-gradient(135deg,rgba(7,18,24,0.96),rgba(9,9,11,0.94)_44%,rgba(10,18,38,0.94))]">
-        <CardHeader className="space-y-3">
-          <Badge variant="soft">Talent search</Badge>
-          <CardTitle>Busca candidatos visibles sin esperar una postulacion</CardTitle>
-          <CardDescription>
-            Este directorio usa perfiles candidato con visibilidad opt-in. Solo los miembros con permiso pueden buscar y
-            abrir detalle completo.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <label className="grid gap-2 text-sm">
-              <span>Keyword o rol</span>
-              <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ingeniero electrico" />
-            </label>
-            <label className="grid gap-2 text-sm">
-              <span>Skill</span>
-              <Input value={skill} onChange={(event) => setSkill(event.target.value)} placeholder="AutoCAD, React..." />
-            </label>
-            <label className="grid gap-2 text-sm">
-              <span>Idioma</span>
-              <Input value={language} onChange={(event) => setLanguage(event.target.value)} placeholder="Español, English..." />
-            </label>
-            <label className="grid gap-2 text-sm">
-              <span>Pais</span>
-              <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} />
-            </label>
-          </div>
+      <PageHeader
+        eyebrow="Talent search"
+        title="Busca candidatos visibles sin esperar una postulación"
+        description="Solo los miembros con permiso pueden buscar y abrir detalle completo. El candidato sigue controlando su visibilidad desde su propio perfil."
+      >
+        <StatCard label="Búsqueda" value="Directa" helper="Keyword, skill, idioma y país en una sola vista." />
+        <StatCard label="Visibilidad" value="Opt-in" helper="Cada candidato decide si aparece o no en el directorio." />
+        <StatCard
+          className="bg-[var(--app-surface-muted)]"
+          label="Auditoría"
+          value="Activa"
+          helper="Las vistas completas generan rastro operativo para seguimiento interno."
+        />
+      </PageHeader>
 
-          <div className="rounded-[28px] border border-white/70 bg-white/88 p-5 dark:border-zinc-800 dark:bg-zinc-950/80">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Reglas activas</p>
-            <div className="mt-3 grid gap-2">
-              <div className="rounded-2xl bg-sky-50 px-3 py-2 text-sm text-sky-800 dark:bg-sky-950/40 dark:text-sky-200">
-                El candidato controla su visibilidad desde su propio perfil.
-              </div>
-              <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
-                Las vistas completas generan auditoria en Supabase.
-              </div>
-              <div className="rounded-2xl bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                Search y detail viven fuera del flujo de applications y no lo reemplazan.
-              </div>
-            </div>
-          </div>
+      <Card className="bg-[var(--app-surface-muted)]">
+        <CardHeader>
+          <CardTitle>Filtros</CardTitle>
+          <CardDescription>Define el tipo de perfil que quieres encontrar antes de revisar resultados.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <label className="grid gap-2 text-sm">
+            <span>Keyword o rol</span>
+            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ingeniero electrico" />
+          </label>
+          <label className="grid gap-2 text-sm">
+            <span>Skill</span>
+            <Input value={skill} onChange={(event) => setSkill(event.target.value)} placeholder="AutoCAD, React..." />
+          </label>
+          <label className="grid gap-2 text-sm">
+            <span>Idioma</span>
+            <Input value={language} onChange={(event) => setLanguage(event.target.value)} placeholder="Español, English..." />
+          </label>
+          <label className="grid gap-2 text-sm">
+            <span>Pais</span>
+            <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} />
+          </label>
         </CardContent>
       </Card>
 

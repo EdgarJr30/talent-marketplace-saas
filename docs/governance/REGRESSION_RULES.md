@@ -143,6 +143,24 @@ Do not reuse the product home or shell as a generic launch-readiness panel. The 
 ### R-038 — Auth must remain isolated from product dashboards
 Do not place login or sign-up back inside the same shell used by candidate, employer, or internal product areas. Authentication must remain an isolated route tree with its own shell and product-focused entry experience.
 
+### R-039 — The product must default to a soft-white visual base
+Do not regress the app back to dark shell-first chrome or harsh pure-white full-screen layouts. Public, auth, candidate, employer, and internal surfaces must all start from a soft-white or soft-neutral base canvas in light mode, with white surfaces and pastel accents used in a controlled way on top of that base.
+
+### R-040 — Navigation must stay audience-specific and tooling must stay secondary
+Do not collapse the product back into one generic shell. Candidate, employer, public, auth, and internal areas must preserve separate navigation models, and internal utilities such as foundations, bootstrap, and operations flows must never reappear as primary customer-facing destinations.
+
+### R-041 — Theme hierarchy must be token-driven
+Do not keep spreading feature-local `dark:` color systems or one-off visual palettes through product pages. Light and dark mode must both inherit from shared semantic theme tokens so hierarchy, contrast, and surface behavior stay consistent across modules.
+
+### R-042 — The light-mode app background must read as white
+Do not leave the product with a cream, beige, or tinted page canvas in light mode. The full app background must read as white first, with softness coming from spacing, shadows, and restrained accents rather than from coloring the whole canvas.
+
+### R-043 — Theme switching must stay visible in the product chrome
+Do not hide theme changes behind internal-only settings or remove the user-facing theme toggle from the main product shells. The app may default to the system theme, but public, auth, candidate, employer, and internal headers must keep a visible control so users can switch to light or dark mode at any time.
+
+### R-044 — Customer-facing landing copy must never fall back to template placeholders
+Do not ship public landing navigation, hero copy, feature copy, pricing text, FAQ entries, or footer labels copied directly from Tailwind demos or other starter templates. Customer-facing routes must use product-specific content tied to real platform flows, routes, and domain language.
+
 ---
 
 ## Maintenance rule

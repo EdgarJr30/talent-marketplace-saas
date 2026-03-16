@@ -1,11 +1,17 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type PropsWithChildren, useState } from 'react'
+import { useTheme } from 'next-themes'
 import { Toaster } from 'sonner'
 
 import { ErrorEventBridge } from '@/app/providers/error-event-bridge'
 import { NotificationEventBridge } from '@/app/providers/notification-event-bridge'
 import { AppSessionProvider } from '@/app/providers/app-session-provider'
 import { ThemeProvider } from '@/app/providers/theme-provider'
+
+function AppToaster() {
+  const { resolvedTheme, theme } = useTheme()
+  return <Toaster position="top-center" richColors theme={(resolvedTheme ?? theme) === 'dark' ? 'dark' : 'light'} />
+}
 
 export function AppProviders({ children }: PropsWithChildren) {
   const [queryClient] = useState(
@@ -31,7 +37,7 @@ export function AppProviders({ children }: PropsWithChildren) {
           <ErrorEventBridge />
           <NotificationEventBridge />
           {children}
-          <Toaster position="top-center" richColors theme="system" />
+          <AppToaster />
         </ThemeProvider>
       </AppSessionProvider>
     </QueryClientProvider>

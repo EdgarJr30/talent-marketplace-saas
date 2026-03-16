@@ -35,9 +35,9 @@ export function SignInPage() {
     return (
       <Card className="mx-auto max-w-3xl">
         <CardHeader>
-          <CardTitle>Supabase aun no esta configurado</CardTitle>
+          <CardTitle>El acceso aun no esta disponible</CardTitle>
           <CardDescription>
-            Completa `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` para habilitar acceso, onboarding y aprobaciones.
+            Estamos terminando de preparar el servicio de autenticacion para habilitar acceso, onboarding y aprobaciones.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -70,32 +70,32 @@ export function SignInPage() {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+    <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
       <AuthHeroPanel
         eyebrow="Acceso"
-        title="Inicia sesion y retoma tu hiring o tu perfil desde donde lo dejaste"
-        description="La experiencia de acceso ahora queda aislada del resto del producto para mantener un recorrido mas limpio, directo y confiable."
+        title="Inicia sesion y retoma tu perfil, tus aplicaciones o tu workspace con una experiencia clara"
+        description="La autenticacion vive separada del resto del producto para mantener foco, confianza y una sensacion real de app SaaS."
       />
 
-      <Card className="border-zinc-200 bg-white">
+      <Card className="bg-[var(--app-surface)]">
         <CardHeader className="space-y-3">
-          <div className="inline-flex w-fit items-center rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-700">
+          <div className="tm-kicker w-fit">
             Iniciar sesion
           </div>
           <CardTitle>Entra a tu cuenta</CardTitle>
           <CardDescription>
-            Usa tu correo y contrasena para continuar onboarding, revisar vacantes o abrir tu workspace.
+            Usa tu correo y contrasena para continuar onboarding, revisar vacantes o volver a tu company workspace.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
-            <label className="space-y-2 text-sm font-medium text-zinc-800">
+            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
               <span>Email</span>
               <Input autoComplete="email" placeholder="tu@correo.com" type="email" {...form.register('email')} />
               <FieldError message={form.formState.errors.email?.message} />
             </label>
 
-            <label className="space-y-2 text-sm font-medium text-zinc-800">
+            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
               <span>Contrasena</span>
               <Input autoComplete="current-password" placeholder="Tu contrasena" type="password" {...form.register('password')} />
               <FieldError message={form.formState.errors.password?.message} />
@@ -106,9 +106,9 @@ export function SignInPage() {
             </Button>
           </form>
 
-          <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 px-4 py-4 text-sm leading-6 text-zinc-600">
+          <div className="rounded-[24px] border bg-[var(--app-surface)] px-4 py-4 text-sm leading-6 text-[var(--app-text-muted)]">
             Aun no tienes cuenta?{' '}
-            <Link className="font-semibold text-emerald-700" to="/auth/sign-up">
+            <Link className="font-semibold text-primary-700" to="/auth/sign-up">
               Crea tu cuenta
             </Link>
           </div>

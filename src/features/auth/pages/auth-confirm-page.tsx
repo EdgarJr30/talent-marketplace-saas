@@ -36,7 +36,7 @@ export function AuthConfirmPage() {
         }
 
         setStatus('error')
-        setErrorMessage('Supabase no esta configurado para procesar esta confirmacion.')
+        setErrorMessage('El servicio de confirmacion aun no esta disponible para procesar este enlace.')
         return
       }
 
@@ -107,7 +107,7 @@ export function AuthConfirmPage() {
         <Badge variant="soft">Auth callback</Badge>
         <CardTitle>Procesando confirmacion</CardTitle>
         <CardDescription>
-          Estamos validando tu correo y cerrando el flujo de autenticacion con Supabase.
+          Estamos validando tu correo y cerrando tu acceso para llevarte de vuelta al producto.
         </CardDescription>
       </CardHeader>
       <CardContent className="text-sm text-zinc-600 dark:text-zinc-400">

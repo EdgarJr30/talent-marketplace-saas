@@ -264,7 +264,7 @@ export function RecruiterRequestPage() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-      <Card className="border-primary-100 bg-[linear-gradient(160deg,#fff7ed,white_38%,#ecfeff)] dark:border-zinc-800 dark:bg-[linear-gradient(160deg,rgba(29,18,10,0.96),rgba(9,9,11,0.94)_40%,rgba(9,23,28,0.95))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">Recruiter request</Badge>
           <CardTitle>Solicita la validacion de tu empresa</CardTitle>

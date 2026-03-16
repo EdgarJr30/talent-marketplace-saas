@@ -240,10 +240,14 @@ The product should feel:
 - restrained
 
 Surface-direction rule:
-- Public landing and marketing-facing entrypoints may use richer, darker, more atmospheric composition when it improves product perception.
+- Public, auth, candidate, employer, and internal surfaces must all start from a **white or near-white base canvas** in light mode.
+- Do not default customer-facing routes to dark hero shells, black dashboard chrome, or harsh pure-white full-screen backgrounds.
+- Public landing and marketing-facing entrypoints may add gentle atmospheric layering, but the dominant impression must still remain light, calm, and product-grade.
 - Authenticated operational surfaces should default to cleaner, brighter, calmer layouts that prioritize readability, task flow, and repeated daily use.
 - Authentication must live in its own isolated shell. Login and sign-up cannot inherit employer sidebars, internal console navigation, or any dashboard chrome.
 - Navigation must be contextual by audience: public, auth, candidate, employer, and internal surfaces each need their own navigation model.
+- Bootstrap, foundations, launch-readiness, and similar tooling flows must stay visually and navigationally inside internal-only surfaces.
+- Theme selection may default to the system preference, but the product chrome must always expose a visible user-facing toggle so people can switch between light and dark mode without entering internal settings.
 - polished
 
 Apple-inspired UI rules:
@@ -263,6 +267,7 @@ Apple-inspired UI rules:
 - final CTA region
 3. A donation section or donation CTA may be present as UI/UX-only groundwork, but it must still feel intentional and visually integrated.
 4. Internal QA, launch-readiness, or foundations tools must never appear in the public landing experience for standard users.
+5. Public landing content must be product-specific. Do not ship Tailwind demo labels, placeholder navigation items, sample pricing copy, or generic FAQ text in customer-facing routes.
 
 ### 8.2 Color rules
 1. Pastel accents are allowed only as controlled brand surfaces, highlights, chips, or secondary emphasis.
@@ -270,6 +275,9 @@ Apple-inspired UI rules:
 3. Destructive actions must use an unmistakable danger treatment.
 4. Status must never rely on color alone; pair color with text, iconography, or both.
 5. Interactive states must remain recognizable in light, muted, or branded surfaces.
+6. Light mode should default to a **white or near-white page background**. Do not tint the full app canvas cream, gray, or pastel by default.
+7. Cards, sheets, and panels may use subtle white layering and shadows, but the overall page background must still read as white first.
+8. Dark mode must mirror the same hierarchy through semantic theme tokens instead of feature-local ad hoc dark palettes.
 
 ### 8.3 Contrast rules
 1. Follow WCAG 2.2 AA by default.
@@ -286,6 +294,9 @@ Apple-inspired UI rules:
 2. Do not overload bottom navigation with rarely used admin or configuration destinations.
 3. Filters, secondary actions, and dense controls should move into sheets, drawers, or scoped toolbars on mobile.
 4. Important mobile actions should stay within easy thumb reach whenever possible.
+5. Candidate mobile navigation should center on `Jobs`, `Applications`, `Profile`, and a scoped secondary destination such as `More` or `Onboarding`.
+6. Employer mobile navigation should center on `Jobs`, `Candidates`, `Pipeline`, and `Company`.
+7. Internal-only utilities, advanced role controls, and bootstrap/configuration flows must never occupy customer-facing primary mobile navigation.
 
 ### 9.2 Desktop navigation
 1. Use sidebar navigation for top-level modules when screen width supports it.
@@ -415,6 +426,7 @@ Rules:
 6. For icons, use `lucide-react` only unless a documented exception is approved.
 7. For reusable component primitives, extend the `shadcn/ui`-aligned system in `src/components/ui` instead of introducing another component library.
 8. For non-blocking feedback, use `sonner` only and keep toast behavior consistent across modules.
+9. Theme behavior must come from semantic light/dark tokens in the shared design system, not from page-level color rewrites repeated per feature.
 
 ---
 

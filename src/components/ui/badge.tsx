@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils/cn'
 type BadgeVariant = 'default' | 'soft' | 'outline'
 
 const badgeVariants: Record<BadgeVariant, string> = {
-  default: 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300',
-  soft: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300',
-  outline: 'border border-zinc-200 bg-white text-zinc-700 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-300'
+  default: 'border border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-500/20 dark:bg-primary-500/12 dark:text-primary-200',
+  soft: 'border border-accent-200 bg-accent-50 text-accent-600 dark:border-accent-500/20 dark:bg-accent-500/12 dark:text-accent-200',
+  outline: 'border bg-[var(--app-surface)] text-[var(--app-text-muted)]'
 }
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
@@ -18,7 +18,7 @@ export function Badge({ className, variant = 'default', ...props }: BadgeProps) 
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide',
+        'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold',
         badgeVariants[variant],
         className
       )}

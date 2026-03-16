@@ -5,10 +5,10 @@ const hasLiveAuth = Boolean(process.env.E2E_SIGNUP_EMAIL && process.env.E2E_SIGN
 test.describe('public shell smoke', () => {
   test('loads the public home and jobs discovery on mobile', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('link', { name: /jobs/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /jobs/i })).toBeVisible()
 
     await page.goto('/jobs')
-    await expect(page.getByText('Publica vacantes y descubre oportunidades desde la misma app')).toBeVisible()
+    await expect(page.getByText(/Descubre oportunidades con una experiencia clara y directa|Gestiona tus vacantes/i)).toBeVisible()
   })
 })
 
@@ -30,10 +30,10 @@ if (hasLiveAuth) {
       await expect(page.getByText(/Solicitud recruiter|validacion/i)).toBeVisible()
 
       await page.goto('/applications')
-      await expect(page.getByText(/Seguimiento de postulaciones|Applications/i)).toBeVisible()
+      await expect(page.getByText(/Revisa tu avance|Applications/i)).toBeVisible()
 
       await page.goto('/pipeline')
-      await expect(page.getByText(/ATS-lite|pipeline/i)).toBeVisible()
+      await expect(page.getByText(/Pipeline|applicants/i)).toBeVisible()
     })
   })
 } else {
@@ -54,10 +54,10 @@ if (hasLiveAuth) {
     await expect(page.getByText(/Solicitud recruiter|validacion/i)).toBeVisible()
 
     await page.goto('/applications')
-    await expect(page.getByText(/Seguimiento de postulaciones|Applications/i)).toBeVisible()
+    await expect(page.getByText(/Revisa tu avance|Applications/i)).toBeVisible()
 
     await page.goto('/pipeline')
-    await expect(page.getByText(/ATS-lite|pipeline/i)).toBeVisible()
+    await expect(page.getByText(/Pipeline|applicants/i)).toBeVisible()
   })
   })
 }

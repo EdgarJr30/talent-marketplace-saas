@@ -85,7 +85,7 @@ export function RecruiterReviewPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="border-primary-100 bg-[linear-gradient(160deg,#eff6ff,white_42%,#f0fdf4)] dark:border-zinc-800 dark:bg-[linear-gradient(160deg,rgba(11,19,30,0.96),rgba(9,9,11,0.95)_44%,rgba(9,22,16,0.95))]">
+      <Card className="bg-[var(--app-surface-muted)]">
         <CardHeader>
           <Badge variant="soft">Admin review</Badge>
           <CardTitle>Revision de solicitudes recruiter</CardTitle>
