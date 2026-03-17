@@ -188,6 +188,24 @@ Do not use weak customer-facing hero labels such as `móvil de verdad` or filler
 ### R-053 — Public hero badge copy must remain one line on mobile
 Do not let the main eyebrow badge of the public hero wrap into two lines on supported mobile widths. Keep that microcopy short enough to fit in one line instead of shrinking readability or leaving a broken pill shape.
 
+### R-054 — Public landing showcase sections must avoid dead air and disconnected card clusters
+Do not let the customer-facing sections immediately after the hero drift back into oversized vertical gaps, floating isolated cards, or text-heavy blocks surrounded by empty space. When those sections continue the same product narrative, they must keep a compact section-to-section rhythm and use an integrated bento or grid composition that feels like one coherent system across mobile and desktop.
+
+### R-055 — Public product-story sections should favor relevant imagery over text-heavy explanation
+Do not regress product-value sections of the public landing back into mostly textual marketing blocks when the intent is to explain the product experience. These sections should lean on relevant hiring, collaboration, interview, or work-context imagery plus short supporting copy so the value proposition is understood visually before it is fully read.
+
+### R-056 — Public bento sections must not stretch visual cards beyond their content
+Do not use forced equal-height row tracks or similar layout constraints in public landing bento sections when they create empty white bands beneath media or make cards feel vertically disconnected from their content. Visual cards should size to their real content, and these sections should keep the same max-width system as the public header and first main block when they belong to the same narrative surface.
+
+### R-057 — Public platform sections must sell the mobile experience visually
+Do not regress customer-facing platform sections back into mostly textual explanations when the product benefit includes mobile use. If the section is meant to motivate usage from the phone, it should include a clear product-like mobile surface or device framing that shows how the workflow continues on mobile, while preserving the same width system as the rest of the landing.
+
+### R-058 — Public device mockups and support cards must feel believable and dense
+Do not ship customer-facing landing sections with fake device frames that stop reading as devices in dark mode, nor with adjacent support cards that become oversized empty rectangles. Public device mockups must preserve a believable hardware silhouette and contrast in both light and dark themes, while neighboring cards should use compact proportions and visual detail so the composition feels intentional rather than padded.
+
+### R-059 — Public mobile-promo sections should show one focused phone story
+Do not overload customer-facing mobile-promo sections with oversized device mockups, too many competing mini-modules, or large support cards carrying too little information. These sections should center on one clear mobile workflow story and pair it with a small number of dense support cards that reinforce the message without diluting it.
+
 ---
 
 ## Maintenance rule

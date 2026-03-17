@@ -229,6 +229,10 @@ Recommended baseline tokens:
 4. Customer-facing hero microcopy must sell a concrete outcome or pain relieved. Avoid generic claims such as `móvil de verdad`, `fácil`, or `moderno` unless the line also explains the commercial value behind that claim.
 5. Do not use arbitrary sample metrics in the public hero unless the source is real and supportable. If proof is needed, prefer concrete qualitative outcomes or product-value statements over invented dashboard numbers.
 6. Public hero eyebrow badges and similar micro-labels should fit on a single line at the target mobile widths. If a label needs wrapping to fit, shorten the copy instead of squeezing typography or allowing awkward two-line pills.
+7. Public landing follow-up sections that continue the product story should avoid large empty vertical gaps between blocks. When adjacent sections belong to the same narrative, prefer a compact section rhythm and an integrated bento or grid system over isolated floating cards separated by dead air.
+8. Customer-facing product-value sections should feel more visual than textual. Use short benefit-led copy supported by structured cards, product-like mini surfaces, and clear grouping rather than long paragraphs surrounded by empty space.
+9. When a public landing section explains the product journey, prefer image-led storytelling tied to real hiring, collaboration, interview, or workflow scenes over generic decorative art. Visuals should help the user understand the product promise, not simply fill space.
+10. When a public landing section needs to motivate mobile usage, show a clear product-like mobile surface or device framing instead of relying on generic copy alone. The mobile story should explain why the phone experience matters for the hiring workflow, not just claim that mobile support exists.
 
 ### 7.3 Content hierarchy rules
 1. Every page must have one visible, unique page title.

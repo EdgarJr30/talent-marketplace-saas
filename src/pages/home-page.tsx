@@ -126,21 +126,45 @@ const featureCards = [
   }
 ] as const
 
-const workflowPanels = [
+const mobileWorkspaceSteps = ['Descubrir', 'Revisar', 'Comentar', 'Avanzar'] as const
+
+const mobileWorkspaceItems = [
+  {
+    title: 'Product Designer Senior',
+    meta: 'Remoto · Entrevista hoy',
+    state: 'En revisión'
+  },
+  {
+    title: 'Frontend Engineer',
+    meta: 'Santo Domingo · Feedback listo',
+    state: 'Siguiente paso'
+  }
+] as const
+
+const valueBentoCards = [
   {
     title: 'Atracción que convierte',
     body: 'Muestra tus vacantes de forma clara y dale al talento un camino rápido para aplicar.',
-    icon: BriefcaseBusiness
+    icon: BriefcaseBusiness,
+    image:
+      'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&h=900&q=80',
+    alt: 'Equipo revisando una estrategia de trabajo en una oficina'
   },
   {
     title: 'Equipo alineado',
     body: 'Recruiters y líderes encuentran la misma información sin perseguir contexto por varios canales.',
-    icon: Layers3
+    icon: Layers3,
+    image:
+      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&h=900&q=80',
+    alt: 'Equipo colaborando en una oficina abierta'
   },
   {
     title: 'Seguimiento con ritmo',
     body: 'Cada oportunidad avanza con claridad para que nadie se quede preguntando qué sigue.',
-    icon: HeartHandshake
+    icon: HeartHandshake,
+    image:
+      'https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=1200&h=900&q=80',
+    alt: 'Profesional trabajando desde una laptop con contexto claro'
   }
 ] as const
 
@@ -296,6 +320,7 @@ export function HomePage() {
   const navigate = useNavigate()
   const session = useAppSession()
   const [billingFrequency, setBillingFrequency] = useState<BillingFrequency>('monthly')
+  const [profileFeature, jobsFeature, collaborationFeature, growthFeature] = featureCards
 
   const primaryAction = session.isAuthenticated
     ? session.permissions.includes('workspace:read')
@@ -478,122 +503,310 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[var(--app-canvas)] py-24 sm:py-28" id="features">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-14 sm:gap-y-18 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <div className="col-span-2">
-              <Badge variant="soft">Plataforma</Badge>
-              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl">
-                Descubrir talento y mover procesos puede sentirse simple, ordenado y bonito
-              </h2>
-              <p className="mt-5 text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
-                Cada persona ve una experiencia clara para su momento: descubrir, aplicar, publicar vacantes o
-                coordinar contrataciones en equipo sin ruido innecesario.
-              </p>
-            </div>
+      <section className="bg-[var(--app-canvas)] py-16 sm:py-20" id="features">
+        <div className="mx-auto max-w-[98rem] px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-stretch">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-[32px] bg-white/72 dark:bg-white/6" />
+              <div className="relative flex h-full flex-col overflow-hidden rounded-[31px] border bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(246,249,255,0.92)_100%)] shadow-[var(--app-shadow-floating)] backdrop-blur-sm dark:bg-[linear-gradient(180deg,rgba(18,29,58,0.92)_0%,rgba(12,21,42,0.88)_100%)]">
+                <div className="px-6 pt-6 pb-2 sm:px-8 sm:pt-8">
+                  <Badge variant="soft">Plataforma</Badge>
+                  <h2 className="mt-5 max-w-[12ch] text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl">
+                    La plataforma también se siente bien en móvil
+                  </h2>
+                  <p className="mt-4 max-w-[30rem] text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
+                    Revisa perfiles, comparte feedback y mueve decisiones desde el teléfono con una vista clara y accionable.
+                  </p>
+                </div>
 
-            <dl className="col-span-3 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2">
-              {featureCards.map((feature) => {
-                const Icon = feature.icon
+                <div className="relative mx-auto mt-4 w-full max-w-sm grow px-4 pb-0 sm:px-6">
+                  <div className="absolute left-1/2 top-8 h-24 w-24 -translate-x-1/2 rounded-full bg-primary-300/18 blur-3xl" />
+                  <div className="relative mx-auto max-w-[18.25rem] rounded-[2.9rem] bg-[linear-gradient(180deg,#eef3ff_0%,#d9e1f1_38%,#c6cfdf_100%)] p-[0.72rem] shadow-[0_32px_72px_rgba(20,35,72,0.18)] ring-1 ring-white/82 dark:bg-[linear-gradient(180deg,#858fa1_0%,#596376_20%,#222b38_58%,#111827_100%)] dark:ring-white/18">
+                    <div className="rounded-[2.35rem] bg-[linear-gradient(180deg,#101827_0%,#131f35_100%)] p-[0.48rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(0,0,0,0.28)]">
+                      <div className="relative min-h-[24rem] overflow-hidden rounded-[1.95rem] bg-[linear-gradient(180deg,#111b31_0%,#172441_100%)] px-4 pb-4 pt-4 text-white ring-1 ring-white/7">
+                        <div className="mx-auto h-5 w-24 rounded-full bg-black/42 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
+                        <div className="absolute left-[0.2rem] top-24 h-12 w-[2px] rounded-full bg-white/16" />
+                        <div className="absolute right-[0.2rem] top-32 h-16 w-[2px] rounded-full bg-white/14" />
+                        <div className="mt-4 flex items-center justify-between text-white/72">
+                          <button className="flex size-10 items-center justify-center rounded-2xl bg-white/8">
+                            <Layers3 className="size-4" />
+                          </button>
+                          <div className="rounded-full bg-primary-400/16 px-3 py-1 text-xs font-semibold text-primary-100">
+                            Hiring app
+                          </div>
+                          <button className="flex size-10 items-center justify-center rounded-2xl bg-white/8">
+                            <ArrowRight className="size-4" />
+                          </button>
+                        </div>
 
-                return (
-                  <div key={feature.name}>
-                    <dt className="text-base font-semibold text-[var(--app-text)]">
-                      <div className="mb-5 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
-                        <Icon className="size-5 text-primary-700 dark:text-primary-200" />
+                        <div className="mt-4 rounded-[1.35rem] border border-white/8 bg-white/6 p-3 backdrop-blur">
+                          <div className="flex items-center gap-3 text-sm text-white/66">
+                            <FileText className="size-4" />
+                            Buscar talento o vacantes
+                          </div>
+                        </div>
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {mobileWorkspaceSteps.map((step, index) => (
+                            <span
+                              key={step}
+                              className={cn(
+                                'rounded-full px-3 py-1 text-xs font-semibold',
+                                index === 1 ? 'bg-primary-500 text-white' : 'bg-white/8 text-white/72'
+                              )}
+                            >
+                              {step}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="mt-4 space-y-2.5">
+                          {mobileWorkspaceItems.map((item, index) => (
+                            <div key={item.title} className="rounded-[1.35rem] border border-white/8 bg-white/7 p-3.5 backdrop-blur">
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="text-sm font-semibold text-white">{item.title}</p>
+                                  <p className="mt-1 text-xs leading-5 text-white/62">{item.meta}</p>
+                                </div>
+                                <span
+                                  className={cn(
+                                    'rounded-full px-3 py-1 text-[0.68rem] font-semibold',
+                                    index === 0 && 'bg-emerald-400/16 text-emerald-200',
+                                    index === 1 && 'bg-sky-400/16 text-sky-200',
+                                    index === 2 && 'bg-white/10 text-white/72'
+                                  )}
+                                >
+                                  {item.state}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="absolute inset-x-4 bottom-4 rounded-[1.3rem] border border-white/8 bg-white/6 p-3 backdrop-blur">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">Desde el teléfono</p>
+                              <p className="mt-1 text-sm font-semibold text-white">Seguimiento claro y accionable</p>
+                            </div>
+                            <div className="flex size-11 items-center justify-center rounded-2xl bg-primary-500">
+                              <Smartphone className="size-5 text-white" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      {feature.name}
-                    </dt>
-                    <dd className="mt-1 text-base leading-7 text-[var(--app-text-muted)]">{feature.description}</dd>
-                  </div>
-                )
-              })}
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      <section className="overflow-hidden py-24 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 lg:flex lg:px-8">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-12 lg:mx-0 lg:max-w-none lg:min-w-full lg:flex-none lg:gap-y-8">
-            <div className="lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8">
-              <Badge variant="outline">Valor del producto</Badge>
-              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl">
-                Una sola base para candidatos, empresas y equipos que quieren avanzar con más confianza
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-[var(--app-text-muted)]">
-                Todo está organizado para que cada recorrido se entienda rápido y se sienta natural desde la primera interacción.
-              </p>
-              <p className="mt-6 text-base leading-7 text-[var(--app-text-muted)]">
-                Esa claridad vuelve la plataforma más creíble para demos, onboarding comercial y uso diario sin volver
-                al caos de hojas, chats y tabs dispersos.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Button onClick={() => void navigate(primaryAction.href)}>
-                  {primaryAction.label}
-                  <ArrowRight className="size-4" />
-                </Button>
-                <Button variant="outline" onClick={() => scrollToSection('faq')}>
-                  Resolver dudas
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-start justify-end gap-4 sm:gap-6 lg:contents">
-              <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end">
-                <div className="w-full max-w-[30rem] rounded-[32px] border bg-[var(--app-surface)] p-6 shadow-[var(--app-shadow-floating)]">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--app-success-surface)]">
-                      <Sparkles className="size-5 text-primary-700 dark:text-primary-200" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-[var(--app-text)]">Una primera impresión que sí vende</p>
-                      <p className="text-sm text-[var(--app-text-muted)]">Mensaje claro, visual fuerte y recorrido comercial coherente</p>
-                    </div>
-                  </div>
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-[22px] bg-[var(--app-info-surface)] px-4 py-4">
-                      <p className="text-sm font-semibold text-[var(--app-text)]">Descubrimiento</p>
-                      <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
-                        Vacantes atractivas, detalle limpio y acceso rápido para aplicar.
-                      </p>
-                    </div>
-                    <div className="rounded-[22px] bg-[var(--app-warning-surface)] px-4 py-4">
-                      <p className="text-sm font-semibold text-[var(--app-text)]">Equipo</p>
-                      <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
-                        Personas, comentarios y seguimiento sin perder el contexto.
-                      </p>
                     </div>
                   </div>
                 </div>
               </div>
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+            </div>
 
-              <div className="contents lg:col-span-2 lg:col-end-2 lg:ml-auto lg:flex lg:w-[34rem] lg:items-start lg:justify-end lg:gap-x-6">
-                {workflowPanels.map((panel, panelIndex) => {
-                  const Icon = panel.icon
-
-                  return (
-                    <div
-                      key={panel.title}
-                      className={cn(
-                        'flex w-full max-w-[20rem] flex-none justify-end',
-                        panelIndex === 0 && 'order-first self-end max-sm:w-full lg:w-auto',
-                        panelIndex === 1 && 'max-sm:w-full',
-                        panelIndex === 2 && 'hidden sm:flex lg:w-auto'
-                      )}
-                    >
-                      <div className="w-full rounded-[30px] border bg-[var(--app-surface)] p-6 shadow-[var(--app-shadow-card)]">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--app-surface-muted)]">
-                          <Icon className="size-5 text-[var(--app-text)]" />
-                        </div>
-                        <p className="mt-5 text-lg font-semibold text-[var(--app-text)]">{panel.title}</p>
-                        <p className="mt-3 text-sm leading-6 text-[var(--app-text-muted)]">{panel.body}</p>
+            <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                    <profileFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
+                  </div>
+                  <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{profileFeature.name}</p>
+                  <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{profileFeature.description}</p>
+                  <div className="mt-5 rounded-[20px] border bg-[var(--app-surface-muted)]/88 p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-10 items-center justify-center rounded-2xl bg-primary-500 text-sm font-semibold text-white">AP</div>
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--app-text)]">Ana Pérez</p>
+                        <p className="text-xs text-[var(--app-text-muted)]">Perfil reutilizable listo para aplicar</p>
                       </div>
                     </div>
-                  )
-                })}
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                    <jobsFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
+                  </div>
+                  <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{jobsFeature.name}</p>
+                  <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{jobsFeature.description}</p>
+                  <div className="mt-5 rounded-[20px] border bg-[var(--app-info-surface)]/84 p-4">
+                    <div className="rounded-[16px] bg-[var(--app-surface)] px-4 py-4 shadow-[var(--app-shadow-card)]">
+                      <p className="text-sm font-semibold text-[var(--app-text)]">Frontend Engineer</p>
+                      <div className="mt-3 rounded-full bg-primary-500 px-4 py-2 text-center text-sm font-semibold text-white">
+                        Aplicar ahora
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+              </div>
+
+              <div className="relative lg:col-span-2">
+                <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                        <collaborationFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
+                      </div>
+                      <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{collaborationFeature.name}</p>
+                      <p className="mt-3 max-w-[38rem] text-base leading-7 text-[var(--app-text-muted)]">
+                        {collaborationFeature.description}
+                      </p>
+                    </div>
+
+                    <div className="rounded-[18px] border bg-[var(--app-success-surface)]/78 px-4 py-3">
+                      <p className="text-sm font-semibold text-[var(--app-text)]">{growthFeature.name}</p>
+                      <p className="mt-1 max-w-[24ch] text-sm leading-6 text-[var(--app-text-muted)]">{growthFeature.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {[
+                      ['Recruiting', 'Perfil fuerte para entrevista'],
+                      ['Hiring manager', 'Buen fit para el equipo']
+                    ].map(([label, value]) => (
+                      <div key={label} className="rounded-[20px] border bg-[var(--app-surface-muted)]/88 p-4 shadow-[var(--app-shadow-card)]">
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--app-text-subtle)]">{label}</p>
+                        <p className="mt-2 text-base font-medium text-[var(--app-text)]">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden pt-10 pb-16 sm:pt-12 sm:pb-20">
+        <div className="mx-auto max-w-[98rem] px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl text-left lg:max-w-[42rem]">
+            <Badge className="w-fit" variant="outline">
+              Valor del producto
+            </Badge>
+            <h2 className="mt-5 max-w-[17ch] text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl lg:max-w-[16ch]">
+              Así se entiende mejor el producto
+            </h2>
+            <p className="mt-4 max-w-[38rem] text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
+              Menos explicación abstracta y más escenas claras de cómo se ve publicar, colaborar y mover procesos en la plataforma.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:gap-5 lg:grid-cols-6">
+            <div className="relative lg:col-span-3">
+              <div className="absolute inset-0 rounded-[32px] bg-white/70 dark:bg-white/6" />
+              <div className="relative overflow-hidden rounded-[31px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-floating)] backdrop-blur-sm">
+                <div className="relative h-72 overflow-hidden sm:h-80">
+                  <img
+                    alt="Equipo revisando una estrategia de contratación"
+                    className="block h-full w-full object-cover"
+                    src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1600&h=980&q=80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(9,17,39,0.64)] via-[rgba(9,17,39,0.18)] to-transparent" />
+                  <div className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/14 px-3 py-1 text-xs font-semibold text-white backdrop-blur sm:left-5 sm:top-5">
+                    Publicación más clara
+                  </div>
+                  <div className="absolute inset-x-4 bottom-4 rounded-[24px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-[var(--app-shadow-floating)] backdrop-blur sm:inset-x-5 sm:bottom-5">
+                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-white/70">Vacantes que convierten</p>
+                    <p className="mt-2 text-xl font-semibold tracking-tight">Más contexto desde el primer vistazo</p>
+                    <p className="mt-2 max-w-[34ch] text-sm leading-6 text-white/78">
+                      Roles bien presentados, mensaje consistente y acceso visible para aplicar sin fricción.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {['Remoto', 'Brief claro', 'Aplicación visible'].map((tag) => (
+                        <span key={tag} className="rounded-full border border-white/14 bg-white/10 px-3 py-1 text-xs font-medium text-white/88">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+            </div>
+
+            <div className="relative lg:col-span-3">
+              <div className="absolute inset-0 rounded-[32px] bg-white/70 dark:bg-white/6" />
+              <div className="relative overflow-hidden rounded-[31px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-floating)] backdrop-blur-sm">
+                <div className="relative h-72 overflow-hidden sm:h-80">
+                  <img
+                    alt="Equipo colaborando en una oficina moderna"
+                    className="block h-full w-full object-cover"
+                    src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&h=980&q=80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(9,17,39,0.68)] via-[rgba(9,17,39,0.18)] to-transparent" />
+                  <div className="absolute inset-x-4 top-4 rounded-[22px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white backdrop-blur sm:inset-x-5 sm:top-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-white/70">Equipo alineado</p>
+                        <p className="mt-1 text-lg font-semibold tracking-tight">Comentarios donde toca</p>
+                      </div>
+                      <div className="hidden items-center gap-2 sm:flex">
+                        <span className="size-2 rounded-full bg-primary-300" />
+                        <span className="size-2 rounded-full bg-secondary-300" />
+                        <span className="size-2 rounded-full bg-peach-300" />
+                      </div>
+                    </div>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      {['Feedback compartido', 'Decisión visible', 'Siguiente paso claro'].map((item) => (
+                        <div key={item} className="rounded-[16px] border border-white/12 bg-white/10 px-3 py-2 text-sm font-medium text-white/88">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="absolute bottom-4 right-4 rounded-[22px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-[var(--app-shadow-card)] backdrop-blur sm:bottom-5 sm:right-5">
+                    <p className="text-sm font-semibold">Una sola conversación</p>
+                    <p className="mt-1 max-w-[20ch] text-sm leading-6 text-white/76">
+                      Recruiters y líderes avanzan sobre la misma información.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+            </div>
+
+            {valueBentoCards.map((panel, panelIndex) => {
+              const Icon = panel.icon
+
+              return (
+                <div key={panel.title} className="relative lg:col-span-2">
+                  <div className="absolute inset-0 rounded-[30px] bg-white/70 dark:bg-white/6" />
+                  <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-card)] backdrop-blur-sm">
+                    <div className="relative h-52 overflow-hidden">
+                      <img alt={panel.alt} className="block h-full w-full object-cover" src={panel.image} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(9,17,39,0.58)] via-[rgba(9,17,39,0.1)] to-transparent" />
+                      <div className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-2xl bg-white/84 shadow-[var(--app-shadow-card)]">
+                        <Icon className="size-5 text-primary-700 dark:text-primary-200" />
+                      </div>
+                    </div>
+                    <div className="p-5 sm:p-6">
+                      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[var(--app-text-subtle)]">
+                        {panelIndex === 0 ? 'Atracción' : panelIndex === 1 ? 'Colaboración' : 'Seguimiento'}
+                      </p>
+                      <p className="mt-3 text-2xl font-semibold tracking-tight text-[var(--app-text)]">{panel.title}</p>
+                      <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{panel.body}</p>
+                    </div>
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button onClick={() => void navigate(primaryAction.href)}>
+              {primaryAction.label}
+              <ArrowRight className="size-4" />
+            </Button>
+            <Button variant="outline" onClick={() => scrollToSection('faq')}>
+              Resolver dudas
+            </Button>
           </div>
         </div>
       </section>
