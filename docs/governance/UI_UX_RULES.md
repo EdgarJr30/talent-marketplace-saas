@@ -135,6 +135,7 @@ Allowed spacing tokens:
 - `32px`
 - `40px`
 - `48px`
+- `56px`
 - `64px`
 
 Do not introduce arbitrary spacing values unless a reusable token is added to the design system.
@@ -164,6 +165,21 @@ Do not introduce arbitrary spacing values unless a reusable token is added to th
 4. Do not create “desktop-only” information architecture branches.
 5. Public landing sections that visually belong to the same first-fold system must share the same max-width and side padding as the public header at the matching breakpoint.
 6. Staggered or editorial compositions are allowed for customer-facing marketing sections only when they remain in normal flow at small breakpoints, preserve readable spacing between cards, and avoid accidental overlap or collision at any supported viewport.
+
+### 5.6 Public landing spacing standard
+Use a tighter shared rhythm for marketing sections so the landing reads as one continuous product story instead of isolated blocks with excessive empty space.
+
+Required defaults:
+- public landing major section padding: **48px mobile / 56px tablet / 64px desktop**
+- public landing continuation section padding: **40px mobile / 48px tablet / 56px desktop**
+- gap between a section header and its main content block: **32px mobile / 40px tablet / 48px desktop**
+- gap between consecutive support blocks inside the same landing section: **24px to 32px**
+
+Rules:
+1. Do not use oversized vertical gaps on the public landing just to create a premium feel; hierarchy should come from grouping, contrast, and composition first.
+2. Consecutive landing sections that belong to the same narrative should feel intentionally related, with compact spacing and a shared width rhythm.
+3. New customer-facing marketing sections should reuse shared landing spacing utilities instead of inventing one-off `py-*`, `pt-*`, or `pb-*` values.
+4. Expandable landing details should visually connect their trigger and revealed panel. When a disclosure opens a comparison or secondary content block, the same trigger should remain visible as the origin of the expansion, slightly overlapping or anchoring to the panel edge instead of floating above it or disappearing fully into the panel header. In the open state, prefer a tab-like trigger treatment with the bottom visually integrated into the panel rather than a fully enclosed pill.
 
 ---
 

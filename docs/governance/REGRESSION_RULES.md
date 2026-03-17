@@ -206,6 +206,15 @@ Do not ship customer-facing landing sections with fake device frames that stop r
 ### R-059 — Public mobile-promo sections should show one focused phone story
 Do not overload customer-facing mobile-promo sections with oversized device mockups, too many competing mini-modules, or large support cards carrying too little information. These sections should center on one clear mobile workflow story and pair it with a small number of dense support cards that reinforce the message without diluting it.
 
+### R-060 — Public landing spacing must stay compact and standardized
+Do not let the customer-facing landing drift back into oversized vertical gaps, inflated top/bottom padding, or inconsistent one-off spacing between related sections. Public marketing sections must follow the shared landing spacing rhythm documented in `UI_UX_RULES.md`, using tighter reusable section utilities so the page feels cohesive, efficient, and intentionally paced.
+
+### R-061 — Pricing hero should stay compact and avoid redundant eyebrow badges
+Do not reintroduce oversized top padding, excessive vertical air, or a redundant `Pricing` eyebrow badge in the public pricing hero when the section is already clearly identified by its heading and placement. That block should start tighter, move faster into the segmented control and cards, and preserve a more compact commercial rhythm.
+
+### R-062 — Pricing comparison trigger must expand from the panel edge, not float or disappear into it
+Do not leave the public pricing comparison trigger looking like a disconnected floating pill above a separate content block, and do not bury it fully inside the revealed panel header either. When the comparison opens, the same trigger should stay visible as the origin of the disclosure, overlapping the panel edge just enough to read as the point the content expands from; when it closes, the panel should visually collapse back into that same trigger. The open-state trigger should read as an integrated tab with its lower edge absorbed by the panel, not as a fully bordered standalone pill or as a separate connector slab stacked between trigger and panel, and there should be no visible seam or hard shoulder break suggesting the trigger and panel are different surfaces.
+
 ---
 
 ## Maintenance rule

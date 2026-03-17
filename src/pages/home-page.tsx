@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
@@ -25,6 +25,8 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/cn'
 
 type BillingFrequency = 'monthly' | 'annually'
+
+const PRICING_COMPARISON_ANIMATION_MS = 640
 
 const heroSignals = [
   {
@@ -325,7 +327,22 @@ export function HomePage() {
   const [billingFrequency, setBillingFrequency] = useState<BillingFrequency>('monthly')
   const [selectedPlanName, setSelectedPlanName] = useState<PricingPlanName>('Growth')
   const [isPricingComparisonOpen, setPricingComparisonOpen] = useState(false)
+  const [isPricingComparisonMounted, setPricingComparisonMounted] = useState(false)
+  const pricingComparisonHideTimeoutRef = useRef<number | null>(null)
+  const pricingComparisonOpenFrameRef = useRef<number | null>(null)
   const [profileFeature, jobsFeature, collaborationFeature, growthFeature] = featureCards
+
+  useEffect(() => {
+    return () => {
+      if (pricingComparisonHideTimeoutRef.current !== null) {
+        window.clearTimeout(pricingComparisonHideTimeoutRef.current)
+      }
+
+      if (pricingComparisonOpenFrameRef.current !== null) {
+        window.cancelAnimationFrame(pricingComparisonOpenFrameRef.current)
+      }
+    }
+  }, [])
 
   const primaryAction = session.isAuthenticated
     ? session.permissions.includes('workspace:read')
@@ -338,6 +355,33 @@ export function HomePage() {
   function scrollToSection(sectionId: string) {
     const section = document.getElementById(sectionId)
     section?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function togglePricingComparison() {
+    if (pricingComparisonHideTimeoutRef.current !== null) {
+      window.clearTimeout(pricingComparisonHideTimeoutRef.current)
+      pricingComparisonHideTimeoutRef.current = null
+    }
+
+    if (pricingComparisonOpenFrameRef.current !== null) {
+      window.cancelAnimationFrame(pricingComparisonOpenFrameRef.current)
+      pricingComparisonOpenFrameRef.current = null
+    }
+
+    if (isPricingComparisonOpen) {
+      setPricingComparisonOpen(false)
+      pricingComparisonHideTimeoutRef.current = window.setTimeout(() => {
+        setPricingComparisonMounted(false)
+        pricingComparisonHideTimeoutRef.current = null
+      }, PRICING_COMPARISON_ANIMATION_MS)
+      return
+    }
+
+    setPricingComparisonMounted(true)
+    pricingComparisonOpenFrameRef.current = window.requestAnimationFrame(() => {
+      setPricingComparisonOpen(true)
+      pricingComparisonOpenFrameRef.current = null
+    })
   }
 
   return (
@@ -500,7 +544,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[var(--app-canvas)] py-16 sm:py-20" id="features">
+      <section className="tm-landing-section bg-[var(--app-canvas)]" id="features">
         <div className="mx-auto max-w-[98rem] px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-stretch">
             <div className="relative">
@@ -680,7 +724,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="overflow-hidden pt-10 pb-16 sm:pt-12 sm:pb-20">
+      <section className="tm-landing-section-tight overflow-hidden">
         <div className="mx-auto max-w-[98rem] px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl text-left lg:max-w-[42rem]">
             <Badge className="w-fit" variant="outline">
@@ -841,20 +885,17 @@ export function HomePage() {
           }}
         />
 
-        <div className="flow-root border-b border-b-transparent bg-transparent pt-24 pb-16 sm:pt-28 lg:pb-20">
+        <div className="flow-root border-b border-b-transparent bg-transparent pt-14 pb-12 sm:pt-16 sm:pb-14 lg:pt-18 lg:pb-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative z-10">
-              <Badge className="border-white/20 bg-white/10 text-white" variant="outline">
-                Pricing
-              </Badge>
-              <h2 className="mx-auto mt-6 max-w-4xl text-center text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
+              <h2 className="mx-auto max-w-4xl text-center text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
                 Planes claros para empezar, crecer y acompañar tu proceso de contratación
               </h2>
-              <p className="mx-auto mt-5 max-w-2xl text-center text-base font-medium leading-8 text-white/72 sm:text-lg">
+              <p className="mx-auto mt-4 max-w-2xl text-center text-base font-medium leading-8 text-white/72 sm:text-lg">
                 Precios visibles, comparación fácil de entender y una propuesta comercial lista para enseñar desde ya.
               </p>
 
-              <div className="mt-14 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <fieldset aria-label="Frecuencia de pago">
                   <div className="grid grid-cols-2 gap-x-1 rounded-full bg-white/8 p-1 text-center text-xs font-semibold text-white">
                     {billingFrequencies.map((frequency) => (
@@ -881,7 +922,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="relative z-10 mx-auto mt-10 grid max-w-md grid-cols-1 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-6">
+            <div className="relative z-10 mx-auto mt-8 grid max-w-md grid-cols-1 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-6">
               <div
                 aria-hidden="true"
                 className="absolute inset-x-0 bottom-[-10rem] hidden h-72 rounded-full blur-3xl lg:block"
@@ -987,247 +1028,271 @@ export function HomePage() {
               })}
             </div>
 
-            <div className="relative z-10 mt-10 flex justify-center">
-              <button
-                className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/94 px-4 py-3 text-sm font-semibold text-[#15203b] shadow-[0_20px_54px_rgba(12,20,44,0.28)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(12,20,44,0.36)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-                type="button"
-                onClick={() => setPricingComparisonOpen((current) => !current)}
+            <div className="relative z-10 mt-8">
+              <div
+                className={cn(
+                  'flex justify-center transition-[margin,transform] duration-[640ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+                  isPricingComparisonOpen ? 'relative z-20 mb-[-1px]' : ''
+                )}
               >
-                <span>{isPricingComparisonOpen ? 'Ocultar comparación' : 'Comparar planes'}</span>
-                <span className="rounded-full bg-primary-50 px-2.5 py-1 text-[0.72rem] font-semibold text-primary-700">
-                  {pricingSections.length} bloques
-                </span>
-                <span
+                <button
+                  aria-controls="pricing-comparison-panel"
+                  aria-expanded={isPricingComparisonOpen}
                   className={cn(
-                    'flex size-8 items-center justify-center rounded-full bg-[#15203b] text-white transition duration-300',
-                    isPricingComparisonOpen && 'rotate-180'
+                    'tm-pricing-comparison-trigger relative inline-flex min-h-12 min-w-[18rem] items-center justify-center gap-3 rounded-[28px] rounded-b-none border border-[var(--app-border)] px-5 pt-3 pb-2.5 text-sm font-semibold backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 dark:border-white/10',
+                    isPricingComparisonOpen
+                      ? 'border-b-0 bg-[var(--app-surface)] text-[var(--app-text)] shadow-[0_14px_28px_rgba(25,42,86,0.08)] focus-visible:ring-[var(--app-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-surface)] dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.96)_0%,rgba(13,24,52,0.98)_100%)]'
+                      : 'bg-white/94 text-[#15203b] shadow-[0_20px_54px_rgba(12,20,44,0.28)] hover:shadow-[0_24px_60px_rgba(12,20,44,0.36)] focus-visible:ring-white/50'
+                  )}
+                  data-state={isPricingComparisonOpen ? 'open' : 'closed'}
+                  type="button"
+                  onClick={togglePricingComparison}
+                >
+                  <span>{isPricingComparisonOpen ? 'Ocultar comparación' : 'Comparar planes'}</span>
+                  <span className="rounded-full bg-primary-50 px-2.5 py-1 text-[0.72rem] font-semibold text-primary-700">
+                    {pricingSections.length} bloques
+                  </span>
+                  <span className="flex size-8 items-center justify-center rounded-full bg-[#15203b] text-white transition duration-300">
+                    <ChevronDown className={cn('size-4 transition duration-500', isPricingComparisonOpen && 'rotate-180')} />
+                  </span>
+                </button>
+              </div>
+
+              {isPricingComparisonMounted ? (
+                <div
+                  className={cn(
+                    'tm-landing-container overflow-visible transition-[padding] duration-[640ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
+                    isPricingComparisonOpen ? 'pb-10 sm:pb-12 lg:pb-14' : 'pointer-events-none pb-0'
                   )}
                 >
-                  <ChevronDown className="size-4" />
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {isPricingComparisonOpen ? (
-          <div className="relative bg-transparent">
-            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
-              <div className="rounded-[32px] border bg-[var(--app-surface)]/88 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.96)_0%,rgba(13,24,52,0.98)_100%)]">
-                <div className="border-b border-[var(--app-border)] px-6 py-5 sm:px-8">
-                  <p className="text-base font-semibold text-[var(--app-text)]">Comparación completa de planes</p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
-                    Revisa publicación, colaboración y acompañamiento en una sola vista cuando necesites más detalle.
-                  </p>
-                </div>
-
-                <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-                  <section aria-labelledby="mobile-pricing-comparison" className="lg:hidden">
-                    <h2 className="sr-only" id="mobile-pricing-comparison">
-                      Comparacion de planes
-                    </h2>
-
-                    <div className="mx-auto max-w-2xl space-y-14">
-                      {pricingPlans.map((plan) => {
-                        const isSelected = selectedPlanName === plan.name
-
-                        return (
-                          <div key={plan.name} className="border-t border-[var(--app-border)] pt-10">
-                            <div
-                              className={cn(
-                                '-mt-px w-72 border-t-2 pt-8 md:w-80',
-                                isSelected ? 'border-primary-500' : 'border-transparent'
-                              )}
-                            >
-                              <h3
-                                className={cn(
-                                  'text-sm font-semibold',
-                                  isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
-                                )}
-                              >
-                                {plan.name}
-                              </h3>
-                              <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
+                  <div className="tm-pricing-comparison-panel-shell relative" data-state={isPricingComparisonOpen ? 'open' : 'closed'}>
+                    <div className="min-h-0">
+                      <div
+                        className="tm-pricing-comparison-panel-surface overflow-hidden rounded-[32px] border border-[var(--app-border)] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.96)_0%,rgba(13,24,52,0.98)_100%)]"
+                        id="pricing-comparison-panel"
+                      >
+                        <div className="tm-pricing-comparison-panel-content">
+                          <div className="border-b border-[var(--app-border)] px-5 pt-7 pb-5 sm:px-8 sm:pt-8 sm:pb-6">
+                            <div className="text-left">
+                              <p className="text-base font-semibold text-[var(--app-text)]">Comparación completa de planes</p>
+                              <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
+                                Revisa publicación, colaboración y acompañamiento en una sola vista cuando necesites más detalle.
+                              </p>
                             </div>
+                          </div>
 
-                            <div className="mt-8 space-y-8">
-                              {pricingSections.map((section) => (
-                                <div key={section.name}>
-                                  <h4 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h4>
-                                  <div className="mt-5 rounded-[24px] border bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]">
-                                    <dl className="divide-y text-sm leading-6">
-                                      {section.features.map((feature) => (
-                                        <div key={feature.name} className="flex items-center justify-between gap-4 px-4 py-3">
-                                          <dt className="pr-4 text-[var(--app-text-muted)]">{feature.name}</dt>
-                                          <dd className="flex min-w-20 items-center justify-end">
-                                            {renderTierValue(feature.tiers[plan.name], isSelected)}
-                                          </dd>
-                                        </div>
-                                      ))}
-                                    </dl>
+                          <div className="tm-landing-container py-10 sm:py-12 lg:py-14">
+                            <section aria-labelledby="mobile-pricing-comparison" className="lg:hidden">
+                              <h2 className="sr-only" id="mobile-pricing-comparison">
+                                Comparacion de planes
+                              </h2>
+
+                              <div className="mx-auto max-w-2xl space-y-10 sm:space-y-12">
+                                {pricingPlans.map((plan) => {
+                                  const isSelected = selectedPlanName === plan.name
+
+                                  return (
+                                    <div key={plan.name} className="border-t border-[var(--app-border)] pt-10">
+                                      <div
+                                        className={cn(
+                                          '-mt-px w-72 border-t-2 pt-8 md:w-80',
+                                          isSelected ? 'border-primary-500' : 'border-transparent'
+                                        )}
+                                      >
+                                        <h3
+                                          className={cn(
+                                            'text-sm font-semibold',
+                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
+                                          )}
+                                        >
+                                          {plan.name}
+                                        </h3>
+                                        <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
+                                      </div>
+
+                                      <div className="mt-6 space-y-6">
+                                        {pricingSections.map((section) => (
+                                          <div key={section.name}>
+                                            <h4 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h4>
+                                            <div className="mt-5 rounded-[24px] border bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]">
+                                              <dl className="divide-y text-sm leading-6">
+                                                {section.features.map((feature) => (
+                                                  <div key={feature.name} className="flex items-center justify-between gap-4 px-4 py-3">
+                                                    <dt className="pr-4 text-[var(--app-text-muted)]">{feature.name}</dt>
+                                                    <dd className="flex min-w-20 items-center justify-end">
+                                                      {renderTierValue(feature.tiers[plan.name], isSelected)}
+                                                    </dd>
+                                                  </div>
+                                                ))}
+                                              </dl>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+                            </section>
+
+                            <section aria-labelledby="desktop-pricing-comparison" className="hidden lg:block">
+                              <h2 className="sr-only" id="desktop-pricing-comparison">
+                                Comparacion de planes
+                              </h2>
+
+                              <div className="grid grid-cols-4 gap-x-8 border-t border-[var(--app-border)] before:block">
+                                {pricingPlans.map((plan) => {
+                                  const isSelected = selectedPlanName === plan.name
+
+                                  return (
+                                    <div key={plan.name} aria-hidden="true" className="-mt-px">
+                                      <div className={cn('border-t-2 pt-10', isSelected ? 'border-primary-500' : 'border-transparent')}>
+                                        <p
+                                          className={cn(
+                                            'text-sm font-semibold',
+                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
+                                          )}
+                                        >
+                                          {plan.name}
+                                        </p>
+                                        <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+
+                              <div className="-mt-4 space-y-10 sm:space-y-12">
+                                {pricingSections.map((section) => (
+                                  <div key={section.name}>
+                                    <h3 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h3>
+                                    <div className="relative -mx-8 mt-8">
+                                      <div
+                                        aria-hidden="true"
+                                        className="absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
+                                      >
+                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
+                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
+                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
+                                      </div>
+
+                                      <table className="relative w-full border-separate border-spacing-x-8">
+                                        <thead>
+                                          <tr className="text-left">
+                                            <th scope="col">
+                                              <span className="sr-only">Feature</span>
+                                            </th>
+                                            {pricingPlans.map((plan) => (
+                                              <th key={plan.name} scope="col">
+                                                <span className="sr-only">{plan.name}</span>
+                                              </th>
+                                            ))}
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {section.features.map((feature, featureIndex) => (
+                                            <tr key={feature.name}>
+                                              <th
+                                                className="w-1/4 py-3 pr-4 text-left text-sm font-normal text-[var(--app-text)]"
+                                                scope="row"
+                                              >
+                                                {feature.name}
+                                                {featureIndex !== section.features.length - 1 ? (
+                                                  <div className="absolute inset-x-8 mt-3 h-px bg-[var(--app-border)]" />
+                                                ) : null}
+                                              </th>
+                                              {pricingPlans.map((plan) => {
+                                                const isSelected = selectedPlanName === plan.name
+
+                                                return (
+                                                  <td key={plan.name} className="relative w-1/4 px-4 py-0 text-center">
+                                                    <span className="relative inline-flex size-full items-center justify-center py-3">
+                                                      {renderTierValue(feature.tiers[plan.name], isSelected)}
+                                                    </span>
+                                                  </td>
+                                                )
+                                              })}
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+
+                                      <div
+                                        aria-hidden="true"
+                                        className="pointer-events-none absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
+                                      >
+                                        {pricingPlans.map((plan) => {
+                                          const isSelected = selectedPlanName === plan.name
+
+                                          return (
+                                            <div
+                                              key={plan.name}
+                                              className={cn(
+                                                'rounded-[24px] transition duration-300',
+                                                isSelected ? 'ring-2 ring-primary-500 shadow-[0_22px_48px_rgba(79,110,216,0.14)]' : 'ring-1 ring-[var(--app-border)]'
+                                              )}
+                                            />
+                                          )
+                                        })}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </section>
+
+                            <div className="mt-10 grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
+                              <div className="rounded-[30px] border bg-[var(--app-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
+                                <div className="flex items-center gap-3">
+                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
+                                    <WalletCards className="size-5 text-primary-700 dark:text-primary-200" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm font-semibold text-[var(--app-text)]">Una propuesta fácil de explicar</p>
+                                    <p className="text-sm text-[var(--app-text-muted)]">
+                                      El pricing ya acompaña demos, conversaciones de ventas y evaluaciones internas.
+                                    </p>
                                   </div>
                                 </div>
-                              ))}
+                                <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
+                                  Los planes muestran de forma realista cómo crece la experiencia sin fingir que los cobros ya están
+                                  activos. La superficie comercial existe; el procesamiento de pagos todavía no.
+                                </p>
+                              </div>
+
+                              <div className="rounded-[30px] border bg-[var(--app-warning-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
+                                <div className="flex items-center gap-3">
+                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-white/80 shadow-[var(--app-shadow-card)]">
+                                    <HandHeart className="size-5 text-[var(--app-text)]" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm font-semibold text-[var(--app-text)]">Donaciones y sponsorships</p>
+                                    <p className="text-sm text-[var(--app-text-muted)]">Superficie visible del roadmap comercial</p>
+                                  </div>
+                                </div>
+                                <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
+                                  Este espacio ya existe para validar la narrativa de apoyo al producto, pero el procesamiento de
+                                  pagos permanece desactivado hasta conectar billing real.
+                                </p>
+                                <Button className="mt-6 w-full" disabled variant="outline">
+                                  Donaciones proximamente
+                                </Button>
+                              </div>
                             </div>
                           </div>
-                        )
-                      })}
-                    </div>
-                  </section>
-
-                  <section aria-labelledby="desktop-pricing-comparison" className="hidden lg:block">
-                    <h2 className="sr-only" id="desktop-pricing-comparison">
-                      Comparacion de planes
-                    </h2>
-
-                    <div className="grid grid-cols-4 gap-x-8 border-t border-[var(--app-border)] before:block">
-                      {pricingPlans.map((plan) => {
-                        const isSelected = selectedPlanName === plan.name
-
-                        return (
-                          <div key={plan.name} aria-hidden="true" className="-mt-px">
-                            <div className={cn('border-t-2 pt-10', isSelected ? 'border-primary-500' : 'border-transparent')}>
-                              <p
-                                className={cn(
-                                  'text-sm font-semibold',
-                                  isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
-                                )}
-                              >
-                                {plan.name}
-                              </p>
-                              <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-
-                    <div className="-mt-6 space-y-14">
-                      {pricingSections.map((section) => (
-                        <div key={section.name}>
-                          <h3 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h3>
-                          <div className="relative -mx-8 mt-8">
-                            <div
-                              aria-hidden="true"
-                              className="absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
-                            >
-                              <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
-                              <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
-                              <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
-                            </div>
-
-                            <table className="relative w-full border-separate border-spacing-x-8">
-                              <thead>
-                                <tr className="text-left">
-                                  <th scope="col">
-                                    <span className="sr-only">Feature</span>
-                                  </th>
-                                  {pricingPlans.map((plan) => (
-                                    <th key={plan.name} scope="col">
-                                      <span className="sr-only">{plan.name}</span>
-                                    </th>
-                                  ))}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {section.features.map((feature, featureIndex) => (
-                                  <tr key={feature.name}>
-                                    <th
-                                      className="w-1/4 py-3 pr-4 text-left text-sm font-normal text-[var(--app-text)]"
-                                      scope="row"
-                                    >
-                                      {feature.name}
-                                      {featureIndex !== section.features.length - 1 ? (
-                                        <div className="absolute inset-x-8 mt-3 h-px bg-[var(--app-border)]" />
-                                      ) : null}
-                                    </th>
-                                    {pricingPlans.map((plan) => {
-                                      const isSelected = selectedPlanName === plan.name
-
-                                      return (
-                                        <td key={plan.name} className="relative w-1/4 px-4 py-0 text-center">
-                                          <span className="relative inline-flex size-full items-center justify-center py-3">
-                                            {renderTierValue(feature.tiers[plan.name], isSelected)}
-                                          </span>
-                                        </td>
-                                      )
-                                    })}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-
-                            <div
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
-                            >
-                              {pricingPlans.map((plan) => {
-                                const isSelected = selectedPlanName === plan.name
-
-                                return (
-                                  <div
-                                    key={plan.name}
-                                    className={cn(
-                                      'rounded-[24px] transition duration-300',
-                                      isSelected ? 'ring-2 ring-primary-500 shadow-[0_22px_48px_rgba(79,110,216,0.14)]' : 'ring-1 ring-[var(--app-border)]'
-                                    )}
-                                  />
-                                )
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-
-                  <div className="mt-14 grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
-                    <div className="rounded-[30px] border bg-[var(--app-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
-                          <WalletCards className="size-5 text-primary-700 dark:text-primary-200" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--app-text)]">Una propuesta fácil de explicar</p>
-                          <p className="text-sm text-[var(--app-text-muted)]">
-                            El pricing ya acompaña demos, conversaciones de ventas y evaluaciones internas.
-                          </p>
                         </div>
                       </div>
-                      <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
-                        Los planes muestran de forma realista cómo crece la experiencia sin fingir que los cobros ya están
-                        activos. La superficie comercial existe; el procesamiento de pagos todavía no.
-                      </p>
-                    </div>
-
-                    <div className="rounded-[30px] border bg-[var(--app-warning-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-white/80 shadow-[var(--app-shadow-card)]">
-                          <HandHeart className="size-5 text-[var(--app-text)]" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--app-text)]">Donaciones y sponsorships</p>
-                          <p className="text-sm text-[var(--app-text-muted)]">Superficie visible del roadmap comercial</p>
-                        </div>
-                      </div>
-                      <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
-                        Este espacio ya existe para validar la narrativa de apoyo al producto, pero el procesamiento de
-                        pagos permanece desactivado hasta conectar billing real.
-                      </p>
-                      <Button className="mt-6 w-full" disabled variant="outline">
-                        Donaciones proximamente
-                      </Button>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
-        ) : null}
+        </div>
       </section>
 
-      <section className="bg-[var(--app-canvas)]" id="faq">
-        <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="tm-landing-section bg-[var(--app-canvas)]" id="faq">
+        <div className="tm-landing-container">
           <div className="mx-auto max-w-4xl">
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
@@ -1238,7 +1303,7 @@ export function HomePage() {
             <h2 className="mt-5 text-3xl font-semibold tracking-tight text-[var(--app-text)] sm:text-4xl">
               Preguntas frecuentes
             </h2>
-            <dl className="mt-12 divide-y">
+            <dl className="mt-10 divide-y">
               {faqs.map((faq) => (
                 <details key={faq.question} className="group py-6 first:pt-0 last:pb-0">
                   <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-[var(--app-text)]">
@@ -1257,8 +1322,8 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="overflow-hidden py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="tm-landing-section overflow-hidden">
+        <div className="tm-landing-container">
           <div className="relative rounded-[36px] border bg-[var(--app-surface)] px-6 py-8 shadow-[var(--app-shadow-floating)] sm:px-8 sm:py-10 lg:px-12 lg:py-12">
             <div
               aria-hidden="true"
@@ -1289,7 +1354,7 @@ export function HomePage() {
       </section>
 
       <footer className="border-t bg-[var(--app-canvas)]">
-        <div className="mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl overflow-hidden px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
           <nav aria-label="Footer" className="-mb-6 flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm leading-6">
             {footerNavigation.map((item) =>
               'section' in item ? (
