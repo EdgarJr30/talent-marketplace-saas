@@ -1,5 +1,11 @@
+import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
+import { afterEach } from 'vitest'
 import '@/lib/i18n/config'
+
+afterEach(() => {
+  cleanup()
+})
 
 if (!window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {

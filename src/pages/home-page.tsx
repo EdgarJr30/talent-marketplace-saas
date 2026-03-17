@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
-  BadgeCheck,
   BriefcaseBusiness,
   Building2,
   Check,
@@ -25,78 +24,78 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/cn'
 
 type BillingFrequency = 'monthly' | 'annually'
-type Tone = 'info' | 'success' | 'warning' | 'default'
 
 const heroSignals = [
   {
-    title: 'Perfil reusable',
-    description: 'Aplica y comparte tu información sin empezar de cero.',
-    icon: FileText
+    title: 'Vacantes que se entienden rápido',
+    description: 'Presenta cada oportunidad con más claridad y mejor contexto.',
+    icon: BriefcaseBusiness
   },
   {
     title: 'Pipeline compartido',
-    description: 'Recruiting y líderes ven el mismo avance con contexto claro.',
+    description: 'Recruiting y líderes avanzan sobre la misma información.',
     icon: Workflow
   },
   {
-    title: 'Listo para móvil',
-    description: 'La experiencia se entiende y se siente bien en cada pantalla.',
-    icon: Smartphone
+    title: 'Marca empleadora más cuidada',
+    description: 'Tu proceso transmite más orden, confianza y profesionalismo.',
+    icon: Sparkles
   }
 ] as const
 
-const heroMetrics = [
+const heroProofs = [
   {
-    label: 'Vacantes activas',
-    value: '12',
-    detail: 'publicadas y listas para compartir',
-    icon: BriefcaseBusiness,
-    tone: 'info'
+    title: 'Un solo espacio',
+    description: 'vacantes, talento y feedback sin perseguir contexto'
   },
   {
-    label: 'Tiempo de respuesta',
-    value: '-32%',
-    detail: 'menos fricción entre etapas y feedback',
-    icon: Sparkles,
-    tone: 'success'
+    title: 'Más claridad',
+    description: 'para evaluar mejor y mover cada proceso con orden'
   },
   {
-    label: 'Equipo alineado',
-    value: '3 roles',
-    detail: 'recruiting, líderes y talento en el mismo flujo',
-    icon: HandHeart,
-    tone: 'warning'
+    title: 'Mejor presencia',
+    description: 'para atraer talento con una experiencia más cuidada'
   }
 ] as const
 
-const heroPipelineStages = [
-  { label: 'Aplicaciones nuevas', count: '18', tone: 'info' },
-  { label: 'Entrevistas activas', count: '6', tone: 'success' },
-  { label: 'Feedback pendiente', count: '4', tone: 'warning' },
-  { label: 'Oferta en revisión', count: '2', tone: 'default' }
-] as const
-
-const heroCandidates = [
+const heroGalleryColumns = [
   {
-    initials: 'AP',
-    name: 'Ana Pérez',
-    role: 'Product Designer',
-    stage: 'Entrevista final',
-    tone: 'success'
+    offsetClassName: 'pt-14 sm:pt-24 lg:pt-20',
+    widthClassName: 'w-[4.25rem] sm:w-32 lg:w-36',
+    items: [
+      {
+        src: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=700&q=80',
+        alt: 'Equipo revisando ideas frente a una pizarra',
+        className: 'aspect-[4/5]'
+      }
+    ]
   },
   {
-    initials: 'JL',
-    name: 'José López',
-    role: 'Full-stack Engineer',
-    stage: 'Screening',
-    tone: 'info'
+    offsetClassName: 'pt-4 sm:pt-10 lg:pt-8',
+    widthClassName: 'w-[4.75rem] sm:w-36 lg:w-40',
+    items: [
+      {
+        src: 'https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=700&q=80',
+        alt: 'Profesional trabajando desde una laptop',
+        className: 'aspect-[4/5]'
+      },
+      {
+        src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=700&q=80',
+        alt: 'Equipo colaborando en una oficina abierta',
+        className: 'aspect-[4/5]'
+      }
+    ]
   },
   {
-    initials: 'MR',
-    name: 'María Rosario',
-    role: 'HR Operations',
-    stage: 'Feedback',
-    tone: 'warning'
+    offsetClassName: 'pt-0 sm:pt-4 lg:pt-0',
+    widthClassName: 'w-[4.25rem] sm:w-32 lg:w-36',
+    items: [
+      {
+        src: 'https://images.unsplash.com/photo-1670272504528-790c24957dda?auto=format&fit=crop&w=700&q=80',
+        alt: 'Personas conversando en un espacio colaborativo',
+        className: 'aspect-[4/5]'
+      }
+    ]
   }
 ] as const
 
@@ -271,22 +270,6 @@ const footerSignals = [
   { label: 'Equipos coordinados', icon: ShieldCheck }
 ] as const
 
-function toneClasses(tone: Tone) {
-  if (tone === 'info') {
-    return 'bg-[var(--app-info-surface)]'
-  }
-
-  if (tone === 'success') {
-    return 'bg-[var(--app-success-surface)]'
-  }
-
-  if (tone === 'warning') {
-    return 'bg-[var(--app-warning-surface)]'
-  }
-
-  return 'bg-[var(--app-surface)]'
-}
-
 function renderTierValue(value: boolean | string, featured: boolean) {
   if (typeof value === 'string') {
     return (
@@ -347,180 +330,147 @@ export function HomePage() {
           }}
         />
 
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-36 sm:px-6 sm:pb-20 sm:pt-40 lg:px-8 lg:pb-24 lg:pt-44">
-          <div className="relative overflow-hidden rounded-[32px] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,250,255,0.82)_100%)] p-5 shadow-[var(--app-shadow-floating)] backdrop-blur-xl dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.9)_0%,rgba(9,17,39,0.88)_100%)] sm:rounded-[40px] sm:p-8 xl:p-10">
+        <div className="mx-auto max-w-[98rem] px-4 pb-14 pt-36 sm:px-6 sm:pb-18 sm:pt-40 lg:px-8 lg:pb-18 lg:pt-40">
+          <div className="relative overflow-hidden rounded-[32px] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,250,255,0.82)_100%)] p-5 shadow-[var(--app-shadow-floating)] backdrop-blur-xl dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.9)_0%,rgba(9,17,39,0.88)_100%)] sm:rounded-[40px] sm:p-8 xl:p-9">
             <div
               aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-40 opacity-80"
+              className="absolute inset-x-0 top-0 h-36 opacity-80"
               style={{
                 background:
                   'radial-gradient(circle at 0% 0%, rgba(57, 85, 184, 0.16), transparent 28%), radial-gradient(circle at 100% 0%, rgba(111, 142, 244, 0.12), transparent 24%)'
               }}
             />
+            <div
+              aria-hidden="true"
+              className="absolute inset-y-0 right-0 hidden w-[46%] opacity-45 sm:block"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(138,156,205,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(138,156,205,0.12) 1px, transparent 1px)',
+                backgroundSize: '128px 128px'
+              }}
+            />
 
-            <div className="relative grid gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,34rem)] lg:items-center xl:gap-14">
-              <div className="w-full">
-                <Badge className="max-w-full bg-white/82 text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur-sm" variant="outline">
-                  Hiring workspace para empresas que quieren verse mejor
+            <div className="relative grid gap-9 sm:gap-10 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-center xl:gap-14">
+              <div className="min-w-0 w-full lg:max-w-xl xl:max-w-2xl">
+                <Badge
+                  className="max-w-full whitespace-nowrap text-left bg-white/82 text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:border-white/12 dark:bg-white/10 dark:text-white"
+                  variant="outline"
+                >
+                  Hiring workspace para equipos de selección
                 </Badge>
-                <h1 className="mt-6 max-w-[11ch] text-4xl font-semibold tracking-tight text-[var(--app-text)] sm:text-5xl lg:text-[3.6rem] lg:leading-[1.04] xl:text-[4.1rem]">
-                  Publica vacantes y mueve procesos con claridad.
+                <h1 className="mt-5 max-w-[11ch] text-[2.9rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[3.4rem] lg:text-[3.9rem] lg:leading-[1.02]">
+                  Vacantes, talento y hiring en un solo lugar.
                 </h1>
-                <p className="mt-5 max-w-[38rem] text-base leading-7 text-[var(--app-text-muted)] sm:text-lg">
-                  Descubre talento, colabora con tu equipo y presenta tu empresa en una experiencia visual, ordenada y
-                  fácil de entender desde el primer vistazo.
+                <p className="mt-5 max-w-[37rem] text-base leading-7 text-[var(--app-text-muted)] sm:text-lg">
+                  Convierte vacantes, feedback y seguimiento dispersos en una experiencia que proyecta más orden, más
+                  confianza y mejor colaboración al contratar.
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  <Button className="sm:min-w-44" onClick={() => void navigate(primaryAction.href)}>
+                <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <Button className="w-full sm:min-w-44 sm:w-auto" onClick={() => void navigate(primaryAction.href)}>
                     {primaryAction.label}
                   </Button>
-                  <Button className="sm:min-w-44" variant="outline" onClick={() => void navigate('/jobs')}>
+                  <Button className="w-full sm:min-w-44 sm:w-auto" variant="outline" onClick={() => void navigate('/jobs')}>
                     Explorar jobs
                   </Button>
-                  <Button className="group justify-start px-0 text-[var(--app-text)] hover:bg-transparent" variant="ghost" onClick={() => scrollToSection('pricing')}>
+                  <Button
+                    className="group w-fit justify-start self-start px-0 text-[var(--app-text)] hover:bg-transparent"
+                    variant="ghost"
+                    onClick={() => scrollToSection('pricing')}
+                  >
                     Ver pricing
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </div>
 
-                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
                   {heroSignals.map((signal) => {
                     const Icon = signal.icon
 
                     return (
                       <div
                         key={signal.title}
-                        className="rounded-[24px] border bg-white/74 p-4 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:bg-white/6"
+                        className="rounded-[24px] border bg-white/78 p-4 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:bg-white/6"
                       >
                         <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
                           <Icon className="size-4 text-primary-700 dark:text-primary-200" />
                         </div>
                         <p className="mt-3 text-sm font-semibold text-[var(--app-text)]">{signal.title}</p>
-                        <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{signal.description}</p>
+                        <p className="mt-1 max-w-[24ch] text-sm leading-6 text-[var(--app-text-muted)]">{signal.description}</p>
                       </div>
                     )
                   })}
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="absolute -left-8 top-12 hidden h-28 w-28 rounded-full bg-primary-300/20 blur-3xl lg:block" />
-                <div className="absolute -right-10 bottom-6 hidden h-32 w-32 rounded-full bg-peach-300/30 blur-3xl xl:block" />
+              <div className="relative min-w-0">
+                <div className="absolute -left-6 top-14 hidden h-28 w-28 rounded-full bg-primary-300/18 blur-3xl xl:block" />
+                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-peach-300/28 blur-3xl xl:block" />
 
-                <div className="relative overflow-hidden rounded-[32px] border border-white/70 bg-[color:var(--app-surface-elevated)]/92 p-4 shadow-[var(--app-shadow-floating)] backdrop-blur-xl dark:border-white/8 sm:p-5">
-                  <div className="flex items-center justify-between gap-4 rounded-[24px] border bg-[var(--app-surface)]/84 px-4 py-3 shadow-[var(--app-shadow-card)]">
+                <div className="min-w-0 rounded-[30px] border bg-[color:var(--app-surface-elevated)]/88 p-4 shadow-[var(--app-shadow-floating)] backdrop-blur-sm sm:p-5">
+                  <div className="flex items-center justify-between gap-4 rounded-[22px] border bg-[var(--app-surface)]/84 px-4 py-3 shadow-[var(--app-shadow-card)]">
                     <div>
                       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--app-text-subtle)]">
                         Vista del producto
                       </p>
-                      <p className="mt-1 text-base font-semibold text-[var(--app-text)]">Hiring claro para equipos y talento</p>
+                      <p className="mt-1 text-base font-semibold text-[var(--app-text)]">Más visual, más clara, más fácil de seguir</p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="hidden items-center gap-2 sm:flex">
                       <span className="size-2 rounded-full bg-primary-300" />
                       <span className="size-2 rounded-full bg-secondary-300" />
                       <span className="size-2 rounded-full bg-peach-300" />
                     </div>
                   </div>
 
-                  <div className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-                    <div className="rounded-[28px] border bg-[var(--app-surface)]/88 p-5 shadow-[var(--app-shadow-card)]">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
-                            Pipeline
-                          </p>
-                          <p className="mt-1 text-lg font-semibold text-[var(--app-text)]">Una vacante, todo el seguimiento</p>
-                        </div>
-                        <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
-                          <Workflow className="size-4 text-primary-700 dark:text-primary-200" />
-                        </div>
-                      </div>
-
-                      <div className="mt-5 space-y-3">
-                        {heroPipelineStages.map((stage) => (
-                          <div key={stage.label} className="rounded-[20px] border bg-[var(--app-surface-muted)]/88 px-4 py-3">
-                            <div className="flex items-center justify-between gap-3">
-                              <p className="text-sm font-medium text-[var(--app-text)]">{stage.label}</p>
-                              <span className={cn('rounded-full px-3 py-1 text-xs font-semibold', toneClasses(stage.tone))}>
-                                {stage.count}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                  <div className="relative mt-5">
+                    <div className="absolute left-1/2 top-3 z-20 hidden -translate-x-1/2 rounded-full border bg-white/92 px-4 py-2 text-xs font-semibold text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur sm:block dark:bg-[var(--app-surface)]/92">
+                      Publica, evalúa y decide sin perder contexto
                     </div>
 
-                    <div className="grid gap-4">
-                      {heroMetrics.map((metric) => {
-                        const Icon = metric.icon
-
-                        return (
-                          <div
-                            key={metric.label}
-                            className={cn(
-                              'rounded-[24px] border p-4 shadow-[var(--app-shadow-card)] backdrop-blur-sm',
-                              toneClasses(metric.tone)
-                            )}
-                          >
-                            <div className="flex size-10 items-center justify-center rounded-2xl bg-white/88 shadow-[var(--app-shadow-card)] dark:bg-white/10">
-                              <Icon className="size-4 text-[var(--app-text)]" />
-                            </div>
-                            <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
-                              {metric.label}
-                            </p>
-                            <p className="mt-2 text-2xl font-semibold text-[var(--app-text)]">{metric.value}</p>
-                            <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{metric.detail}</p>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 rounded-[28px] border bg-[var(--app-surface)]/88 p-5 shadow-[var(--app-shadow-card)]">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
-                          Talento en vista
-                        </p>
-                        <p className="mt-1 text-lg font-semibold text-[var(--app-text)]">Perfiles y estado sin perder contexto</p>
-                      </div>
-                      <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-success-surface)]">
-                        <BadgeCheck className="size-4 text-primary-700 dark:text-primary-200" />
-                      </div>
-                    </div>
-
-                    <div className="mt-5 space-y-3">
-                      {heroCandidates.map((candidate) => (
+                    <div className="flex justify-center gap-2 sm:gap-4 lg:gap-5">
+                      {heroGalleryColumns.map((column, columnIndex) => (
                         <div
-                          key={candidate.name}
-                          className="flex items-center justify-between gap-3 rounded-[20px] border bg-[var(--app-surface-muted)]/86 px-4 py-3"
+                          key={`hero-gallery-column-${columnIndex + 1}`}
+                          className={cn('flex-none space-y-3 sm:space-y-4', column.widthClassName, column.offsetClassName)}
                         >
-                          <div className="flex min-w-0 items-center gap-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-primary-600 text-sm font-semibold text-white">
-                              {candidate.initials}
+                          {column.items.map((item) => (
+                            <div key={item.src} className={cn('relative overflow-hidden rounded-[24px] shadow-[var(--app-shadow-floating)]', item.className)}>
+                              <img
+                                alt={item.alt}
+                                className="h-full w-full object-cover"
+                                src={item.src}
+                              />
+                              <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-black/6 ring-inset dark:ring-white/10" />
                             </div>
-                            <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold text-[var(--app-text)]">{candidate.name}</p>
-                              <p className="truncate text-sm text-[var(--app-text-muted)]">{candidate.role}</p>
-                            </div>
-                          </div>
-                          <span className={cn('shrink-0 rounded-full px-3 py-1 text-xs font-semibold', toneClasses(candidate.tone))}>
-                            {candidate.stage}
-                          </span>
+                          ))}
                         </div>
                       ))}
                     </div>
-                  </div>
-                </div>
 
-                <div className="absolute -left-3 bottom-10 hidden rounded-[22px] border bg-white/84 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:bg-white/8 xl:block">
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Marca cuidada</p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Tu empresa se presenta mejor</p>
-                </div>
-                <div className="absolute -right-4 top-16 hidden rounded-[22px] border bg-white/84 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:bg-white/8 xl:block">
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Listo para crecer</p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Roles, vacantes y equipo en un solo lugar</p>
+                    <div className="absolute left-0 top-24 hidden rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur md:block dark:bg-[var(--app-surface)]/90">
+                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Pipeline claro</p>
+                      <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Feedback y etapas visibles</p>
+                    </div>
+
+                    <div className="absolute right-0 top-44 hidden rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur md:block dark:bg-[var(--app-surface)]/90">
+                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Marca cuidada</p>
+                      <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Tus vacantes se presentan mejor</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 grid gap-3 rounded-[26px] border bg-[var(--app-surface)]/88 p-3 shadow-[var(--app-shadow-card)] sm:grid-cols-3 sm:gap-4 sm:p-4">
+                    {heroProofs.map((proof) => (
+                      <div
+                        key={proof.title}
+                        className="rounded-[20px] bg-[var(--app-surface-muted)]/86 px-4 py-4 text-center sm:min-h-[8.5rem] sm:px-5 sm:py-5 sm:text-left"
+                      >
+                        <p className="text-base font-semibold text-[var(--app-text)]">{proof.title}</p>
+                        <p className="mt-2 max-w-[26ch] text-sm leading-6 text-[var(--app-text-muted)] sm:max-w-none">
+                          {proof.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

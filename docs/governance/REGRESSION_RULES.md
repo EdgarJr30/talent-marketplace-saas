@@ -176,6 +176,18 @@ Do not suggest, document, or execute `pnpm` or `yarn` commands for this reposito
 ### R-049 — Mobile landing spacing must be reviewed as a first-fold system
 Do not approve customer-facing mobile landing changes by checking isolated components only. Public mobile headers, logo tiles, top actions, hero cards, and first badges/headlines must be reviewed together as one first-fold composition, preserving explicit breathing room between chrome and content, keeping mobile spacing within the shared token system, and avoiding oversized logo or header treatments that consume disproportionate vertical space.
 
+### R-050 — Public first-fold sections must share width and avoid collision-based layouts
+Do not let the public hero or adjacent first-fold sections drift to a narrower desktop width than the public header when they are part of the same visual system. Customer-facing showcase cards may use staggered placement for polish, but the composition must stay structurally responsive, with offsets created through grid rhythm and spacing rather than overlapping components that collide or stack awkwardly across breakpoints.
+
+### R-051 — Public hero must stay concise, visual, and close to above-the-fold
+Do not let the public landing hero regress into a tall, text-heavy composition that forces unnecessary desktop scrolling to understand the value proposition. The first fold should prioritize a short headline, brief commercial copy, clear CTAs, and a dominant visual explanation of the product or hiring context, with staggered imagery or compact signals preferred over long stacked product cards.
+
+### R-052 — Public hero copy must avoid generic claims and invented sample metrics
+Do not use weak customer-facing hero labels such as `móvil de verdad` or filler benefit statements that fail to explain a real commercial outcome. Likewise, do not populate the public hero with arbitrary sample counts like vacancies or interviews unless they come from real validated proof. Prefer concise value copy tied to clearer hiring, better collaboration, stronger employer presentation, or reduced process disorder.
+
+### R-053 — Public hero badge copy must remain one line on mobile
+Do not let the main eyebrow badge of the public hero wrap into two lines on supported mobile widths. Keep that microcopy short enough to fit in one line instead of shrinking readability or leaving a broken pill shape.
+
 ---
 
 ## Maintenance rule

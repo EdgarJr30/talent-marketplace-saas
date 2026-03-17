@@ -55,7 +55,8 @@ describe('route shells', () => {
     )
 
     expect(await screen.findByRole('heading', { name: 'Entra a tu cuenta' })).toBeInTheDocument()
-    expect(screen.queryByText('Workspace')).not.toBeInTheDocument()
-    expect(screen.queryByText('Pipeline')).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Plataforma ASI/i })).not.toBeInTheDocument()
+    expect(screen.queryByText(/Hiring workspace para empresas y equipos de selección/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Ver pricing' })).not.toBeInTheDocument()
   })
 })

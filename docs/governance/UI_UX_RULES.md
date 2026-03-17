@@ -162,6 +162,8 @@ Do not introduce arbitrary spacing values unless a reusable token is added to th
 2. Two-column layouts are allowed only when both columns remain readable and tappable at the active breakpoint.
 3. Long forms, job details, candidate profiles, and ATS entities must stack vertically first, then progressively enhance.
 4. Do not create “desktop-only” information architecture branches.
+5. Public landing sections that visually belong to the same first-fold system must share the same max-width and side padding as the public header at the matching breakpoint.
+6. Staggered or editorial compositions are allowed for customer-facing marketing sections only when they remain in normal flow at small breakpoints, preserve readable spacing between cards, and avoid accidental overlap or collision at any supported viewport.
 
 ---
 
@@ -218,6 +220,15 @@ Recommended baseline tokens:
 7. Use sentence case across navigation labels, buttons, helper text, empty states, and form labels.
 8. Avoid all caps for controls, navigation, or paragraph text.
 9. Customer-facing headlines, stat values, and supporting copy must stay visually controlled. Do not overscale page heroes, cards, or section titles to the point that supporting content feels oversized or visually shouty on mobile.
+10. Public landing hero copy must be concise and scannable. Default to one primary headline, one short support paragraph, and compact value signals instead of stacking multiple dense explanatory blocks above the fold.
+
+### 7.3 Public landing first-fold standards
+1. The public landing hero should aim to keep its primary message, main CTAs, and dominant visual explanation visible within the desktop first fold whenever layout width reasonably allows it.
+2. Customer-facing hero sections should explain the product first through hierarchy, imagery, and compact visual signals, then through supporting text. Do not rely on long explanatory copy to carry the whole message.
+3. Marketing imagery may be editorial or staggered, but it must stay relevant to teamwork, hiring, or product understanding rather than functioning as generic decoration.
+4. Customer-facing hero microcopy must sell a concrete outcome or pain relieved. Avoid generic claims such as `móvil de verdad`, `fácil`, or `moderno` unless the line also explains the commercial value behind that claim.
+5. Do not use arbitrary sample metrics in the public hero unless the source is real and supportable. If proof is needed, prefer concrete qualitative outcomes or product-value statements over invented dashboard numbers.
+6. Public hero eyebrow badges and similar micro-labels should fit on a single line at the target mobile widths. If a label needs wrapping to fit, shorten the copy instead of squeezing typography or allowing awkward two-line pills.
 
 ### 7.3 Content hierarchy rules
 1. Every page must have one visible, unique page title.
