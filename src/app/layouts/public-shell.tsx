@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { getAuthenticatedHomePath } from '@/app/router/surface-paths'
 import { BrandLockup } from '@/components/ui/app-brand'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -37,9 +38,10 @@ export function PublicShell() {
 
   const isLanding = location.pathname === '/'
   const primaryAction = session.isAuthenticated
-    ? session.permissions.includes('workspace:read')
-      ? { label: 'Abrir mi espacio', href: '/workspace' }
-      : { label: 'Mi perfil', href: '/candidate/profile' }
+    ? {
+        label: session.permissions.includes('workspace:read') ? 'Abrir mi workspace' : 'Mi perfil',
+        href: getAuthenticatedHomePath(session.permissions.includes('workspace:read'))
+      }
     : { label: 'Iniciar sesion', href: '/auth/sign-in' }
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { getAuthenticatedHomePath } from '@/app/router/surface-paths'
 import { BrandLockup } from '@/components/ui/app-brand'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
@@ -30,7 +31,9 @@ export function AuthShell() {
               Jobs
             </Button>
             {session.isAuthenticated ? (
-              <Button onClick={() => void navigate('/candidate/profile')}>Abrir app</Button>
+              <Button onClick={() => void navigate(getAuthenticatedHomePath(session.permissions.includes('workspace:read')))}>
+                Abrir app
+              </Button>
             ) : (
               <Button variant="outline" onClick={() => void navigate(isSignUp ? '/auth/sign-in' : '/auth/sign-up')}>
                 {isSignUp ? 'Iniciar sesion' : 'Crear cuenta'}

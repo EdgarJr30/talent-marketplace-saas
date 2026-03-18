@@ -166,6 +166,9 @@
 9. The public root experience must behave as a commercial product landing, not as an internal control panel.
 10. The public landing must include visible SaaS pricing and a donation surface even before payment processing is implemented, as long as the UI makes clear that payment logic is not active yet.
 11. Internal test, foundations, and launch-operations tooling must be visually and route-wise isolated from the customer-facing product experience.
+12. The product must keep four explicit route surfaces: public storefront, candidate app, employer workspace, and admin console.
+13. Candidate-owned authenticated workflows must live under `/candidate/*`; employer tenant workflows must live under `/workspace/*`.
+14. The restricted platform console must use `/admin/*` as the canonical route family, while `/internal/*` remains compatibility-only during transition.
 
 ---
 

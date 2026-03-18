@@ -218,6 +218,9 @@ Do not leave the public pricing comparison trigger looking like a disconnected f
 ### R-063 — Actionable controls must never ship without visible hover feedback
 Do not ship pointer-accessible actions that stay visually inert on hover. Buttons, icon buttons, clickable cards, nav items, segmented controls, disclosure triggers, selectable list rows, and similar actionable surfaces must all show a clear hover response through color, border, background, shadow, or controlled motion. A cursor change by itself is not enough, and this rule applies across the product UI, not only the public landing.
 
+### R-064 — Route surfaces must stay canonical and separated
+Do not collapse the modular monolith back into a flat route space for authenticated product flows. The canonical route surfaces are `public` under `/`, `candidate` under `/candidate/*`, `workspace` under `/workspace/*`, and the restricted platform console under `/admin/*`. Legacy families such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` may exist only as compatibility redirects during migration, not as the long-term canonical structure.
+
 ---
 
 ## Maintenance rule

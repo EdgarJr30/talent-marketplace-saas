@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { getAuthenticatedHomePath, surfacePaths } from '@/app/router/surface-paths'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -45,7 +46,7 @@ export function SignInPage() {
   }
 
   if (session.isAuthenticated) {
-    return <Navigate replace to={session.permissions.includes('workspace:read') ? '/workspace' : '/candidate/profile'} />
+    return <Navigate replace to={getAuthenticatedHomePath(session.permissions.includes('workspace:read'))} />
   }
 
   async function handleSubmit(values: SignInValues) {
@@ -55,7 +56,7 @@ export function SignInPage() {
         description: 'Ya puedes continuar tu perfil o entrar al espacio que te corresponda.'
       })
       await session.refresh()
-      await navigate('/onboarding')
+      await navigate(surfacePaths.candidate.onboarding)
     } catch (error) {
       await reportErrorWithToast({
         title: 'No pudimos iniciar sesion',

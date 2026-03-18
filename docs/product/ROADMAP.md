@@ -36,6 +36,7 @@ Establish secure multi-tenant access control.
 - recruiter request submission
 - platform-admin approval for employer onboarding
 - tenant creation after approval
+- canonical route-surface model for `public`, `candidate`, `workspace`, and `admin`
 - memberships
 - system tenant roles
 - custom role CRUD
@@ -180,7 +181,7 @@ Operational maturity for launch.
 - platform feature-flag controls for launch operations
 - release checklist and mobile smoke coverage
 - client-ready public landing with SaaS pricing and donation sections
-- internal console isolation for operational and QA-only tooling
+- admin console isolation for operational and QA-only tooling under `/admin/*`
 
 ### Exit criteria
 - core workflow notifications exist

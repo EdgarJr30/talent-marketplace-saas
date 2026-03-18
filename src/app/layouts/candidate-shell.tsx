@@ -6,6 +6,7 @@ import { AppBottomNav, AppSidebarNav, type AppNavItem } from '@/components/ui/ap
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { filterNavigationItems } from '@/lib/permissions/guards'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { candidateNavigationItems } from '@/shared/constants/navigation'
 
 function findNavItem(items: typeof candidateNavigationItems, href: string) {
@@ -18,16 +19,21 @@ export function CandidateShell() {
   const session = useAppSession()
   const visibleNavigation = filterNavigationItems(candidateNavigationItems, session.permissions, session.isAuthenticated)
 
-  const primaryNav: AppNavItem[] = ['/jobs', '/applications', '/candidate/profile', '/onboarding']
+  const primaryNav: AppNavItem[] = [
+    surfacePaths.public.jobs,
+    surfacePaths.candidate.applications,
+    surfacePaths.candidate.profile,
+    surfacePaths.candidate.onboarding
+  ]
     .map((href) => findNavItem(visibleNavigation, href))
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
-    .map((item) => (item.href === '/onboarding' ? { ...item, title: 'More' } : item))
+    .map((item) => (item.href === surfacePaths.candidate.onboarding ? { ...item, title: 'More' } : item))
 
   const sidebarNav: AppNavItem[] = [
-    ...['/candidate/profile', '/applications', '/jobs']
+    ...[surfacePaths.candidate.profile, surfacePaths.candidate.applications, surfacePaths.public.jobs]
       .map((href) => findNavItem(visibleNavigation, href))
       .filter((item): item is NonNullable<typeof item> => Boolean(item)),
-    ...['/onboarding', '/recruiter-request']
+    ...[surfacePaths.candidate.onboarding, surfacePaths.candidate.recruiterRequest]
       .map((href) => findNavItem(visibleNavigation, href))
       .filter((item): item is NonNullable<typeof item> => Boolean(item))
   ]
@@ -43,7 +49,7 @@ export function CandidateShell() {
           brandMark={<BrandMark />}
           description="Tu perfil, tus oportunidades y el avance de cada proceso en un solo lugar."
           footer={
-            <Button className="w-full" variant="outline" onClick={() => void navigate('/recruiter-request')}>
+            <Button className="w-full" variant="outline" onClick={() => void navigate(surfacePaths.candidate.recruiterRequest)}>
               Llevar mi empresa a la plataforma
             </Button>
           }
@@ -69,10 +75,10 @@ export function CandidateShell() {
 
               <div className="flex flex-wrap gap-3">
                 <ThemeToggle />
-                <Button variant="outline" onClick={() => void navigate('/jobs')}>
+                <Button variant="outline" onClick={() => void navigate(surfacePaths.public.jobs)}>
                   Explorar jobs
                 </Button>
-                <Button variant="ghost" onClick={() => void navigate('/onboarding')}>
+                <Button variant="ghost" onClick={() => void navigate(surfacePaths.candidate.onboarding)}>
                   Onboarding
                 </Button>
               </div>

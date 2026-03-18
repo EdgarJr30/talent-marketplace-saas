@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,25 +10,25 @@ import { NotificationCenter } from '@/features/notifications/components/notifica
 
 const adminTools = [
   {
-    href: '/internal/approvals',
+    href: surfacePaths.admin.approvals,
     title: 'Recruiter approvals',
     description: 'Revisa solicitudes recruiter y provisiona acceso employer.',
     permission: 'recruiter_request:review'
   },
   {
-    href: '/internal/platform',
+    href: surfacePaths.admin.platform,
     title: 'Platform ops',
     description: 'Observa planes, flags, colas y counters operativos.',
     permission: 'platform_dashboard:read'
   },
   {
-    href: '/internal/moderation',
+    href: surfacePaths.admin.moderation,
     title: 'Moderation',
     description: 'Opera trust and safety, suspensiones y acciones de control.',
     permission: 'moderation:read'
   },
   {
-    href: '/internal/errors',
+    href: surfacePaths.admin.errors,
     title: 'Error review',
     description: 'Inspecciona errores de producto y su estado de remediacion.',
     permission: 'audit_log:read'
@@ -104,7 +105,7 @@ export function InternalConsolePage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="outline" onClick={() => void navigate('/internal/bootstrap-owner')}>
+          <Button variant="outline" onClick={() => void navigate(surfacePaths.admin.bootstrapOwner)}>
             Abrir bootstrap owner
           </Button>
         </CardContent>

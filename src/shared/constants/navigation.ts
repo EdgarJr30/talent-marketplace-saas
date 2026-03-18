@@ -25,7 +25,7 @@ export const candidateNavigationItems: NavigationItem[] = [
   },
   {
     title: 'Aplicaciones',
-    href: '/applications',
+    href: '/candidate/applications',
     description: 'Sigue tus procesos',
     requiresAuth: true
   },
@@ -37,13 +37,13 @@ export const candidateNavigationItems: NavigationItem[] = [
   },
   {
     title: 'Onboarding',
-    href: '/onboarding',
+    href: '/candidate/onboarding',
     description: 'Ajustes esenciales de tu cuenta',
     requiresAuth: true
   },
   {
     title: 'Acceso employer',
-    href: '/recruiter-request',
+    href: '/candidate/recruiter-request',
     description: 'Lleva tu empresa a la plataforma',
     requiresAuth: true
   }
@@ -51,7 +51,7 @@ export const candidateNavigationItems: NavigationItem[] = [
 
 export const employerNavigationItems: NavigationItem[] = [
   {
-    title: 'Company',
+    title: 'Workspace',
     href: '/workspace',
     description: 'Marca, equipo y presencia de empresa',
     requiresAuth: true,
@@ -59,28 +59,28 @@ export const employerNavigationItems: NavigationItem[] = [
   },
   {
     title: 'Jobs',
-    href: '/jobs/manage',
+    href: '/workspace/jobs',
     description: 'Publica y organiza vacantes',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
     title: 'Candidates',
-    href: '/talent',
+    href: '/workspace/talent',
     description: 'Descubre personas abiertas a oportunidades',
     requiresAuth: true,
     requiredPermission: 'candidate_directory:read'
   },
   {
     title: 'Pipeline',
-    href: '/pipeline',
+    href: '/workspace/pipeline',
     description: 'Da seguimiento al proceso',
     requiresAuth: true,
     requiredPermission: 'application:read'
   },
   {
-    title: 'Roles',
-    href: '/rbac',
+    title: 'Access',
+    href: '/workspace/settings/access',
     description: 'Accesos del equipo',
     requiresAuth: true,
     requiredPermission: 'role:read'
@@ -90,34 +90,34 @@ export const employerNavigationItems: NavigationItem[] = [
 export const internalNavigationItems: NavigationItem[] = [
   {
     title: 'Overview',
-    href: '/internal',
-    description: 'Centro operativo interno',
+    href: '/admin',
+    description: 'Centro operativo de plataforma',
     requiresAuth: true
   },
   {
     title: 'Approvals',
-    href: '/internal/approvals',
+    href: '/admin/approvals',
     description: 'Recruiter requests',
     requiresAuth: true,
     requiredPermission: 'recruiter_request:review'
   },
   {
     title: 'Platform',
-    href: '/internal/platform',
+    href: '/admin/platform',
     description: 'Planes y ops',
     requiresAuth: true,
     requiredPermission: 'platform_dashboard:read'
   },
   {
     title: 'Moderation',
-    href: '/internal/moderation',
+    href: '/admin/moderation',
     description: 'Trust and safety',
     requiresAuth: true,
     requiredPermission: 'moderation:read'
   },
   {
     title: 'Errors',
-    href: '/internal/errors',
+    href: '/admin/errors',
     description: 'Error review',
     requiresAuth: true,
     requiredPermission: 'audit_log:read'

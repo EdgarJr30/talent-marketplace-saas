@@ -6,6 +6,7 @@ import { AppBottomNav, AppSidebarNav, type AppNavItem } from '@/components/ui/ap
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { filterNavigationItems } from '@/lib/permissions/guards'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { employerNavigationItems } from '@/shared/constants/navigation'
 
 function findNavItem(items: typeof employerNavigationItems, href: string) {
@@ -18,13 +19,18 @@ export function EmployerShell() {
   const session = useAppSession()
   const visibleNavigation = filterNavigationItems(employerNavigationItems, session.permissions, session.isAuthenticated)
 
-  const primaryNav: AppNavItem[] = ['/jobs/manage', '/talent', '/pipeline', '/workspace']
+  const primaryNav: AppNavItem[] = [
+    surfacePaths.workspace.jobs,
+    surfacePaths.workspace.talent,
+    surfacePaths.workspace.pipeline,
+    surfacePaths.workspace.root
+  ]
     .map((href) => findNavItem(visibleNavigation, href))
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
 
   const sidebarNav: AppNavItem[] = [
     ...primaryNav,
-    ...['/rbac']
+    ...[surfacePaths.workspace.access]
       .map((href) => findNavItem(visibleNavigation, href))
       .filter((item): item is NonNullable<typeof item> => Boolean(item))
   ]
@@ -40,7 +46,7 @@ export function EmployerShell() {
           brandMark={<BrandMark />}
           description="Publica vacantes, descubre talento y coordina contrataciones con una experiencia clara."
           footer={
-            <Button className="w-full" variant="outline" onClick={() => void navigate('/jobs')}>
+            <Button className="w-full" variant="outline" onClick={() => void navigate(surfacePaths.public.jobs)}>
               Ver job board publico
             </Button>
           }
@@ -66,10 +72,10 @@ export function EmployerShell() {
 
               <div className="flex flex-wrap gap-3">
                 <ThemeToggle />
-                <Button variant="outline" onClick={() => void navigate('/workspace')}>
-                  Company
+                <Button variant="outline" onClick={() => void navigate(surfacePaths.workspace.root)}>
+                  Workspace
                 </Button>
-                <Button onClick={() => void navigate('/jobs/manage')}>Nueva vacante</Button>
+                <Button onClick={() => void navigate(surfacePaths.workspace.jobs)}>Nueva vacante</Button>
               </div>
             </div>
           </header>

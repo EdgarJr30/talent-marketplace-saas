@@ -189,16 +189,19 @@ Use local state or lightweight store only for:
 Avoid using a client state store as a shadow backend.
 
 ### Product surface strategy
-Keep the frontend split into three visible surfaces:
-- public landing/discovery/auth
-- authenticated product workflows for candidates and employers
-- internal console routes for operational tooling only
+Keep the frontend split into explicit route surfaces:
+- public storefront routes for landing, pricing, and public jobs under `/`
+- auth routes under `/auth/*`
+- candidate app routes under `/candidate/*`
+- employer workspace routes under `/workspace/*`
+- admin console routes for operational tooling under `/admin/*`
 
-The internal console may reuse product primitives, but it must remain route-isolated and must not be the default customer entrypoint.
+The admin console may reuse product primitives, but it must remain route-isolated and must not be the default customer entrypoint.
 
 Implementation note:
 - `auth` must use its own route tree and shell, separate from both public marketing and authenticated dashboard shells
 - candidate and employer routes may share primitives, but they should not share the same navigation chrome by default
+- legacy route families should be preserved only as redirects while the canonical surfaces above are adopted
 
 ---
 

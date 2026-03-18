@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { getAuthenticatedHomePath, surfacePaths } from '@/app/router/surface-paths'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -46,7 +47,7 @@ export function SignUpPage() {
   }
 
   if (session.isAuthenticated) {
-    return <Navigate replace to={session.permissions.includes('workspace:read') ? '/workspace' : '/candidate/profile'} />
+    return <Navigate replace to={getAuthenticatedHomePath(session.permissions.includes('workspace:read'))} />
   }
 
   async function handleSubmit(values: SignUpValues) {
@@ -58,7 +59,7 @@ export function SignUpPage() {
           description: 'Tu usuario base ya existe. Vamos a completar el onboarding.'
         })
         await session.refresh()
-        await navigate('/onboarding')
+        await navigate(surfacePaths.candidate.onboarding)
         return
       }
 

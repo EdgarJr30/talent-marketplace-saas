@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -28,14 +29,14 @@ export function BootstrapOwnerPage() {
       toast.success('Primer admin inicializado', {
         description: 'Tu cuenta ya puede revisar solicitudes recruiter y operar la plataforma.'
       })
-      await navigate('/internal/approvals')
+      await navigate(surfacePaths.admin.approvals)
     } catch (error) {
       const description = toBootstrapFirstPlatformOwnerErrorMessage(error)
 
       await reportErrorWithToast({
         title: 'No se pudo reclamar el rol inicial',
         source: 'auth.bootstrap-first-platform-owner',
-        route: '/internal/bootstrap-owner',
+        route: surfacePaths.admin.bootstrapOwner,
         userId: session.authUser?.id ?? null,
         error,
         description,
@@ -57,7 +58,7 @@ export function BootstrapOwnerPage() {
       await reportErrorWithToast({
         title: 'No se pudo cerrar la sesion',
         source: 'auth.bootstrap.sign-out',
-        route: '/internal/bootstrap-owner',
+        route: surfacePaths.admin.bootstrapOwner,
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),

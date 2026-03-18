@@ -72,7 +72,7 @@ export function RequireInternalAccess({ children }: PropsWithChildren) {
   const session = useAppSession()
 
   if (session.isLoading) {
-    return <GuardFeedback title="Validando acceso interno" description="Estamos comprobando tu acceso al workspace interno." />
+    return <GuardFeedback title="Validando acceso admin" description="Estamos comprobando tu acceso a la consola de plataforma." />
   }
 
   if (!session.isAuthenticated) {
@@ -82,8 +82,8 @@ export function RequireInternalAccess({ children }: PropsWithChildren) {
   if (!session.canAccessInternalConsole) {
     return (
       <GuardFeedback
-        title="Acceso interno restringido"
-        description="Solo administradores de plataforma y developers internos pueden abrir esta zona."
+        title="Acceso admin restringido"
+        description="Solo administradores de plataforma y developers internos pueden abrir esta consola."
       />
     )
   }

@@ -28,6 +28,7 @@ This means:
 - one shared deployment flow
 - one local workflow with preview and production deployments
 - clear separation by business domains/modules
+- clear separation by product surfaces (`public`, `candidate`, `workspace`, `admin`)
 - strict RBAC and tenant isolation
 - reusable UI system and shared design rules
 - ability to scale later without rewriting the foundation
@@ -293,7 +294,16 @@ Each feature may contain:
 
 This keeps logic close to the business domain.
 
-### 7.2 `src/components`
+### 7.2 Route surface ownership
+The modular monolith must expose four route surfaces with explicit ownership and shells:
+- `public`: landing, pricing, public jobs, and acquisition flows under `/`
+- `candidate`: authenticated talent workflows under `/candidate/*`
+- `workspace`: authenticated employer tenant workflows under `/workspace/*`
+- `admin`: restricted platform console under `/admin/*`
+
+Legacy route families may remain temporarily only as compatibility redirects while internal links, analytics, and docs converge on the canonical paths.
+
+### 7.3 `src/components`
 Reusable shared UI components that are not specific to one feature:
 - buttons
 - inputs
@@ -306,10 +316,10 @@ Reusable shared UI components that are not specific to one feature:
 - pagination components
 - tables/list wrappers
 
-### 7.3 `src/shared`
+### 7.4 `src/shared`
 Shared helpers, constants, guards, utilities, tokens, and cross-domain abstractions.
 
-### 7.4 `supabase/`
+### 7.5 `supabase/`
 Must contain versioned database and backend assets:
 - SQL migrations
 - seeds
@@ -318,7 +328,7 @@ Must contain versioned database and backend assets:
 - storage conventions
 - access patterns documentation if needed
 
-### 7.5 Root rule files
+### 7.6 Root rule files
 The root rule files remain the primary source of truth for product, architecture, testing, security, and regression behavior.
 They must be updated whenever adjacent implementation changes.
 

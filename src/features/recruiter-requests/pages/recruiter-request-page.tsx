@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -132,7 +133,7 @@ export function RecruiterRequestPage() {
     onError: async (error) => {
       await captureClientError({
         source: 'recruiter-request.submit',
-        route: '/recruiter-request',
+        route: surfacePaths.candidate.recruiterRequest,
         userId: session.authUser?.id ?? null,
         userMessage: 'No pudimos enviar tu solicitud recruiter.',
         error,
@@ -181,7 +182,7 @@ export function RecruiterRequestPage() {
       })
       await captureClientError({
         source: 'recruiter-request.company-logo',
-        route: '/recruiter-request',
+        route: surfacePaths.candidate.recruiterRequest,
         userId: session.authUser?.id ?? null,
         userMessage: message,
         error,
@@ -226,7 +227,7 @@ export function RecruiterRequestPage() {
       })
       await captureClientError({
         source: 'recruiter-request.verification-document',
-        route: '/recruiter-request',
+        route: surfacePaths.candidate.recruiterRequest,
         userId: session.authUser?.id ?? null,
         userMessage: message,
         error,
@@ -248,7 +249,7 @@ export function RecruiterRequestPage() {
     } catch (error) {
       await captureClientError({
         source: 'recruiter-request.asset-open',
-        route: '/recruiter-request',
+        route: surfacePaths.candidate.recruiterRequest,
         userId: session.authUser?.id ?? null,
         userMessage: 'No pudimos abrir el archivo privado.',
         error,
@@ -425,7 +426,7 @@ export function RecruiterRequestPage() {
                         </Button>
                       ) : null}
                       {request.status === 'approved' && request.approved_tenant_id ? (
-                        <Button onClick={() => void navigate('/workspace')}>Ir al workspace</Button>
+                        <Button onClick={() => void navigate(surfacePaths.workspace.root)}>Ir al workspace</Button>
                       ) : null}
                     </div>
                   </div>
@@ -445,7 +446,7 @@ export function RecruiterRequestPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" onClick={() => void navigate('/workspace')}>
+              <Button className="w-full" onClick={() => void navigate(surfacePaths.workspace.root)}>
                 Abrir workspace
               </Button>
             </CardContent>

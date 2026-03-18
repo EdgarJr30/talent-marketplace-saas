@@ -110,6 +110,7 @@ The MVP should **not** initially include:
 - employer workspace creation after approval
 - platform admin area
 - avatar and document uploads with modern web formats, 5 MB guardrails, and clear validation feedback
+- authenticated app entry redirect that sends employer users to `/workspace` and standard users to `/candidate/profile`
 
 ## 8.2 Candidate profile
 - personal info
@@ -199,6 +200,7 @@ The MVP should **not** initially include:
 - visible SaaS pricing section for commercial review, even before billing is connected
 - donation section and donation CTA as UI/UX-only surfaces until payment logic ships
 - internal console isolated from the client-facing product experience
+- canonical route surfaces for `public`, `candidate`, `workspace`, and `admin`
 
 ---
 

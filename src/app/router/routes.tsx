@@ -25,8 +25,10 @@ import { WorkspaceOverviewPage } from '@/features/tenants/pages/workspace-overvi
 import { AuthShell } from '@/app/layouts/auth-shell'
 import { CandidateShell } from '@/app/layouts/candidate-shell'
 import { EmployerShell } from '@/app/layouts/employer-shell'
-import { InternalShell } from '@/app/layouts/internal-shell'
+import { AdminShell } from '@/app/layouts/internal-shell'
 import { PublicShell } from '@/app/layouts/public-shell'
+import { surfacePaths } from '@/app/router/surface-paths'
+import { AppEntryRedirect } from '@/app/router/routes/app-entry-redirect'
 import { RequireAuth, RequireInternalAccess, RequirePermission } from '@/lib/auth/guards'
 import { HomePage } from '@/pages/home-page'
 import { OfflinePage } from '@/pages/offline-page'
@@ -47,6 +49,14 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'jobs/:jobSlug',
         element: <JobDetailPage />
+      },
+      {
+        path: 'jobs/:jobSlug/apply',
+        element: (
+          <RequireAuth>
+            <JobApplicationPage />
+          </RequireAuth>
+        )
       },
       {
         path: 'offline',
@@ -77,7 +87,15 @@ export const appRoutes: RouteObject[] = [
     ]
   },
   {
-    path: '/',
+    path: surfacePaths.app.home,
+    element: (
+      <RequireAuth>
+        <AppEntryRedirect />
+      </RequireAuth>
+    )
+  },
+  {
+    path: surfacePaths.candidate.root,
     element: (
       <RequireAuth>
         <CandidateShell />
@@ -93,21 +111,17 @@ export const appRoutes: RouteObject[] = [
         element: <RecruiterRequestPage />
       },
       {
-        path: 'candidate/profile',
+        path: 'profile',
         element: <CandidateProfilePage />
       },
       {
         path: 'applications',
         element: <ApplicationsOverviewPage />
-      },
-      {
-        path: 'jobs/:jobSlug/apply',
-        element: <JobApplicationPage />
       }
     ]
   },
   {
-    path: '/',
+    path: surfacePaths.workspace.root,
     element: (
       <RequirePermission permission="workspace:read">
         <EmployerShell />
@@ -115,11 +129,11 @@ export const appRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: 'workspace',
+        index: true,
         element: <WorkspaceOverviewPage />
       },
       {
-        path: 'jobs/manage',
+        path: 'jobs',
         element: <JobsOverviewPage />
       },
       {
@@ -139,7 +153,7 @@ export const appRoutes: RouteObject[] = [
         )
       },
       {
-        path: 'rbac',
+        path: 'settings/access',
         element: (
           <RequirePermission permission="role:read">
             <RbacOverviewPage />
@@ -149,10 +163,10 @@ export const appRoutes: RouteObject[] = [
     ]
   },
   {
-    path: '/internal',
+    path: surfacePaths.admin.root,
     element: (
       <RequireInternalAccess>
-        <InternalShell />
+        <AdminShell />
       </RequireInternalAccess>
     ),
     children: [
@@ -199,23 +213,67 @@ export const appRoutes: RouteObject[] = [
     ]
   },
   {
-    path: '/auth/bootstrap-owner',
-    element: <Navigate replace to="/internal/bootstrap-owner" />
+    path: surfacePaths.auth.bootstrapOwner,
+    element: <Navigate replace to={surfacePaths.admin.bootstrapOwner} />
   },
   {
-    path: '/admin/recruiter-requests',
-    element: <Navigate replace to="/internal/approvals" />
+    path: '/applications',
+    element: <Navigate replace to={surfacePaths.candidate.applications} />
   },
   {
-    path: '/admin/platform',
-    element: <Navigate replace to="/internal/platform" />
+    path: '/onboarding',
+    element: <Navigate replace to={surfacePaths.candidate.onboarding} />
   },
   {
-    path: '/admin/moderation',
-    element: <Navigate replace to="/internal/moderation" />
+    path: '/recruiter-request',
+    element: <Navigate replace to={surfacePaths.candidate.recruiterRequest} />
   },
   {
-    path: '/admin/errors',
-    element: <Navigate replace to="/internal/errors" />
+    path: '/candidate/profile',
+    element: <Navigate replace to={surfacePaths.candidate.profile} />
+  },
+  {
+    path: '/jobs/manage',
+    element: <Navigate replace to={surfacePaths.workspace.jobs} />
+  },
+  {
+    path: '/talent',
+    element: <Navigate replace to={surfacePaths.workspace.talent} />
+  },
+  {
+    path: '/pipeline',
+    element: <Navigate replace to={surfacePaths.workspace.pipeline} />
+  },
+  {
+    path: '/rbac',
+    element: <Navigate replace to={surfacePaths.workspace.access} />
+  },
+  {
+    path: '/internal',
+    element: <Navigate replace to={surfacePaths.admin.root} />
+  },
+  {
+    path: '/internal/approvals',
+    element: <Navigate replace to={surfacePaths.admin.approvals} />
+  },
+  {
+    path: '/internal/platform',
+    element: <Navigate replace to={surfacePaths.admin.platform} />
+  },
+  {
+    path: '/internal/moderation',
+    element: <Navigate replace to={surfacePaths.admin.moderation} />
+  },
+  {
+    path: '/internal/errors',
+    element: <Navigate replace to={surfacePaths.admin.errors} />
+  },
+  {
+    path: '/internal/bootstrap-owner',
+    element: <Navigate replace to={surfacePaths.admin.bootstrapOwner} />
+  },
+  {
+    path: surfacePaths.admin.recruiterRequests,
+    element: <Navigate replace to={surfacePaths.admin.approvals} />
   }
 ]

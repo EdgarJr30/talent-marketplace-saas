@@ -180,7 +180,8 @@ Internal developer access may also exist as an explicit operational flag on the 
 3. Empty states should not mislead users into thinking a missing permission is a missing feature.
 4. Unauthorized deep links must fail gracefully.
 5. Permission checks in UI are supportive only; backend and RLS remain authoritative.
-6. Internal console routes must require either platform-admin authority or the explicit internal-developer flag, and they must stay hidden from the normal customer navigation model.
+6. Admin console routes under `/admin/*` must require either platform-admin authority or the explicit internal-developer flag, and they must stay hidden from the normal customer navigation model.
+7. Legacy `/internal/*` URLs may exist temporarily only as redirects to the canonical `/admin/*` console.
 
 ---
 
@@ -235,7 +236,7 @@ Audit important RBAC events:
 
 Launch defaults:
 - `member:invite` only covers inviting users who already exist in the platform identity layer.
-- `application:export` is the gate for applicant CSV downloads from `/applications` and `/pipeline`.
+- `application:export` is the gate for applicant CSV downloads from candidate history and employer workspace pipeline surfaces.
 - role assigned to member
 - role removed from member
 - notification-management grants changed

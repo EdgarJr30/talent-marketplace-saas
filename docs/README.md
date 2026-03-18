@@ -43,3 +43,12 @@ This folder contains the canonical Markdown documentation for the repository.
 2. Keep folder-specific operational `README.md` files beside the code they explain.
 3. Keep the repository root lightweight: `README.md` and `AGENTS.md` are the entrypoint docs.
 4. Update this index whenever a canonical Markdown file is added, moved, or removed.
+
+## Canonical product surfaces
+The modular monolith is organized around four canonical product surfaces:
+- `public` for marketing, pricing, and public jobs under `/`
+- `candidate` for authenticated talent flows under `/candidate/*`
+- `workspace` for employer tenant workflows under `/workspace/*`
+- `admin` for the restricted platform console under `/admin/*`
+
+Legacy aliases such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` may exist temporarily only as compatibility redirects.

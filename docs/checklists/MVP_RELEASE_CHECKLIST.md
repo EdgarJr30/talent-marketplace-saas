@@ -3,19 +3,19 @@
 ## Core loop smoke
 - Registro de usuario base en `/auth`
 - Callback de confirmacion de email en `/auth/confirm`
-- Onboarding base en `/onboarding`
-- Solicitud recruiter en `/recruiter-request`
-- Aprobacion admin en `/admin/recruiter-requests`
+- Onboarding base en `/candidate/onboarding`
+- Solicitud recruiter en `/candidate/recruiter-request`
+- Aprobacion admin en `/admin/approvals`
 - Workspace employer en `/workspace`
 - Creacion y publish de job en `/jobs`
 - Apply flow en `/jobs/:slug/apply`
-- Pipeline recruiter en `/pipeline`
+- Pipeline recruiter en `/workspace/pipeline`
 
 ## PWA readiness
 - Manifest instalable visible en mobile
 - Service worker registra sin errores
 - `/offline` responde como fallback cuando la app pierde red
-- Navegacion movil principal sigue usable en `home`, `jobs`, `applications`, `pipeline`, `workspace`
+- Navegacion movil principal sigue usable en `home`, `jobs`, `candidate/applications`, `workspace/pipeline`, `workspace`
 
 ## Storage and private media
 - Avatar, logos y documentos privados respetan el limite de 5 MB

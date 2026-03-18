@@ -29,11 +29,11 @@ describe('permission guards', () => {
       'Perfil',
       'Onboarding',
       'Acceso employer',
-      'Company',
+      'Workspace',
       'Jobs',
       'Candidates',
       'Pipeline',
-      'Roles',
+      'Access',
       'Overview',
       'Platform',
       'Errors'

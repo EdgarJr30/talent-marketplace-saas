@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -56,7 +57,7 @@ export function JobApplicationPage() {
       toast.success('Postulacion enviada', {
         description: 'Tu perfil y respuestas ya quedaron registradas para esta vacante.'
       })
-      await navigate('/applications')
+      await navigate(surfacePaths.candidate.applications)
     },
     onError: async (error) => {
       await reportErrorWithToast({
@@ -103,7 +104,7 @@ export function JobApplicationPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Link to="/candidate/profile">
+          <Link to={surfacePaths.candidate.profile}>
             <Button>Ir a perfil candidato</Button>
           </Link>
         </CardContent>

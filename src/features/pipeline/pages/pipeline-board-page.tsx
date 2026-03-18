@@ -68,7 +68,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos mover el applicant de stage',
         source: 'pipeline.move-stage',
-        route: '/pipeline',
+        route: '/workspace/pipeline',
         userId: session.authUser?.id ?? null,
         error
       })
@@ -101,7 +101,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos guardar la nota',
         source: 'pipeline.add-note',
-        route: '/pipeline',
+        route: '/workspace/pipeline',
         userId: session.authUser?.id ?? null,
         error
       })
@@ -133,7 +133,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos guardar el rating',
         source: 'pipeline.rate',
-        route: '/pipeline',
+        route: '/workspace/pipeline',
         userId: session.authUser?.id ?? null,
         error
       })

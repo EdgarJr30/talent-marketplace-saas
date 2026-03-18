@@ -1,5 +1,6 @@
 import type { EmailOtpType, User } from '@supabase/supabase-js'
 
+import { surfacePaths } from '@/app/router/surface-paths'
 import { MAX_UPLOAD_SIZE_BYTES, formatFileSize } from '@/lib/uploads/media'
 import { toErrorMessage } from '@/lib/errors/error-utils'
 import { supabase } from '@/lib/supabase/client'
@@ -103,12 +104,12 @@ function normalizeStorageUploadErrorMessage(file: File, errorMessage: string) {
   return errorMessage
 }
 
-function getAuthRedirectUrl(nextPath = '/onboarding') {
+function getAuthRedirectUrl(nextPath = surfacePaths.candidate.onboarding) {
   if (typeof window === 'undefined') {
     return undefined
   }
 
-  const redirectUrl = new URL('/auth/confirm', window.location.origin)
+  const redirectUrl = new URL(surfacePaths.auth.confirm, window.location.origin)
   redirectUrl.searchParams.set('next', nextPath)
 
   return redirectUrl.toString()

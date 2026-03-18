@@ -26,21 +26,21 @@ export interface AppNavItem {
 const iconByHref: Record<string, LucideIcon> = {
   '/': Sparkles,
   '/jobs': BriefcaseBusiness,
-  '/jobs/manage': BriefcaseBusiness,
+  '/workspace/jobs': BriefcaseBusiness,
   '/candidate/profile': UserRound,
-  '/applications': FileText,
-  '/onboarding': Layers3,
-  '/recruiter-request': Building2,
+  '/candidate/applications': FileText,
+  '/candidate/onboarding': Layers3,
+  '/candidate/recruiter-request': Building2,
   '/workspace': Building2,
-  '/talent': UsersRound,
-  '/pipeline': Grid2x2,
-  '/rbac': Shield,
-  '/internal': Wrench,
-  '/internal/approvals': Shield,
-  '/internal/platform': Building2,
-  '/internal/moderation': Layers3,
-  '/internal/errors': FileText,
-  '/internal/bootstrap-owner': Wrench
+  '/workspace/talent': UsersRound,
+  '/workspace/pipeline': Grid2x2,
+  '/workspace/settings/access': Shield,
+  '/admin': Wrench,
+  '/admin/approvals': Shield,
+  '/admin/platform': Building2,
+  '/admin/moderation': Layers3,
+  '/admin/errors': FileText,
+  '/admin/bootstrap-owner': Wrench
 }
 
 function resolveIcon(item: AppNavItem) {

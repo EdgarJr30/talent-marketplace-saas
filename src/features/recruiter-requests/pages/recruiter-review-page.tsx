@@ -52,7 +52,7 @@ export function RecruiterReviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar la solicitud',
         source: 'admin.recruiter-request-review',
-        route: '/admin/recruiter-requests',
+        route: '/admin/approvals',
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),
@@ -69,7 +69,7 @@ export function RecruiterReviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos abrir el archivo',
         source: 'admin.recruiter-request-asset-open',
-        route: '/admin/recruiter-requests',
+        route: '/admin/approvals',
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),

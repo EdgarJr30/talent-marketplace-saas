@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { getAuthenticatedHomePath, surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils/cn'
@@ -453,10 +454,11 @@ export function HomePage() {
   const [profileFeature, jobsFeature, collaborationFeature, growthFeature] = featureCards
 
   const primaryAction = session.isAuthenticated
-    ? session.permissions.includes('workspace:read')
-      ? { label: 'Abrir mi espacio', href: '/workspace' }
-      : { label: 'Completar mi perfil', href: '/candidate/profile' }
-    : { label: 'Crear cuenta', href: '/auth/sign-up' }
+    ? {
+        label: session.permissions.includes('workspace:read') ? 'Abrir mi workspace' : 'Completar mi perfil',
+        href: getAuthenticatedHomePath(session.permissions.includes('workspace:read'))
+      }
+    : { label: 'Crear cuenta', href: surfacePaths.auth.signUp }
 
   const footerYear = new Date().getFullYear()
 

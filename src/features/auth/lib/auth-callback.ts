@@ -1,5 +1,7 @@
 import type { EmailOtpType } from '@supabase/supabase-js'
 
+import { surfacePaths } from '@/app/router/surface-paths'
+
 export interface AuthCallbackResolution {
   code: string | null
   tokenHash: string | null
@@ -18,11 +20,11 @@ const supportedEmailOtpTypes = new Set<EmailOtpType>([
 
 export function sanitizeNextPath(value: string | null) {
   if (!value || !value.startsWith('/')) {
-    return '/onboarding'
+    return surfacePaths.candidate.onboarding
   }
 
   if (value.startsWith('//')) {
-    return '/onboarding'
+    return surfacePaths.candidate.onboarding
   }
 
   return value

@@ -6,9 +6,10 @@ import { AppSidebarNav } from '@/components/ui/app-shell-navigation'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { filterNavigationItems } from '@/lib/permissions/guards'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { internalNavigationItems } from '@/shared/constants/navigation'
 
-export function InternalShell() {
+export function AdminShell() {
   const navigate = useNavigate()
   const location = useLocation()
   const session = useAppSession()
@@ -24,7 +25,7 @@ export function InternalShell() {
           brandMark={<BrandMark panelClassName="bg-[var(--app-text)]" />}
           description="Zona restringida para operaciones, aprobaciones, moderación y seguimiento técnico."
           footer={
-            <Button className="w-full" variant="outline" onClick={() => void navigate('/')}>
+            <Button className="w-full" variant="outline" onClick={() => void navigate(surfacePaths.public.home)}>
               Volver al producto
             </Button>
           }
@@ -50,10 +51,10 @@ export function InternalShell() {
 
               <div className="flex flex-wrap gap-3">
                 <ThemeToggle />
-                <Button variant="ghost" onClick={() => void navigate('/internal')}>
+                <Button variant="ghost" onClick={() => void navigate(surfacePaths.admin.root)}>
                   Overview
                 </Button>
-                <Button variant="outline" onClick={() => void navigate('/')}>
+                <Button variant="outline" onClick={() => void navigate(surfacePaths.public.home)}>
                   Producto
                 </Button>
               </div>
@@ -68,3 +69,5 @@ export function InternalShell() {
     </div>
   )
 }
+
+export const InternalShell = AdminShell
