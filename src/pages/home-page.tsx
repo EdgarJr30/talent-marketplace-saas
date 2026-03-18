@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
@@ -324,6 +325,7 @@ function renderTierValue(value: boolean | string, highlighted: boolean) {
 export function HomePage() {
   const navigate = useNavigate()
   const session = useAppSession()
+  const shouldReduceMotion = useReducedMotion()
   const [billingFrequency, setBillingFrequency] = useState<BillingFrequency>('monthly')
   const [selectedPlanName, setSelectedPlanName] = useState<PricingPlanName>('Growth')
   const [isPricingComparisonOpen, setPricingComparisonOpen] = useState(false)
@@ -474,8 +476,32 @@ export function HomePage() {
               </div>
 
               <div className="relative min-w-0">
-                <div className="absolute -left-6 top-14 hidden h-28 w-28 rounded-full bg-primary-300/18 blur-3xl xl:block" />
-                <div className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-peach-300/28 blur-3xl xl:block" />
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute -left-6 top-14 hidden h-28 w-28 rounded-full bg-primary-300/18 blur-3xl xl:block"
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          scale: [1, 1.08, 0.98, 1],
+                          opacity: [0.4, 0.65, 0.45, 0.4]
+                        }
+                  }
+                  transition={{ duration: 9, ease: 'easeInOut', repeat: Infinity }}
+                />
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute -right-8 bottom-12 hidden h-36 w-36 rounded-full bg-peach-300/28 blur-3xl xl:block"
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          scale: [1, 0.94, 1.06, 1],
+                          opacity: [0.42, 0.58, 0.44, 0.42]
+                        }
+                  }
+                  transition={{ duration: 10.5, ease: 'easeInOut', repeat: Infinity, delay: 0.8 }}
+                />
 
                 <div className="min-w-0 rounded-[30px] border bg-[color:var(--app-surface-elevated)]/88 p-4 shadow-[var(--app-shadow-floating)] backdrop-blur-sm sm:p-5">
                   <div className="flex items-center justify-between gap-4 rounded-[22px] border bg-[var(--app-surface)]/84 px-4 py-3 shadow-[var(--app-shadow-card)]">
@@ -492,40 +518,141 @@ export function HomePage() {
                     </div>
                   </div>
 
-                  <div className="relative mt-5">
-                    <div className="absolute left-1/2 top-3 z-20 hidden -translate-x-1/2 rounded-full border bg-white/92 px-4 py-2 text-xs font-semibold text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur sm:block dark:bg-[var(--app-surface)]/92">
-                      Publica, evalúa y decide sin perder contexto
-                    </div>
+                  <div className="relative mt-5 overflow-hidden rounded-[28px] px-1 pb-2 pt-2">
+                    <motion.div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute left-1/2 top-1/2 hidden h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(159,182,255,0.44)_0%,rgba(159,182,255,0.16)_42%,transparent_72%)] blur-3xl md:block"
+                      animate={shouldReduceMotion ? undefined : { scale: [0.94, 1.05, 0.98, 0.94], opacity: [0.46, 0.68, 0.52, 0.46] }}
+                      transition={{ duration: 8.5, ease: 'easeInOut', repeat: Infinity }}
+                    />
+
+                    <motion.div className="absolute left-1/2 top-3 z-20 hidden -translate-x-1/2 sm:block">
+                      <motion.div
+                        className="rounded-full border bg-white/92 px-4 py-2 text-xs font-semibold text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/92"
+                        animate={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                y: [0, -8, 0, 6, 0],
+                                rotate: [0, -1.1, 0, 0.8, 0]
+                              }
+                        }
+                        transition={{ duration: 8.2, ease: 'easeInOut', repeat: Infinity }}
+                        whileHover={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                scale: 1.03,
+                                y: -10,
+                                boxShadow: '0 20px 42px rgba(25, 42, 86, 0.16)'
+                              }
+                        }
+                      >
+                        Publica, evalúa y decide sin perder contexto
+                      </motion.div>
+                    </motion.div>
 
                     <div className="flex justify-center gap-2 sm:gap-4 lg:gap-5">
                       {heroGalleryColumns.map((column, columnIndex) => (
-                        <div
+                        <motion.div
                           key={`hero-gallery-column-${columnIndex + 1}`}
                           className={cn('flex-none space-y-3 sm:space-y-4', column.widthClassName, column.offsetClassName)}
+                          animate={
+                            shouldReduceMotion
+                              ? undefined
+                              : {
+                                  y: columnIndex === 0 ? [0, -9, 0, 7, 0] : columnIndex === 1 ? [0, 10, 0, -8, 0] : [0, -7, 0, 8, 0]
+                                }
+                          }
+                          transition={{
+                            duration: columnIndex === 1 ? 9.8 : 8.8 + columnIndex,
+                            ease: 'easeInOut',
+                            repeat: Infinity,
+                            delay: columnIndex * 0.35
+                          }}
                         >
                           {column.items.map((item) => (
-                            <div key={item.src} className={cn('relative overflow-hidden rounded-[24px] shadow-[var(--app-shadow-floating)]', item.className)}>
+                            <motion.div
+                              key={item.src}
+                              className={cn('relative overflow-hidden rounded-[24px] shadow-[var(--app-shadow-floating)]', item.className)}
+                              whileHover={
+                                shouldReduceMotion
+                                  ? undefined
+                                  : {
+                                      scale: 1.035,
+                                      y: -8,
+                                      rotate: columnIndex === 1 ? -0.75 : 0.75
+                                    }
+                              }
+                              transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+                            >
                               <img
                                 alt={item.alt}
                                 className="h-full w-full object-cover"
                                 src={item.src}
                               />
                               <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-black/6 ring-inset dark:ring-white/10" />
-                            </div>
+                            </motion.div>
                           ))}
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
 
-                    <div className="absolute left-0 top-24 hidden rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur md:block dark:bg-[var(--app-surface)]/90">
-                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Pipeline claro</p>
-                      <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Feedback y etapas visibles</p>
-                    </div>
+                    <motion.div className="absolute left-0 top-24 hidden md:block">
+                      <motion.div
+                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/90"
+                        animate={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                y: [0, 7, 0, -9, 0],
+                                rotate: [0, 0.5, 0, -1, 0]
+                              }
+                        }
+                        transition={{ duration: 9.3, ease: 'easeInOut', repeat: Infinity, delay: 0.4 }}
+                        whileHover={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                scale: 1.035,
+                                x: 4,
+                                y: -12,
+                                boxShadow: '0 24px 44px rgba(25, 42, 86, 0.18)'
+                              }
+                        }
+                      >
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Pipeline claro</p>
+                        <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Feedback y etapas visibles</p>
+                      </motion.div>
+                    </motion.div>
 
-                    <div className="absolute right-0 top-44 hidden rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur md:block dark:bg-[var(--app-surface)]/90">
-                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Marca cuidada</p>
-                      <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Tus vacantes se presentan mejor</p>
-                    </div>
+                    <motion.div className="absolute right-0 top-44 hidden md:block">
+                      <motion.div
+                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/90"
+                        animate={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                y: [0, -8, 0, 8, 0],
+                                rotate: [0, -0.8, 0, 0.6, 0]
+                              }
+                        }
+                        transition={{ duration: 9.9, ease: 'easeInOut', repeat: Infinity, delay: 0.9 }}
+                        whileHover={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                scale: 1.035,
+                                x: -4,
+                                y: -12,
+                                boxShadow: '0 24px 44px rgba(25, 42, 86, 0.18)'
+                              }
+                        }
+                      >
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Marca cuidada</p>
+                        <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Tus vacantes se presentan mejor</p>
+                      </motion.div>
+                    </motion.div>
                   </div>
 
                   <div className="mt-6 grid gap-3 rounded-[26px] border bg-[var(--app-surface)]/88 p-3 shadow-[var(--app-shadow-card)] sm:grid-cols-3 sm:gap-4 sm:p-4">
