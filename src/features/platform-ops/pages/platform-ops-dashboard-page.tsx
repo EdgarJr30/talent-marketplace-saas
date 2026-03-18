@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -54,7 +55,7 @@ export function PlatformOpsDashboardPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar la feature flag',
         source: 'platform-ops.feature-flag-update',
-        route: '/admin/platform',
+        route: surfacePaths.admin.platform,
         userId: session.authUser?.id ?? null,
         error
       })

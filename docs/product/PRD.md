@@ -199,7 +199,7 @@ The MVP should **not** initially include:
 - public product landing with client-ready positioning
 - visible SaaS pricing section for commercial review, even before billing is connected
 - donation section and donation CTA as UI/UX-only surfaces until payment logic ships
-- internal console isolated from the client-facing product experience
+- admin console isolated from the client-facing product experience
 - canonical route surfaces for `public`, `candidate`, `workspace`, and `admin`
 
 ---

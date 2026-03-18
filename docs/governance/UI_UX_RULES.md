@@ -279,7 +279,7 @@ Surface-direction rule:
 - Do not default customer-facing routes to dark hero shells, black dashboard chrome, or harsh pure-white full-screen backgrounds.
 - Public landing and marketing-facing entrypoints may add gentle atmospheric layering, but the dominant impression must still remain light, calm, and product-grade.
 - Authenticated operational surfaces should default to cleaner, brighter, calmer layouts that prioritize readability, task flow, and repeated daily use.
-- Authentication must live in its own isolated shell. Login and sign-up cannot inherit employer sidebars, internal console navigation, or any dashboard chrome.
+- Authentication must live in its own isolated shell. Login and sign-up cannot inherit employer sidebars, admin console navigation, or any dashboard chrome.
 - Navigation must be contextual by audience: public, auth, candidate, employer, and internal surfaces each need their own navigation model.
 - Bootstrap, foundations, launch-readiness, and similar tooling flows must stay visually and navigationally inside internal-only surfaces.
 - Theme selection may default to the system preference, but the product chrome must always expose a visible user-facing toggle so people can switch between light and dark mode without entering internal settings.

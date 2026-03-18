@@ -87,7 +87,7 @@ export const employerNavigationItems: NavigationItem[] = [
   }
 ]
 
-export const internalNavigationItems: NavigationItem[] = [
+export const adminNavigationItems: NavigationItem[] = [
   {
     title: 'Overview',
     href: '/admin',

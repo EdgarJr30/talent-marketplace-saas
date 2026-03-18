@@ -11,7 +11,7 @@ import { SignInPage } from '@/features/auth/pages/sign-in-page'
 import { SignUpPage } from '@/features/auth/pages/sign-up-page'
 import { CandidateProfilePage } from '@/features/candidate-profile/pages/candidate-profile-page'
 import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-review-page'
-import { InternalConsolePage } from '@/features/internal/pages/internal-console-page'
+import { AdminConsolePage } from '@/features/internal/pages/admin-console-page'
 import { JobDetailPage } from '@/features/jobs/pages/job-detail-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
 import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-overview-page'
@@ -23,13 +23,13 @@ import { RecruiterReviewPage } from '@/features/recruiter-requests/pages/recruit
 import { TalentDirectoryPage } from '@/features/talent/pages/talent-directory-page'
 import { WorkspaceOverviewPage } from '@/features/tenants/pages/workspace-overview-page'
 import { AuthShell } from '@/app/layouts/auth-shell'
+import { AdminShell } from '@/app/layouts/admin-shell'
 import { CandidateShell } from '@/app/layouts/candidate-shell'
 import { EmployerShell } from '@/app/layouts/employer-shell'
-import { AdminShell } from '@/app/layouts/internal-shell'
 import { PublicShell } from '@/app/layouts/public-shell'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { AppEntryRedirect } from '@/app/router/routes/app-entry-redirect'
-import { RequireAuth, RequireInternalAccess, RequirePermission } from '@/lib/auth/guards'
+import { RequireAdminAccess, RequireAuth, RequirePermission } from '@/lib/auth/guards'
 import { HomePage } from '@/pages/home-page'
 import { OfflinePage } from '@/pages/offline-page'
 
@@ -165,14 +165,14 @@ export const appRoutes: RouteObject[] = [
   {
     path: surfacePaths.admin.root,
     element: (
-      <RequireInternalAccess>
+      <RequireAdminAccess>
         <AdminShell />
-      </RequireInternalAccess>
+      </RequireAdminAccess>
     ),
     children: [
       {
         index: true,
-        element: <InternalConsolePage />
+        element: <AdminConsolePage />
       },
       {
         path: 'approvals',

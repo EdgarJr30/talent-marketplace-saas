@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -80,7 +81,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos guardar tu espacio',
         source: 'workspace.save-profile',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -125,7 +126,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos subir el logo',
         source: 'workspace.upload-logo',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error,
         userMessage
@@ -157,7 +158,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos actualizar el rol del miembro',
         source: 'workspace.replace-role',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -184,7 +185,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos invitar al miembro',
         source: 'workspace.invite-member',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error,
         userMessage:
@@ -210,7 +211,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos revocar la invitacion',
         source: 'workspace.revoke-invite',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -229,7 +230,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       await reportErrorWithToast({
         title: 'No pudimos abrir el logo',
         source: 'workspace.preview-logo',
-        route: '/workspace',
+        route: surfacePaths.workspace.root,
         userId: session.authUser?.id ?? null,
         error
       })

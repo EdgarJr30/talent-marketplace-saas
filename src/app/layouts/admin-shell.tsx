@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { filterNavigationItems } from '@/lib/permissions/guards'
 import { surfacePaths } from '@/app/router/surface-paths'
-import { internalNavigationItems } from '@/shared/constants/navigation'
+import { adminNavigationItems } from '@/shared/constants/navigation'
 
 export function AdminShell() {
   const navigate = useNavigate()
   const location = useLocation()
   const session = useAppSession()
-  const visibleNavigation = filterNavigationItems(internalNavigationItems, session.permissions, session.isAuthenticated)
+  const visibleNavigation = filterNavigationItems(adminNavigationItems, session.permissions, session.isAuthenticated)
   const currentItem = visibleNavigation.find((item) => item.href === location.pathname)
 
   return (
@@ -21,7 +21,7 @@ export function AdminShell() {
       <div className="mx-auto flex min-h-screen max-w-[1420px] gap-6 px-4 pb-16 pt-4 sm:px-6 lg:px-8">
         <AppSidebarNav
           activeHref={location.pathname}
-          brand="ASI interno"
+          brand="ASI admin"
           brandMark={<BrandMark panelClassName="bg-[var(--app-text)]" />}
           description="Zona restringida para operaciones, aprobaciones, moderación y seguimiento técnico."
           footer={
@@ -42,10 +42,10 @@ export function AdminShell() {
                   Restricted surface
                 </p>
                 <p className="text-lg font-semibold tracking-tight text-[var(--app-text)]">
-                  {currentItem?.title ?? 'Internal console'}
+                  {currentItem?.title ?? 'Admin console'}
                 </p>
                 <p className="text-sm text-[var(--app-text-muted)]">
-                  {currentItem?.description ?? 'Herramientas internas separadas del producto que ve el cliente final.'}
+                  {currentItem?.description ?? 'Herramientas administrativas separadas del producto que ve el cliente final.'}
                 </p>
               </div>
 
@@ -69,5 +69,3 @@ export function AdminShell() {
     </div>
   )
 }
-
-export const InternalShell = AdminShell

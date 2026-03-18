@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -68,7 +69,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos mover el applicant de stage',
         source: 'pipeline.move-stage',
-        route: '/workspace/pipeline',
+        route: surfacePaths.workspace.pipeline,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -101,7 +102,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos guardar la nota',
         source: 'pipeline.add-note',
-        route: '/workspace/pipeline',
+        route: surfacePaths.workspace.pipeline,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -133,7 +134,7 @@ export function PipelineBoardPage() {
       await reportErrorWithToast({
         title: 'No pudimos guardar el rating',
         source: 'pipeline.rate',
-        route: '/workspace/pipeline',
+        route: surfacePaths.workspace.pipeline,
         userId: session.authUser?.id ?? null,
         error
       })

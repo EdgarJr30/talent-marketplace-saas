@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -52,7 +53,7 @@ export function RecruiterReviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar la solicitud',
         source: 'admin.recruiter-request-review',
-        route: '/admin/approvals',
+        route: surfacePaths.admin.approvals,
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),
@@ -69,7 +70,7 @@ export function RecruiterReviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos abrir el archivo',
         source: 'admin.recruiter-request-asset-open',
-        route: '/admin/approvals',
+        route: surfacePaths.admin.approvals,
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),

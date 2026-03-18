@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -120,7 +121,7 @@ export function OnboardingPage() {
       })
       await captureClientError({
         source: 'onboarding.avatar',
-        route: '/candidate/onboarding',
+        route: surfacePaths.candidate.onboarding,
         userId: session.authUser?.id ?? null,
         userMessage: message,
         error,
@@ -168,7 +169,7 @@ export function OnboardingPage() {
     } catch (error) {
       await captureClientError({
         source: 'onboarding.submit',
-        route: '/candidate/onboarding',
+        route: surfacePaths.candidate.onboarding,
         userId: session.authUser.id,
         userMessage: 'No pudimos guardar tu perfil base.',
         error,
@@ -271,7 +272,7 @@ export function OnboardingPage() {
               Cuando completes esta pantalla puedes pasar a la solicitud recruiter o seguir como candidato global.
             </div>
 
-            <Button className="w-full" variant="outline" onClick={() => void navigate('/candidate/recruiter-request')}>
+            <Button className="w-full" variant="outline" onClick={() => void navigate(surfacePaths.candidate.recruiterRequest)}>
               Ir a solicitud recruiter
             </Button>
           </CardContent>

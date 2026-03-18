@@ -35,7 +35,7 @@ const adminTools = [
   }
 ] as const
 
-export function InternalConsolePage() {
+export function AdminConsolePage() {
   const navigate = useNavigate()
   const session = useAppSession()
   const visibleAdminTools = adminTools.filter((tool) => session.permissions.includes(tool.permission))
@@ -44,7 +44,7 @@ export function InternalConsolePage() {
     <div className="space-y-6">
       <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
         <CardHeader className="space-y-3">
-          <Badge variant="soft">Internal only</Badge>
+          <Badge variant="soft">Admin only</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">
             Centro interno para operaciones, observabilidad y gobierno de plataforma
           </CardTitle>

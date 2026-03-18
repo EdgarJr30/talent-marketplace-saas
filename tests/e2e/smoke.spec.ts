@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 const hasLiveAuth = Boolean(process.env.E2E_SIGNUP_EMAIL && process.env.E2E_SIGNUP_PASSWORD)
+const candidateOnboardingPath = '/candidate/onboarding'
+const candidateRecruiterRequestPath = '/candidate/recruiter-request'
+const candidateApplicationsPath = '/candidate/applications'
+const workspacePipelinePath = '/workspace/pipeline'
 
 test.describe('public shell smoke', () => {
   test('loads the public home and jobs discovery on mobile', async ({ page }) => {
@@ -20,19 +24,19 @@ if (hasLiveAuth) {
       await page.goto('/auth')
       await expect(page.getByText('Crea tu usuario base')).toBeVisible()
 
-      await page.goto('/auth/confirm?next=%2Fonboarding')
+      await page.goto(`/auth/confirm?next=${encodeURIComponent(candidateOnboardingPath)}`)
       await expect(page.getByText(/confirmacion|callback/i)).toBeVisible()
 
-      await page.goto('/onboarding')
+      await page.goto(candidateOnboardingPath)
       await expect(page.getByText(/Completa tu perfil base|Standard onboarding/i)).toBeVisible()
 
-      await page.goto('/recruiter-request')
+      await page.goto(candidateRecruiterRequestPath)
       await expect(page.getByText(/Solicitud recruiter|validacion/i)).toBeVisible()
 
-      await page.goto('/applications')
+      await page.goto(candidateApplicationsPath)
       await expect(page.getByText(/Revisa tu avance|Applications/i)).toBeVisible()
 
-      await page.goto('/pipeline')
+      await page.goto(workspacePipelinePath)
       await expect(page.getByText(/Pipeline|applicants/i)).toBeVisible()
     })
   })
@@ -44,19 +48,19 @@ if (hasLiveAuth) {
     await page.goto('/auth')
     await expect(page.getByText('Crea tu usuario base')).toBeVisible()
 
-    await page.goto('/auth/confirm?next=%2Fonboarding')
+    await page.goto(`/auth/confirm?next=${encodeURIComponent(candidateOnboardingPath)}`)
     await expect(page.getByText(/confirmacion|callback/i)).toBeVisible()
 
-    await page.goto('/onboarding')
+    await page.goto(candidateOnboardingPath)
     await expect(page.getByText(/Completa tu perfil base|Standard onboarding/i)).toBeVisible()
 
-    await page.goto('/recruiter-request')
+    await page.goto(candidateRecruiterRequestPath)
     await expect(page.getByText(/Solicitud recruiter|validacion/i)).toBeVisible()
 
-    await page.goto('/applications')
+    await page.goto(candidateApplicationsPath)
     await expect(page.getByText(/Revisa tu avance|Applications/i)).toBeVisible()
 
-    await page.goto('/pipeline')
+    await page.goto(workspacePipelinePath)
     await expect(page.getByText(/Pipeline|applicants/i)).toBeVisible()
   })
   })

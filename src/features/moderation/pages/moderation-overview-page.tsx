@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -51,7 +52,7 @@ export function ModerationOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos crear el caso de moderacion',
         source: 'moderation.case-open',
-        route: '/admin/moderation',
+        route: surfacePaths.admin.moderation,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -70,7 +71,7 @@ export function ModerationOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos aplicar la accion',
         source: 'moderation.case-action',
-        route: '/admin/moderation',
+        route: surfacePaths.admin.moderation,
         userId: session.authUser?.id ?? null,
         error
       })

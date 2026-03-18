@@ -21,7 +21,7 @@ interface AppSessionContextValue {
   primaryMembership: AppMembership | null
   isPlatformAdmin: boolean
   isInternalDeveloper: boolean
-  canAccessInternalConsole: boolean
+  canAccessAdminConsole: boolean
   canReviewRecruiterRequests: boolean
   canReviewAppErrors: boolean
   refresh: () => Promise<void>
@@ -43,7 +43,7 @@ function emptyState(session: Session | null): AppSessionContextValue {
     primaryMembership: null,
     isPlatformAdmin: false,
     isInternalDeveloper: false,
-    canAccessInternalConsole: false,
+    canAccessAdminConsole: false,
     canReviewRecruiterRequests: false,
     canReviewAppErrors: false,
     refresh: () => Promise.resolve()
@@ -146,7 +146,7 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
     primaryMembership: memberships[0] ?? null,
     isPlatformAdmin,
     isInternalDeveloper,
-    canAccessInternalConsole: isPlatformAdmin || isInternalDeveloper,
+    canAccessAdminConsole: isPlatformAdmin || isInternalDeveloper,
     canReviewRecruiterRequests: permissions.includes('recruiter_request:review'),
     canReviewAppErrors: permissions.includes('audit_log:read'),
     refresh

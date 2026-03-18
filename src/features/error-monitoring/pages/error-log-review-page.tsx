@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -81,7 +82,7 @@ export function ErrorLogReviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar el estado del error',
         source: 'admin.error-log-resolution',
-        route: '/admin/errors',
+        route: surfacePaths.admin.errors,
         userId: session.authUser?.id ?? null,
         error,
         userMessage: 'No pudimos actualizar el estado de seguimiento del error.'

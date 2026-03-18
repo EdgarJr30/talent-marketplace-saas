@@ -68,7 +68,7 @@ export function RequirePermission({
   return children
 }
 
-export function RequireInternalAccess({ children }: PropsWithChildren) {
+export function RequireAdminAccess({ children }: PropsWithChildren) {
   const session = useAppSession()
 
   if (session.isLoading) {
@@ -79,7 +79,7 @@ export function RequireInternalAccess({ children }: PropsWithChildren) {
     return <Navigate replace to="/auth/sign-in" />
   }
 
-  if (!session.canAccessInternalConsole) {
+  if (!session.canAccessAdminConsole) {
     return (
       <GuardFeedback
         title="Acceso admin restringido"

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { filterNavigationItems, hasPermission } from '@/lib/permissions/guards'
-import { candidateNavigationItems, employerNavigationItems, internalNavigationItems } from '@/shared/constants/navigation'
+import { adminNavigationItems, candidateNavigationItems, employerNavigationItems } from '@/shared/constants/navigation'
 
 describe('permission guards', () => {
   it('allows access when the required permission exists', () => {
@@ -10,7 +10,7 @@ describe('permission guards', () => {
 
   it('filters navigation items that the current session cannot access', () => {
     const visibleItems = filterNavigationItems(
-      [...candidateNavigationItems, ...employerNavigationItems, ...internalNavigationItems],
+      [...candidateNavigationItems, ...employerNavigationItems, ...adminNavigationItems],
       [
         'workspace:read',
         'job:read',
@@ -42,7 +42,7 @@ describe('permission guards', () => {
 
   it('keeps internal navigation restricted when platform permissions are missing', () => {
     const visibleInternal = filterNavigationItems(
-      internalNavigationItems,
+      adminNavigationItems,
       [],
       true
     )

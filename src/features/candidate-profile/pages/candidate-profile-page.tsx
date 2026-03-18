@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -241,7 +242,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos guardar tu perfil candidato',
         source: 'candidate-profile.save',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error,
         userMessage: 'No pudimos guardar tu perfil candidato.'
@@ -281,7 +282,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos subir tu CV',
         source: 'candidate-profile.resume-upload',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error,
         description,
@@ -302,7 +303,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos cambiar el CV principal',
         source: 'candidate-profile.resume-default',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -321,7 +322,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos eliminar el CV',
         source: 'candidate-profile.resume-delete',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -353,7 +354,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos actualizar la visibilidad de tu perfil',
         source: 'candidate-profile.visibility',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -377,7 +378,7 @@ function CandidateProfileEditor({
       await reportErrorWithToast({
         title: 'No pudimos abrir el CV',
         source: 'candidate-profile.resume-open',
-        route: '/candidate/profile',
+        route: surfacePaths.candidate.profile,
         userId: session.authUser?.id ?? null,
         error
       })
