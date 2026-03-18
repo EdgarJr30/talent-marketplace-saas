@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { useState } from 'react'
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
@@ -27,7 +27,53 @@ import { cn } from '@/lib/utils/cn'
 
 type BillingFrequency = 'monthly' | 'annually'
 
-const PRICING_COMPARISON_ANIMATION_MS = 640
+const pricingComparisonLayoutTransition = {
+  type: 'spring',
+  stiffness: 280,
+  damping: 30,
+  mass: 0.8
+} as const
+
+const pricingComparisonPanelVariants = {
+  closed: {
+    opacity: 0,
+    y: -18,
+    scale: 0.985,
+    clipPath: 'inset(0 0 100% 0 round 32px)',
+    transition: {
+      duration: 0.28,
+      ease: [0.32, 0, 0.67, 0]
+    }
+  },
+  open: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    clipPath: 'inset(0 0 0% 0 round 32px)',
+    transition: {
+      duration: 0.46,
+      ease: [0.22, 1, 0.36, 1],
+      when: 'beforeChildren',
+      staggerChildren: 0.045,
+      delayChildren: 0.04
+    }
+  }
+} as const
+
+const pricingComparisonContentVariants = {
+  closed: {
+    opacity: 0,
+    y: 12
+  },
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+} as const
 
 const heroSignals = [
   {
@@ -329,22 +375,7 @@ export function HomePage() {
   const [billingFrequency, setBillingFrequency] = useState<BillingFrequency>('monthly')
   const [selectedPlanName, setSelectedPlanName] = useState<PricingPlanName>('Growth')
   const [isPricingComparisonOpen, setPricingComparisonOpen] = useState(false)
-  const [isPricingComparisonMounted, setPricingComparisonMounted] = useState(false)
-  const pricingComparisonHideTimeoutRef = useRef<number | null>(null)
-  const pricingComparisonOpenFrameRef = useRef<number | null>(null)
   const [profileFeature, jobsFeature, collaborationFeature, growthFeature] = featureCards
-
-  useEffect(() => {
-    return () => {
-      if (pricingComparisonHideTimeoutRef.current !== null) {
-        window.clearTimeout(pricingComparisonHideTimeoutRef.current)
-      }
-
-      if (pricingComparisonOpenFrameRef.current !== null) {
-        window.cancelAnimationFrame(pricingComparisonOpenFrameRef.current)
-      }
-    }
-  }, [])
 
   const primaryAction = session.isAuthenticated
     ? session.permissions.includes('workspace:read')
@@ -360,30 +391,7 @@ export function HomePage() {
   }
 
   function togglePricingComparison() {
-    if (pricingComparisonHideTimeoutRef.current !== null) {
-      window.clearTimeout(pricingComparisonHideTimeoutRef.current)
-      pricingComparisonHideTimeoutRef.current = null
-    }
-
-    if (pricingComparisonOpenFrameRef.current !== null) {
-      window.cancelAnimationFrame(pricingComparisonOpenFrameRef.current)
-      pricingComparisonOpenFrameRef.current = null
-    }
-
-    if (isPricingComparisonOpen) {
-      setPricingComparisonOpen(false)
-      pricingComparisonHideTimeoutRef.current = window.setTimeout(() => {
-        setPricingComparisonMounted(false)
-        pricingComparisonHideTimeoutRef.current = null
-      }, PRICING_COMPARISON_ANIMATION_MS)
-      return
-    }
-
-    setPricingComparisonMounted(true)
-    pricingComparisonOpenFrameRef.current = window.requestAnimationFrame(() => {
-      setPricingComparisonOpen(true)
-      pricingComparisonOpenFrameRef.current = null
-    })
+    setPricingComparisonOpen((current) => !current)
   }
 
   return (
@@ -1171,59 +1179,147 @@ export function HomePage() {
             </div>
 
             <div className="relative z-10 mt-8">
-              <div
-                className={cn(
-                  'tm-landing-container flex justify-center transition-[margin,transform] duration-[640ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
-                  isPricingComparisonOpen ? 'relative z-20 mb-[-1px]' : ''
-                )}
-              >
-                <button
-                  aria-controls="pricing-comparison-panel"
-                  aria-expanded={isPricingComparisonOpen}
-                  className={cn(
-                    'tm-pricing-comparison-trigger relative inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] rounded-b-none border border-[var(--app-border)] px-5 pt-3 pb-2.5 text-sm font-semibold backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 sm:min-w-[18rem] sm:w-auto dark:border-white/10',
-                    isPricingComparisonOpen
-                      ? 'border-b-0 bg-[var(--app-surface)] text-[var(--app-text)] shadow-[0_14px_28px_rgba(25,42,86,0.08)] hover:border-[var(--app-border-strong)] hover:bg-[var(--app-surface-muted)] hover:shadow-[0_18px_34px_rgba(25,42,86,0.12)] focus-visible:ring-[var(--app-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-surface)] dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.96)_0%,rgba(13,24,52,0.98)_100%)] dark:hover:bg-[linear-gradient(180deg,rgba(19,34,74,0.98)_0%,rgba(15,28,61,0.98)_100%)]'
-                      : 'bg-white/94 text-[#15203b] shadow-[0_20px_54px_rgba(12,20,44,0.28)] hover:-translate-y-[2px] hover:border-primary-200 hover:bg-white hover:text-primary-700 hover:shadow-[0_26px_64px_rgba(12,20,44,0.4)] focus-visible:ring-white/50'
-                  )}
-                  data-state={isPricingComparisonOpen ? 'open' : 'closed'}
-                  type="button"
-                  onClick={togglePricingComparison}
-                >
-                  <span>{isPricingComparisonOpen ? 'Ocultar comparación' : 'Comparar planes'}</span>
-                  <span className="rounded-full bg-primary-50 px-2.5 py-1 text-[0.72rem] font-semibold text-primary-700">
-                    {pricingSections.length} bloques
-                  </span>
-                  <span className="flex size-8 items-center justify-center rounded-full bg-[#15203b] text-white transition duration-300">
-                    <ChevronDown className={cn('size-4 transition duration-500', isPricingComparisonOpen && 'rotate-180')} />
-                  </span>
-                </button>
-              </div>
+              <LayoutGroup id="pricing-comparison-disclosure">
+                <motion.div layout className="tm-landing-container overflow-visible" transition={pricingComparisonLayoutTransition}>
+                  <div className="flex justify-center">
+                    <motion.div
+                      layout
+                      className={cn(
+                        'relative flex w-full justify-center',
+                        isPricingComparisonOpen ? 'z-20 mb-[-0.9rem] sm:mb-[-1rem]' : ''
+                      )}
+                      transition={pricingComparisonLayoutTransition}
+                    >
+                      <AnimatePresence>
+                        {isPricingComparisonOpen ? (
+                          <motion.div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute left-1/2 top-full h-14 w-[min(24rem,calc(100%-2rem))] -translate-x-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.14)_42%,transparent_74%)] blur-2xl"
+                            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scaleX: 0.72, y: -10 }}
+                            initial={shouldReduceMotion ? false : { opacity: 0, scaleX: 0.72, y: -10 }}
+                            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                            animate={shouldReduceMotion ? { opacity: 0.6 } : { opacity: 0.6, scaleX: 1, y: 0 }}
+                          />
+                        ) : null}
+                      </AnimatePresence>
 
-              {isPricingComparisonMounted ? (
-                <div
-                  className={cn(
-                    'tm-landing-container overflow-visible transition-[padding] duration-[640ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
-                    isPricingComparisonOpen ? 'pb-10 sm:pb-12 lg:pb-14' : 'pointer-events-none pb-0'
-                  )}
-                >
-                  <div className="tm-pricing-comparison-panel-shell relative" data-state={isPricingComparisonOpen ? 'open' : 'closed'}>
-                    <div className="min-h-0">
-                      <div
-                        className="tm-pricing-comparison-panel-surface overflow-hidden rounded-[32px] border border-[var(--app-border)] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.96)_0%,rgba(13,24,52,0.98)_100%)]"
-                        id="pricing-comparison-panel"
+                      <motion.button
+                        layout
+                        aria-controls="pricing-comparison-panel"
+                        aria-expanded={isPricingComparisonOpen}
+                        className={cn(
+                          'relative inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-3 border px-5 pt-3 pb-2.5 text-sm font-semibold backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 sm:w-auto sm:min-w-[20rem]',
+                          isPricingComparisonOpen
+                            ? 'border-[var(--app-border)] bg-[var(--app-surface)] text-[var(--app-text)] hover:border-[var(--app-border-strong)] hover:text-primary-700 focus-visible:ring-[var(--app-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-surface)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.98)_100%)] dark:hover:text-primary-200'
+                            : 'border-[var(--app-border)] bg-white/94 text-[#15203b] hover:border-primary-200 hover:text-primary-700 focus-visible:ring-white/50 dark:border-white/10 dark:hover:text-primary-200'
+                        )}
+                        style={{
+                          borderRadius: 30
+                        }}
+                        transition={pricingComparisonLayoutTransition}
+                        type="button"
+                        whileHover={
+                          shouldReduceMotion
+                            ? undefined
+                            : isPricingComparisonOpen
+                              ? {
+                                  y: 1,
+                                  boxShadow: '0 20px 42px rgba(25, 42, 86, 0.12)'
+                                }
+                              : {
+                                  y: -2,
+                                  boxShadow: '0 28px 68px rgba(12, 20, 44, 0.38)'
+                                }
+                        }
+                        whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
+                        animate={
+                          shouldReduceMotion
+                            ? undefined
+                            : {
+                                boxShadow: isPricingComparisonOpen
+                                  ? '0 16px 34px rgba(25, 42, 86, 0.1)'
+                                  : '0 22px 60px rgba(12, 20, 44, 0.28)',
+                                paddingLeft: isPricingComparisonOpen ? 24 : 20,
+                                paddingRight: isPricingComparisonOpen ? 24 : 20
+                              }
+                        }
+                        onClick={togglePricingComparison}
                       >
-                        <div className="tm-pricing-comparison-panel-content">
-                          <div className="border-b border-[var(--app-border)] px-5 pt-7 pb-5 sm:px-8 sm:pt-8 sm:pb-6">
+                        <motion.span layout="position">{isPricingComparisonOpen ? 'Ocultar comparación' : 'Comparar planes'}</motion.span>
+                        <motion.span
+                          layout="position"
+                          className="rounded-full bg-primary-50 px-2.5 py-1 text-[0.72rem] font-semibold text-primary-700"
+                        >
+                          {pricingSections.length} bloques
+                        </motion.span>
+                        <motion.span
+                          layout="position"
+                          animate={shouldReduceMotion ? undefined : { rotate: isPricingComparisonOpen ? 180 : 0 }}
+                          className="flex size-8 items-center justify-center rounded-full bg-[#15203b] text-white shadow-[0_10px_22px_rgba(12,20,44,0.18)]"
+                          transition={{ type: 'spring', stiffness: 320, damping: 26, mass: 0.7 }}
+                        >
+                          <ChevronDown className="size-4" />
+                        </motion.span>
+                      </motion.button>
+                    </motion.div>
+                  </div>
+
+                  <AnimatePresence initial={false}>
+                    {isPricingComparisonOpen ? (
+                      <motion.div
+                        layout
+                        className="overflow-visible pb-10 pt-2 sm:pb-12 sm:pt-3 lg:pb-14"
+                        exit={shouldReduceMotion ? { opacity: 0, height: 0 } : { opacity: 0, height: 0 }}
+                        initial={shouldReduceMotion ? false : { opacity: 0, height: 0 }}
+                        key="pricing-comparison-panel"
+                        transition={{
+                          height: { duration: 0.48, ease: [0.22, 1, 0.36, 1] },
+                          opacity: { duration: 0.22, ease: 'easeOut' },
+                          layout: pricingComparisonLayoutTransition
+                        }}
+                        animate={shouldReduceMotion ? { opacity: 1, height: 'auto' } : { opacity: 1, height: 'auto' }}
+                      >
+                        <motion.div
+                          layout
+                          variants={pricingComparisonPanelVariants}
+                          animate="open"
+                          className="origin-top overflow-hidden border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.99)_100%)]"
+                          exit="closed"
+                          id="pricing-comparison-panel"
+                          initial={shouldReduceMotion ? false : 'closed'}
+                          style={{
+                            borderRadius: 32,
+                            boxShadow: '0 32px 84px rgba(18, 31, 68, 0.14)'
+                          }}
+                          transition={pricingComparisonLayoutTransition}
+                        >
+                          <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(239,243,255,0.96)_0%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,rgba(28,44,88,0.64)_0%,rgba(16,29,63,0)_100%)]"
+                          />
+
+                          <motion.div
+                            className="relative"
+                            variants={{
+                              open: {
+                                transition: {
+                                  staggerChildren: 0.05,
+                                  delayChildren: 0.06
+                                }
+                              },
+                              closed: {}
+                            }}
+                          >
+                          <motion.div className="border-b border-[var(--app-border)] px-5 pt-7 pb-5 sm:px-8 sm:pt-8 sm:pb-6" variants={pricingComparisonContentVariants}>
                             <div className="text-left">
                               <p className="text-base font-semibold text-[var(--app-text)]">Comparación completa de planes</p>
                               <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
                                 Revisa publicación, colaboración y acompañamiento en una sola vista cuando necesites más detalle.
                               </p>
                             </div>
-                          </div>
+                          </motion.div>
 
-                          <div className="tm-landing-container py-10 sm:py-12 lg:py-14">
+                          <motion.div className="tm-landing-container py-8 sm:py-10 lg:py-12" variants={pricingComparisonContentVariants}>
                             <section aria-labelledby="mobile-pricing-comparison" className="lg:hidden">
                               <h2 className="sr-only" id="mobile-pricing-comparison">
                                 Comparacion de planes
@@ -1421,13 +1517,14 @@ export function HomePage() {
                                 </Button>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
+                          </motion.div>
+                        </motion.div>
+                      </motion.div>
+                    </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </motion.div>
+              </LayoutGroup>
             </div>
           </div>
         </div>
