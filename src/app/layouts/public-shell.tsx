@@ -37,6 +37,7 @@ export function PublicShell() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const isLanding = location.pathname === '/'
+  const showGuestAction = !session.isAuthenticated
   const primaryAction = session.isAuthenticated
     ? {
         label: session.permissions.includes('workspace:read') ? 'Abrir mi workspace' : 'Mi perfil',
@@ -110,9 +111,11 @@ export function PublicShell() {
 
             <div className="hidden shrink-0 items-center gap-2 lg:flex">
               <ThemeToggle compact className="shadow-none" />
-              <Button className="rounded-full px-5" variant="outline" onClick={() => void navigate('/auth/sign-up')}>
-                Crear cuenta
-              </Button>
+              {showGuestAction ? (
+                <Button className="rounded-full px-5" variant="outline" onClick={() => void navigate('/auth/sign-up')}>
+                  Crear cuenta
+                </Button>
+              ) : null}
               <Button className="rounded-full px-5" onClick={() => void navigate(primaryAction.href)}>
                 {primaryAction.label}
               </Button>
@@ -168,16 +171,18 @@ export function PublicShell() {
                 ))}
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setMobileMenuOpen(false)
-                    void navigate('/auth/sign-up')
-                  }}
-                >
-                  Crear cuenta
-                </Button>
+              <div className={cn('mt-6 grid gap-3', showGuestAction ? 'sm:grid-cols-2' : undefined)}>
+                {showGuestAction ? (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      void navigate('/auth/sign-up')
+                    }}
+                  >
+                    Crear cuenta
+                  </Button>
+                ) : null}
                 <Button
                   onClick={() => {
                     setMobileMenuOpen(false)

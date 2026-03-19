@@ -1,18 +1,46 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AppProviders } from '@/app/providers/app-providers'
 import { appRoutes } from '@/app/router/routes'
+import { PublicShell } from '@/app/layouts/public-shell'
+
+const authState = {
+  session: null as null | { user: { id: string; email?: string } },
+  snapshot: {
+    profile: null,
+    memberships: [],
+    permissions: [],
+    platformPermissions: [],
+    isPlatformAdmin: false
+  } as {
+    profile: { id: string; email: string; is_internal_developer: boolean } | null
+    memberships: Array<{
+      id: string
+      tenantId: string
+      tenantName: string
+      tenantSlug: string
+      roleCodes: string[]
+      roleNames: string[]
+      permissions: string[]
+    }>
+    permissions: string[]
+    platformPermissions: string[]
+    isPlatformAdmin: boolean
+  }
+}
 
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {
     auth: {
-      getSession: vi.fn().mockResolvedValue({
-        data: {
-          session: null
-        }
-      }),
+      getSession: vi.fn(() =>
+        Promise.resolve({
+          data: {
+            session: authState.session
+          }
+        })
+      ),
       onAuthStateChange: vi.fn(() => ({
         data: {
           subscription: {
@@ -24,23 +52,124 @@ vi.mock('@/lib/supabase/client', () => ({
   }
 }))
 
-describe('route shells', () => {
-  it('renders the public shell without authenticated dashboard navigation for guests', async () => {
-    const router = createMemoryRouter(appRoutes, {
-      initialEntries: ['/']
-    })
+vi.mock('@/features/auth/lib/auth-api', async () => {
+  const actual = await vi.importActual<typeof import('@/features/auth/lib/auth-api')>('@/features/auth/lib/auth-api')
 
-    render(
-      <AppProviders>
-        <RouterProvider router={router} />
-      </AppProviders>
-    )
+  return {
+    ...actual,
+    fetchSessionSnapshot: vi.fn(() => Promise.resolve(authState.snapshot))
+  }
+})
+
+function renderWithProviders(router: ReturnType<typeof createMemoryRouter>) {
+  render(
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
+  )
+}
+
+function renderPublicShell(initialEntry = '/') {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: <PublicShell />,
+        children: [
+          {
+            index: true,
+            element: <div>Public content</div>
+          }
+        ]
+      }
+    ],
+    {
+      initialEntries: [initialEntry]
+    }
+  )
+
+  renderWithProviders(router)
+}
+
+beforeEach(() => {
+  authState.session = null
+  authState.snapshot = {
+    profile: null,
+    memberships: [],
+    permissions: [],
+    platformPermissions: [],
+    isPlatformAdmin: false
+  }
+})
+
+describe('route shells', () => {
+  it('renders the public shell with guest actions for unauthenticated visitors', async () => {
+    renderPublicShell()
 
     expect(await screen.findByRole('link', { name: /Plataforma ASI/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Jobs' })).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: 'Crear cuenta' }).length).toBeGreaterThan(0)
-    expect(screen.queryByText('Workspace')).not.toBeInTheDocument()
-    expect(screen.queryByText('Internal console')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Crear cuenta' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Iniciar sesion' })).toBeInTheDocument()
+  })
+
+  it('shows only workspace access for authenticated users with workspace permissions, including mobile menu', async () => {
+    authState.session = { user: { id: 'user-1', email: 'recruiter@example.com' } }
+    authState.snapshot = {
+      profile: {
+        id: 'user-1',
+        email: 'recruiter@example.com',
+        is_internal_developer: false
+      },
+      memberships: [
+        {
+          id: 'membership-1',
+          tenantId: 'tenant-1',
+          tenantName: 'Acme',
+          tenantSlug: 'acme',
+          roleCodes: [],
+          roleNames: [],
+          permissions: ['workspace:read']
+        }
+      ],
+      permissions: ['workspace:read'],
+      platformPermissions: [],
+      isPlatformAdmin: false
+    }
+
+    renderPublicShell()
+
+    expect(await screen.findByRole('button', { name: 'Abrir mi workspace' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Crear cuenta' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir menu' }))
+
+    expect(await screen.findAllByRole('button', { name: 'Abrir mi workspace' })).toHaveLength(2)
+    expect(screen.queryByRole('button', { name: 'Crear cuenta' })).not.toBeInTheDocument()
+  })
+
+  it('shows only profile access for authenticated users without workspace permissions, including mobile menu', async () => {
+    authState.session = { user: { id: 'user-2', email: 'candidate@example.com' } }
+    authState.snapshot = {
+      profile: {
+        id: 'user-2',
+        email: 'candidate@example.com',
+        is_internal_developer: false
+      },
+      memberships: [],
+      permissions: [],
+      platformPermissions: [],
+      isPlatformAdmin: false
+    }
+
+    renderPublicShell()
+
+    expect(await screen.findByRole('button', { name: 'Mi perfil' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Crear cuenta' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir menu' }))
+
+    expect(await screen.findAllByRole('button', { name: 'Mi perfil' })).toHaveLength(2)
+    expect(screen.queryByRole('button', { name: 'Crear cuenta' })).not.toBeInTheDocument()
   })
 
   it('renders auth as an isolated shell', async () => {
@@ -48,11 +177,7 @@ describe('route shells', () => {
       initialEntries: ['/auth/sign-in']
     })
 
-    render(
-      <AppProviders>
-        <RouterProvider router={router} />
-      </AppProviders>
-    )
+    renderWithProviders(router)
 
     expect(await screen.findByRole('heading', { name: 'Entra a tu cuenta' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Plataforma ASI/i })).not.toBeInTheDocument()
