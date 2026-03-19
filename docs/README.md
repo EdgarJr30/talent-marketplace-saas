@@ -50,5 +50,3 @@ The modular monolith is organized around four canonical product surfaces:
 - `candidate` for authenticated talent flows under `/candidate/*`
 - `workspace` for employer tenant workflows under `/workspace/*`
 - `admin` for the restricted platform console under `/admin/*`
-
-Legacy aliases such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` may exist temporarily only as compatibility redirects.

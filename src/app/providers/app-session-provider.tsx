@@ -18,7 +18,9 @@ interface AppSessionContextValue {
   memberships: AppMembership[]
   permissions: PermissionCode[]
   platformPermissions: PermissionCode[]
-  primaryMembership: AppMembership | null
+  activeTenantId: string | null
+  activeMembership: AppMembership | null
+  hasMultipleWorkspaceMemberships: boolean
   isPlatformAdmin: boolean
   isInternalDeveloper: boolean
   canAccessAdminConsole: boolean
@@ -29,7 +31,12 @@ interface AppSessionContextValue {
 
 const AppSessionContext = createContext<AppSessionContextValue | null>(null)
 
+export function resolveActiveMembership(memberships: AppMembership[]) {
+  return memberships[0] ?? null
+}
+
 function emptyState(session: Session | null): AppSessionContextValue {
+  const activeMembership = resolveActiveMembership([])
   return {
     isSupabaseConfigured: supabase !== null,
     isLoading: false,
@@ -40,7 +47,9 @@ function emptyState(session: Session | null): AppSessionContextValue {
     memberships: [],
     permissions: [],
     platformPermissions: [],
-    primaryMembership: null,
+    activeTenantId: activeMembership?.tenantId ?? null,
+    activeMembership,
+    hasMultipleWorkspaceMemberships: false,
     isPlatformAdmin: false,
     isInternalDeveloper: false,
     canAccessAdminConsole: false,
@@ -133,7 +142,12 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
     }
   }, [])
 
+  const activeMembership = resolveActiveMembership(memberships)
+
   const contextValue: AppSessionContextValue = {
+    activeMembership,
+    activeTenantId: activeMembership?.tenantId ?? null,
+    hasMultipleWorkspaceMemberships: memberships.length > 1,
     isSupabaseConfigured: supabase !== null,
     isLoading,
     isAuthenticated: session !== null,
@@ -143,7 +157,6 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
     memberships,
     permissions,
     platformPermissions,
-    primaryMembership: memberships[0] ?? null,
     isPlatformAdmin,
     isInternalDeveloper,
     canAccessAdminConsole: isPlatformAdmin || isInternalDeveloper,

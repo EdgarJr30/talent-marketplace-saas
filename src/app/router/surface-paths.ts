@@ -10,8 +10,7 @@ export const surfacePaths = {
     root: '/auth',
     signIn: '/auth/sign-in',
     signUp: '/auth/sign-up',
-    confirm: '/auth/confirm',
-    bootstrapOwner: '/auth/bootstrap-owner'
+    confirm: '/auth/confirm'
   },
   app: {
     home: '/app'
@@ -33,7 +32,6 @@ export const surfacePaths = {
   admin: {
     root: '/admin',
     approvals: '/admin/approvals',
-    recruiterRequests: '/admin/recruiter-requests',
     platform: '/admin/platform',
     moderation: '/admin/moderation',
     errors: '/admin/errors',

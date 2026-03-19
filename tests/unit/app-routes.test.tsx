@@ -1,6 +1,3 @@
-import type { ReactElement } from 'react'
-
-import { Navigate } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 
 import { appRoutes } from '@/app/router/routes'
@@ -8,18 +5,6 @@ import { surfacePaths } from '@/app/router/surface-paths'
 
 function findTopLevelRoute(path: string) {
   return appRoutes.find((route) => route.path === path)
-}
-
-function expectNavigateTarget(path: string, expectedTarget: string) {
-  const route = findTopLevelRoute(path)
-
-  expect(route).toBeDefined()
-
-  const element = route!.element as ReactElement<{ to: string; replace?: boolean }>
-
-  expect(element.type).toBe(Navigate)
-  expect(element.props.to).toBe(expectedTarget)
-  expect(element.props.replace).toBe(true)
 }
 
 describe('app route contract', () => {
@@ -32,28 +17,40 @@ describe('app route contract', () => {
     expect(findTopLevelRoute(surfacePaths.admin.root)).toBeDefined()
   })
 
-  it('keeps legacy candidate aliases redirecting to canonical candidate routes', () => {
-    expectNavigateTarget('/applications', surfacePaths.candidate.applications)
-    expectNavigateTarget('/onboarding', surfacePaths.candidate.onboarding)
-    expectNavigateTarget('/recruiter-request', surfacePaths.candidate.recruiterRequest)
-    expectNavigateTarget('/candidate/profile', surfacePaths.candidate.profile)
+  it('does not keep legacy route families in the top-level route contract', () => {
+    expect(findTopLevelRoute('/applications')).toBeUndefined()
+    expect(findTopLevelRoute('/onboarding')).toBeUndefined()
+    expect(findTopLevelRoute('/recruiter-request')).toBeUndefined()
+    expect(findTopLevelRoute('/candidate/profile')).toBeUndefined()
+    expect(findTopLevelRoute('/jobs/manage')).toBeUndefined()
+    expect(findTopLevelRoute('/talent')).toBeUndefined()
+    expect(findTopLevelRoute('/pipeline')).toBeUndefined()
+    expect(findTopLevelRoute('/rbac')).toBeUndefined()
+    expect(findTopLevelRoute('/internal')).toBeUndefined()
+    expect(findTopLevelRoute('/internal/approvals')).toBeUndefined()
+    expect(findTopLevelRoute('/internal/platform')).toBeUndefined()
+    expect(findTopLevelRoute('/internal/moderation')).toBeUndefined()
+    expect(findTopLevelRoute('/internal/errors')).toBeUndefined()
+    expect(findTopLevelRoute('/internal/bootstrap-owner')).toBeUndefined()
   })
 
-  it('keeps legacy workspace aliases redirecting to canonical workspace routes', () => {
-    expectNavigateTarget('/jobs/manage', surfacePaths.workspace.jobs)
-    expectNavigateTarget('/talent', surfacePaths.workspace.talent)
-    expectNavigateTarget('/pipeline', surfacePaths.workspace.pipeline)
-    expectNavigateTarget('/rbac', surfacePaths.workspace.access)
+  it('defines catch-all routes inside every route surface', () => {
+    const publicRoute = findTopLevelRoute(surfacePaths.public.home)
+    const authRoute = findTopLevelRoute(surfacePaths.auth.root)
+    const candidateRoute = findTopLevelRoute(surfacePaths.candidate.root)
+    const workspaceRoute = findTopLevelRoute(surfacePaths.workspace.root)
+    const adminRoute = findTopLevelRoute(surfacePaths.admin.root)
+
+    expect(publicRoute?.children?.some((route) => route.path === '*')).toBe(true)
+    expect(authRoute?.children?.some((route) => route.path === '*')).toBe(true)
+    expect(candidateRoute?.children?.some((route) => route.path === '*')).toBe(true)
+    expect(workspaceRoute?.children?.some((route) => route.path === '*')).toBe(true)
+    expect(adminRoute?.children?.some((route) => route.path === '*')).toBe(true)
   })
 
-  it('keeps legacy internal/admin aliases redirecting to canonical admin routes', () => {
-    expectNavigateTarget('/internal', surfacePaths.admin.root)
-    expectNavigateTarget('/internal/approvals', surfacePaths.admin.approvals)
-    expectNavigateTarget('/internal/platform', surfacePaths.admin.platform)
-    expectNavigateTarget('/internal/moderation', surfacePaths.admin.moderation)
-    expectNavigateTarget('/internal/errors', surfacePaths.admin.errors)
-    expectNavigateTarget('/internal/bootstrap-owner', surfacePaths.admin.bootstrapOwner)
-    expectNavigateTarget(surfacePaths.admin.recruiterRequests, surfacePaths.admin.approvals)
-    expectNavigateTarget(surfacePaths.auth.bootstrapOwner, surfacePaths.admin.bootstrapOwner)
+  it('keeps bootstrap-owner as an explicit admin-only route', () => {
+    const adminRoute = findTopLevelRoute(surfacePaths.admin.root)
+
+    expect(adminRoute?.children?.some((route) => route.path === 'bootstrap-owner')).toBe(true)
   })
 })

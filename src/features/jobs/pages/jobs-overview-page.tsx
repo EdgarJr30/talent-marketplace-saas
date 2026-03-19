@@ -130,12 +130,12 @@ function JobEditor({
 
   const saveMutation = useMutation({
     mutationFn: async (values: JobPostingFormValues) => {
-      if (!session.authUser || !session.primaryMembership || !workspace.companyProfile) {
+      if (!session.authUser || !session.activeMembership || !workspace.companyProfile) {
         throw new Error('Necesitas una membresia employer y company profile para gestionar vacantes.')
       }
 
       return createOrUpdateJobPosting({
-        tenantId: session.primaryMembership.tenantId,
+        tenantId: session.activeMembership.tenantId,
         companyProfileId: workspace.companyProfile.id,
         actorUserId: session.authUser.id,
         jobId: selectedJob?.id,
@@ -402,9 +402,9 @@ export function JobsOverviewPage() {
     queryFn: async () => fetchMyCandidateProfile(session.authUser!.id)
   })
   const workspaceQuery = useQuery({
-    queryKey: ['workspace', 'jobs-page', session.primaryMembership?.tenantId],
-    enabled: canManageJobs && Boolean(session.primaryMembership?.tenantId),
-    queryFn: async () => fetchWorkspaceBundle(session.primaryMembership!.tenantId)
+    queryKey: ['workspace', 'jobs-page', session.activeTenantId],
+    enabled: canManageJobs && Boolean(session.activeTenantId),
+    queryFn: async () => fetchWorkspaceBundle(session.activeTenantId!)
   })
   const jobAlertsQuery = useQuery({
     queryKey: ['job-alerts', candidateProfileQuery.data?.profile?.id ?? null],
@@ -428,9 +428,9 @@ export function JobsOverviewPage() {
       })
   })
   const tenantJobsQuery = useQuery({
-    queryKey: [...TENANT_JOBS_QUERY_KEY, session.primaryMembership?.tenantId ?? null],
-    enabled: canManageJobs && Boolean(session.primaryMembership?.tenantId),
-    queryFn: async () => listTenantJobs(session.primaryMembership!.tenantId)
+    queryKey: [...TENANT_JOBS_QUERY_KEY, session.activeTenantId ?? null],
+    enabled: canManageJobs && Boolean(session.activeTenantId),
+    queryFn: async () => listTenantJobs(session.activeTenantId!)
   })
 
   const selectedJob = tenantJobsQuery.data?.find((job) => job.id === selectedJobId) ?? null

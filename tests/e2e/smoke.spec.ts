@@ -14,6 +14,11 @@ test.describe('public shell smoke', () => {
     await page.goto('/jobs')
     await expect(page.getByText(/Descubre oportunidades con una experiencia clara y directa|Gestiona tus vacantes/i)).toBeVisible()
   })
+
+  test('treats removed legacy routes as no longer part of the public contract', async ({ page }) => {
+    await page.goto('/pipeline')
+    await expect(page.getByText(/No encontramos esta página|No encontramos esa pantalla del workspace/i)).toBeVisible()
+  })
 })
 
 if (hasLiveAuth) {

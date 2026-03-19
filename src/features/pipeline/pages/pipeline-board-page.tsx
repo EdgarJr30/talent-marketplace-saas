@@ -27,7 +27,7 @@ import { reportErrorWithToast } from '@/lib/errors/error-reporting'
 export function PipelineBoardPage() {
   const session = useAppSession()
   const queryClient = useQueryClient()
-  const tenantId = session.primaryMembership?.tenantId ?? null
+  const tenantId = session.activeTenantId
   const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null)
   const [stageNote, setStageNote] = useState('')
   const [newNote, setNewNote] = useState('')

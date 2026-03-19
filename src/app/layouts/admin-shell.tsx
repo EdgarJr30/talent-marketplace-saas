@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
@@ -9,7 +11,7 @@ import { filterNavigationItems } from '@/lib/permissions/guards'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { adminNavigationItems } from '@/shared/constants/navigation'
 
-export function AdminShell() {
+export function AdminShell({ fallbackContent }: { fallbackContent?: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
   const session = useAppSession()
@@ -62,7 +64,7 @@ export function AdminShell() {
           </header>
 
           <main className="flex-1">
-            <Outlet />
+            {fallbackContent ?? <Outlet />}
           </main>
         </div>
       </div>

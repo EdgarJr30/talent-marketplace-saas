@@ -53,7 +53,7 @@ export function NotificationCenter() {
         body: values.body,
         actionUrl: values.actionUrl,
         payload: {
-          tenantId: session.primaryMembership?.tenantId ?? null,
+          tenantId: session.activeTenantId,
           source: 'notification-center',
           trigger: 'self-test'
         }

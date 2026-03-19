@@ -170,7 +170,7 @@ A user can therefore:
 
 The platform also needs a one-time bootstrap path for the very first platform owner so that recruiter approvals can start without manual schema edits.
 
-Internal developer access may also exist as an explicit operational flag on the global user profile. That flag only unlocks the internal console and must not be treated as a substitute for platform RBAC or tenant RBAC.
+Internal developer access may also exist as an explicit operational flag on the global user profile. That flag only unlocks the admin console and must not be treated as a substitute for platform RBAC or tenant RBAC.
 
 ---
 
@@ -181,7 +181,6 @@ Internal developer access may also exist as an explicit operational flag on the 
 4. Unauthorized deep links must fail gracefully.
 5. Permission checks in UI are supportive only; backend and RLS remain authoritative.
 6. Admin console routes under `/admin/*` must require either platform-admin authority or the explicit internal-developer flag, and they must stay hidden from the normal customer navigation model.
-7. Legacy `/internal/*` URLs may exist temporarily only as redirects to the canonical `/admin/*` console.
 
 ---
 

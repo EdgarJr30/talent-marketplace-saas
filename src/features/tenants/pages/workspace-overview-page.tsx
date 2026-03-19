@@ -481,7 +481,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
 
 export function WorkspaceOverviewPage() {
   const session = useAppSession()
-  const tenantId = session.primaryMembership?.tenantId ?? null
+  const tenantId = session.activeTenantId
   const workspaceQuery = useQuery({
     queryKey: WORKSPACE_QUERY_KEY,
     enabled: Boolean(tenantId),

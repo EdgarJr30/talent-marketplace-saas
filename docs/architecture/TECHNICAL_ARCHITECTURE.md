@@ -201,7 +201,8 @@ The admin console may reuse product primitives, but it must remain route-isolate
 Implementation note:
 - `auth` must use its own route tree and shell, separate from both public marketing and authenticated dashboard shells
 - candidate and employer routes may share primitives, but they should not share the same navigation chrome by default
-- legacy route families should be preserved only as redirects while the canonical surfaces above are adopted
+- legacy route families are not part of the active route contract and must not be reintroduced
+- `/admin/bootstrap-owner` remains an explicitly restricted admin-only route for one-time first-platform-owner recovery/bootstrap, not a customer-facing flow
 
 ---
 

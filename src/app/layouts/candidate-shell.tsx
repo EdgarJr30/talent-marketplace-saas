@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
@@ -13,7 +15,7 @@ function findNavItem(items: typeof candidateNavigationItems, href: string) {
   return items.find((item) => item.href === href)
 }
 
-export function CandidateShell() {
+export function CandidateShell({ fallbackContent }: { fallbackContent?: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
   const session = useAppSession()
@@ -86,7 +88,7 @@ export function CandidateShell() {
           </header>
 
           <main className="flex-1">
-            <Outlet />
+            {fallbackContent ?? <Outlet />}
           </main>
         </div>
       </div>

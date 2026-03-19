@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
@@ -13,7 +15,7 @@ function findNavItem(items: typeof employerNavigationItems, href: string) {
   return items.find((item) => item.href === href)
 }
 
-export function EmployerShell() {
+export function EmployerShell({ fallbackContent }: { fallbackContent?: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
   const session = useAppSession()
@@ -51,7 +53,7 @@ export function EmployerShell() {
             </Button>
           }
           items={sidebarNav}
-          title={session.primaryMembership?.tenantName ?? 'Tu espacio de empresa'}
+          title={session.activeMembership?.tenantName ?? 'Tu espacio de empresa'}
           onNavigate={(href) => void navigate(href)}
         />
 
@@ -81,7 +83,7 @@ export function EmployerShell() {
           </header>
 
           <main className="flex-1">
-            <Outlet />
+            {fallbackContent ?? <Outlet />}
           </main>
         </div>
       </div>

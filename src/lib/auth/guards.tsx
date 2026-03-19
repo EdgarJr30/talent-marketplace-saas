@@ -2,7 +2,11 @@ import type { PropsWithChildren } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
+import { AdminShell } from '@/app/layouts/admin-shell'
+import { CandidateShell } from '@/app/layouts/candidate-shell'
+import { EmployerShell } from '@/app/layouts/employer-shell'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { SurfaceStatusPage, type AppSurface } from '@/app/router/routes/surface-status-page'
 import { useAppSession } from '@/app/providers/app-session-provider'
 import type { PermissionCode } from '@/shared/constants/permissions'
 
@@ -42,9 +46,11 @@ export function RequireAuth({ children }: PropsWithChildren) {
 
 export function RequirePermission({
   permission,
-  children
+  children,
+  surface = 'workspace'
 }: PropsWithChildren<{
   permission: PermissionCode
+  surface?: Extract<AppSurface, 'candidate' | 'workspace' | 'admin'>
 }>) {
   const session = useAppSession()
 
@@ -57,12 +63,17 @@ export function RequirePermission({
   }
 
   if (!session.permissions.includes(permission)) {
-    return (
-      <GuardFeedback
-        title="Acceso restringido"
-        description="Tu sesion no tiene el permiso requerido para abrir esta ruta."
-      />
-    )
+    const content = <SurfaceStatusPage kind="forbidden" surface={surface} />
+
+    if (surface === 'candidate') {
+      return <CandidateShell fallbackContent={content} />
+    }
+
+    if (surface === 'admin') {
+      return <AdminShell fallbackContent={content} />
+    }
+
+    return <EmployerShell fallbackContent={content} />
   }
 
   return children
@@ -80,12 +91,7 @@ export function RequireAdminAccess({ children }: PropsWithChildren) {
   }
 
   if (!session.canAccessAdminConsole) {
-    return (
-      <GuardFeedback
-        title="Acceso admin restringido"
-        description="Solo administradores de plataforma y developers internos pueden abrir esta consola."
-      />
-    )
+    return <AdminShell fallbackContent={<SurfaceStatusPage kind="forbidden" surface="admin" />} />
   }
 
   return children

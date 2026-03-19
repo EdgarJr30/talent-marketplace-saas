@@ -1,5 +1,4 @@
 import type { RouteObject } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
 
 import { ApplicationsOverviewPage } from '@/features/applications/pages/applications-overview-page'
 import { JobApplicationPage } from '@/features/applications/pages/job-application-page'
@@ -29,6 +28,7 @@ import { EmployerShell } from '@/app/layouts/employer-shell'
 import { PublicShell } from '@/app/layouts/public-shell'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { AppEntryRedirect } from '@/app/router/routes/app-entry-redirect'
+import { SurfaceStatusPage } from '@/app/router/routes/surface-status-page'
 import { RequireAdminAccess, RequireAuth, RequirePermission } from '@/lib/auth/guards'
 import { HomePage } from '@/pages/home-page'
 import { OfflinePage } from '@/pages/offline-page'
@@ -61,6 +61,10 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'offline',
         element: <OfflinePage />
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="public" />
       }
     ]
   },
@@ -83,6 +87,10 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'confirm',
         element: <AuthConfirmPage />
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="auth" />
       }
     ]
   },
@@ -117,6 +125,10 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'applications',
         element: <ApplicationsOverviewPage />
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="candidate" />
       }
     ]
   },
@@ -147,7 +159,7 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'pipeline',
         element: (
-          <RequirePermission permission="application:read">
+          <RequirePermission permission="application:read" surface="workspace">
             <PipelineBoardPage />
           </RequirePermission>
         )
@@ -155,10 +167,14 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'settings/access',
         element: (
-          <RequirePermission permission="role:read">
+          <RequirePermission permission="role:read" surface="workspace">
             <RbacOverviewPage />
           </RequirePermission>
         )
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="workspace" />
       }
     ]
   },
@@ -177,7 +193,7 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'approvals',
         element: (
-          <RequirePermission permission="recruiter_request:review">
+          <RequirePermission permission="recruiter_request:review" surface="admin">
             <RecruiterReviewPage />
           </RequirePermission>
         )
@@ -185,7 +201,7 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'platform',
         element: (
-          <RequirePermission permission="platform_dashboard:read">
+          <RequirePermission permission="platform_dashboard:read" surface="admin">
             <PlatformOpsDashboardPage />
           </RequirePermission>
         )
@@ -193,7 +209,7 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'moderation',
         element: (
-          <RequirePermission permission="moderation:read">
+          <RequirePermission permission="moderation:read" surface="admin">
             <ModerationOverviewPage />
           </RequirePermission>
         )
@@ -201,7 +217,7 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'errors',
         element: (
-          <RequirePermission permission="audit_log:read">
+          <RequirePermission permission="audit_log:read" surface="admin">
             <ErrorLogReviewPage />
           </RequirePermission>
         )
@@ -209,71 +225,11 @@ export const appRoutes: RouteObject[] = [
       {
         path: 'bootstrap-owner',
         element: <BootstrapOwnerPage />
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="admin" />
       }
     ]
-  },
-  {
-    path: surfacePaths.auth.bootstrapOwner,
-    element: <Navigate replace to={surfacePaths.admin.bootstrapOwner} />
-  },
-  {
-    path: '/applications',
-    element: <Navigate replace to={surfacePaths.candidate.applications} />
-  },
-  {
-    path: '/onboarding',
-    element: <Navigate replace to={surfacePaths.candidate.onboarding} />
-  },
-  {
-    path: '/recruiter-request',
-    element: <Navigate replace to={surfacePaths.candidate.recruiterRequest} />
-  },
-  {
-    path: '/candidate/profile',
-    element: <Navigate replace to={surfacePaths.candidate.profile} />
-  },
-  {
-    path: '/jobs/manage',
-    element: <Navigate replace to={surfacePaths.workspace.jobs} />
-  },
-  {
-    path: '/talent',
-    element: <Navigate replace to={surfacePaths.workspace.talent} />
-  },
-  {
-    path: '/pipeline',
-    element: <Navigate replace to={surfacePaths.workspace.pipeline} />
-  },
-  {
-    path: '/rbac',
-    element: <Navigate replace to={surfacePaths.workspace.access} />
-  },
-  {
-    path: '/internal',
-    element: <Navigate replace to={surfacePaths.admin.root} />
-  },
-  {
-    path: '/internal/approvals',
-    element: <Navigate replace to={surfacePaths.admin.approvals} />
-  },
-  {
-    path: '/internal/platform',
-    element: <Navigate replace to={surfacePaths.admin.platform} />
-  },
-  {
-    path: '/internal/moderation',
-    element: <Navigate replace to={surfacePaths.admin.moderation} />
-  },
-  {
-    path: '/internal/errors',
-    element: <Navigate replace to={surfacePaths.admin.errors} />
-  },
-  {
-    path: '/internal/bootstrap-owner',
-    element: <Navigate replace to={surfacePaths.admin.bootstrapOwner} />
-  },
-  {
-    path: surfacePaths.admin.recruiterRequests,
-    element: <Navigate replace to={surfacePaths.admin.approvals} />
   }
 ]

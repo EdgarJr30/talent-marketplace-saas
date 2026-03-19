@@ -301,7 +301,7 @@ The modular monolith must expose four route surfaces with explicit ownership and
 - `workspace`: authenticated employer tenant workflows under `/workspace/*`
 - `admin`: restricted platform console under `/admin/*`
 
-Legacy route families may remain temporarily only as compatibility redirects while internal links, analytics, and docs converge on the canonical paths.
+Historical aliases are no longer part of the active route contract and must not be reintroduced. The only restricted bootstrapping exception is `/admin/bootstrap-owner`, which remains under the admin surface as an explicitly controlled operational route.
 
 ### 7.3 `src/components`
 Reusable shared UI components that are not specific to one feature:

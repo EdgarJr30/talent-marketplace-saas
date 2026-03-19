@@ -68,7 +68,7 @@ function CandidateSummaryCard({
 
 export function TalentDirectoryPage() {
   const session = useAppSession()
-  const tenantId = session.primaryMembership?.tenantId ?? null
+  const tenantId = session.activeTenantId
   const [query, setQuery] = useState('')
   const [skill, setSkill] = useState('')
   const [language, setLanguage] = useState('')
