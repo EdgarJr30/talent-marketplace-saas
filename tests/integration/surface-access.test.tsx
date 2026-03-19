@@ -129,9 +129,10 @@ describe('surface access states', () => {
 
     renderRoute(surfacePaths.app.home)
 
-    expect(await screen.findByText('Acme')).toBeInTheDocument()
+    expect((await screen.findAllByText('Acme')).length).toBeGreaterThan(0)
     expect(screen.getByText('ASI para equipos')).toBeInTheDocument()
-    expect(screen.getByText('Publica vacantes, descubre talento y coordina contrataciones con una experiencia clara.')).toBeInTheDocument()
+    expect(screen.queryByText('Publica vacantes, descubre talento y coordina contrataciones con una experiencia clara.')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cerrar sesion' })).toBeInTheDocument()
   })
 
   it('renders candidate not-found inside the candidate shell', async () => {
@@ -180,7 +181,7 @@ describe('surface access states', () => {
 
     renderRoute(surfacePaths.workspace.access)
 
-    expect(await screen.findAllByText('Acme')).toHaveLength(2)
+    expect((await screen.findAllByText('Acme')).length).toBeGreaterThan(0)
     expect(screen.getAllByText('No puedes abrir esta vista del workspace').length).toBeGreaterThan(0)
   })
 

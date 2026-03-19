@@ -221,6 +221,15 @@ Do not ship pointer-accessible actions that stay visually inert on hover. Button
 ### R-064 — Route surfaces must stay canonical and separated
 Do not collapse the modular monolith back into a flat route space for authenticated product flows. The canonical route surfaces are `public` under `/`, `candidate` under `/candidate/*`, `workspace` under `/workspace/*`, and the restricted platform console under `/admin/*`. Historical families such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` are not part of the active route contract and must not be reintroduced.
 
+### R-065 — Workspace shell must stay close to the sidebar-with-header product frame
+Do not let the employer `workspace` shell drift back into a heavily stylized floating-dashboard treatment when the intended pattern is the cleaner Tailwind-like app frame with a fixed sidebar, bordered top bar, linear search row, restrained dropdowns, and straightforward page flow. The workspace shell should feel like a real product application frame first, not like a stack of oversized decorative cards wrapped around the content.
+
+### R-066 — Workspace shell must not duplicate logout in the top bar or reintroduce promo filler in the sidebar
+Do not bring back a prominent `Cerrar sesion` button in the workspace top bar when the same action already lives in the profile menu. In the workspace shell, logout should stay quickly discoverable in the lower sidebar area with restrained danger styling, while the sidebar itself must avoid promotional filler blocks such as generic recruitment marketing copy that distracts from navigation.
+
+### R-067 — Workspace modules must use shared surfaces and preserve dark-mode contrast
+Do not regress workspace pages back to hardcoded light-only panels like `bg-white`, `bg-zinc-50`, or weak gray text that breaks hierarchy in dark mode. Forms, summary cards, detail panes, and supporting modules under `Company`, `Jobs`, `Candidates`, `Pipeline`, and `Roles` must prefer shared UI primitives and semantic surface tokens so the experience stays elegant, readable, and intuitive for first-time users in both themes.
+
 ---
 
 ## Maintenance rule

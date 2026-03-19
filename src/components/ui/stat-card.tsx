@@ -12,14 +12,14 @@ export function StatCard({ label, value, helper, className, ...props }: StatCard
   return (
     <div
       className={cn(
-        'rounded-[20px] border bg-[var(--app-surface)] px-4 py-4 shadow-[var(--app-shadow-card)]',
+        'rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-elevated)] px-5 py-5 shadow-[0_18px_42px_rgba(10,18,36,0.08)] dark:shadow-[0_20px_46px_rgba(0,0,0,0.2)]',
         className
       )}
       {...props}
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">{label}</p>
-      <p className="mt-3 text-[1.45rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[1.6rem]">{value}</p>
-      {helper ? <p className="mt-2 text-sm leading-5 text-[var(--app-text-muted)]">{helper}</p> : null}
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--app-text-subtle)]">{label}</p>
+      <p className="mt-4 text-[1.6rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[1.85rem]">{value}</p>
+      {helper ? <p className="mt-3 text-sm leading-6 text-[var(--app-text-muted)]">{helper}</p> : null}
     </div>
   )
 }

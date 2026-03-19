@@ -11,9 +11,11 @@ import {
   Sparkles,
   UserRound,
   UsersRound,
-  Wrench
+  Wrench,
+  X
 } from 'lucide-react'
 
+import { BrandMark } from '@/components/ui/app-brand'
 import { cn } from '@/lib/utils/cn'
 
 export interface AppNavItem {
@@ -21,6 +23,11 @@ export interface AppNavItem {
   href: string
   description?: string
   icon?: LucideIcon
+}
+
+export interface AppNavGroup {
+  title?: string
+  items: AppNavItem[]
 }
 
 const iconByHref: Record<string, LucideIcon> = {
@@ -45,6 +52,170 @@ const iconByHref: Record<string, LucideIcon> = {
 
 function resolveIcon(item: AppNavItem) {
   return item.icon ?? iconByHref[item.href] ?? Sparkles
+}
+
+function isActiveHref(activeHref: string, itemHref: string) {
+  return activeHref === itemHref
+}
+
+function WorkspaceSidebarContent({
+  activeHref,
+  brand,
+  footer,
+  groups,
+  onNavigate,
+  tenantName
+}: {
+  activeHref: string
+  brand: string
+  footer?: ReactNode
+  groups: AppNavGroup[]
+  onNavigate: (href: string) => void
+  tenantName: string
+}) {
+  return (
+    <div className="relative flex h-full flex-col overflow-y-auto border-r border-slate-200 bg-white px-6 pb-5 dark:border-white/10 dark:bg-slate-950">
+      <div className="flex h-16 shrink-0 items-center gap-3">
+        <BrandMark panelClassName="size-10 rounded-[14px] border-primary-200/60 bg-primary-600 p-2 shadow-none dark:border-white/10 dark:bg-white/10" />
+        <div className="min-w-0">
+          <p className="truncate text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">{brand}</p>
+          <p className="truncate text-base font-semibold tracking-tight text-slate-950 dark:text-white">{tenantName}</p>
+        </div>
+      </div>
+
+      <nav aria-label={`${brand} navigation`} className="mt-5 flex flex-1 flex-col">
+        <ul className="flex flex-1 flex-col gap-y-7">
+          {groups.map((group, groupIndex) => (
+            <li key={group.title ?? `group-${groupIndex}`}>
+              {group.title ? <div className="text-xs/6 font-semibold text-slate-400">{group.title}</div> : null}
+
+              <ul className="-mx-2 mt-2 space-y-1">
+                {group.items.map((item) => {
+                  const Icon = resolveIcon(item)
+                  const isActive = isActiveHref(activeHref, item.href)
+
+                  return (
+                    <li key={item.href}>
+                      <button
+                        className={cn(
+                          'group flex w-full items-center gap-x-3 rounded-md p-2 text-left text-sm/6 font-semibold transition-colors',
+                          isActive
+                            ? 'bg-slate-100 text-primary-700 dark:bg-white/5 dark:text-white'
+                            : 'text-slate-700 hover:bg-slate-50 hover:text-primary-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white'
+                        )}
+                        type="button"
+                        onClick={() => void onNavigate(item.href)}
+                      >
+                        <Icon
+                          className={cn(
+                            'size-6 shrink-0',
+                            isActive
+                              ? 'text-primary-700 dark:text-white'
+                              : 'text-slate-400 group-hover:text-primary-700 dark:group-hover:text-white'
+                          )}
+                        />
+                        <span className="truncate">{item.title}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </li>
+          ))}
+          {footer ? <li className="mt-auto pt-6">{footer}</li> : null}
+        </ul>
+      </nav>
+    </div>
+  )
+}
+
+export function AppWorkspaceSidebar({
+  activeHref,
+  brand,
+  footer,
+  groups,
+  onNavigate,
+  tenantName
+}: {
+  activeHref: string
+  brand: string
+  footer?: ReactNode
+  groups: AppNavGroup[]
+  onNavigate: (href: string) => void
+  tenantName: string
+}) {
+  return (
+    <aside className="hidden bg-slate-950 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+      <WorkspaceSidebarContent
+        activeHref={activeHref}
+        brand={brand}
+        footer={footer}
+        groups={groups}
+        onNavigate={onNavigate}
+        tenantName={tenantName}
+      />
+    </aside>
+  )
+}
+
+export function AppWorkspaceSidebarDrawer({
+  activeHref,
+  brand,
+  footer,
+  groups,
+  isOpen,
+  onClose,
+  onNavigate,
+  tenantName
+}: {
+  activeHref: string
+  brand: string
+  footer?: ReactNode
+  groups: AppNavGroup[]
+  isOpen: boolean
+  onClose: () => void
+  onNavigate: (href: string) => void
+  tenantName: string
+}) {
+  if (!isOpen) {
+    return null
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 lg:hidden">
+      <button
+        aria-label="Cerrar navegacion del workspace"
+        className="absolute inset-0 bg-slate-900/80"
+        type="button"
+        onClick={onClose}
+      />
+
+      <div className="fixed inset-0 flex">
+        <div className="relative mr-16 flex w-full max-w-xs flex-1">
+          <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
+            <button className="-m-2.5 p-2.5 text-white" type="button" onClick={onClose}>
+              <span className="sr-only">Cerrar sidebar</span>
+              <X className="size-6" />
+            </button>
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <WorkspaceSidebarContent
+              activeHref={activeHref}
+              brand={brand}
+              footer={footer}
+              groups={groups}
+              onNavigate={(href) => {
+                onClose()
+                onNavigate(href)
+              }}
+              tenantName={tenantName}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function AppSidebarNav({
@@ -82,7 +253,7 @@ export function AppSidebarNav({
       <nav className="mt-8 flex flex-1 flex-col gap-2">
         {items.map((item) => {
           const Icon = resolveIcon(item)
-          const isActive = activeHref === item.href
+          const isActive = isActiveHref(activeHref, item.href)
 
           return (
             <button
@@ -116,27 +287,42 @@ export function AppSidebarNav({
 export function AppBottomNav({
   items,
   activeHref,
-  onNavigate
+  onNavigate,
+  variant = 'default'
 }: {
   items: AppNavItem[]
   activeHref: string
   onNavigate: (href: string) => void
+  variant?: 'default' | 'workspace'
 }) {
+  const columns = Math.min(Math.max(items.length, 1), 5)
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 border-t bg-[color:var(--app-surface-elevated)] px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-10px_26px_rgba(24,39,78,0.14)] backdrop-blur-xl lg:hidden">
-      <div className="grid grid-cols-4 gap-2">
+    <nav
+      className={cn(
+        'fixed bottom-0 left-0 right-0 z-30 border-t px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden',
+        variant === 'workspace'
+          ? 'border-white/8 bg-[rgba(12,18,34,0.92)] shadow-[0_-14px_42px_rgba(6,10,22,0.42)]'
+          : 'bg-[color:var(--app-surface-elevated)] shadow-[0_-10px_26px_rgba(24,39,78,0.14)]'
+      )}
+    >
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
         {items.map((item) => {
           const Icon = resolveIcon(item)
-          const isActive = activeHref === item.href
+          const isActive = isActiveHref(activeHref, item.href)
 
           return (
             <button
               key={item.href}
               className={cn(
                 'flex min-h-12 flex-col items-center justify-center gap-1 rounded-[18px] px-2 py-2 text-[0.7rem] font-semibold transition-[transform,box-shadow,background-color,color] duration-200 ease-out hover:-translate-y-px',
-                isActive
-                  ? 'bg-primary-50 text-primary-700 hover:bg-primary-100 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:bg-primary-500/10 dark:text-primary-200 dark:hover:bg-primary-500/16'
-                  : 'text-[var(--app-text-subtle)] hover:bg-[var(--app-surface-muted)] hover:text-[var(--app-text)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
+                variant === 'workspace'
+                  ? isActive
+                    ? 'bg-white/10 text-white hover:bg-white/12 hover:shadow-[0_14px_28px_rgba(15,23,42,0.18)]'
+                    : 'text-white/58 hover:bg-white/6 hover:text-white hover:shadow-[0_14px_28px_rgba(15,23,42,0.16)]'
+                  : isActive
+                    ? 'bg-primary-50 text-primary-700 hover:bg-primary-100 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:bg-primary-500/10 dark:text-primary-200 dark:hover:bg-primary-500/16'
+                    : 'text-[var(--app-text-subtle)] hover:bg-[var(--app-surface-muted)] hover:text-[var(--app-text)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
               )}
               type="button"
               onClick={() => void onNavigate(item.href)}

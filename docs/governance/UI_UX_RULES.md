@@ -340,6 +340,9 @@ Apple-inspired UI rules:
 1. Use sidebar navigation for top-level modules when screen width supports it.
 2. Use top bars for page context, global search, and lightweight actions.
 3. Breadcrumbs are optional and should appear only when hierarchy depth is real and useful.
+4. The employer `workspace` shell should use a fixed desktop sidebar and a sticky contextual top bar. Notifications, theme, and profile belong in the top chrome, while sign-out should remain discoverable in the profile menu and as a restrained footer action in the sidebar instead of a duplicated prominent top-bar button.
+5. The employer `workspace` shell should favor a linear app-frame composition similar to a classic sidebar-with-header layout: flat sidebar, bordered top bar, rectangular menus, and restrained surfaces over oversized floating cards, glow-heavy chrome, or decorative panel stacks.
+6. The employer sidebar should stay utility-first. Avoid promotional filler blocks or marketing copy inside the workspace navigation unless that content directly helps complete a current task.
 
 ### 9.3 IA rules
 1. Preserve core navigation order across tenants and roles whenever possible.

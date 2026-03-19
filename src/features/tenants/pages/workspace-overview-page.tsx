@@ -28,6 +28,10 @@ import { reportErrorWithToast } from '@/lib/errors/error-reporting'
 import { UploadConstraintError } from '@/lib/uploads/media'
 
 const WORKSPACE_QUERY_KEY = ['workspace', 'primary'] as const
+const fieldLabelClassName = 'grid gap-2.5 text-sm'
+const fieldLabelTextClassName = 'text-[0.82rem] font-medium tracking-[0.01em] text-[var(--app-text-muted)]'
+const mutedPanelClassName =
+  'rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
 
 function createEditorKey(bundle: WorkspaceBundle) {
   return [
@@ -260,7 +264,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
       </PageHeader>
 
       <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="bg-white">
+        <Card>
           <CardHeader>
             <CardTitle>Perfil de empresa</CardTitle>
             <CardDescription>
@@ -268,46 +272,71 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm">
-                <span>Nombre visible</span>
+            <div className={mutedPanelClassName}>
+              <div className="mb-4 space-y-1">
+                <p className="text-sm font-semibold text-[var(--app-text)]">Identidad principal</p>
+                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                  Define cómo tu empresa se presenta dentro del workspace y en experiencias públicas.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Nombre visible</span>
                 <Input value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
               </label>
-              <label className="grid gap-2 text-sm">
-                <span>Nombre legal</span>
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Nombre legal</span>
                 <Input value={legalName} onChange={(event) => setLegalName(event.target.value)} />
               </label>
             </div>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm">
-                <span>Website</span>
+            <div className={mutedPanelClassName}>
+              <div className="mb-4 space-y-1">
+                <p className="text-sm font-semibold text-[var(--app-text)]">Canales de contacto</p>
+                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                  Mantén claros los puntos de contacto que usarán candidatos y colaboradores.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Website</span>
                 <Input value={websiteUrl} onChange={(event) => setWebsiteUrl(event.target.value)} placeholder="https://..." />
               </label>
-              <label className="grid gap-2 text-sm">
-                <span>Email company</span>
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Email company</span>
                 <Input value={companyEmail} onChange={(event) => setCompanyEmail(event.target.value)} placeholder="careers@empresa.com" />
               </label>
             </div>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              <label className="grid gap-2 text-sm">
-                <span>Telefono</span>
+            <div className={mutedPanelClassName}>
+              <div className="mb-4 space-y-1">
+                <p className="text-sm font-semibold text-[var(--app-text)]">Contexto empresarial</p>
+                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                  Ayuda al equipo y a los candidatos a comprender tu ubicación, industria y tamaño operativo.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Telefono</span>
                 <Input value={companyPhone} onChange={(event) => setCompanyPhone(event.target.value)} />
               </label>
-              <label className="grid gap-2 text-sm">
-                <span>Pais</span>
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Pais</span>
                 <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} />
               </label>
-              <label className="grid gap-2 text-sm">
-                <span>Industria</span>
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Industria</span>
                 <Input value={industry} onChange={(event) => setIndustry(event.target.value)} placeholder="Energy, SaaS, Health..." />
               </label>
             </div>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-[0.55fr_0.45fr]">
-              <label className="grid gap-2 text-sm">
-                <span>Rango de tamano</span>
+            <div className={mutedPanelClassName}>
+              <div className="grid gap-4 sm:grid-cols-[0.55fr_0.45fr]">
+              <label className={fieldLabelClassName}>
+                <span className={fieldLabelTextClassName}>Rango de tamano</span>
                 <Select value={sizeRange} onChange={(event) => setSizeRange(event.target.value)}>
                   <option value="">Selecciona un rango</option>
                   <option value="1-10">1-10</option>
@@ -317,14 +346,20 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                   <option value="500+">500+</option>
                 </Select>
               </label>
-              <label className="flex items-center gap-3 rounded-[24px] border border-zinc-200 px-4 py-4 text-sm dark:border-zinc-800">
-                <input type="checkbox" checked={isPublic} onChange={(event) => setIsPublic(event.target.checked)} />
-                <span>Permitir que el perfil de empresa sea visible en la vista pública.</span>
+              <label className="flex items-start gap-3 rounded-[20px] border border-[var(--app-border)] bg-[var(--app-surface-elevated)] px-4 py-4 text-sm text-[var(--app-text)]">
+                <input
+                  className="mt-1 h-4 w-4 rounded border-[var(--app-border)] bg-transparent text-primary-600"
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={(event) => setIsPublic(event.target.checked)}
+                />
+                <span className="leading-6">Permitir que el perfil de empresa sea visible en la vista pública.</span>
               </label>
             </div>
+            </div>
 
-            <label className="grid gap-2 text-sm">
-              <span>Descripcion</span>
+            <label className={fieldLabelClassName}>
+              <span className={fieldLabelTextClassName}>Descripcion</span>
               <Textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
@@ -333,11 +368,11 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               />
             </label>
 
-            <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
+            <div className={mutedPanelClassName}>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Logo de tu empresa</p>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="text-sm font-semibold text-[var(--app-text)]">Logo de tu empresa</p>
+                  <p className="text-sm leading-6 text-[var(--app-text-muted)]">
                     Acepta PNG, JPG, WEBP o SVG. Se comprime cuando aplica y no puede superar 5 MB.
                   </p>
                 </div>
@@ -366,7 +401,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white">
+        <Card>
           <CardHeader>
             <CardTitle>Equipo y accesos</CardTitle>
             <CardDescription>
@@ -374,11 +409,11 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="grid gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
+            <div className={mutedPanelClassName}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">Invitar miembro</p>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="text-sm font-semibold text-[var(--app-text)]">Invitar miembro</p>
+                  <p className="text-sm leading-6 text-[var(--app-text-muted)]">
                     El usuario debe haberse registrado antes como usuario normal en la plataforma.
                   </p>
                 </div>
@@ -388,8 +423,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                 </div>
               </div>
               <div className="grid gap-3 sm:grid-cols-[1fr_0.7fr_auto] sm:items-end">
-                <label className="grid gap-2 text-sm">
-                  <span>Email del miembro</span>
+                <label className={fieldLabelClassName}>
+                  <span className={fieldLabelTextClassName}>Email del miembro</span>
                   <Input
                     type="email"
                     placeholder="persona@empresa.com"
@@ -397,8 +432,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                     onChange={(event) => setInviteEmail(event.target.value)}
                   />
                 </label>
-                <label className="grid gap-2 text-sm">
-                  <span>Rol inicial</span>
+                <label className={fieldLabelClassName}>
+                  <span className={fieldLabelTextClassName}>Rol inicial</span>
                   <Select value={inviteRoleId} onChange={(event) => setInviteRoleId(event.target.value)}>
                     <option value="">Selecciona un rol</option>
                     {assignableRoles.map((role) => (
@@ -421,19 +456,19 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               const activeRoleId = membership.membership_roles?.find((item) => item.role)?.role?.id ?? ''
 
               return (
-                <div key={membership.id} className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800">
+                <div key={membership.id} className={mutedPanelClassName}>
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                      <p className="text-sm font-semibold text-[var(--app-text)]">
                         {membership.user?.display_name || membership.user?.full_name || membership.user?.email || 'Miembro'}
                       </p>
-                      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{membership.user?.email}</p>
+                      <p className="mt-1 text-sm text-[var(--app-text-muted)]">{membership.user?.email}</p>
                     </div>
                     <Badge variant="outline">{membership.status}</Badge>
                   </div>
                   <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-                    <label className="grid gap-2 text-sm">
-                      <span>Rol principal</span>
+                    <label className={fieldLabelClassName}>
+                      <span className={fieldLabelTextClassName}>Rol principal</span>
                       <Select
                         value={activeRoleId}
                         onChange={(event) => {
@@ -453,7 +488,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                         ))}
                       </Select>
                     </label>
-                    <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                    <div className="text-sm leading-6 text-[var(--app-text-muted)]">
                       {membership.membership_roles?.flatMap((item) => (item.role?.name ? [item.role.name] : [])).join(', ') ||
                         'Sin rol activo'}
                     </div>
