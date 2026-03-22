@@ -186,7 +186,7 @@ export function FoundationSettingsForm() {
 
   return (
     <section className="grid gap-4 lg:grid-cols-[1.35fr_0.95fr]">
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">{t('foundations.title')}</Badge>
           <CardTitle>{t('foundations.title')}</CardTitle>

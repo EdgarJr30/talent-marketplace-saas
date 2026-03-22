@@ -7,8 +7,8 @@ import type { InstitutionalAction, InstitutionalLeadContent, InstitutionalTone }
 import { cn } from '@/lib/utils/cn'
 
 const toneClassByTone: Record<InstitutionalTone, string> = {
-  plain: 'bg-[var(--asi-surface)]',
-  muted: 'bg-[var(--asi-surface-muted)]',
+  plain: 'bg-(--asi-surface)',
+  muted: 'bg-(--asi-surface-muted)',
   brand: 'bg-[linear-gradient(135deg,var(--asi-primary)_0%,var(--asi-primary-container)_100%)] text-white'
 }
 

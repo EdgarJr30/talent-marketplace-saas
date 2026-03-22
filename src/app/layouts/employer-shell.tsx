@@ -108,23 +108,23 @@ function WorkspaceNotificationPanel({
   onOpenNotification: (notification: AppNotification) => void
 }) {
   return (
-    <div className="w-[min(24rem,calc(100vw-2rem))] rounded-[26px] border border-[var(--app-border)] bg-[var(--app-surface-elevated)] p-3 shadow-[0_28px_72px_rgba(8,12,24,0.22)]">
+    <div className="w-[min(24rem,calc(100vw-2rem))] rounded-[26px] border border-(--app-border) bg-(--app-surface-elevated) p-3 shadow-[0_28px_72px_rgba(8,12,24,0.22)]">
       <div className="flex items-center justify-between gap-3 px-2 pb-3 pt-1">
         <div>
-          <p className="text-sm font-semibold text-[var(--app-text)]">Notificaciones</p>
-          <p className="text-xs text-[var(--app-text-muted)]">Últimos eventos relevantes para tu cuenta.</p>
+          <p className="text-sm font-semibold text-(--app-text)">Notificaciones</p>
+          <p className="text-xs text-(--app-text-muted)">Últimos eventos relevantes para tu cuenta.</p>
         </div>
-        <span className="rounded-full border border-[var(--app-border)] bg-[var(--app-surface)] px-2.5 py-1 text-[0.72rem] font-semibold text-[var(--app-text-muted)]">
+        <span className="rounded-full border border-(--app-border) bg-(--app-surface) px-2.5 py-1 text-[0.72rem] font-semibold text-(--app-text-muted)">
           {notifications.filter((notification) => !notification.read_at).length} sin leer
         </span>
       </div>
 
       {isLoading ? (
-        <div className="rounded-[20px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+        <div className="rounded-[20px] border border-dashed border-(--app-border) bg-(--app-surface) px-4 py-6 text-sm text-(--app-text-muted)">
           Cargando notificaciones...
         </div>
       ) : notifications.length === 0 ? (
-        <div className="rounded-[20px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+        <div className="rounded-[20px] border border-dashed border-(--app-border) bg-(--app-surface) px-4 py-6 text-sm text-(--app-text-muted)">
           Aún no tienes notificaciones recientes.
         </div>
       ) : (
@@ -135,14 +135,14 @@ function WorkspaceNotificationPanel({
               className={cn(
                 'rounded-[22px] border px-3.5 py-3 transition-colors',
                 notification.read_at
-                  ? 'border-[var(--app-border)] bg-[var(--app-surface)]'
+                  ? 'border-(--app-border) bg-(--app-surface)'
                   : 'border-primary-200 bg-primary-50/80 dark:border-primary-500/24 dark:bg-primary-500/10'
               )}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[var(--app-text)]">{notification.title}</p>
-                  <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{notification.body}</p>
+                  <p className="text-sm font-semibold text-(--app-text)">{notification.title}</p>
+                  <p className="mt-1 text-sm leading-6 text-(--app-text-muted)">{notification.body}</p>
                 </div>
                 {!notification.read_at ? (
                   <span className="mt-1 size-2.5 shrink-0 rounded-full bg-primary-500 shadow-[0_0_0_4px_rgba(74,99,211,0.14)]" />
@@ -150,7 +150,7 @@ function WorkspaceNotificationPanel({
               </div>
 
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                <p className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
+                <p className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-(--app-text-subtle)">
                   {formatNotificationTimestamp(notification.created_at)}
                 </p>
                 <div className="flex flex-wrap gap-2">

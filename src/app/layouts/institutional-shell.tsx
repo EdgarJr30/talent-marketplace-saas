@@ -66,7 +66,7 @@ export function InstitutionalShell() {
       >
         <div className="asi-container px-0">
           <motion.div
-            className="rounded-[1.7rem] border border-white/55 bg-[rgba(248,249,250,0.92)] px-4 shadow-[var(--asi-shadow-soft)] backdrop-blur-[18px] sm:px-5"
+            className="rounded-[1.7rem] border border-white/55 bg-[#f8f9fa]/92 px-4 shadow-(--asi-shadow-soft) backdrop-blur-[18px] sm:px-5"
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             animate={
               shouldReduceMotion
@@ -81,7 +81,7 @@ export function InstitutionalShell() {
             <div className="flex items-center justify-between gap-3 lg:gap-5">
               <div className="flex min-w-0 items-center gap-3">
                 <Link
-                  className="relative h-12 w-[9.5rem] shrink-0 overflow-visible sm:h-14 sm:w-[10.5rem]"
+                  className="relative h-12 w-38 shrink-0 overflow-visible sm:h-14 sm:w-42"
                   to={surfacePaths.institutional.home}
                 >
                   <motion.span
@@ -119,7 +119,7 @@ export function InstitutionalShell() {
                         }
                   }
                 >
-                  <p className="max-w-[11rem] text-[0.6rem] font-semibold uppercase leading-[1.45] tracking-[0.18em] text-[var(--asi-primary)]/84 sm:max-w-[12.5rem] sm:text-[0.64rem]">
+                  <p className="max-w-44 text-[0.6rem] font-semibold uppercase leading-[1.45] tracking-[0.18em] text-(--asi-primary)/84 sm:max-w-50 sm:text-[0.64rem]">
                     Servicios e Industrias de Laicos Adventistas
                   </p>
                 </motion.span>
@@ -135,8 +135,8 @@ export function InstitutionalShell() {
                     className={cn(
                       'rounded-full px-3.5 py-2 text-[0.96rem] font-semibold transition-all duration-300',
                       isActiveRoute(location.pathname, item.to)
-                        ? 'bg-white text-[var(--asi-primary)] shadow-[0_10px_24px_rgba(0,47,110,0.1)]'
-                        : 'text-[var(--asi-text-muted)] hover:bg-white/75 hover:text-[var(--asi-text)]'
+                        ? 'bg-white text-(--asi-primary) shadow-[0_10px_24px_rgba(0,47,110,0.1)]'
+                        : 'text-(--asi-text-muted) hover:bg-white/75 hover:text-(--asi-text)'
                     )}
                     to={item.to}
                   >
@@ -145,9 +145,9 @@ export function InstitutionalShell() {
                 ))}
               </nav>
 
-              <div className="hidden min-w-[15rem] flex-1 justify-end xl:flex">
-                <label className="flex h-11 w-full max-w-[17.5rem] items-center gap-2 rounded-[1rem] bg-white/92 px-4 text-sm text-[var(--asi-text-muted)] shadow-[0_10px_24px_rgba(0,47,110,0.06)]">
-                  <Search className="size-4 text-[var(--asi-secondary)]" />
+              <div className="hidden min-w-60 flex-1 justify-end xl:flex">
+                <label className="flex h-11 w-full max-w-70 items-center gap-2 rounded-2xl bg-white/92 px-4 text-sm text-(--asi-text-muted) shadow-[0_10px_24px_rgba(0,47,110,0.06)]">
+                  <Search className="size-4 text-(--asi-secondary)" />
                   <span>Buscar</span>
                 </label>
               </div>
@@ -170,7 +170,7 @@ export function InstitutionalShell() {
               <button
                 aria-controls="institutional-mobile-nav"
                 aria-expanded={mobileMenuOpen}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[var(--asi-primary)] shadow-[0_10px_24px_rgba(0,47,110,0.08)] xl:hidden"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-(--asi-primary) shadow-[0_10px_24px_rgba(0,47,110,0.08)] xl:hidden"
                 type="button"
                 onClick={() => setMobileMenuOpen((current) => !current)}
               >
@@ -193,7 +193,7 @@ export function InstitutionalShell() {
       <AnimatePresence>
         {mobileMenuOpen ? (
           <motion.div
-            className="fixed inset-0 z-40 bg-[rgba(0,47,110,0.18)] backdrop-blur-sm xl:hidden"
+            className="fixed inset-0 z-40 bg-[#002f6e]/18 backdrop-blur-sm xl:hidden"
             initial={shouldReduceMotion ? false : { opacity: 0 }}
             transition={{ duration: 0.24 }}
             animate={shouldReduceMotion ? undefined : { opacity: 1 }}
@@ -202,7 +202,7 @@ export function InstitutionalShell() {
           >
             <div className="asi-container pt-30 pb-6 sm:pt-32 sm:pb-7">
               <motion.div
-                className="rounded-[1.9rem] bg-white p-6 shadow-[var(--asi-shadow-strong)] sm:p-7"
+                className="rounded-[1.9rem] bg-white p-6 shadow-(--asi-shadow-strong) sm:p-7"
                 id="institutional-mobile-nav"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: -14 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -210,19 +210,19 @@ export function InstitutionalShell() {
                 exit={shouldReduceMotion ? undefined : { opacity: 0, y: -10 }}
                 onClick={(event) => event.stopPropagation()}
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--asi-secondary)">
                   Navegación
                 </p>
                 <div className="mt-6 space-y-3">
                   {institutionalNavigation.map((item) => (
                     <Link
                       key={item.to}
-                      className="flex items-center justify-between rounded-[1.15rem] bg-[var(--asi-surface-muted)] px-4 py-3 text-sm font-semibold text-[var(--asi-text)]"
+                      className="flex items-center justify-between rounded-[1.15rem] bg-(--asi-surface-muted) px-4 py-3 text-sm font-semibold text-(--asi-text)"
                       to={item.to}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}
-                      <MoveRight className="size-4 text-[var(--asi-secondary)]" />
+                      <MoveRight className="size-4 text-(--asi-secondary)" />
                     </Link>
                   ))}
                 </div>
@@ -248,16 +248,16 @@ export function InstitutionalShell() {
         ) : null}
       </AnimatePresence>
 
-      <main className="min-w-0 pt-[8.3rem] sm:pt-[8rem] lg:pt-[8.6rem]">
+      <main className="min-w-0 pt-[8.3rem] sm:pt-32 lg:pt-[8.6rem]">
         <Outlet />
       </main>
 
-      <footer className="bg-[var(--asi-primary)] text-white">
+      <footer className="bg-(--asi-primary) text-white">
         <div className="asi-container py-10 sm:py-12">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8">
             <div className="rounded-[1.75rem] border border-white/10 bg-white/6 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-sm sm:p-6">
               <div className="flex items-center gap-4">
-                <span className="flex h-16 w-24 shrink-0 items-center justify-center rounded-[1rem] bg-white/10 px-3 backdrop-blur-sm sm:w-28">
+                <span className="flex h-16 w-24 shrink-0 items-center justify-center rounded-2xl bg-white/10 px-3 backdrop-blur-sm sm:w-28">
                   <BrandLockup className="w-full" surface="dark" />
                 </span>
                 <div className="min-w-0">
@@ -291,7 +291,7 @@ export function InstitutionalShell() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
+              <div className="rounded-3xl border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">
                   Explora
                 </p>
@@ -299,7 +299,7 @@ export function InstitutionalShell() {
                   {institutionalNavigation.map((item) => (
                     <Link
                       key={item.to}
-                      className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
+                      className="flex items-center justify-between rounded-2xl bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
                       to={item.to}
                     >
                       {item.label}
@@ -309,34 +309,34 @@ export function InstitutionalShell() {
                 </div>
               </div>
 
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
+              <div className="rounded-3xl border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">
                   Puente
                 </p>
                 <div className="mt-4 space-y-2.5">
                   <Link
-                    className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
+                    className="flex items-center justify-between rounded-2xl bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
                     to={surfacePaths.public.home}
                   >
                     Plataforma ASI
                     <MoveRight className="size-4 text-white/44" />
                   </Link>
                   <Link
-                    className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
+                    className="flex items-center justify-between rounded-2xl bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
                     to={surfacePaths.auth.signIn}
                   >
                     Iniciar sesión
                     <MoveRight className="size-4 text-white/44" />
                   </Link>
                   <Link
-                    className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
+                    className="flex items-center justify-between rounded-2xl bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
                     to={surfacePaths.institutional.contactUs}
                   >
                     Contáctanos
                     <MoveRight className="size-4 text-white/44" />
                   </Link>
                   <Link
-                    className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
+                    className="flex items-center justify-between rounded-2xl bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
                     to={surfacePaths.institutional.donate}
                   >
                     Donaciones

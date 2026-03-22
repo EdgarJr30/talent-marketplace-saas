@@ -46,18 +46,18 @@ export function ApplicationsOverviewPage() {
         </CardHeader>
         <CardContent className="space-y-3">
           {myApplicationsQuery.isLoading ? (
-            <p className="text-sm text-[var(--app-text-muted)]">Cargando historial...</p>
+            <p className="text-sm text-(--app-text-muted)">Cargando historial...</p>
           ) : myApplicationsQuery.error ? (
             <p className="text-sm text-rose-600">{toErrorMessage(myApplicationsQuery.error)}</p>
           ) : applications.length ? (
             applications.map((application) => (
-              <div key={application.id} className="rounded-[24px] border bg-[var(--app-surface-muted)] p-4">
+              <div key={application.id} className="rounded-[24px] border bg-(--app-surface-muted) p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
-                    <p className="text-base font-semibold text-[var(--app-text)]">
+                    <p className="text-base font-semibold text-(--app-text)">
                       {application.job_posting?.title || 'Vacante'}
                     </p>
-                    <p className="text-sm text-[var(--app-text-muted)]">
+                    <p className="text-sm text-(--app-text-muted)">
                       {application.job_posting?.company_profile?.display_name || 'Company'}
                     </p>
                   </div>

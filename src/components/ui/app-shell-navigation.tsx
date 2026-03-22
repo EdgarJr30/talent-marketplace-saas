@@ -239,15 +239,15 @@ export function AppSidebarNav({
   footer?: ReactNode
 }) {
   return (
-    <aside className="hidden w-[296px] shrink-0 rounded-[28px] border bg-[var(--app-surface-elevated)] p-5 shadow-[var(--app-shadow-soft)] lg:flex lg:flex-col">
+    <aside className="hidden w-[296px] shrink-0 rounded-[28px] border bg-(--app-surface-elevated) p-5 shadow-(--app-shadow-soft) lg:flex lg:flex-col">
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           {brandMark ?? null}
           <div className="tm-kicker w-fit">{brand}</div>
         </div>
         <div className="space-y-2">
-          <p className="text-[1.5rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[1.65rem]">{title}</p>
-          <p className="text-sm leading-6 text-[var(--app-text-muted)]">{description}</p>
+          <p className="text-[1.5rem] font-semibold tracking-tight text-(--app-text) sm:text-[1.65rem]">{title}</p>
+          <p className="text-sm leading-6 text-(--app-text-muted)">{description}</p>
         </div>
       </div>
 
@@ -263,12 +263,12 @@ export function AppSidebarNav({
                 'flex items-start gap-3 rounded-[20px] px-4 py-3 text-left transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-out hover:-translate-y-px',
                 isActive
                   ? 'border border-primary-200 bg-primary-50 text-primary-700 shadow-sm hover:border-primary-300 hover:bg-primary-50/90 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:border-primary-500/18 dark:bg-primary-500/10 dark:text-primary-200 dark:hover:border-primary-500/24 dark:hover:bg-primary-500/14'
-                  : 'border border-transparent text-[var(--app-text-muted)] hover:border-[var(--app-border)] hover:bg-[var(--app-surface-muted)] hover:text-[var(--app-text)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
+                  : 'border border-transparent text-(--app-text-muted) hover:border-(--app-border) hover:bg-(--app-surface-muted) hover:text-(--app-text) hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
               )}
               type="button"
               onClick={() => void onNavigate(item.href)}
             >
-              <span className="mt-0.5 rounded-[16px] bg-[var(--app-surface)] p-2 text-current shadow-sm">
+              <span className="mt-0.5 rounded-[16px] bg-(--app-surface) p-2 text-current shadow-sm">
                 <Icon className="h-4 w-4" />
               </span>
               <span className="min-w-0 flex-1">
@@ -304,7 +304,7 @@ export function AppBottomNav({
         'fixed bottom-0 left-0 right-0 z-30 border-t px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden',
         variant === 'workspace'
           ? 'border-white/8 bg-[rgba(12,18,34,0.92)] shadow-[0_-14px_42px_rgba(6,10,22,0.42)]'
-          : 'bg-[color:var(--app-surface-elevated)] shadow-[0_-10px_26px_rgba(24,39,78,0.14)]'
+          : 'bg-(--app-surface-elevated) shadow-[0_-10px_26px_rgba(24,39,78,0.14)]'
       )}
     >
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
@@ -323,7 +323,7 @@ export function AppBottomNav({
                     : 'text-white/58 hover:bg-white/6 hover:text-white hover:shadow-[0_14px_28px_rgba(15,23,42,0.16)]'
                   : isActive
                     ? 'bg-primary-50 text-primary-700 hover:bg-primary-100 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:bg-primary-500/10 dark:text-primary-200 dark:hover:bg-primary-500/16'
-                    : 'text-[var(--app-text-subtle)] hover:bg-[var(--app-surface-muted)] hover:text-[var(--app-text)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
+                    : 'text-(--app-text-subtle) hover:bg-(--app-surface-muted) hover:text-(--app-text) hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
               )}
               type="button"
               onClick={() => void onNavigate(item.href)}

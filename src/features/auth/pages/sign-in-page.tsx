@@ -78,7 +78,7 @@ export function SignInPage() {
         description="Entra a tu perfil, revisa tus procesos o retoma el trabajo de tu equipo con un acceso simple y directo."
       />
 
-      <Card className="bg-[var(--app-surface)]">
+      <Card className="bg-(--app-surface)">
         <CardHeader className="space-y-3">
           <div className="tm-kicker w-fit">
             Iniciar sesion
@@ -90,13 +90,13 @@ export function SignInPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
-            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
+            <label className="space-y-2 text-sm font-medium text-(--app-text)">
               <span>Email</span>
               <Input autoComplete="email" placeholder="tu@correo.com" type="email" {...form.register('email')} />
               <FieldError message={form.formState.errors.email?.message} />
             </label>
 
-            <label className="space-y-2 text-sm font-medium text-[var(--app-text)]">
+            <label className="space-y-2 text-sm font-medium text-(--app-text)">
               <span>Contrasena</span>
               <Input autoComplete="current-password" placeholder="Tu contrasena" type="password" {...form.register('password')} />
               <FieldError message={form.formState.errors.password?.message} />
@@ -107,7 +107,7 @@ export function SignInPage() {
             </Button>
           </form>
 
-          <div className="rounded-[24px] border bg-[var(--app-surface)] px-4 py-4 text-sm leading-6 text-[var(--app-text-muted)]">
+          <div className="rounded-[24px] border bg-(--app-surface) px-4 py-4 text-sm leading-6 text-(--app-text-muted)">
             Aun no tienes cuenta?{' '}
             <Link className="font-semibold text-primary-700 transition hover:text-primary-800 hover:underline dark:hover:text-primary-200" to="/auth/sign-up">
               Crea tu cuenta

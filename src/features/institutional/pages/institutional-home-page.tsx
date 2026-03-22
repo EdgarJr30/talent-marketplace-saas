@@ -16,6 +16,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import { surfacePaths } from '@/app/router/surface-paths';
+import './institutional-home-page.css';
 import {
   InstitutionalActionLink,
   InstitutionalCard,
@@ -225,7 +226,7 @@ export function InstitutionalHomePage() {
         <div className="flex items-center gap-3">
           <button
             aria-label="Ver slide anterior"
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-[var(--asi-primary)] shadow-[0_10px_30px_rgba(0,47,110,0.18)] transition hover:bg-white"
+            className="institutional-home__hero-control flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-(--asi-primary) transition hover:bg-white"
             type="button"
             onClick={() => stepHeroSlide('prev')}
           >
@@ -233,7 +234,7 @@ export function InstitutionalHomePage() {
           </button>
           <button
             aria-label="Ver slide siguiente"
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-[var(--asi-primary)] shadow-[0_10px_30px_rgba(0,47,110,0.18)] transition hover:bg-white"
+            className="institutional-home__hero-control flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-(--asi-primary) transition hover:bg-white"
             type="button"
             onClick={() => stepHeroSlide('next')}
           >
@@ -246,10 +247,10 @@ export function InstitutionalHomePage() {
 
   return (
     <div>
-      <InstitutionalSection className="!pt-0 !pb-0">
+      <InstitutionalSection className="pt-0! pb-0!">
         <div className="space-y-8 sm:space-y-10">
           <motion.div
-            className="relative overflow-hidden rounded-[2rem] bg-[var(--asi-primary)] shadow-[var(--asi-shadow-strong)] sm:-mx-7 sm:rounded-[2.4rem] lg:-mx-10 xl:-mx-14"
+            className="institutional-home__hero-shell relative overflow-hidden bg-(--asi-primary) shadow-(--asi-shadow-strong) sm:-mx-7 lg:-mx-10 xl:-mx-14"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -288,22 +289,22 @@ export function InstitutionalHomePage() {
                 >
                   {slide.contentMode === 'image-only' ? (
                     <>
-                      <div className="absolute inset-0 overflow-hidden bg-[linear-gradient(135deg,#0a2f6e_0%,#1b5ca8_48%,#6fb7d6_100%)]">
+                      <div className="institutional-home__image-backdrop absolute inset-0 overflow-hidden">
                         <img
                           alt=""
                           aria-hidden="true"
-                          className="h-full w-full scale-[1.16] object-cover opacity-55 blur-[28px]"
+                          className="institutional-home__image-glow h-full w-full object-cover opacity-55"
                           loading="lazy"
                           src={slide.image}
                         />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_32%,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0)_28%),linear-gradient(90deg,rgba(4,17,43,0.8)_0%,rgba(7,32,76,0.3)_34%,rgba(18,88,160,0.2)_66%,rgba(112,189,219,0.3)_100%)]" />
-                        <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(3,12,28,0)_0%,rgba(3,12,28,0.52)_100%)] sm:h-32" />
+                        <div className="institutional-home__image-overlay absolute inset-0" />
+                        <div className="institutional-home__image-fade absolute inset-x-0 bottom-0 h-28 sm:h-32" />
                       </div>
 
                       <div className="absolute inset-x-3 inset-y-3 flex items-center justify-center pb-22 sm:inset-x-8 sm:inset-y-8 sm:pb-28 lg:inset-x-12 lg:inset-y-10 lg:pb-32 xl:inset-x-16">
                         <img
                           alt={slide.imageAlt}
-                          className="max-h-full w-auto max-w-full rounded-[1.5rem] object-contain shadow-[0_26px_70px_rgba(3,12,28,0.34)]"
+                          className="institutional-home__image-frame max-h-full w-auto max-w-full rounded-3xl object-contain"
                           loading="lazy"
                           src={slide.image}
                         />
@@ -322,8 +323,8 @@ export function InstitutionalHomePage() {
 
               {!isImageOnlyHero ? (
                 <>
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,22,44,0.36)_0%,rgba(14,26,47,0.52)_30%,rgba(10,20,39,0.72)_64%,rgba(8,16,33,0.9)_100%)] sm:bg-[linear-gradient(90deg,rgba(24,35,61,0.68)_0%,rgba(22,34,60,0.38)_42%,rgba(0,69,153,0.38)_100%)]" />
-                  <div className="absolute inset-x-0 bottom-0 h-48 bg-[linear-gradient(180deg,rgba(248,249,250,0)_0%,rgba(248,249,250,0.95)_100%)] sm:h-44" />
+                  <div className="institutional-home__hero-overlay absolute inset-0" />
+                  <div className="institutional-home__hero-fade absolute inset-x-0 bottom-0 h-48 sm:h-44" />
                 </>
               ) : null}
 
@@ -335,7 +336,7 @@ export function InstitutionalHomePage() {
               >
                 {!isImageOnlyHero ? (
                   <>
-                    <div className="max-w-[42rem]">
+                    <div className="max-w-2xl">
                       <AnimatePresence initial={false} mode="wait">
                         <motion.div
                           key={activeHero.title}
@@ -358,7 +359,7 @@ export function InstitutionalHomePage() {
                           }
                         >
                           <motion.h1
-                            className="mt-4 max-w-[9.5ch] text-[2rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white sm:max-w-[11ch] sm:text-[2.6rem] lg:text-[3.35rem] xl:text-[3.8rem]"
+                            className="institutional-home__hero-title mt-4 font-semibold text-white"
                             initial="hidden"
                             animate="show"
                             exit="hidden"
@@ -379,7 +380,7 @@ export function InstitutionalHomePage() {
                             {activeHero.title.split(' ').map((word, index) => (
                               <motion.span
                                 key={`${activeHero.title}-${word}-${index}`}
-                                className="mr-[0.22em] inline-block last:mr-0"
+                                className="institutional-home__hero-word inline-block last:mr-0"
                                 variants={
                                   shouldReduceMotion
                                     ? undefined
@@ -405,7 +406,7 @@ export function InstitutionalHomePage() {
                               </motion.span>
                             ))}
                           </motion.h1>
-                          <p className="mt-4 max-w-[31rem] text-[1rem] leading-7 text-white/84 sm:max-w-[34rem] sm:text-base sm:leading-7">
+                          <p className="institutional-home__hero-description mt-4 text-white/84">
                             {activeHero.description}
                           </p>
                         </motion.div>
@@ -414,21 +415,21 @@ export function InstitutionalHomePage() {
                       <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                         <InstitutionalActionLink
                           action={activeHero.primaryAction}
-                          className="min-h-14 w-full justify-center sm:min-w-[11.5rem] sm:w-auto"
+                          className="min-h-14 w-full justify-center sm:min-w-46 sm:w-auto"
                         />
                         <InstitutionalActionLink
                           action={activeHero.secondaryAction}
-                          className="min-h-14 w-full justify-center border border-white/30 bg-white/8 text-white hover:bg-white/14 sm:min-w-[11.5rem] sm:w-auto"
+                          className="min-h-14 w-full justify-center border border-white/30 bg-white/8 text-white hover:bg-white/14 sm:min-w-46 sm:w-auto"
                         />
                       </div>
                     </div>
 
                     <div className="mt-8 space-y-5 sm:mt-10 sm:space-y-6">
-                      <div className="grid gap-3 sm:max-w-[36rem] sm:grid-cols-3">
+                      <div className="grid gap-3 sm:max-w-xl sm:grid-cols-3">
                         {homeHeroMetrics.map((metric) => (
                           <motion.div
                             key={metric.label}
-                            className="rounded-[1.5rem] border border-white/10 bg-white/12 p-4 backdrop-blur-md"
+                            className="rounded-3xl border border-white/10 bg-white/12 p-4 backdrop-blur-md"
                             transition={{ duration: 0.3 }}
                             whileHover={
                               shouldReduceMotion
@@ -439,7 +440,7 @@ export function InstitutionalHomePage() {
                                   }
                             }
                           >
-                            <p className="text-2xl font-semibold tracking-tight text-white sm:text-[1.85rem]">
+                            <p className="institutional-home__metric-value text-2xl font-semibold tracking-tight text-white">
                               <AnimatedMetricValue value={metric.value} />
                             </p>
                             <p className="mt-2 text-sm font-semibold text-white">
@@ -456,13 +457,13 @@ export function InstitutionalHomePage() {
             </div>
           </motion.div>
 
-          <div className="rounded-[2rem] bg-white/92 px-3 py-4 shadow-[var(--asi-shadow-soft)] backdrop-blur-md sm:px-5 sm:py-5">
+          <div className="rounded-4xl bg-white/92 px-3 py-4 shadow-(--asi-shadow-soft) backdrop-blur-md sm:px-5 sm:py-5">
             <div className="flex items-center justify-between gap-4 px-2 sm:px-1">
               <div>
-                <p className="asi-kicker !px-0 !py-0 bg-transparent">
+                <p className="asi-kicker px-0! py-0! bg-transparent">
                   Historias en movimiento
                 </p>
-                <h2 className="mt-2 text-[1.4rem] font-semibold tracking-tight text-[var(--asi-text)] sm:text-[1.7rem]">
+                <h2 className="institutional-home__editorial-title mt-2 font-semibold tracking-tight text-(--asi-text)">
                   Una sección de carrusel inmediata debajo del hero, con una
                   lectura más editorial.
                 </h2>
@@ -470,7 +471,7 @@ export function InstitutionalHomePage() {
               <div className="hidden items-center gap-2 sm:flex">
                 <button
                   aria-label="Tarjeta anterior"
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[var(--asi-surface-muted)] text-[var(--asi-primary)] transition hover:bg-white hover:shadow-[var(--asi-shadow-soft)]"
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--asi-surface-muted) text-(--asi-primary) transition hover:bg-white hover:shadow-(--asi-shadow-soft)"
                   type="button"
                   onClick={() => stepCarouselSlide('prev')}
                 >
@@ -478,7 +479,7 @@ export function InstitutionalHomePage() {
                 </button>
                 <button
                   aria-label="Tarjeta siguiente"
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[var(--asi-surface-muted)] text-[var(--asi-primary)] transition hover:bg-white hover:shadow-[var(--asi-shadow-soft)]"
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--asi-surface-muted) text-(--asi-primary) transition hover:bg-white hover:shadow-(--asi-shadow-soft)"
                   type="button"
                   onClick={() => stepCarouselSlide('next')}
                 >
@@ -514,20 +515,20 @@ export function InstitutionalHomePage() {
                   <motion.article
                     key={item.title}
                     className={cn(
-                      'overflow-hidden rounded-[1.5rem] bg-[var(--asi-surface-muted)] shadow-[var(--asi-shadow-soft)]',
+                      'overflow-hidden rounded-3xl bg-(--asi-surface-muted) shadow-(--asi-shadow-soft)',
                       index > 0 && 'hidden lg:block'
                     )}
                     layout
                   >
                     {item.image ? (
-                      <div className="relative h-[15.5rem]">
+                      <div className="relative h-62">
                         <img
                           alt={item.imageAlt ?? item.title}
                           className="h-full w-full object-cover"
                           loading="lazy"
                           src={item.image}
                         />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(18,28,48,0.72)_100%)]" />
+                        <div className="institutional-home__carousel-image-overlay absolute inset-0" />
                         <div className="absolute inset-x-0 bottom-0 p-5">
                           <p className="text-xl font-semibold tracking-tight text-white">
                             {item.title}
@@ -538,13 +539,13 @@ export function InstitutionalHomePage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="flex h-full min-h-[15.5rem] flex-col justify-between bg-[linear-gradient(135deg,rgba(24,35,61,0.9)_0%,rgba(0,69,153,0.7)_100%)] p-6 text-white">
+                      <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
                         <Quote className="size-8 text-white/72" />
                         <div>
                           <p className="text-lg font-medium leading-8 text-white/92">
                             {item.description}
                           </p>
-                          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-white/62">
+                          <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
                             {item.meta}
                           </p>
                         </div>
@@ -563,8 +564,8 @@ export function InstitutionalHomePage() {
                   className={cn(
                     'h-2.5 rounded-full transition-all',
                     index === activeCarouselIndex
-                      ? 'w-8 bg-[var(--asi-primary)]'
-                      : 'w-2.5 bg-[var(--asi-outline)] hover:bg-[var(--asi-secondary)]/40'
+                      ? 'w-8 bg-(--asi-primary)'
+                      : 'w-2.5 bg-(--asi-outline) hover:bg-(--asi-secondary)/40'
                   )}
                   type="button"
                   onClick={() => goToCarouselSlide(index)}
@@ -576,7 +577,7 @@ export function InstitutionalHomePage() {
       </InstitutionalSection>
 
       <InstitutionalSection>
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] xl:items-start">
+        <div className="institutional-home__ecosystem-layout grid gap-8 xl:items-start">
           <div className="space-y-5">
             <InstitutionalLead
               content={{
@@ -588,8 +589,8 @@ export function InstitutionalHomePage() {
               }}
             />
 
-            <InstitutionalCard className="overflow-hidden border-white/70 bg-white/78 p-0 shadow-[0_24px_60px_rgba(9,22,47,0.12)] backdrop-blur-sm">
-              <div className="relative aspect-[16/10] min-h-[14rem] bg-[linear-gradient(180deg,#dfe8f7_0%,#edf2fb_100%)]">
+            <InstitutionalCard className="institutional-home__event-card overflow-hidden border-white/70 bg-white/78 p-0 backdrop-blur-sm">
+              <div className="institutional-home__event-shell relative min-h-56">
                 <video
                   autoPlay
                   aria-label="Video breve de un evento cristiano comunitario"
@@ -606,10 +607,10 @@ export function InstitutionalHomePage() {
                 >
                   <source src={christianEventVideoPath} type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,21,40,0.08)_0%,rgba(11,21,40,0.22)_100%)]" />
+                <div className="institutional-home__event-overlay absolute inset-0" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">
-                  <div className="max-w-[26rem] rounded-[1.15rem] border border-white/30 bg-[rgba(8,17,31,0.42)] px-4 py-3 backdrop-blur-md">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/74">
+                  <div className="institutional-home__event-caption max-w-104 border border-white/30 px-4 py-3 backdrop-blur-md">
+                    <p className="institutional-home__event-kicker text-xs font-semibold uppercase text-white/74">
                       Evento destacado
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/88">
@@ -623,18 +624,18 @@ export function InstitutionalHomePage() {
             </InstitutionalCard>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+          <div className="institutional-home__ecosystem-grid grid gap-4">
             <InstitutionalCard className="overflow-hidden p-0 md:row-span-2">
-              <div className="relative h-full min-h-[21rem]">
+              <div className="relative h-full min-h-84">
                 <img
                   alt={homeEcosystemCards[0].imageAlt}
                   className="h-full w-full object-cover"
                   loading="lazy"
                   src={homeEcosystemCards[0].image}
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(17,27,46,0.82)_100%)]" />
+                <div className="institutional-home__ecosystem-hero-overlay absolute inset-0" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
-                  <p className="text-[1.55rem] font-semibold leading-tight tracking-tight text-white">
+                  <p className="institutional-home__ecosystem-hero-title font-semibold leading-tight tracking-tight text-white">
                     {homeEcosystemCards[0].title}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-white/82">
@@ -650,16 +651,16 @@ export function InstitutionalHomePage() {
                 className="overflow-hidden p-0"
               >
                 {item.image ? (
-                  <div className="relative min-h-[10.35rem]">
+                  <div className="institutional-home__ecosystem-card-media relative">
                     <img
                       alt={item.imageAlt ?? item.title}
                       className="h-full w-full object-cover"
                       loading="lazy"
                       src={item.image}
                     />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(17,27,46,0.74)_100%)]" />
+                    <div className="institutional-home__ecosystem-card-overlay absolute inset-0" />
                     <div className="absolute inset-x-0 bottom-0 p-5">
-                      <p className="text-[1.18rem] font-semibold tracking-tight text-white">
+                      <p className="institutional-home__card-title font-semibold tracking-tight text-white">
                         {item.title}
                       </p>
                       <p className="mt-1 text-sm leading-6 text-white/82">
@@ -669,10 +670,10 @@ export function InstitutionalHomePage() {
                   </div>
                 ) : (
                   <div className="p-5">
-                    <div className="flex size-12 items-center justify-center rounded-[1rem] bg-[var(--asi-surface-muted)] text-[var(--asi-primary)]">
+                    <div className="flex size-12 items-center justify-center rounded-2xl bg-(--asi-surface-muted) text-(--asi-primary)">
                       <Quote className="size-5" />
                     </div>
-                    <p className="mt-4 text-[1.18rem] font-semibold tracking-tight text-[var(--asi-text)]">
+                    <p className="institutional-home__card-title mt-4 font-semibold tracking-tight text-(--asi-text)">
                       {item.title}
                     </p>
                     <p className="asi-copy mt-2">{item.description}</p>
@@ -685,20 +686,20 @@ export function InstitutionalHomePage() {
       </InstitutionalSection>
 
       <InstitutionalSection tone="muted">
-        <div className="grid gap-8 xl:grid-cols-[minmax(320px,0.72fr)_minmax(0,1.28fr)] xl:items-center">
+        <div className="institutional-home__device-layout grid gap-8 xl:items-center">
           <motion.div
-            className="mx-auto w-full max-w-[19rem]"
+            className="mx-auto w-full max-w-76"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           >
-            <div className="overflow-hidden rounded-[2rem] bg-[#0f1831] p-3 shadow-[0_26px_80px_rgba(0,47,110,0.18)]">
-              <div className="overflow-hidden rounded-[1.45rem] bg-[#08111f]">
+            <div className="institutional-home__device-shell overflow-hidden rounded-4xl p-3">
+              <div className="institutional-home__device-frame overflow-hidden">
                 {platformVideoReady ? (
                   <video
                     autoPlay
                     aria-hidden="true"
-                    className="pointer-events-none aspect-[9/16] w-full select-none object-cover"
+                    className="institutional-home__device-media pointer-events-none w-full select-none object-cover"
                     controlsList="nofullscreen nodownload noplaybackrate noremoteplayback"
                     disablePictureInPicture
                     loop
@@ -713,7 +714,7 @@ export function InstitutionalHomePage() {
                     <source src={platformDemoVideoPath} type="video/mp4" />
                   </video>
                 ) : (
-                  <div className="aspect-[9/16] bg-[linear-gradient(180deg,#17468f_0%,#0f2f67_100%)] px-5 py-6 text-white">
+                  <div className="institutional-home__device-fallback px-5 py-6 text-white">
                     <img
                       alt="ASI app mark"
                       className="w-16"
@@ -795,7 +796,7 @@ export function InstitutionalHomePage() {
                   src={item.image}
                 />
                 <div className="p-5">
-                  <p className="text-[1.12rem] font-semibold tracking-tight text-[var(--asi-text)]">
+                  <p className="institutional-home__program-title font-semibold tracking-tight text-(--asi-text)">
                     {item.title}
                   </p>
                   <p className="asi-copy mt-2">{item.description}</p>
@@ -822,7 +823,7 @@ export function InstitutionalHomePage() {
             <div className="flex items-center gap-2">
               <button
                 aria-label="Testimonio anterior"
-                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white text-[var(--asi-primary)] shadow-[var(--asi-shadow-soft)] transition hover:bg-[var(--asi-surface-raised)]"
+                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white text-(--asi-primary) shadow-(--asi-shadow-soft) transition hover:bg-(--asi-surface-raised)"
                 type="button"
                 onClick={() => stepTestimonialSlide('prev')}
               >
@@ -830,7 +831,7 @@ export function InstitutionalHomePage() {
               </button>
               <button
                 aria-label="Testimonio siguiente"
-                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white text-[var(--asi-primary)] shadow-[var(--asi-shadow-soft)] transition hover:bg-[var(--asi-surface-raised)]"
+                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white text-(--asi-primary) shadow-(--asi-shadow-soft) transition hover:bg-(--asi-surface-raised)"
                 type="button"
                 onClick={() => stepTestimonialSlide('next')}
               >
@@ -866,7 +867,7 @@ export function InstitutionalHomePage() {
                 <motion.article
                   key={item.title}
                   className={cn(
-                    'rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(22,35,60,0.94)_0%,rgba(0,47,110,0.92)_100%)] p-6 text-white shadow-[0_18px_44px_rgba(0,47,110,0.14)]',
+                    'institutional-home__testimonial-card rounded-3xl p-6 text-white',
                     index > 0 && 'hidden lg:block'
                   )}
                   layout
@@ -878,7 +879,7 @@ export function InstitutionalHomePage() {
                   <p className="mt-4 text-sm leading-6 text-white/74">
                     {item.description}
                   </p>
-                  <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-white/58">
+                  <p className="institutional-home__eyebrow-meta mt-6 text-xs font-semibold uppercase text-white/58">
                     {item.meta}
                   </p>
                 </motion.article>
@@ -894,8 +895,8 @@ export function InstitutionalHomePage() {
                 className={cn(
                   'h-2.5 rounded-full transition-all',
                   index === activeTestimonialIndex
-                    ? 'w-8 bg-[var(--asi-primary)]'
-                    : 'w-2.5 bg-[var(--asi-outline)] hover:bg-[var(--asi-secondary)]/40'
+                    ? 'w-8 bg-(--asi-primary)'
+                    : 'w-2.5 bg-(--asi-outline) hover:bg-(--asi-secondary)/40'
                 )}
                 type="button"
                 onClick={() => goToTestimonialSlide(index)}
@@ -921,7 +922,7 @@ export function InstitutionalHomePage() {
       />
 
       <InstitutionalSection>
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center">
+        <div className="institutional-home__bridge-layout grid gap-6 lg:items-center">
           <div>
             <p className="asi-kicker">Puente digital</p>
             <h2 className="asi-heading-lg mt-4">
@@ -931,11 +932,11 @@ export function InstitutionalHomePage() {
           </div>
           <InstitutionalCard>
             <div className="flex items-start gap-4">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+              <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                 <ArrowRight className="size-5" />
               </div>
               <div>
-                <p className="text-lg font-semibold tracking-tight text-[var(--asi-text)]">
+                <p className="text-lg font-semibold tracking-tight text-(--asi-text)">
                   Abrir plataforma ASI
                 </p>
                 <p className="asi-copy mt-2">
@@ -944,7 +945,7 @@ export function InstitutionalHomePage() {
                   transición clara y profesional.
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--asi-primary)] transition hover:gap-3"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-(--asi-primary) transition hover:gap-3"
                   to={surfacePaths.public.home}
                 >
                   Ir a /platform

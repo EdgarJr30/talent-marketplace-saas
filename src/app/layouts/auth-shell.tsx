@@ -15,10 +15,10 @@ export function AuthShell() {
 
   return (
     <div className="tm-shell">
-      <header className="border-b bg-[color:var(--app-surface-elevated)] backdrop-blur-xl">
+      <header className="border-b bg-(--app-surface-elevated) backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <button
-            className="rounded-[22px] border bg-[var(--app-surface)] px-3 py-2 shadow-sm transition hover:border-primary-200"
+            className="rounded-[22px] border bg-(--app-surface) px-3 py-2 shadow-sm transition hover:border-primary-200"
             type="button"
             onClick={() => void navigate(surfacePaths.public.home)}
           >

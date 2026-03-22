@@ -24,7 +24,7 @@ export function AdminShell({ fallbackContent }: { fallbackContent?: ReactNode })
         <AppSidebarNav
           activeHref={location.pathname}
           brand="ASI admin"
-          brandMark={<BrandMark panelClassName="bg-[var(--app-text)]" />}
+          brandMark={<BrandMark panelClassName="bg-(--app-text)" />}
           description="Zona restringida para operaciones, aprobaciones, moderación y seguimiento técnico."
           footer={
             <Button className="w-full" variant="outline" onClick={() => void navigate(surfacePaths.public.home)}>
@@ -40,13 +40,13 @@ export function AdminShell({ fallbackContent }: { fallbackContent?: ReactNode })
           <header className="tm-shell-panel sticky top-4 z-20 rounded-[24px]">
             <div className="flex flex-col gap-4 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--app-text-subtle)">
                   Restricted surface
                 </p>
-                <p className="text-lg font-semibold tracking-tight text-[var(--app-text)]">
+                <p className="text-lg font-semibold tracking-tight text-(--app-text)">
                   {currentItem?.title ?? 'Admin console'}
                 </p>
-                <p className="text-sm text-[var(--app-text-muted)]">
+                <p className="text-sm text-(--app-text-muted)">
                   {currentItem?.description ?? 'Herramientas administrativas separadas del producto que ve el cliente final.'}
                 </p>
               </div>

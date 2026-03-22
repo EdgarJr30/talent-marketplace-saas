@@ -42,7 +42,7 @@ export function AdminConsolePage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
+      <Card className="overflow-hidden bg-(--app-surface-muted)">
         <CardHeader className="space-y-3">
           <Badge variant="soft">Admin only</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">

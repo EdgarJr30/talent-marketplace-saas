@@ -7,7 +7,7 @@ type BadgeVariant = 'default' | 'soft' | 'outline'
 const badgeVariants: Record<BadgeVariant, string> = {
   default: 'border border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-500/20 dark:bg-primary-500/12 dark:text-primary-200',
   soft: 'border border-accent-200 bg-accent-50 text-accent-600 dark:border-accent-500/20 dark:bg-accent-500/12 dark:text-accent-200',
-  outline: 'border bg-[var(--app-surface)] text-[var(--app-text-muted)]'
+  outline: 'border bg-(--app-surface) text-(--app-text-muted)'
 }
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

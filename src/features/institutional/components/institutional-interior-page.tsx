@@ -23,12 +23,12 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
 
               return (
                 <InstitutionalCard key={item.title} className="bg-white/75 backdrop-blur-md">
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                     <Icon className="size-5" />
                   </div>
-                  <p className="mt-4 text-lg font-semibold tracking-tight text-[var(--asi-text)]">{item.title}</p>
+                  <p className="mt-4 text-lg font-semibold tracking-tight text-(--asi-text)">{item.title}</p>
                   <p className="asi-copy mt-2">{item.description}</p>
-                  {item.meta ? <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">{item.meta}</p> : null}
+                  {item.meta ? <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-(--asi-secondary)">{item.meta}</p> : null}
                 </InstitutionalCard>
               )
             })}
@@ -46,13 +46,13 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                   <div className="grid gap-4 sm:grid-cols-3">
                     {section.items.map((item) => (
                       <InstitutionalCard key={item.label} className={section.tone === 'brand' ? 'bg-white/10 text-white backdrop-blur-md' : undefined}>
-                        <p className={section.tone === 'brand' ? 'text-4xl font-semibold tracking-tight text-white' : 'text-4xl font-semibold tracking-tight text-[var(--asi-primary)]'}>
+                        <p className={section.tone === 'brand' ? 'text-4xl font-semibold tracking-tight text-white' : 'text-4xl font-semibold tracking-tight text-(--asi-primary)'}>
                           {item.value}
                         </p>
-                        <p className={section.tone === 'brand' ? 'mt-3 text-base font-semibold text-white' : 'mt-3 text-base font-semibold text-[var(--asi-text)]'}>
+                        <p className={section.tone === 'brand' ? 'mt-3 text-base font-semibold text-white' : 'mt-3 text-base font-semibold text-(--asi-text)'}>
                           {item.label}
                         </p>
-                        <p className={section.tone === 'brand' ? 'mt-2 text-sm leading-6 text-white/78' : 'mt-2 text-sm leading-6 text-[var(--asi-text-muted)]'}>
+                        <p className={section.tone === 'brand' ? 'mt-2 text-sm leading-6 text-white/78' : 'mt-2 text-sm leading-6 text-(--asi-text-muted)'}>
                           {item.description}
                         </p>
                       </InstitutionalCard>
@@ -89,13 +89,13 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                             />
                           ) : null}
                           {Icon ? (
-                            <div className="flex size-11 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+                            <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                               <Icon className="size-5" />
                             </div>
                           ) : null}
-                          <p className="mt-4 text-lg font-semibold tracking-tight text-[var(--asi-text)]">{item.title}</p>
+                          <p className="mt-4 text-lg font-semibold tracking-tight text-(--asi-text)">{item.title}</p>
                           <p className="asi-copy mt-2">{item.description}</p>
-                          {item.meta ? <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">{item.meta}</p> : null}
+                          {item.meta ? <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-(--asi-secondary)">{item.meta}</p> : null}
                         </InstitutionalCard>
                       )
                     })}
@@ -111,11 +111,11 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                     <InstitutionalLead content={section.lead} invert={section.tone === 'brand'} />
                     <div className="mt-6 space-y-4">
                       {section.highlights.map((item) => (
-                        <div key={item.title} className={section.tone === 'brand' ? 'rounded-[1.25rem] bg-white/10 px-5 py-4 backdrop-blur-md' : 'rounded-[1.25rem] bg-[var(--asi-surface-panel)] px-5 py-4'}>
-                          <p className={section.tone === 'brand' ? 'text-sm font-semibold uppercase tracking-[0.14em] text-white/72' : 'text-sm font-semibold uppercase tracking-[0.14em] text-[var(--asi-secondary)]'}>
+                        <div key={item.title} className={section.tone === 'brand' ? 'rounded-[1.25rem] bg-white/10 px-5 py-4 backdrop-blur-md' : 'rounded-[1.25rem] bg-(--asi-surface-panel) px-5 py-4'}>
+                          <p className={section.tone === 'brand' ? 'text-sm font-semibold uppercase tracking-[0.14em] text-white/72' : 'text-sm font-semibold uppercase tracking-[0.14em] text-(--asi-secondary)'}>
                             {item.title}
                           </p>
-                          <p className={section.tone === 'brand' ? 'mt-2 text-sm leading-6 text-white/82' : 'mt-2 text-sm leading-6 text-[var(--asi-text-muted)]'}>
+                          <p className={section.tone === 'brand' ? 'mt-2 text-sm leading-6 text-white/82' : 'mt-2 text-sm leading-6 text-(--asi-text-muted)'}>
                             {item.description}
                           </p>
                         </div>
@@ -126,17 +126,17 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                   <div className="grid gap-5">
                     <img
                       alt={section.imageAlt}
-                      className="h-[22rem] w-full rounded-[1.75rem] object-cover shadow-[var(--asi-shadow-soft)]"
+                      className="h-[22rem] w-full rounded-[1.75rem] object-cover shadow-(--asi-shadow-soft)"
                       loading="lazy"
                       src={section.image}
                     />
                     <InstitutionalCard className={section.tone === 'brand' ? 'bg-white/10 text-white backdrop-blur-md' : undefined}>
-                      <p className={section.tone === 'brand' ? 'text-lg font-semibold tracking-tight text-white' : 'text-lg font-semibold tracking-tight text-[var(--asi-text)]'}>
+                      <p className={section.tone === 'brand' ? 'text-lg font-semibold tracking-tight text-white' : 'text-lg font-semibold tracking-tight text-(--asi-text)'}>
                         {section.bodyTitle}
                       </p>
                       <div className="mt-3 space-y-3">
                         {section.bodyCopy.map((paragraph) => (
-                          <p key={paragraph} className={section.tone === 'brand' ? 'text-sm leading-7 text-white/82' : 'text-sm leading-7 text-[var(--asi-text-muted)]'}>
+                          <p key={paragraph} className={section.tone === 'brand' ? 'text-sm leading-7 text-white/82' : 'text-sm leading-7 text-(--asi-text-muted)'}>
                             {paragraph}
                           </p>
                         ))}
@@ -156,12 +156,12 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                       <InstitutionalCard key={`${item.title}-${item.meta ?? ''}`} className="bg-white/82">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div>
-                            <p className="text-lg font-semibold tracking-tight text-[var(--asi-text)]">{item.title}</p>
+                            <p className="text-lg font-semibold tracking-tight text-(--asi-text)">{item.title}</p>
                             <p className="asi-copy mt-2">{item.description}</p>
                           </div>
                           {item.tag ? <span className="asi-pill">{item.tag}</span> : null}
                         </div>
-                        {item.meta ? <p className="mt-4 text-sm font-medium text-[var(--asi-secondary)]">{item.meta}</p> : null}
+                        {item.meta ? <p className="mt-4 text-sm font-medium text-(--asi-secondary)">{item.meta}</p> : null}
                       </InstitutionalCard>
                     ))}
                   </div>
@@ -177,8 +177,8 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                     {section.items.map((item) => (
                       <InstitutionalCard key={item.name}>
                         <img alt={item.name} className="h-64 w-full rounded-[1rem] object-cover" loading="lazy" src={item.image} />
-                        <p className="mt-4 text-lg font-semibold tracking-tight text-[var(--asi-text)]">{item.name}</p>
-                        <p className="mt-1 text-sm font-semibold uppercase tracking-[0.16em] text-[var(--asi-secondary)]">{item.role}</p>
+                        <p className="mt-4 text-lg font-semibold tracking-tight text-(--asi-text)">{item.name}</p>
+                        <p className="mt-1 text-sm font-semibold uppercase tracking-[0.16em] text-(--asi-secondary)">{item.role}</p>
                         <p className="asi-copy mt-3">{item.description}</p>
                       </InstitutionalCard>
                     ))}

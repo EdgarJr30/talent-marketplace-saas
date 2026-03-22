@@ -256,7 +256,7 @@ export function PipelineBoardPage() {
                   Exportar CSV
                 </Button>
               ) : (
-                <div className="rounded-2xl border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm text-[var(--app-text-muted)]">
+                <div className="rounded-2xl border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm text-(--app-text-muted)">
                   `application:export` habilita export.
                 </div>
               )}
@@ -286,28 +286,28 @@ export function PipelineBoardPage() {
                         className={`grid w-full gap-2 rounded-[24px] border px-4 py-4 text-left transition ${
                           selectedApplicationId === application.id
                             ? 'border-primary-300 bg-primary-50/70 shadow-[0_16px_32px_rgba(79,110,216,0.08)] hover:border-primary-400 hover:bg-primary-50/90 dark:border-primary-500/30 dark:bg-primary-500/12 dark:hover:border-primary-500/40 dark:hover:bg-primary-500/16'
-                            : 'border-[var(--app-border)] bg-[var(--app-surface-muted)] hover:border-primary-300 hover:bg-[var(--app-surface-elevated)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:hover:border-primary-500/30'
+                            : 'border-(--app-border) bg-(--app-surface-muted) hover:border-primary-300 hover:bg-(--app-surface-elevated) hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:hover:border-primary-500/30'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <p className="text-sm font-semibold text-[var(--app-text)]">
+                            <p className="text-sm font-semibold text-(--app-text)">
                               {application.candidate_display_name_snapshot}
                             </p>
-                            <p className="mt-1 text-sm text-[var(--app-text-muted)]">
+                            <p className="mt-1 text-sm text-(--app-text-muted)">
                               {application.job_posting?.title || 'Vacante'}
                             </p>
                           </div>
                           <Badge variant="outline">{application.status_public}</Badge>
                         </div>
-                        <div className="flex flex-wrap gap-2 text-xs text-[var(--app-text-subtle)]">
+                        <div className="flex flex-wrap gap-2 text-xs text-(--app-text-subtle)">
                           <span>{application.application_notes?.length ?? 0} notas</span>
                           <span>{application.application_ratings?.length ?? 0} ratings</span>
                         </div>
                       </button>
                     ))
                   ) : (
-                    <div className="rounded-[24px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+                    <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
                       Sin applicants en este stage.
                     </div>
                   )}
@@ -325,20 +325,20 @@ export function PipelineBoardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {!visibleSelectedApplication ? (
-              <div className="rounded-[24px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-8 text-sm text-[var(--app-text-muted)]">
+              <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-8 text-sm text-(--app-text-muted)">
                 Elige un applicant del tablero para operar el pipeline.
               </div>
             ) : (
               <>
-                <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
-                  <p className="text-lg font-semibold text-[var(--app-text)]">
+                <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
+                  <p className="text-lg font-semibold text-(--app-text)">
                     {visibleSelectedApplication.candidate_display_name_snapshot}
                   </p>
-                  <p className="mt-1 text-sm text-[var(--app-text-muted)]">{visibleSelectedApplication.job_posting?.title}</p>
+                  <p className="mt-1 text-sm text-(--app-text-muted)">{visibleSelectedApplication.job_posting?.title}</p>
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Mover stage</p>
+                <div className="grid gap-3 rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
+                  <p className="text-sm font-semibold text-(--app-text)">Mover stage</p>
                   <Select
                     value={visibleSelectedApplication.current_stage_id ?? ''}
                     onChange={(event) => {
@@ -367,16 +367,16 @@ export function PipelineBoardPage() {
                   />
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Agregar nota</p>
+                <div className="grid gap-3 rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
+                  <p className="text-sm font-semibold text-(--app-text)">Agregar nota</p>
                   <Textarea rows={4} value={newNote} onChange={(event) => setNewNote(event.target.value)} placeholder="Contexto, decision o siguiente paso" />
                   <Button onClick={() => noteMutation.mutate()} disabled={noteMutation.isPending || newNote.trim().length === 0}>
                     {noteMutation.isPending ? 'Guardando nota...' : 'Guardar nota'}
                   </Button>
                 </div>
 
-                <div className="grid gap-3 rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Rating</p>
+                <div className="grid gap-3 rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
+                  <p className="text-sm font-semibold text-(--app-text)">Rating</p>
                   <Select value={score} onChange={(event) => setScore(event.target.value)}>
                     <option value="1">1/5</option>
                     <option value="2">2/5</option>
@@ -390,29 +390,29 @@ export function PipelineBoardPage() {
                 </div>
 
                 <div className="grid gap-3">
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Historial</p>
+                  <p className="text-sm font-semibold text-(--app-text)">Historial</p>
                   {activityQuery.isLoading ? (
-                    <p className="text-sm text-[var(--app-text-muted)]">Cargando actividad...</p>
+                    <p className="text-sm text-(--app-text-muted)">Cargando actividad...</p>
                   ) : (
                     <>
                       {activityQuery.data?.history.map((entry) => (
-                        <div key={entry.id} className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm">
-                          <p className="font-semibold text-[var(--app-text)]">
+                        <div key={entry.id} className="rounded-2xl border border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm">
+                          <p className="font-semibold text-(--app-text)">
                             {entry.from_stage?.name || 'Inicio'} → {entry.to_stage?.name}
                           </p>
-                          <p className="mt-1 text-[var(--app-text-muted)]">{entry.note || 'Sin nota adicional'}</p>
+                          <p className="mt-1 text-(--app-text-muted)">{entry.note || 'Sin nota adicional'}</p>
                         </div>
                       ))}
                       {activityQuery.data?.notes.map((entry) => (
-                        <div key={entry.id} className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm">
-                          <p className="font-semibold text-[var(--app-text)]">Nota</p>
-                          <p className="mt-1 text-[var(--app-text-muted)]">{entry.body}</p>
+                        <div key={entry.id} className="rounded-2xl border border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm">
+                          <p className="font-semibold text-(--app-text)">Nota</p>
+                          <p className="mt-1 text-(--app-text-muted)">{entry.body}</p>
                         </div>
                       ))}
                       {activityQuery.data?.ratings.map((entry) => (
-                        <div key={entry.id} className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm">
-                          <p className="font-semibold text-[var(--app-text)]">Rating</p>
-                          <p className="mt-1 text-[var(--app-text-muted)]">{entry.score}/5</p>
+                        <div key={entry.id} className="rounded-2xl border border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm">
+                          <p className="font-semibold text-(--app-text)">Rating</p>
+                          <p className="mt-1 text-(--app-text-muted)">{entry.score}/5</p>
                         </div>
                       ))}
                     </>

@@ -259,7 +259,7 @@ function JobEditor({
             </label>
           </div>
 
-          <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
+          <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
             <label className="flex items-center gap-3 text-sm">
               <input
                 type="checkbox"
@@ -292,11 +292,11 @@ function JobEditor({
             <Input type="date" {...form.register('expiresAt')} />
           </label>
 
-          <div className="space-y-3 rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
+          <div className="space-y-3 rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-[var(--app-text)]">Preguntas screening</p>
-                <p className="text-sm text-[var(--app-text-muted)]">
+                <p className="text-sm font-semibold text-(--app-text)">Preguntas screening</p>
+                <p className="text-sm text-(--app-text-muted)">
                   Las dejamos preparadas ahora para usarlas en la fase de applications.
                 </p>
               </div>
@@ -306,7 +306,7 @@ function JobEditor({
             </div>
 
             {questions.map((question) => (
-              <div key={question.id} className="grid gap-3 rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-elevated)] p-3">
+              <div key={question.id} className="grid gap-3 rounded-2xl border border-(--app-border) bg-(--app-surface-elevated) p-3">
                 <label className="grid gap-2 text-sm">
                   <span>Pregunta</span>
                   <Input
@@ -339,7 +339,7 @@ function JobEditor({
                       <option value="single_select">Seleccion unica</option>
                     </Select>
                   </label>
-                  <label className="flex items-center gap-3 rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-elevated)] px-4 py-3 text-sm">
+                  <label className="flex items-center gap-3 rounded-2xl border border-(--app-border) bg-(--app-surface-elevated) px-4 py-3 text-sm">
                     <input
                       type="checkbox"
                       checked={question.isRequired}
@@ -602,7 +602,7 @@ export function JobsOverviewPage() {
         <StatCard label="Tus vacantes" value={tenantJobsQuery.data?.length ?? 0} helper="Borradores, publicadas o cerradas para tu empresa." />
         <StatCard label="Guardadas" value={publicJobsQuery.data?.savedJobIds.length ?? 0} helper="Vacantes guardadas para volver más tarde." />
         <StatCard
-          className="bg-[var(--app-surface-muted)]"
+          className="bg-(--app-surface-muted)"
           label="Publicacion"
           value="Estado real"
           helper="Controla cuándo una vacante sale a público y cuándo sigue en preparación."
@@ -634,11 +634,11 @@ export function JobsOverviewPage() {
             <CardContent className="space-y-3">
               {tenantJobsQuery.data?.length ? (
                 tenantJobsQuery.data.map((job) => (
-                  <div key={job.id} className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
+                  <div key={job.id} className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-semibold text-[var(--app-text)]">{job.title}</p>
-                        <p className="mt-1 text-sm text-[var(--app-text-muted)]">{job.summary}</p>
+                        <p className="text-sm font-semibold text-(--app-text)">{job.title}</p>
+                        <p className="mt-1 text-sm text-(--app-text-muted)">{job.summary}</p>
                       </div>
                       <JobStatusBadge status={job.status} />
                     </div>
@@ -667,7 +667,7 @@ export function JobsOverviewPage() {
                   </div>
                 ))
               ) : (
-                <div className="rounded-[24px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+                <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
                   Todavia no hay vacantes en este espacio.
                 </div>
               )}
@@ -696,7 +696,7 @@ export function JobsOverviewPage() {
 
             <div className="space-y-3">
               {publicJobsQuery.isLoading ? (
-                <p className="text-sm text-[var(--app-text-muted)]">Cargando vacantes publicas...</p>
+                <p className="text-sm text-(--app-text-muted)">Cargando vacantes publicas...</p>
               ) : publicJobsQuery.error ? (
                 <p className="text-sm text-rose-600 dark:text-rose-300">{toErrorMessage(publicJobsQuery.error)}</p>
               ) : publicJobsQuery.data?.jobs.length ? (
@@ -704,17 +704,17 @@ export function JobsOverviewPage() {
                   const isSaved = publicJobsQuery.data.savedJobIds.includes(job.id)
 
                   return (
-                    <div key={job.id} className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
+                    <div key={job.id} className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-lg font-semibold text-[var(--app-text)]">{job.title}</p>
-                          <p className="mt-1 text-sm text-[var(--app-text-muted)]">
+                          <p className="text-lg font-semibold text-(--app-text)">{job.title}</p>
+                          <p className="mt-1 text-sm text-(--app-text-muted)">
                             {job.company_profile?.display_name || 'Company'} · {job.workplace_type} · {job.employment_type}
                           </p>
                         </div>
                         <JobStatusBadge status={job.status} />
                       </div>
-                      <p className="mt-3 text-sm leading-6 text-[var(--app-text-muted)]">{job.summary}</p>
+                      <p className="mt-3 text-sm leading-6 text-(--app-text-muted)">{job.summary}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         <Badge variant="outline">{formatCompensation(job)}</Badge>
                         {job.country_code ? <Badge variant="outline">{job.country_code}</Badge> : null}
@@ -738,7 +738,7 @@ export function JobsOverviewPage() {
                   )
                 })
               ) : (
-                <div className="rounded-[24px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+                <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
                   No hay vacantes publicadas que coincidan con estos filtros.
                 </div>
               )}
@@ -752,20 +752,20 @@ export function JobsOverviewPage() {
             <CardDescription>Todo lo necesario para mostrar vacantes con claridad y ayudar al talento a volver cuando quiera.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-4 text-sm text-[var(--app-text-muted)]">
-              <p className="font-semibold text-[var(--app-text)]">Detalle listo para compartir</p>
+            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
+              <p className="font-semibold text-(--app-text)">Detalle listo para compartir</p>
               <p className="mt-1">Cada vacante publicada tiene su propia página pública lista para enviar y promocionar.</p>
             </div>
-            <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-4 text-sm text-[var(--app-text-muted)]">
-              <p className="font-semibold text-[var(--app-text)]">Vacantes guardadas</p>
+            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
+              <p className="font-semibold text-(--app-text)">Vacantes guardadas</p>
               <p className="mt-1">Los candidatos ya pueden guardar vacantes para volver más tarde cuando estén listos.</p>
             </div>
-            <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-4 text-sm text-[var(--app-text-muted)]">
-              <p className="font-semibold text-[var(--app-text)]">Preparación de filtros</p>
+            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
+              <p className="font-semibold text-(--app-text)">Preparación de filtros</p>
               <p className="mt-1">Las preguntas clave quedan listas para usarse cuando quieras profundizar el proceso.</p>
             </div>
-            <div className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-4 text-sm text-[var(--app-text-muted)]">
-              <p className="font-semibold text-[var(--app-text)]">Alertas de vacantes</p>
+            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
+              <p className="font-semibold text-(--app-text)">Alertas de vacantes</p>
               <p className="mt-1">Los candidatos pueden guardar criterios básicos y activarlos o pausarlos desde esta misma vista.</p>
             </div>
           </CardContent>
@@ -781,7 +781,7 @@ export function JobsOverviewPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {!candidateProfileQuery.data?.profile ? (
-            <div className="rounded-[24px] border border-dashed border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-6 text-sm text-[var(--app-text-muted)]">
+            <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
               Completa tu perfil para crear alertas y guardar búsquedas que quieras repetir más adelante.
             </div>
           ) : (
@@ -812,7 +812,7 @@ export function JobsOverviewPage() {
 
               <div className="space-y-3">
                 {jobAlertsQuery.isLoading ? (
-                  <p className="text-sm text-[var(--app-text-muted)]">Cargando alertas...</p>
+                  <p className="text-sm text-(--app-text-muted)">Cargando alertas...</p>
                 ) : jobAlertsQuery.error ? (
                   <p className="text-sm text-rose-600 dark:text-rose-300">{toErrorMessage(jobAlertsQuery.error)}</p>
                 ) : jobAlertsQuery.data?.length ? (
@@ -820,11 +820,11 @@ export function JobsOverviewPage() {
                     const criteria = (alert.criteria_json ?? {}) as Record<string, unknown>
 
                     return (
-                      <div key={alert.id} className="rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4">
+                      <div key={alert.id} className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div>
-                            <p className="text-sm font-semibold text-[var(--app-text)]">{alert.label}</p>
-                            <p className="mt-1 text-sm text-[var(--app-text-muted)]">
+                            <p className="text-sm font-semibold text-(--app-text)">{alert.label}</p>
+                            <p className="mt-1 text-sm text-(--app-text-muted)">
                               {alert.frequency} · {(criteria.query as string | null) || 'sin keyword'} ·{' '}
                               {(criteria.workplaceType as string | null) || 'cualquier modalidad'} ·{' '}
                               {(criteria.countryCode as string | null) || 'cualquier pais'}

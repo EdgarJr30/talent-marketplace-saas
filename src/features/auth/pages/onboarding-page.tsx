@@ -185,7 +185,7 @@ export function OnboardingPage() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">Tu perfil</Badge>
           <CardTitle>Cuéntanos lo esencial para empezar con buena presencia</CardTitle>

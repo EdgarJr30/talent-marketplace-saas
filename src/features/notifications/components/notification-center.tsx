@@ -104,7 +104,7 @@ export function NotificationCenter() {
 
   return (
     <section className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">{t('notifications.title')}</Badge>
           <CardTitle>{t('notifications.title')}</CardTitle>

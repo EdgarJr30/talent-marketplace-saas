@@ -404,14 +404,14 @@ function CandidateProfileEditor({
         />
         <StatCard label="CVs" value={resumes.length} helper={`Tus archivos listos para reutilizarlos, con límite de ${MAX_UPLOAD_SIZE_LABEL}.`} />
         <StatCard
-          className="bg-[var(--app-surface-muted)]"
+          className="bg-(--app-surface-muted)"
           helper={isVisibleToRecruiters ? 'Tu perfil puede aparecer para empresas que buscan talento.' : 'Tu perfil sigue privado por ahora.'}
           label="Visibilidad"
           value={isVisibleToRecruiters ? 'Activa' : 'Privada'}
         />
       </PageHeader>
 
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <CardTitle>Checklist viva del perfil</CardTitle>
           <CardDescription>
@@ -422,13 +422,13 @@ function CandidateProfileEditor({
           <div className={`rounded-2xl px-3 py-3 text-sm ${completionTone}`}>
             Perfil base profesional y metadatos de ubicación conectados a la cuenta.
           </div>
-          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
             CV privado, listo para volver a usar cuando aparezca la oportunidad correcta.
           </div>
-          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
             Experiencia, educación, skills, idiomas y links como bloques editables.
           </div>
-          <div className="rounded-2xl bg-[var(--app-surface)] px-3 py-3 text-sm text-[var(--app-text-muted)]">
+          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
             Activa tu visibilidad si quieres que empresas te encuentren sin haber aplicado.
           </div>
         </CardContent>
@@ -450,7 +450,7 @@ function CandidateProfileEditor({
             </Badge>
           </div>
           <div className="mt-4 rounded-[24px] border px-4 py-4">
-            <label className="flex items-start gap-3 text-sm text-[var(--app-text-muted)]">
+            <label className="flex items-start gap-3 text-sm text-(--app-text-muted)">
               <input
                 type="checkbox"
                 checked={isVisibleToRecruiters}
@@ -463,7 +463,7 @@ function CandidateProfileEditor({
               />
               <span>
                 Permitir que empresas autorizadas encuentren este perfil en el directorio de talento.
-                <span className="mt-1 block text-xs text-[var(--app-text-subtle)]">
+                <span className="mt-1 block text-xs text-(--app-text-subtle)">
                   Esto no afecta tu capacidad de aplicar a vacantes si prefieres mantener el perfil oculto.
                 </span>
               </span>

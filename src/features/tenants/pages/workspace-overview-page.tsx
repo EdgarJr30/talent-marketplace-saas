@@ -29,9 +29,9 @@ import { UploadConstraintError } from '@/lib/uploads/media'
 
 const WORKSPACE_QUERY_KEY = ['workspace', 'primary'] as const
 const fieldLabelClassName = 'grid gap-2.5 text-sm'
-const fieldLabelTextClassName = 'text-[0.82rem] font-medium tracking-[0.01em] text-[var(--app-text-muted)]'
+const fieldLabelTextClassName = 'text-[0.82rem] font-medium tracking-[0.01em] text-(--app-text-muted)'
 const mutedPanelClassName =
-  'rounded-[24px] border border-[var(--app-border)] bg-[var(--app-surface-muted)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
+  'rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
 
 function createEditorKey(bundle: WorkspaceBundle) {
   return [
@@ -256,7 +256,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
         <StatCard label="Estado" value={bundle.tenant.status} helper="Cómo se encuentra hoy tu espacio de empresa." />
         <StatCard label="Miembros" value={activeMembershipCount} helper="Personas activas dentro del espacio de trabajo." />
         <StatCard
-          className="bg-[var(--app-surface-muted)]"
+          className="bg-(--app-surface-muted)"
           helper="Invitaciones y accesos pendientes para seguir creciendo el equipo."
           label="Pendientes"
           value={invitedMembershipCount > 0 ? `${invitedMembershipCount} invitaciones` : 'Listo'}
@@ -274,8 +274,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
           <CardContent className="grid gap-4">
             <div className={mutedPanelClassName}>
               <div className="mb-4 space-y-1">
-                <p className="text-sm font-semibold text-[var(--app-text)]">Identidad principal</p>
-                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                <p className="text-sm font-semibold text-(--app-text)">Identidad principal</p>
+                <p className="text-sm leading-6 text-(--app-text-muted)">
                   Define cómo tu empresa se presenta dentro del workspace y en experiencias públicas.
                 </p>
               </div>
@@ -293,8 +293,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
 
             <div className={mutedPanelClassName}>
               <div className="mb-4 space-y-1">
-                <p className="text-sm font-semibold text-[var(--app-text)]">Canales de contacto</p>
-                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                <p className="text-sm font-semibold text-(--app-text)">Canales de contacto</p>
+                <p className="text-sm leading-6 text-(--app-text-muted)">
                   Mantén claros los puntos de contacto que usarán candidatos y colaboradores.
                 </p>
               </div>
@@ -312,8 +312,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
 
             <div className={mutedPanelClassName}>
               <div className="mb-4 space-y-1">
-                <p className="text-sm font-semibold text-[var(--app-text)]">Contexto empresarial</p>
-                <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                <p className="text-sm font-semibold text-(--app-text)">Contexto empresarial</p>
+                <p className="text-sm leading-6 text-(--app-text-muted)">
                   Ayuda al equipo y a los candidatos a comprender tu ubicación, industria y tamaño operativo.
                 </p>
               </div>
@@ -346,9 +346,9 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                   <option value="500+">500+</option>
                 </Select>
               </label>
-              <label className="flex items-start gap-3 rounded-[20px] border border-[var(--app-border)] bg-[var(--app-surface-elevated)] px-4 py-4 text-sm text-[var(--app-text)]">
+              <label className="flex items-start gap-3 rounded-[20px] border border-(--app-border) bg-(--app-surface-elevated) px-4 py-4 text-sm text-(--app-text)">
                 <input
-                  className="mt-1 h-4 w-4 rounded border-[var(--app-border)] bg-transparent text-primary-600"
+                  className="mt-1 h-4 w-4 rounded border-(--app-border) bg-transparent text-primary-600"
                   type="checkbox"
                   checked={isPublic}
                   onChange={(event) => setIsPublic(event.target.checked)}
@@ -371,8 +371,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             <div className={mutedPanelClassName}>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Logo de tu empresa</p>
-                  <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                  <p className="text-sm font-semibold text-(--app-text)">Logo de tu empresa</p>
+                  <p className="text-sm leading-6 text-(--app-text-muted)">
                     Acepta PNG, JPG, WEBP o SVG. Se comprime cuando aplica y no puede superar 5 MB.
                   </p>
                 </div>
@@ -412,8 +412,8 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             <div className={mutedPanelClassName}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Invitar miembro</p>
-                  <p className="text-sm leading-6 text-[var(--app-text-muted)]">
+                  <p className="text-sm font-semibold text-(--app-text)">Invitar miembro</p>
+                  <p className="text-sm leading-6 text-(--app-text-muted)">
                     El usuario debe haberse registrado antes como usuario normal en la plataforma.
                   </p>
                 </div>
@@ -459,10 +459,10 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                 <div key={membership.id} className={mutedPanelClassName}>
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold text-[var(--app-text)]">
+                      <p className="text-sm font-semibold text-(--app-text)">
                         {membership.user?.display_name || membership.user?.full_name || membership.user?.email || 'Miembro'}
                       </p>
-                      <p className="mt-1 text-sm text-[var(--app-text-muted)]">{membership.user?.email}</p>
+                      <p className="mt-1 text-sm text-(--app-text-muted)">{membership.user?.email}</p>
                     </div>
                     <Badge variant="outline">{membership.status}</Badge>
                   </div>
@@ -488,7 +488,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                         ))}
                       </Select>
                     </label>
-                    <div className="text-sm leading-6 text-[var(--app-text-muted)]">
+                    <div className="text-sm leading-6 text-(--app-text-muted)">
                       {membership.membership_roles?.flatMap((item) => (item.role?.name ? [item.role.name] : [])).join(', ') ||
                         'Sin rol activo'}
                     </div>

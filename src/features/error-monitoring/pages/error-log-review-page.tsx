@@ -107,7 +107,7 @@ export function ErrorLogReviewPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">Admin errors</Badge>
           <CardTitle>Bandeja administrativa de errores</CardTitle>

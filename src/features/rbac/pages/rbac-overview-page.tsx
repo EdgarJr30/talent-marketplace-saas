@@ -26,7 +26,7 @@ export function RbacOverviewPage() {
           {permissionCatalog.map((permission) => (
             <div
               key={permission}
-              className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm font-medium text-[var(--app-text)]"
+              className="rounded-2xl border border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm font-medium text-(--app-text)"
             >
               {permission}
             </div>

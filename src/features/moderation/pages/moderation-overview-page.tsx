@@ -80,7 +80,7 @@ export function ModerationOverviewPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
+      <Card className="overflow-hidden bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">Moderation ops</Badge>
           <CardTitle>Moderacion y trust operations</CardTitle>

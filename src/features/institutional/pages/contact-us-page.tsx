@@ -45,23 +45,23 @@ export function ContactUsPage() {
           </div>
 
           <InstitutionalCard className="bg-white/78 backdrop-blur-md">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">Escríbenos</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--asi-secondary)">Escríbenos</p>
             <div className="mt-5 space-y-4">
               <div className="flex items-start gap-3">
-                <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+                <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                   <Mail className="size-4" />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-[var(--asi-text)]">secretaria@asirdo.org</p>
+                  <p className="text-base font-semibold text-(--asi-text)">secretaria@asirdo.org</p>
                   <p className="asi-copy mt-1">Canal principal para orientación institucional y seguimiento.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+                <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                   <MapPin className="size-4" />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-[var(--asi-text)]">Santo Domingo, República Dominicana</p>
+                  <p className="text-base font-semibold text-(--asi-text)">Santo Domingo, República Dominicana</p>
                   <p className="asi-copy mt-1">Atención institucional, coordinación de membresía y acompañamiento de proyectos.</p>
                 </div>
               </div>
@@ -86,12 +86,12 @@ export function ContactUsPage() {
 
               return (
                 <InstitutionalCard key={item.title}>
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-[var(--asi-surface-raised)] text-[var(--asi-primary)]">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
                     <Icon className="size-5" />
                   </div>
-                  <p className="mt-4 text-lg font-semibold tracking-tight text-[var(--asi-text)]">{item.title}</p>
+                  <p className="mt-4 text-lg font-semibold tracking-tight text-(--asi-text)">{item.title}</p>
                   <p className="asi-copy mt-2">{item.description}</p>
-                  <p className="mt-4 text-sm font-medium text-[var(--asi-secondary)]">{item.meta}</p>
+                  <p className="mt-4 text-sm font-medium text-(--asi-secondary)">{item.meta}</p>
                 </InstitutionalCard>
               )
             })}

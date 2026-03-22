@@ -64,7 +64,7 @@ export function PublicShell() {
           'inset-x-0 top-0 z-40',
           isLanding
             ? 'absolute'
-            : 'sticky border-b bg-[color:var(--app-surface-elevated)]/95 shadow-[var(--app-shadow-card)] backdrop-blur-xl'
+            : 'sticky border-b bg-(--app-surface-elevated)/95 shadow-(--app-shadow-card) backdrop-blur-xl'
         )}
       >
         <div
@@ -77,17 +77,17 @@ export function PublicShell() {
             className={cn(
               'flex items-center justify-between gap-3 sm:gap-5',
               isLanding
-                ? 'rounded-[26px] border bg-[color:var(--app-surface-elevated)]/96 px-3 py-2.5 shadow-[var(--app-shadow-floating)] backdrop-blur-xl sm:rounded-[30px] sm:px-5 sm:py-3'
+                ? 'rounded-[26px] border bg-(--app-surface-elevated)/96 px-3 py-2.5 shadow-(--app-shadow-floating) backdrop-blur-xl sm:rounded-[30px] sm:px-5 sm:py-3'
                 : 'py-5'
             )}
           >
             <Link className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4 text-left" to={surfacePaths.public.home}>
-              <span className="shrink-0 rounded-[18px] border border-white/70 bg-white/92 px-2.5 py-2 shadow-[var(--app-shadow-card)] backdrop-blur sm:rounded-[22px] sm:px-3 sm:py-2 dark:border-white/10 dark:bg-[#0f1831]">
+              <span className="shrink-0 rounded-[18px] border border-white/70 bg-white/92 px-2.5 py-2 shadow-(--app-shadow-card) backdrop-blur sm:rounded-[22px] sm:px-3 sm:py-2 dark:border-white/10 dark:bg-[#0f1831]">
                 <BrandLockup className="w-[64px] sm:w-[88px]" surface="auto" />
               </span>
               <div className="hidden min-w-0 md:block lg:min-w-[23rem] xl:min-w-[27rem]">
-                <p className="text-sm font-semibold tracking-tight text-[var(--app-text)]">Plataforma ASI</p>
-                <p className="mt-0.5 whitespace-nowrap text-xs text-[var(--app-text-muted)]">
+                <p className="text-sm font-semibold tracking-tight text-(--app-text)">Plataforma ASI</p>
+                <p className="mt-0.5 whitespace-nowrap text-xs text-(--app-text-muted)">
                   Talento, vacantes y trabajo en equipo en una sola plataforma
                 </p>
               </div>
@@ -95,12 +95,12 @@ export function PublicShell() {
 
             <nav
               aria-label="Public"
-              className="hidden items-center gap-1 rounded-full border bg-[color:var(--app-surface)]/84 p-1 shadow-[var(--app-shadow-card)] backdrop-blur lg:flex"
+              className="hidden items-center gap-1 rounded-full border bg-(--app-surface)/84 p-1 shadow-(--app-shadow-card) backdrop-blur lg:flex"
             >
               {publicNavigation.map((item) => (
                 <Link
                   key={item.label}
-                  className="rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap text-[var(--app-text-muted)] transition hover:bg-[var(--app-canvas)] hover:text-[var(--app-text)]"
+                  className="rounded-full px-5 py-2 text-sm font-medium whitespace-nowrap text-(--app-text-muted) transition hover:bg-(--app-canvas) hover:text-(--app-text)"
                   to={item.to}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -141,12 +141,12 @@ export function PublicShell() {
         </div>
 
         {mobileMenuOpen ? (
-          <div className="fixed inset-0 z-50 bg-[color:var(--app-text)]/12 backdrop-blur-sm lg:hidden">
-            <div className="absolute inset-x-4 top-4 rounded-[28px] border bg-[var(--app-surface-elevated)] p-5 shadow-[var(--app-shadow-floating)]">
+          <div className="fixed inset-0 z-50 bg-(--app-text)/12 backdrop-blur-sm lg:hidden">
+            <div className="absolute inset-x-4 top-4 rounded-[28px] border bg-(--app-surface-elevated) p-5 shadow-(--app-shadow-floating)">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--app-text)]">Explora el producto</p>
-                  <p className="mt-1 text-sm text-[var(--app-text-muted)]">
+                  <p className="text-sm font-semibold text-(--app-text)">Explora el producto</p>
+                  <p className="mt-1 text-sm text-(--app-text-muted)">
                     Jobs publicos, pricing visible y acceso claro para candidatos y empresas.
                   </p>
                 </div>
@@ -164,12 +164,12 @@ export function PublicShell() {
                 {publicNavigation.map((item) => (
                   <Link
                     key={item.label}
-                    className="flex items-center justify-between rounded-[20px] border bg-[var(--app-surface)] px-4 py-3 text-sm font-semibold text-[var(--app-text)]"
+                    className="flex items-center justify-between rounded-[20px] border bg-(--app-surface) px-4 py-3 text-sm font-semibold text-(--app-text)"
                     to={item.to}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
-                    <span className="text-[var(--app-text-subtle)]">Abrir</span>
+                    <span className="text-(--app-text-subtle)">Abrir</span>
                   </Link>
                 ))}
               </div>

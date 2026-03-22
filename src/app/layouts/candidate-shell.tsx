@@ -64,13 +64,13 @@ export function CandidateShell({ fallbackContent }: { fallbackContent?: ReactNod
           <header className="tm-shell-panel sticky top-4 z-20 rounded-[24px]">
             <div className="flex flex-col gap-4 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--app-text-subtle)">
                   Tu cuenta
                 </p>
-                <p className="text-lg font-semibold tracking-tight text-[var(--app-text)]">
+                <p className="text-lg font-semibold tracking-tight text-(--app-text)">
                   {currentItem?.title ?? 'Tu espacio de oportunidades'}
                 </p>
-                <p className="text-sm text-[var(--app-text-muted)]">
+                <p className="text-sm text-(--app-text-muted)">
                   {currentItem?.description ?? 'Mantén tu perfil al día, aplica más rápido y revisa tu avance con calma.'}
                 </p>
               </div>

@@ -86,7 +86,7 @@ export function RecruiterReviewPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-[var(--app-surface-muted)]">
+      <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">Admin review</Badge>
           <CardTitle>Revision de solicitudes recruiter</CardTitle>

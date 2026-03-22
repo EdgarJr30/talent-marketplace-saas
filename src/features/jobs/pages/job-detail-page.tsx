@@ -89,7 +89,7 @@ export function JobDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
+      <Card className="overflow-hidden bg-(--app-surface-muted)">
         <CardHeader className="space-y-3">
           <Badge variant="soft">Public job detail</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">{job.title}</CardTitle>
@@ -99,7 +99,7 @@ export function JobDetailPage() {
         </CardHeader>
         <CardContent className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
-            <p className="text-base leading-7 text-[var(--app-text-muted)]">{job.summary}</p>
+            <p className="text-base leading-7 text-(--app-text-muted)">{job.summary}</p>
             <div className="flex flex-wrap gap-2">
               {job.country_code ? <Badge variant="outline">{job.country_code}</Badge> : null}
               {job.experience_level ? <Badge variant="outline">{job.experience_level}</Badge> : null}
@@ -107,8 +107,8 @@ export function JobDetailPage() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-[var(--app-border)] bg-[var(--app-surface-elevated)] p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--app-text-subtle)]">Acciones</p>
+          <div className="rounded-[28px] border border-(--app-border) bg-(--app-surface-elevated) p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--app-text-subtle)">Acciones</p>
             <div className="mt-4 flex flex-col gap-3">
               <Button disabled>Apply llega en la siguiente fase</Button>
               {session.isAuthenticated ? (
@@ -143,7 +143,7 @@ export function JobDetailPage() {
             <CardTitle>Descripcion completa</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="whitespace-pre-wrap text-sm leading-7 text-[var(--app-text-muted)]">{job.description}</div>
+            <div className="whitespace-pre-wrap text-sm leading-7 text-(--app-text-muted)">{job.description}</div>
           </CardContent>
         </Card>
 
@@ -152,8 +152,8 @@ export function JobDetailPage() {
             <CardHeader>
               <CardTitle>Company snapshot</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-[var(--app-text-muted)]">
-              <p className="font-semibold text-[var(--app-text)]">{job.company_profile?.display_name || 'Company'}</p>
+            <CardContent className="space-y-3 text-sm text-(--app-text-muted)">
+              <p className="font-semibold text-(--app-text)">{job.company_profile?.display_name || 'Company'}</p>
               {job.company_profile?.industry ? <p>{job.company_profile.industry}</p> : null}
               {job.company_profile?.description ? <p>{job.company_profile.description}</p> : null}
               {job.company_profile?.website_url ? (
@@ -172,15 +172,15 @@ export function JobDetailPage() {
             <CardContent className="space-y-3">
               {job.job_screening_questions?.length ? (
                 job.job_screening_questions.map((question) => (
-                  <div key={question.id} className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface-muted)] px-4 py-3 text-sm">
-                    <p className="font-semibold text-[var(--app-text)]">{question.question_text}</p>
-                    <p className="mt-1 text-[var(--app-text-muted)]">
+                  <div key={question.id} className="rounded-2xl border border-(--app-border) bg-(--app-surface-muted) px-4 py-3 text-sm">
+                    <p className="font-semibold text-(--app-text)">{question.question_text}</p>
+                    <p className="mt-1 text-(--app-text-muted)">
                       {question.answer_type} {question.is_required ? '· requerida' : '· opcional'}
                     </p>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-[var(--app-text-muted)]">Esta vacante no tiene screening configurado todavia.</p>
+                <p className="text-sm text-(--app-text-muted)">Esta vacante no tiene screening configurado todavia.</p>
               )}
             </CardContent>
           </Card>

@@ -424,7 +424,7 @@ const footerSignals = [
 function renderTierValue(value: boolean | string, highlighted: boolean) {
   if (typeof value === 'string') {
     return (
-      <span className={cn('text-sm font-semibold', highlighted ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]')}>
+      <span className={cn('text-sm font-semibold', highlighted ? 'text-primary-700 dark:text-primary-200' : 'text-(--app-text)')}>
         {value}
       </span>
     )
@@ -437,7 +437,7 @@ function renderTierValue(value: boolean | string, highlighted: boolean) {
     </>
   ) : (
     <>
-      <X className="mx-auto size-5 text-[var(--app-text-subtle)]" />
+      <X className="mx-auto size-5 text-(--app-text-subtle)" />
       <span className="sr-only">No incluido</span>
     </>
   )
@@ -472,7 +472,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="overflow-hidden bg-[var(--app-canvas)]">
+    <div className="overflow-hidden bg-(--app-canvas)">
       <section className="relative isolate overflow-hidden">
         <div
           aria-hidden="true"
@@ -485,7 +485,7 @@ export function HomePage() {
 
         <div className="mx-auto max-w-[98rem] px-4 pb-14 pt-36 sm:px-6 sm:pb-18 sm:pt-40 lg:px-8 lg:pb-18 lg:pt-40">
           <LandingReveal y={28}>
-            <div className="relative overflow-hidden rounded-[32px] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,250,255,0.82)_100%)] p-5 shadow-[var(--app-shadow-floating)] backdrop-blur-xl dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.9)_0%,rgba(9,17,39,0.88)_100%)] sm:rounded-[40px] sm:p-8 xl:p-9">
+            <div className="relative overflow-hidden rounded-[32px] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,250,255,0.82)_100%)] p-5 shadow-(--app-shadow-floating) backdrop-blur-xl dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.9)_0%,rgba(9,17,39,0.88)_100%)] sm:rounded-[40px] sm:p-8 xl:p-9">
             <div
               aria-hidden="true"
               className="absolute inset-x-0 top-0 h-36 opacity-80"
@@ -507,15 +507,15 @@ export function HomePage() {
             <div className="relative grid gap-9 sm:gap-10 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-center xl:gap-14">
               <div className="min-w-0 w-full lg:max-w-xl xl:max-w-2xl">
                 <Badge
-                  className="max-w-full whitespace-nowrap text-left bg-white/82 text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:border-white/12 dark:bg-white/10 dark:text-white"
+                  className="max-w-full whitespace-nowrap text-left bg-white/82 text-(--app-text) shadow-(--app-shadow-card) backdrop-blur-sm dark:border-white/12 dark:bg-white/10 dark:text-white"
                   variant="outline"
                 >
                   Hiring workspace para equipos de selección
                 </Badge>
-                <h1 className="mt-5 max-w-[11ch] text-[2.9rem] font-semibold tracking-tight text-[var(--app-text)] sm:text-[3.4rem] lg:text-[3.9rem] lg:leading-[1.02]">
+                <h1 className="mt-5 max-w-[11ch] text-[2.9rem] font-semibold tracking-tight text-(--app-text) sm:text-[3.4rem] lg:text-[3.9rem] lg:leading-[1.02]">
                   Vacantes, talento y hiring en un solo lugar.
                 </h1>
-                <p className="mt-5 max-w-[37rem] text-base leading-7 text-[var(--app-text-muted)] sm:text-lg">
+                <p className="mt-5 max-w-[37rem] text-base leading-7 text-(--app-text-muted) sm:text-lg">
                   Convierte vacantes, feedback y seguimiento dispersos en una experiencia que proyecta más orden, más
                   confianza y mejor colaboración al contratar.
                 </p>
@@ -532,7 +532,7 @@ export function HomePage() {
                     Explorar jobs
                   </Button>
                   <Button
-                    className="w-fit justify-start self-start rounded-full px-3 text-[var(--app-text)] hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]"
+                    className="w-fit justify-start self-start rounded-full px-3 text-(--app-text) hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]"
                     variant="ghost"
                     onClick={() => scrollToSection('pricing')}
                   >
@@ -548,16 +548,16 @@ export function HomePage() {
                     return (
                       <LandingInteractiveSurface
                         key={signal.title}
-                        className="rounded-[24px] border bg-white/78 p-4 shadow-[var(--app-shadow-card)] backdrop-blur-sm dark:bg-white/6"
+                        className="rounded-[24px] border bg-white/78 p-4 shadow-(--app-shadow-card) backdrop-blur-sm dark:bg-white/6"
                         delay={0.04}
                         hoverScale={1.02}
                         hoverShadow="0 24px 56px rgba(18, 31, 68, 0.12)"
                       >
-                        <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
+                        <div className="flex size-10 items-center justify-center rounded-2xl bg-(--app-info-surface)">
                           <Icon className="size-4 text-primary-700 dark:text-primary-200" />
                         </div>
-                        <p className="mt-3 text-sm font-semibold text-[var(--app-text)]">{signal.title}</p>
-                        <p className="mt-1 max-w-[24ch] text-sm leading-6 text-[var(--app-text-muted)]">{signal.description}</p>
+                        <p className="mt-3 text-sm font-semibold text-(--app-text)">{signal.title}</p>
+                        <p className="mt-1 max-w-[24ch] text-sm leading-6 text-(--app-text-muted)">{signal.description}</p>
                       </LandingInteractiveSurface>
                     )
                   })}
@@ -592,13 +592,13 @@ export function HomePage() {
                   transition={{ duration: 10.5, ease: 'easeInOut', repeat: Infinity, delay: 0.8 }}
                 />
 
-                <div className="min-w-0 rounded-[30px] border bg-[color:var(--app-surface-elevated)]/88 p-4 shadow-[var(--app-shadow-floating)] backdrop-blur-sm sm:p-5">
-                  <div className="flex items-center justify-between gap-4 rounded-[22px] border bg-[var(--app-surface)]/84 px-4 py-3 shadow-[var(--app-shadow-card)]">
+                <div className="min-w-0 rounded-[30px] border bg-(--app-surface-elevated)/88 p-4 shadow-(--app-shadow-floating) backdrop-blur-sm sm:p-5">
+                  <div className="flex items-center justify-between gap-4 rounded-[22px] border bg-(--app-surface)/84 px-4 py-3 shadow-(--app-shadow-card)">
                     <div>
-                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[var(--app-text-subtle)]">
+                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-(--app-text-subtle)">
                         Vista del producto
                       </p>
-                      <p className="mt-1 text-base font-semibold text-[var(--app-text)]">Más visual, más clara, más fácil de seguir</p>
+                      <p className="mt-1 text-base font-semibold text-(--app-text)">Más visual, más clara, más fácil de seguir</p>
                     </div>
                     <div className="hidden items-center gap-2 sm:flex">
                       <span className="size-2 rounded-full bg-primary-300" />
@@ -617,7 +617,7 @@ export function HomePage() {
 
                     <motion.div className="absolute left-1/2 top-3 z-20 hidden -translate-x-1/2 sm:block">
                       <motion.div
-                        className="rounded-full border bg-white/92 px-4 py-2 text-xs font-semibold text-[var(--app-text)] shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/92"
+                        className="rounded-full border bg-white/92 px-4 py-2 text-xs font-semibold text-(--app-text) shadow-(--app-shadow-card) backdrop-blur dark:bg-(--app-surface)/92"
                         animate={
                           shouldReduceMotion
                             ? undefined
@@ -663,7 +663,7 @@ export function HomePage() {
                           {column.items.map((item) => (
                             <motion.div
                               key={item.src}
-                              className={cn('relative overflow-hidden rounded-[24px] shadow-[var(--app-shadow-floating)]', item.className)}
+                              className={cn('relative overflow-hidden rounded-[24px] shadow-(--app-shadow-floating)', item.className)}
                               whileHover={
                                 shouldReduceMotion
                                   ? undefined
@@ -689,7 +689,7 @@ export function HomePage() {
 
                     <motion.div className="absolute left-0 top-24 hidden md:block">
                       <motion.div
-                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/90"
+                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-(--app-shadow-card) backdrop-blur dark:bg-(--app-surface)/90"
                         animate={
                           shouldReduceMotion
                             ? undefined
@@ -710,14 +710,14 @@ export function HomePage() {
                               }
                         }
                       >
-                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Pipeline claro</p>
-                        <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Feedback y etapas visibles</p>
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-(--app-text-subtle)">Pipeline claro</p>
+                        <p className="mt-1 text-sm font-semibold text-(--app-text)">Feedback y etapas visibles</p>
                       </motion.div>
                     </motion.div>
 
                     <motion.div className="absolute right-0 top-44 hidden md:block">
                       <motion.div
-                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-[var(--app-shadow-card)] backdrop-blur dark:bg-[var(--app-surface)]/90"
+                        className="rounded-[20px] border bg-white/90 px-4 py-3 shadow-(--app-shadow-card) backdrop-blur dark:bg-(--app-surface)/90"
                         animate={
                           shouldReduceMotion
                             ? undefined
@@ -738,24 +738,24 @@ export function HomePage() {
                               }
                         }
                       >
-                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--app-text-subtle)]">Marca cuidada</p>
-                        <p className="mt-1 text-sm font-semibold text-[var(--app-text)]">Tus vacantes se presentan mejor</p>
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-(--app-text-subtle)">Marca cuidada</p>
+                        <p className="mt-1 text-sm font-semibold text-(--app-text)">Tus vacantes se presentan mejor</p>
                       </motion.div>
                     </motion.div>
                   </div>
 
-                  <div className="mt-6 grid gap-3 rounded-[26px] border bg-[var(--app-surface)]/88 p-3 shadow-[var(--app-shadow-card)] sm:grid-cols-3 sm:gap-4 sm:p-4">
+                  <div className="mt-6 grid gap-3 rounded-[26px] border bg-(--app-surface)/88 p-3 shadow-(--app-shadow-card) sm:grid-cols-3 sm:gap-4 sm:p-4">
                     {heroProofs.map((proof, proofIndex) => (
                       <LandingInteractiveSurface
                         key={proof.title}
-                        className="rounded-[20px] bg-[var(--app-surface-muted)]/86 px-4 py-4 text-center sm:min-h-[8.5rem] sm:px-5 sm:py-5 sm:text-left"
+                        className="rounded-[20px] bg-(--app-surface-muted)/86 px-4 py-4 text-center sm:min-h-[8.5rem] sm:px-5 sm:py-5 sm:text-left"
                         delay={proofIndex * 0.04}
                         hoverScale={1.01}
                         hoverShadow="0 20px 42px rgba(18, 31, 68, 0.1)"
                         hoverY={-4}
                       >
-                        <p className="text-base font-semibold text-[var(--app-text)]">{proof.title}</p>
-                        <p className="mt-2 max-w-[26ch] text-sm leading-6 text-[var(--app-text-muted)] sm:max-w-none">
+                        <p className="text-base font-semibold text-(--app-text)">{proof.title}</p>
+                        <p className="mt-2 max-w-[26ch] text-sm leading-6 text-(--app-text-muted) sm:max-w-none">
                           {proof.description}
                         </p>
                       </LandingInteractiveSurface>
@@ -769,18 +769,18 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="tm-landing-section bg-[var(--app-canvas)]" id="features">
+      <section className="tm-landing-section bg-(--app-canvas)" id="features">
         <LandingReveal className="mx-auto max-w-[98rem] px-4 sm:px-6 lg:px-8" y={24}>
           <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-stretch">
             <div className="relative">
               <div className="absolute inset-0 rounded-[32px] bg-white/72 dark:bg-white/6" />
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[31px] border bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(246,249,255,0.92)_100%)] shadow-[var(--app-shadow-floating)] backdrop-blur-sm dark:bg-[linear-gradient(180deg,rgba(18,29,58,0.92)_0%,rgba(12,21,42,0.88)_100%)]">
+              <div className="relative flex h-full flex-col overflow-hidden rounded-[31px] border bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(246,249,255,0.92)_100%)] shadow-(--app-shadow-floating) backdrop-blur-sm dark:bg-[linear-gradient(180deg,rgba(18,29,58,0.92)_0%,rgba(12,21,42,0.88)_100%)]">
                 <div className="px-6 pt-6 pb-2 sm:px-8 sm:pt-8">
                   <Badge variant="soft">Plataforma</Badge>
-                  <h2 className="mt-5 max-w-[12ch] text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl">
+                  <h2 className="mt-5 max-w-[12ch] text-3xl font-semibold tracking-tight text-balance text-(--app-text) sm:text-4xl">
                     La plataforma también se siente bien en móvil
                   </h2>
-                  <p className="mt-4 max-w-[30rem] text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
+                  <p className="mt-4 max-w-[30rem] text-base leading-8 text-(--app-text-muted) sm:text-lg">
                     Revisa perfiles, comparte feedback y mueve decisiones desde el teléfono con una vista clara y accionable.
                   </p>
                 </div>
@@ -865,68 +865,68 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
             </div>
 
             <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
               <LandingInteractiveSurface className="relative" delay={0.04} hoverShadow="0 24px 56px rgba(18, 31, 68, 0.12)">
                 <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
-                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
-                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-(--app-surface)/92 p-5 shadow-(--app-shadow-card) backdrop-blur-sm sm:p-6">
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-(--app-info-surface) shadow-(--app-shadow-card)">
                     <profileFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
                   </div>
-                  <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{profileFeature.name}</p>
-                  <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{profileFeature.description}</p>
-                  <div className="mt-5 rounded-[20px] border bg-[var(--app-surface-muted)]/88 p-4">
+                  <p className="text-xl font-semibold tracking-tight text-(--app-text)">{profileFeature.name}</p>
+                  <p className="mt-3 text-base leading-7 text-(--app-text-muted)">{profileFeature.description}</p>
+                  <div className="mt-5 rounded-[20px] border bg-(--app-surface-muted)/88 p-4">
                     <div className="flex items-center gap-3">
                       <div className="flex size-10 items-center justify-center rounded-2xl bg-primary-500 text-sm font-semibold text-white">AP</div>
                       <div>
-                        <p className="text-sm font-semibold text-[var(--app-text)]">Ana Pérez</p>
-                        <p className="text-xs text-[var(--app-text-muted)]">Perfil reutilizable listo para aplicar</p>
+                        <p className="text-sm font-semibold text-(--app-text)">Ana Pérez</p>
+                        <p className="text-xs text-(--app-text-muted)">Perfil reutilizable listo para aplicar</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
               </LandingInteractiveSurface>
 
               <LandingInteractiveSurface className="relative" delay={0.08} hoverShadow="0 24px 56px rgba(18, 31, 68, 0.12)">
                 <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
-                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
-                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-(--app-surface)/92 p-5 shadow-(--app-shadow-card) backdrop-blur-sm sm:p-6">
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-(--app-info-surface) shadow-(--app-shadow-card)">
                     <jobsFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
                   </div>
-                  <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{jobsFeature.name}</p>
-                  <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{jobsFeature.description}</p>
-                  <div className="mt-5 rounded-[20px] border bg-[var(--app-info-surface)]/84 p-4">
-                    <div className="rounded-[16px] bg-[var(--app-surface)] px-4 py-4 shadow-[var(--app-shadow-card)]">
-                      <p className="text-sm font-semibold text-[var(--app-text)]">Frontend Engineer</p>
+                  <p className="text-xl font-semibold tracking-tight text-(--app-text)">{jobsFeature.name}</p>
+                  <p className="mt-3 text-base leading-7 text-(--app-text-muted)">{jobsFeature.description}</p>
+                  <div className="mt-5 rounded-[20px] border bg-(--app-info-surface)/84 p-4">
+                    <div className="rounded-[16px] bg-(--app-surface) px-4 py-4 shadow-(--app-shadow-card)">
+                      <p className="text-sm font-semibold text-(--app-text)">Frontend Engineer</p>
                       <div className="mt-3 rounded-full bg-primary-500 px-4 py-2 text-center text-sm font-semibold text-white">
                         Aplicar ahora
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
               </LandingInteractiveSurface>
 
               <LandingInteractiveSurface className="relative lg:col-span-2" delay={0.12} hoverShadow="0 26px 60px rgba(18, 31, 68, 0.14)">
                 <div className="absolute inset-0 rounded-[30px] bg-white/72 dark:bg-white/6" />
-                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/92 p-5 shadow-[var(--app-shadow-card)] backdrop-blur-sm sm:p-6">
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-(--app-surface)/92 p-5 shadow-(--app-shadow-card) backdrop-blur-sm sm:p-6">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                      <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)] shadow-[var(--app-shadow-card)]">
+                      <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-(--app-info-surface) shadow-(--app-shadow-card)">
                         <collaborationFeature.icon className="size-5 text-primary-700 dark:text-primary-200" />
                       </div>
-                      <p className="text-xl font-semibold tracking-tight text-[var(--app-text)]">{collaborationFeature.name}</p>
-                      <p className="mt-3 max-w-[38rem] text-base leading-7 text-[var(--app-text-muted)]">
+                      <p className="text-xl font-semibold tracking-tight text-(--app-text)">{collaborationFeature.name}</p>
+                      <p className="mt-3 max-w-[38rem] text-base leading-7 text-(--app-text-muted)">
                         {collaborationFeature.description}
                       </p>
                     </div>
 
-                    <div className="rounded-[18px] border bg-[var(--app-success-surface)]/78 px-4 py-3">
-                      <p className="text-sm font-semibold text-[var(--app-text)]">{growthFeature.name}</p>
-                      <p className="mt-1 max-w-[24ch] text-sm leading-6 text-[var(--app-text-muted)]">{growthFeature.description}</p>
+                    <div className="rounded-[18px] border bg-(--app-success-surface)/78 px-4 py-3">
+                      <p className="text-sm font-semibold text-(--app-text)">{growthFeature.name}</p>
+                      <p className="mt-1 max-w-[24ch] text-sm leading-6 text-(--app-text-muted)">{growthFeature.description}</p>
                     </div>
                   </div>
 
@@ -935,14 +935,14 @@ export function HomePage() {
                       ['Recruiting', 'Perfil fuerte para entrevista'],
                       ['Hiring manager', 'Buen fit para el equipo']
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-[20px] border bg-[var(--app-surface-muted)]/88 p-4 shadow-[var(--app-shadow-card)]">
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--app-text-subtle)]">{label}</p>
-                        <p className="mt-2 text-base font-medium text-[var(--app-text)]">{value}</p>
+                      <div key={label} className="rounded-[20px] border bg-(--app-surface-muted)/88 p-4 shadow-(--app-shadow-card)">
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-(--app-text-subtle)">{label}</p>
+                        <p className="mt-2 text-base font-medium text-(--app-text)">{value}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+                <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
               </LandingInteractiveSurface>
             </div>
           </div>
@@ -955,10 +955,10 @@ export function HomePage() {
             <Badge className="w-fit" variant="outline">
               Valor del producto
             </Badge>
-            <h2 className="mt-5 max-w-[17ch] text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl lg:max-w-[16ch]">
+            <h2 className="mt-5 max-w-[17ch] text-3xl font-semibold tracking-tight text-balance text-(--app-text) sm:text-4xl lg:max-w-[16ch]">
               Así se entiende mejor el producto
             </h2>
-            <p className="mt-4 max-w-[38rem] text-base leading-8 text-[var(--app-text-muted)] sm:text-lg">
+            <p className="mt-4 max-w-[38rem] text-base leading-8 text-(--app-text-muted) sm:text-lg">
               Menos explicación abstracta y más escenas claras de cómo se ve publicar, colaborar y mover procesos en la plataforma.
             </p>
           </LandingReveal>
@@ -966,7 +966,7 @@ export function HomePage() {
           <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:gap-5 lg:grid-cols-6">
             <LandingInteractiveSurface className="relative lg:col-span-3" delay={0.02} hoverShadow="0 30px 68px rgba(18, 31, 68, 0.16)">
               <div className="absolute inset-0 rounded-[32px] bg-white/70 dark:bg-white/6" />
-              <div className="relative overflow-hidden rounded-[31px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-floating)] backdrop-blur-sm">
+              <div className="relative overflow-hidden rounded-[31px] border bg-(--app-surface)/94 shadow-(--app-shadow-floating) backdrop-blur-sm">
                 <div className="relative h-72 overflow-hidden sm:h-80">
                   <img
                     alt="Equipo revisando una estrategia de contratación"
@@ -977,7 +977,7 @@ export function HomePage() {
                   <div className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/14 px-3 py-1 text-xs font-semibold text-white backdrop-blur sm:left-5 sm:top-5">
                     Publicación más clara
                   </div>
-                  <div className="absolute inset-x-4 bottom-4 rounded-[24px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-[var(--app-shadow-floating)] backdrop-blur sm:inset-x-5 sm:bottom-5">
+                  <div className="absolute inset-x-4 bottom-4 rounded-[24px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-(--app-shadow-floating) backdrop-blur sm:inset-x-5 sm:bottom-5">
                     <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-white/70">Vacantes que convierten</p>
                     <p className="mt-2 text-xl font-semibold tracking-tight">Más contexto desde el primer vistazo</p>
                     <p className="mt-2 max-w-[34ch] text-sm leading-6 text-white/78">
@@ -993,12 +993,12 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
             </LandingInteractiveSurface>
 
             <LandingInteractiveSurface className="relative lg:col-span-3" delay={0.06} hoverShadow="0 30px 68px rgba(18, 31, 68, 0.16)">
               <div className="absolute inset-0 rounded-[32px] bg-white/70 dark:bg-white/6" />
-              <div className="relative overflow-hidden rounded-[31px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-floating)] backdrop-blur-sm">
+              <div className="relative overflow-hidden rounded-[31px] border bg-(--app-surface)/94 shadow-(--app-shadow-floating) backdrop-blur-sm">
                 <div className="relative h-72 overflow-hidden sm:h-80">
                   <img
                     alt="Equipo colaborando en una oficina moderna"
@@ -1026,7 +1026,7 @@ export function HomePage() {
                       ))}
                     </div>
                   </div>
-                  <div className="absolute bottom-4 right-4 rounded-[22px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-[var(--app-shadow-card)] backdrop-blur sm:bottom-5 sm:right-5">
+                  <div className="absolute bottom-4 right-4 rounded-[22px] border border-white/18 bg-[rgba(12,21,42,0.72)] p-4 text-white shadow-(--app-shadow-card) backdrop-blur sm:bottom-5 sm:right-5">
                     <p className="text-sm font-semibold">Una sola conversación</p>
                     <p className="mt-1 max-w-[20ch] text-sm leading-6 text-white/76">
                       Recruiters y líderes avanzan sobre la misma información.
@@ -1034,7 +1034,7 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+              <div className="pointer-events-none absolute inset-0 rounded-[32px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
             </LandingInteractiveSurface>
 
             {valueBentoCards.map((panel, panelIndex) => {
@@ -1048,23 +1048,23 @@ export function HomePage() {
                   hoverShadow="0 24px 56px rgba(18, 31, 68, 0.14)"
                 >
                   <div className="absolute inset-0 rounded-[30px] bg-white/70 dark:bg-white/6" />
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-[var(--app-surface)]/94 shadow-[var(--app-shadow-card)] backdrop-blur-sm">
+                  <div className="relative flex h-full flex-col overflow-hidden rounded-[29px] border bg-(--app-surface)/94 shadow-(--app-shadow-card) backdrop-blur-sm">
                     <div className="relative h-52 overflow-hidden">
                       <img alt={panel.alt} className="block h-full w-full object-cover" src={panel.image} />
                       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(9,17,39,0.58)] via-[rgba(9,17,39,0.1)] to-transparent" />
-                      <div className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-2xl bg-white/84 shadow-[var(--app-shadow-card)]">
+                      <div className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-2xl bg-white/84 shadow-(--app-shadow-card)">
                         <Icon className="size-5 text-primary-700 dark:text-primary-200" />
                       </div>
                     </div>
                     <div className="p-5 sm:p-6">
-                      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[var(--app-text-subtle)]">
+                      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-(--app-text-subtle)">
                         {panelIndex === 0 ? 'Atracción' : panelIndex === 1 ? 'Colaboración' : 'Seguimiento'}
                       </p>
-                      <p className="mt-3 text-2xl font-semibold tracking-tight text-[var(--app-text)]">{panel.title}</p>
-                      <p className="mt-3 text-base leading-7 text-[var(--app-text-muted)]">{panel.body}</p>
+                      <p className="mt-3 text-2xl font-semibold tracking-tight text-(--app-text)">{panel.title}</p>
+                      <p className="mt-3 text-base leading-7 text-(--app-text-muted)">{panel.body}</p>
                     </div>
                   </div>
-                  <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-[var(--app-shadow-card)] outline outline-1 outline-black/5 dark:outline-white/10" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[30px] shadow-(--app-shadow-card) outline outline-1 outline-black/5 dark:outline-white/10" />
                 </LandingInteractiveSurface>
               )
             })}
@@ -1332,8 +1332,8 @@ export function HomePage() {
                         className={cn(
                           'relative inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-3 border px-5 pt-3 pb-2.5 text-sm font-semibold backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 sm:w-auto sm:min-w-[20rem]',
                           isPricingComparisonOpen
-                            ? 'border-[var(--app-border)] bg-[var(--app-surface)] text-[var(--app-text)] hover:border-[var(--app-border-strong)] hover:text-primary-700 focus-visible:ring-[var(--app-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-surface)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.98)_100%)] dark:hover:text-primary-200'
-                            : 'border-[var(--app-border)] bg-white/94 text-[#15203b] hover:border-primary-200 hover:text-primary-700 focus-visible:ring-white/50 dark:border-white/10 dark:hover:text-primary-200'
+                            ? 'border-(--app-border) bg-(--app-surface) text-(--app-text) hover:border-(--app-border-strong) hover:text-primary-700 focus-visible:ring-(--app-ring) focus-visible:ring-offset-2 focus-visible:ring-offset-(--app-surface) dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.98)_100%)] dark:hover:text-primary-200'
+                            : 'border-(--app-border) bg-white/94 text-[#15203b] hover:border-primary-200 hover:text-primary-700 focus-visible:ring-white/50 dark:border-white/10 dark:hover:text-primary-200'
                         )}
                         style={{
                           borderRadius: 30
@@ -1405,7 +1405,7 @@ export function HomePage() {
                           layout
                           variants={pricingComparisonPanelVariants}
                           animate="open"
-                          className="origin-top overflow-hidden border border-[var(--app-border)] bg-[var(--app-surface)] backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.99)_100%)]"
+                          className="origin-top overflow-hidden border border-(--app-border) bg-(--app-surface) backdrop-blur-sm dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.98)_0%,rgba(13,24,52,0.99)_100%)]"
                           exit="closed"
                           id="pricing-comparison-panel"
                           initial={shouldReduceMotion ? false : 'closed'}
@@ -1432,10 +1432,10 @@ export function HomePage() {
                               closed: {}
                             }}
                           >
-                          <motion.div className="border-b border-[var(--app-border)] px-5 pt-7 pb-5 sm:px-8 sm:pt-8 sm:pb-6" variants={pricingComparisonContentVariants}>
+                          <motion.div className="border-b border-(--app-border) px-5 pt-7 pb-5 sm:px-8 sm:pt-8 sm:pb-6" variants={pricingComparisonContentVariants}>
                             <div className="text-left">
-                              <p className="text-base font-semibold text-[var(--app-text)]">Comparación completa de planes</p>
-                              <p className="mt-2 text-sm leading-6 text-[var(--app-text-muted)]">
+                              <p className="text-base font-semibold text-(--app-text)">Comparación completa de planes</p>
+                              <p className="mt-2 text-sm leading-6 text-(--app-text-muted)">
                                 Revisa publicación, colaboración y acompañamiento en una sola vista cuando necesites más detalle.
                               </p>
                             </div>
@@ -1452,7 +1452,7 @@ export function HomePage() {
                                   const isSelected = selectedPlanName === plan.name
 
                                   return (
-                                    <div key={plan.name} className="border-t border-[var(--app-border)] pt-10">
+                                    <div key={plan.name} className="border-t border-(--app-border) pt-10">
                                       <div
                                         className={cn(
                                           '-mt-px w-72 border-t-2 pt-8 md:w-80',
@@ -1462,23 +1462,23 @@ export function HomePage() {
                                         <h3
                                           className={cn(
                                             'text-sm font-semibold',
-                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
+                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-(--app-text)'
                                           )}
                                         >
                                           {plan.name}
                                         </h3>
-                                        <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
+                                        <p className="mt-1 text-sm leading-6 text-(--app-text-muted)">{plan.description}</p>
                                       </div>
 
                                       <div className="mt-6 space-y-6">
                                         {pricingSections.map((section) => (
                                           <div key={section.name}>
-                                            <h4 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h4>
-                                            <div className="mt-5 rounded-[24px] border bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]">
+                                            <h4 className="text-sm font-semibold text-(--app-text)">{section.name}</h4>
+                                            <div className="mt-5 rounded-[24px] border bg-(--app-surface) shadow-(--app-shadow-card)">
                                               <dl className="divide-y text-sm leading-6">
                                                 {section.features.map((feature) => (
                                                   <div key={feature.name} className="flex items-center justify-between gap-4 px-4 py-3">
-                                                    <dt className="pr-4 text-[var(--app-text-muted)]">{feature.name}</dt>
+                                                    <dt className="pr-4 text-(--app-text-muted)">{feature.name}</dt>
                                                     <dd className="flex min-w-20 items-center justify-end">
                                                       {renderTierValue(feature.tiers[plan.name], isSelected)}
                                                     </dd>
@@ -1500,7 +1500,7 @@ export function HomePage() {
                                 Comparacion de planes
                               </h2>
 
-                              <div className="grid grid-cols-4 gap-x-8 border-t border-[var(--app-border)] before:block">
+                              <div className="grid grid-cols-4 gap-x-8 border-t border-(--app-border) before:block">
                                 {pricingPlans.map((plan) => {
                                   const isSelected = selectedPlanName === plan.name
 
@@ -1510,12 +1510,12 @@ export function HomePage() {
                                         <p
                                           className={cn(
                                             'text-sm font-semibold',
-                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-[var(--app-text)]'
+                                            isSelected ? 'text-primary-700 dark:text-primary-200' : 'text-(--app-text)'
                                           )}
                                         >
                                           {plan.name}
                                         </p>
-                                        <p className="mt-1 text-sm leading-6 text-[var(--app-text-muted)]">{plan.description}</p>
+                                        <p className="mt-1 text-sm leading-6 text-(--app-text-muted)">{plan.description}</p>
                                       </div>
                                     </div>
                                   )
@@ -1525,15 +1525,15 @@ export function HomePage() {
                               <div className="-mt-4 space-y-10 sm:space-y-12">
                                 {pricingSections.map((section) => (
                                   <div key={section.name}>
-                                    <h3 className="text-sm font-semibold text-[var(--app-text)]">{section.name}</h3>
+                                    <h3 className="text-sm font-semibold text-(--app-text)">{section.name}</h3>
                                     <div className="relative -mx-8 mt-8">
                                       <div
                                         aria-hidden="true"
                                         className="absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
                                       >
-                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
-                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
-                                        <div className="rounded-[24px] bg-[var(--app-surface)] shadow-[var(--app-shadow-card)]" />
+                                        <div className="rounded-[24px] bg-(--app-surface) shadow-(--app-shadow-card)" />
+                                        <div className="rounded-[24px] bg-(--app-surface) shadow-(--app-shadow-card)" />
+                                        <div className="rounded-[24px] bg-(--app-surface) shadow-(--app-shadow-card)" />
                                       </div>
 
                                       <table className="relative w-full border-separate border-spacing-x-8">
@@ -1553,12 +1553,12 @@ export function HomePage() {
                                           {section.features.map((feature, featureIndex) => (
                                             <tr key={feature.name}>
                                               <th
-                                                className="w-1/4 py-3 pr-4 text-left text-sm font-normal text-[var(--app-text)]"
+                                                className="w-1/4 py-3 pr-4 text-left text-sm font-normal text-(--app-text)"
                                                 scope="row"
                                               >
                                                 {feature.name}
                                                 {featureIndex !== section.features.length - 1 ? (
-                                                  <div className="absolute inset-x-8 mt-3 h-px bg-[var(--app-border)]" />
+                                                  <div className="absolute inset-x-8 mt-3 h-px bg-(--app-border)" />
                                                 ) : null}
                                               </th>
                                               {pricingPlans.map((plan) => {
@@ -1589,7 +1589,7 @@ export function HomePage() {
                                               key={plan.name}
                                               className={cn(
                                                 'rounded-[24px]',
-                                                isSelected ? 'ring-2 ring-primary-500 shadow-[0_22px_48px_rgba(79,110,216,0.14)]' : 'ring-1 ring-[var(--app-border)]'
+                                                isSelected ? 'ring-2 ring-primary-500 shadow-[0_22px_48px_rgba(79,110,216,0.14)]' : 'ring-1 ring-(--app-border)'
                                               )}
                                               animate={
                                                 shouldReduceMotion
@@ -1613,35 +1613,35 @@ export function HomePage() {
                             </section>
 
                             <div className="mt-10 grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
-                              <div className="rounded-[30px] border bg-[var(--app-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
+                              <div className="rounded-[30px] border bg-(--app-surface) p-6 shadow-(--app-shadow-card) sm:p-8">
                                 <div className="flex items-center gap-3">
-                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
+                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-(--app-info-surface)">
                                     <WalletCards className="size-5 text-primary-700 dark:text-primary-200" />
                                   </div>
                                   <div>
-                                    <p className="text-sm font-semibold text-[var(--app-text)]">Una propuesta fácil de explicar</p>
-                                    <p className="text-sm text-[var(--app-text-muted)]">
+                                    <p className="text-sm font-semibold text-(--app-text)">Una propuesta fácil de explicar</p>
+                                    <p className="text-sm text-(--app-text-muted)">
                                       El pricing ya acompaña demos, conversaciones de ventas y evaluaciones internas.
                                     </p>
                                   </div>
                                 </div>
-                                <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
+                                <p className="mt-5 text-sm leading-7 text-(--app-text-muted)">
                                   Los planes muestran de forma realista cómo crece la experiencia sin fingir que los cobros ya están
                                   activos. La superficie comercial existe; el procesamiento de pagos todavía no.
                                 </p>
                               </div>
 
-                              <div className="rounded-[30px] border bg-[var(--app-warning-surface)] p-6 shadow-[var(--app-shadow-card)] sm:p-8">
+                              <div className="rounded-[30px] border bg-(--app-warning-surface) p-6 shadow-(--app-shadow-card) sm:p-8">
                                 <div className="flex items-center gap-3">
-                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-white/80 shadow-[var(--app-shadow-card)]">
-                                    <HandHeart className="size-5 text-[var(--app-text)]" />
+                                  <div className="flex size-12 items-center justify-center rounded-2xl bg-white/80 shadow-(--app-shadow-card)">
+                                    <HandHeart className="size-5 text-(--app-text)" />
                                   </div>
                                   <div>
-                                    <p className="text-sm font-semibold text-[var(--app-text)]">Donaciones y sponsorships</p>
-                                    <p className="text-sm text-[var(--app-text-muted)]">Superficie visible del roadmap comercial</p>
+                                    <p className="text-sm font-semibold text-(--app-text)">Donaciones y sponsorships</p>
+                                    <p className="text-sm text-(--app-text-muted)">Superficie visible del roadmap comercial</p>
                                   </div>
                                 </div>
-                                <p className="mt-5 text-sm leading-7 text-[var(--app-text-muted)]">
+                                <p className="mt-5 text-sm leading-7 text-(--app-text-muted)">
                                   Este espacio ya existe para validar la narrativa de apoyo al producto, pero el procesamiento de
                                   pagos permanece desactivado hasta conectar billing real.
                                 </p>
@@ -1663,16 +1663,16 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="tm-landing-section bg-[var(--app-canvas)]" id="faq">
+      <section className="tm-landing-section bg-(--app-canvas)" id="faq">
         <LandingReveal className="tm-landing-container" y={22}>
           <div className="mx-auto max-w-4xl">
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-2xl bg-[var(--app-info-surface)]">
+              <div className="flex size-10 items-center justify-center rounded-2xl bg-(--app-info-surface)">
                 <CircleHelp className="size-5 text-primary-700 dark:text-primary-200" />
               </div>
               <Badge variant="outline">FAQ</Badge>
             </div>
-            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-[var(--app-text)] sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-(--app-text) sm:text-4xl">
               Preguntas frecuentes
             </h2>
             <dl className="mt-12 divide-y">
@@ -1680,7 +1680,7 @@ export function HomePage() {
                 <LandingReveal key={faq.question} amount={0.08} y={18}>
                   <div className="py-7 first:pt-0 last:pb-0 sm:py-8">
                     <motion.button
-                      className="flex w-full cursor-pointer items-start justify-between gap-8 rounded-[24px] px-1 py-2 text-left text-[var(--app-text)] hover:text-primary-700 dark:hover:text-primary-200 sm:py-3"
+                      className="flex w-full cursor-pointer items-start justify-between gap-8 rounded-[24px] px-1 py-2 text-left text-(--app-text) hover:text-primary-700 dark:hover:text-primary-200 sm:py-3"
                       transition={landingHoverSpring}
                       type="button"
                       whileHover={shouldReduceMotion ? undefined : { x: 2 }}
@@ -1690,7 +1690,7 @@ export function HomePage() {
                     >
                       <span className="text-base font-semibold leading-7">{faq.question}</span>
                       <motion.span className="flex h-7 items-center" animate={shouldReduceMotion ? undefined : { rotate: openFaqQuestion === faq.question ? 45 : 0 }}>
-                        <span className="flex size-7 items-center justify-center rounded-full border bg-[var(--app-surface)] text-[var(--app-text-muted)]">
+                        <span className="flex size-7 items-center justify-center rounded-full border bg-(--app-surface) text-(--app-text-muted)">
                           +
                         </span>
                       </motion.span>
@@ -1699,7 +1699,7 @@ export function HomePage() {
                       {openFaqQuestion === faq.question ? (
                         <motion.p
                           key={`${faq.question}-answer`}
-                          className="max-w-3xl pr-8 pt-4 text-base leading-7 text-[var(--app-text-muted)]"
+                          className="max-w-3xl pr-8 pt-4 text-base leading-7 text-(--app-text-muted)"
                           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0, y: -8 }}
                           initial={shouldReduceMotion ? false : { opacity: 0, height: 0, y: -8 }}
                           transition={{ duration: 0.3, ease: landingSoftEase }}
@@ -1719,7 +1719,7 @@ export function HomePage() {
 
       <section className="tm-landing-section overflow-hidden">
         <LandingReveal className="tm-landing-container" y={24}>
-          <div className="relative rounded-[36px] border bg-[var(--app-surface)] px-6 py-8 shadow-[var(--app-shadow-floating)] sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+          <div className="relative rounded-[36px] border bg-(--app-surface) px-6 py-8 shadow-(--app-shadow-floating) sm:px-8 sm:py-10 lg:px-12 lg:py-12">
             <div
               aria-hidden="true"
               className="absolute right-0 bottom-0 h-48 w-48 rounded-full blur-3xl"
@@ -1728,10 +1728,10 @@ export function HomePage() {
             <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="max-w-2xl">
                 <Badge variant="soft">Siguiente paso</Badge>
-                <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance text-[var(--app-text)] sm:text-4xl">
+                <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance text-(--app-text) sm:text-4xl">
                   Comparte la landing, empieza demos y abre procesos desde una base que ya se siente premium
                 </h2>
-                <p className="mt-5 text-base leading-7 text-[var(--app-text-muted)]">
+                <p className="mt-5 text-base leading-7 text-(--app-text-muted)">
                   Desde aquí puedes llevar usuarios a jobs, signup o al espacio de trabajo sin sacrificar claridad ni
                   mezclar herramientas internas con la experiencia del cliente.
                 </p>
@@ -1754,14 +1754,14 @@ export function HomePage() {
         </LandingReveal>
       </section>
 
-      <footer className="border-t bg-[var(--app-canvas)]">
+      <footer className="border-t bg-(--app-canvas)">
         <LandingReveal className="mx-auto max-w-7xl overflow-hidden px-4 py-12 sm:px-6 sm:py-14 lg:px-8" y={18}>
           <nav aria-label="Footer" className="-mb-6 flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm leading-6">
             {footerNavigation.map((item) =>
               'section' in item ? (
                 <motion.button
                   key={item.label}
-                  className="cursor-pointer rounded-full px-3 py-1.5 text-[var(--app-text-muted)] hover:bg-[var(--app-surface)] hover:text-[var(--app-text)] hover:shadow-[var(--app-shadow-card)]"
+                  className="cursor-pointer rounded-full px-3 py-1.5 text-(--app-text-muted) hover:bg-(--app-surface) hover:text-(--app-text) hover:shadow-(--app-shadow-card)"
                   transition={landingHoverSpring}
                   type="button"
                   whileHover={shouldReduceMotion ? undefined : { y: -2 }}
@@ -1773,7 +1773,7 @@ export function HomePage() {
               ) : (
                 <motion.button
                   key={item.label}
-                  className="cursor-pointer rounded-full px-3 py-1.5 text-[var(--app-text-muted)] hover:bg-[var(--app-surface)] hover:text-[var(--app-text)] hover:shadow-[var(--app-shadow-card)]"
+                  className="cursor-pointer rounded-full px-3 py-1.5 text-(--app-text-muted) hover:bg-(--app-surface) hover:text-(--app-text) hover:shadow-(--app-shadow-card)"
                   transition={landingHoverSpring}
                   type="button"
                   whileHover={shouldReduceMotion ? undefined : { y: -2 }}
@@ -1798,7 +1798,7 @@ export function HomePage() {
                   hoverScale={1.01}
                   hoverY={-3}
                 >
-                  <div className="inline-flex items-center gap-3 rounded-full border border-white/8 bg-[var(--app-surface)] px-4 py-2.5 text-sm text-[var(--app-text-muted)] shadow-[var(--app-shadow-card)]">
+                  <div className="inline-flex items-center gap-3 rounded-full border border-white/8 bg-(--app-surface) px-4 py-2.5 text-sm text-(--app-text-muted) shadow-(--app-shadow-card)">
                     <span className="flex size-7 items-center justify-center rounded-full bg-primary-500/10 ring-1 ring-inset ring-primary-300/14">
                       <Icon className="size-3.5 text-primary-300" />
                     </span>
@@ -1809,7 +1809,7 @@ export function HomePage() {
             })}
           </div>
 
-          <p className="mt-10 text-center text-sm leading-6 text-[var(--app-text-muted)]">
+          <p className="mt-10 text-center text-sm leading-6 text-(--app-text-muted)">
             &copy; {footerYear} ASI Rep. Dominicana. Vacantes públicas, perfiles reutilizables y trabajo en equipo en
             una experiencia de hiring mucho más clara.
           </p>

@@ -114,7 +114,7 @@ export function JobApplicationPage() {
 
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden bg-[var(--app-surface-muted)]">
+      <Card className="overflow-hidden bg-(--app-surface-muted)">
         <CardHeader className="space-y-3">
           <Badge variant="soft">Apply flow</Badge>
           <CardTitle>Postula a {jobQuery.data.title}</CardTitle>
