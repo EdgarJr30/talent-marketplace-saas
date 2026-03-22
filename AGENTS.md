@@ -85,7 +85,7 @@ Keep these aligned when the task affects their area:
 
 ## Linear follow-up rule
 - If any task ends with pending work of any kind, Codex must create one or more Linear issues automatically without asking for confirmation first.
-- Those follow-up issues must be created in the canonical Linear project for this repo and written so the user can later confirm the work was completed.
+- Those follow-up issues must be created in the canonical Linear project for this repo, assigned immediately to `me`, and written so the user can later confirm the work was completed.
 - This rule applies to every prompt, including implementation work, documentation work, deployments, manual verification, external configuration, or any other unresolved follow-up.
 
 ## Core domain language
