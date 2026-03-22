@@ -1,54 +1,60 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { Menu, MoveRight, Search, X } from 'lucide-react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { Menu, MoveRight, Search, X } from 'lucide-react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
-import { surfacePaths } from '@/app/router/surface-paths'
-import { institutionalNavigation } from '@/features/institutional/content/site-content'
-import { BrandLockup } from '@/components/ui/app-brand'
-import { cn } from '@/lib/utils/cn'
+import { surfacePaths } from '@/app/router/surface-paths';
+import { institutionalNavigation } from '@/features/institutional/content/site-content';
+import { BrandLockup } from '@/components/ui/app-brand';
+import { cn } from '@/lib/utils/cn';
 
 const institutionalPrimaryNavigation = [
   { label: 'Eventos', to: surfacePaths.institutional.news },
   { label: 'Membresía', to: surfacePaths.institutional.membership },
   { label: 'Programas', to: surfacePaths.institutional.projects },
-  { label: 'Quiénes somos', to: surfacePaths.institutional.whoWeAre }
-] as const
+  { label: 'Quiénes somos', to: surfacePaths.institutional.whoWeAre },
+] as const;
 
 function isActiveRoute(currentPathname: string, targetPath: string) {
   if (targetPath === surfacePaths.institutional.home) {
-    return currentPathname === surfacePaths.institutional.home || currentPathname === surfacePaths.institutional.homeAlias
+    return (
+      currentPathname === surfacePaths.institutional.home ||
+      currentPathname === surfacePaths.institutional.homeAlias
+    );
   }
 
-  return currentPathname === targetPath || currentPathname.startsWith(`${targetPath}/`)
+  return (
+    currentPathname === targetPath ||
+    currentPathname.startsWith(`${targetPath}/`)
+  );
 }
 
 export function InstitutionalShell() {
-  const location = useLocation()
-  const shouldReduceMotion = useReducedMotion()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isCondensed, setIsCondensed] = useState(false)
-  const currentYear = new Date().getFullYear()
+  const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isCondensed, setIsCondensed] = useState(false);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsCondensed(window.scrollY > 24)
-    }
+      setIsCondensed(window.scrollY > 24);
+    };
 
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      setMobileMenuOpen(false)
-    })
+      setMobileMenuOpen(false);
+    });
 
-    return () => window.cancelAnimationFrame(frame)
-  }, [location.pathname])
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.pathname]);
 
   return (
     <div className="asi-site min-h-screen overflow-x-clip">
@@ -68,32 +74,36 @@ export function InstitutionalShell() {
                 : {
                     paddingTop: isCondensed ? 10 : 12,
                     paddingBottom: isCondensed ? 10 : 12,
-                    borderRadius: isCondensed ? 24 : 28
+                    borderRadius: isCondensed ? 24 : 28,
                   }
             }
           >
             <div className="flex items-center justify-between gap-3 lg:gap-5">
               <div className="flex min-w-0 items-center gap-3">
-                <Link className="shrink-0" to={surfacePaths.institutional.home}>
+                <Link
+                  className="relative h-12 w-[9.5rem] shrink-0 overflow-visible sm:h-14 sm:w-[10.5rem]"
+                  to={surfacePaths.institutional.home}
+                >
                   <motion.span
-                    className="flex items-center justify-center"
+                    className="absolute inset-0 flex items-center justify-start overflow-visible"
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     animate={
                       shouldReduceMotion
                         ? undefined
-                        : {
-                            width: isCondensed ? 62 : 88,
-                            height: isCondensed ? 62 : 88
-                          }
+                        : { scale: isCondensed ? 0.94 : 1 }
                     }
                   >
                     <motion.img
                       alt="ASI República Dominicana"
-                      className="w-[4.85rem] sm:w-[5.2rem]"
+                      className="pointer-events-none absolute left-0 top-1/2 w-[10.8rem] -translate-y-1/2 sm:w-[10.8rem]"
                       loading="lazy"
-                      src="/brand/asi-logo-light.png"
+                      src="/brand/asi-logo-light.no-bg.png"
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      animate={shouldReduceMotion ? undefined : { scale: isCondensed ? 0.86 : 1 }}
+                      animate={
+                        shouldReduceMotion
+                          ? undefined
+                          : { scale: isCondensed ? 0.86 : 1 }
+                      }
                     />
                   </motion.span>
                 </Link>
@@ -105,7 +115,7 @@ export function InstitutionalShell() {
                       ? undefined
                       : {
                           opacity: 1,
-                          scale: isCondensed ? 0.96 : 1
+                          scale: isCondensed ? 0.96 : 1,
                         }
                   }
                 >
@@ -115,7 +125,10 @@ export function InstitutionalShell() {
                 </motion.span>
               </div>
 
-              <nav aria-label="Institutional" className="hidden items-center gap-1 xl:flex">
+              <nav
+                aria-label="Institutional"
+                className="hidden items-center gap-1 xl:flex"
+              >
                 {institutionalPrimaryNavigation.map((item) => (
                   <Link
                     key={item.to}
@@ -140,10 +153,16 @@ export function InstitutionalShell() {
               </div>
 
               <div className="hidden items-center gap-3 lg:flex">
-                <Link className="asi-button asi-button-ghost" to={surfacePaths.public.home}>
+                <Link
+                  className="asi-button asi-button-ghost"
+                  to={surfacePaths.public.home}
+                >
                   Plataforma
                 </Link>
-                <Link className="asi-button asi-button-primary" to={surfacePaths.institutional.donate}>
+                <Link
+                  className="asi-button asi-button-primary"
+                  to={surfacePaths.institutional.donate}
+                >
                   Donaciones
                 </Link>
               </div>
@@ -155,8 +174,16 @@ export function InstitutionalShell() {
                 type="button"
                 onClick={() => setMobileMenuOpen((current) => !current)}
               >
-                <span className="sr-only">{mobileMenuOpen ? 'Cerrar menú institucional' : 'Abrir menú institucional'}</span>
-                {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+                <span className="sr-only">
+                  {mobileMenuOpen
+                    ? 'Cerrar menú institucional'
+                    : 'Abrir menú institucional'}
+                </span>
+                {mobileMenuOpen ? (
+                  <X className="size-5" />
+                ) : (
+                  <Menu className="size-5" />
+                )}
               </button>
             </div>
           </motion.div>
@@ -183,7 +210,9 @@ export function InstitutionalShell() {
                 exit={shouldReduceMotion ? undefined : { opacity: 0, y: -10 }}
                 onClick={(event) => event.stopPropagation()}
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">Navegación</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--asi-secondary)]">
+                  Navegación
+                </p>
                 <div className="mt-6 space-y-3">
                   {institutionalNavigation.map((item) => (
                     <Link
@@ -198,10 +227,18 @@ export function InstitutionalShell() {
                   ))}
                 </div>
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <Link className="asi-button asi-button-secondary" to={surfacePaths.public.home} onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    className="asi-button asi-button-secondary"
+                    to={surfacePaths.public.home}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     Plataforma
                   </Link>
-                  <Link className="asi-button asi-button-primary" to={surfacePaths.institutional.donate} onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    className="asi-button asi-button-primary"
+                    to={surfacePaths.institutional.donate}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     Donaciones
                   </Link>
                 </div>
@@ -224,19 +261,30 @@ export function InstitutionalShell() {
                   <BrandLockup className="w-full" surface="dark" />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/60">Portal institucional</p>
-                  <p className="mt-1 text-lg font-semibold leading-tight sm:text-[1.35rem]">ASI República Dominicana</p>
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/60">
+                    Portal institucional
+                  </p>
+                  <p className="mt-1 text-lg font-semibold leading-tight sm:text-[1.35rem]">
+                    ASI República Dominicana
+                  </p>
                 </div>
               </div>
               <p className="mt-5 max-w-xl text-sm leading-7 text-white/74 sm:mt-6">
-                Un espacio institucional separado de la plataforma SaaS, diseñado para comunicar misión, membresía,
-                proyectos, noticias y formas de participar con un lenguaje más elegante y editorial.
+                Un espacio institucional separado de la plataforma SaaS,
+                diseñado para comunicar misión, membresía, proyectos, noticias y
+                formas de participar con un lenguaje más elegante y editorial.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <Link className="asi-button asi-button-secondary w-full justify-center" to={surfacePaths.public.home}>
+                <Link
+                  className="asi-button asi-button-secondary w-full justify-center"
+                  to={surfacePaths.public.home}
+                >
                   Plataforma ASI
                 </Link>
-                <Link className="asi-button asi-button-primary w-full justify-center" to={surfacePaths.institutional.donate}>
+                <Link
+                  className="asi-button asi-button-primary w-full justify-center"
+                  to={surfacePaths.institutional.donate}
+                >
                   Donaciones
                 </Link>
               </div>
@@ -244,7 +292,9 @@ export function InstitutionalShell() {
 
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">Explora</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">
+                  Explora
+                </p>
                 <div className="mt-4 space-y-2.5">
                   {institutionalNavigation.map((item) => (
                     <Link
@@ -260,7 +310,9 @@ export function InstitutionalShell() {
               </div>
 
               <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">Puente</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/64">
+                  Puente
+                </p>
                 <div className="mt-4 space-y-2.5">
                   <Link
                     className="flex items-center justify-between rounded-[1rem] bg-white/6 px-3.5 py-3 text-sm font-medium text-white/82 transition hover:bg-white/12 hover:text-white"
@@ -295,10 +347,11 @@ export function InstitutionalShell() {
             </div>
           </div>
           <div className="mt-8 border-t border-white/12 pt-5 text-center text-sm leading-6 text-white/68 sm:text-left">
-            Copyright © {currentYear} ASI República Dominicana. Compartiendo el mensaje de esperanza a través de la fe y el servicio.
+            Copyright © {currentYear} ASI República Dominicana. Compartiendo el
+            mensaje de esperanza a través de la fe y el servicio.
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

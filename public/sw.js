@@ -6,7 +6,7 @@ const APP_SHELL_ASSETS = [
   '/favicon.png',
   '/icons/app-icon-192.png',
   '/icons/app-icon-512.png',
-  '/brand/asi-logo-light.png',
+  '/brand/asi-logo-light.no-bg.png',
   '/brand/asi-logo-white-transparent.png'
 ]
 const STATIC_DESTINATIONS = new Set(['style', 'script', 'font', 'image', 'manifest'])

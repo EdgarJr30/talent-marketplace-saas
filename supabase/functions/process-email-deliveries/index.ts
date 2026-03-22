@@ -165,7 +165,7 @@ function buildEmailContent(input: {
   const escapedSupportTitle = escapeHtml(theme.supportTitle)
   const escapedSupportBody = escapeHtml(theme.supportBody)
   const escapedActionLabel = escapeHtml(theme.actionLabel)
-  const logoUrl = `${input.appUrl.replace(/\/+$/, '')}/brand/asi-logo-light.png`
+  const logoUrl = `${input.appUrl.replace(/\/+$/, '')}/brand/asi-logo-light.no-bg.png`
   const contentHtml = formatHtmlParagraphs(input.body)
   const summaryItemsHtml = theme.summaryItems
     .map(
