@@ -1,9 +1,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-sans: "Manrope", "Segoe UI", sans-serif;
+  --font-sans: 'Manrope', 'Segoe UI', sans-serif;
 
   --color-primary-50: #eff3ff;
   --color-primary-100: #dfe7ff;
@@ -110,11 +110,26 @@
 
   .dark body {
     background-color: var(--app-canvas);
-    background-image:
-      radial-gradient(circle at 14% 10%, rgba(98, 126, 232, 0.18) 0%, transparent 30%),
-      radial-gradient(circle at 84% 12%, rgba(73, 99, 191, 0.14) 0%, transparent 28%),
-      radial-gradient(circle at 50% 36%, rgba(29, 46, 91, 0.2) 0%, transparent 36%),
-      radial-gradient(circle at 50% 100%, rgba(12, 22, 46, 0.5) 0%, transparent 42%),
+    background-image: radial-gradient(
+        circle at 14% 10%,
+        rgba(98, 126, 232, 0.18) 0%,
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 84% 12%,
+        rgba(73, 99, 191, 0.14) 0%,
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 50% 36%,
+        rgba(29, 46, 91, 0.2) 0%,
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(12, 22, 46, 0.5) 0%,
+        transparent 42%
+      ),
       linear-gradient(180deg, #0d1530 0%, #0b1430 38%, #091127 100%);
     background-attachment: fixed;
   }
@@ -241,7 +256,7 @@
   }
 
   .asi-container {
-    @apply mx-auto max-w-[1560px] px-4 sm:px-6 lg:px-8 xl:px-12;
+    @apply mx-auto max-w-390 px-4 sm:px-6 lg:px-8 xl:px-12;
   }
 
   .asi-section {
@@ -303,13 +318,17 @@
   }
 
   .asi-button {
-    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[1rem] px-5 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-300;
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-300;
     line-height: 1;
   }
 
   .asi-button-primary {
     color: white;
-    background: linear-gradient(135deg, var(--asi-primary) 0%, var(--asi-primary-container) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--asi-primary) 0%,
+      var(--asi-primary-container) 100%
+    );
     box-shadow: 0 12px 40px rgba(0, 47, 110, 0.18);
   }
 
@@ -353,9 +372,7 @@
     font-size: 1rem;
     color: var(--asi-text);
     outline: none;
-    transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
   }
 
   .asi-field:focus {
