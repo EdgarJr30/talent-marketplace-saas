@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { PageHeader } from '@/components/ui/page-header'
 import { StatCard } from '@/components/ui/stat-card'
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import { listMyApplications } from '@/features/applications/lib/applications-api'
 
@@ -64,7 +65,7 @@ export function ApplicationsOverviewPage() {
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-3">
-                  <Link to={`/jobs/${application.job_posting?.slug}`}>
+                  <Link to={surfacePaths.public.jobDetail(application.job_posting?.slug ?? '')}>
                     <Button variant="outline">Ver vacante</Button>
                   </Link>
                 </div>
@@ -75,7 +76,7 @@ export function ApplicationsOverviewPage() {
               actionLabel="Explorar jobs"
               description="Todavía no has enviado postulaciones. Explora oportunidades y aplica cuando tu perfil esté listo."
               title="Aún no tienes aplicaciones"
-              onAction={() => void navigate('/jobs')}
+              onAction={() => void navigate(surfacePaths.public.jobs)}
             />
           )}
         </CardContent>

@@ -190,7 +190,8 @@ Avoid using a client state store as a shadow backend.
 
 ### Product surface strategy
 Keep the frontend split into explicit route surfaces:
-- public storefront routes for landing, pricing, and public jobs under `/`
+- institutional portal routes under `/`
+- public storefront routes for product landing, pricing, and public jobs under `/platform`
 - auth routes under `/auth/*`
 - candidate app routes under `/candidate/*`
 - employer workspace routes under `/workspace/*`

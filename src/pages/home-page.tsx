@@ -410,7 +410,7 @@ const footerNavigation = [
   { label: 'Como funciona', section: 'features' },
   { label: 'Pricing', section: 'pricing' },
   { label: 'FAQ', section: 'faq' },
-  { label: 'Jobs', route: '/jobs' },
+  { label: 'Jobs', route: surfacePaths.public.jobs },
   { label: 'Crear cuenta', route: '/auth/sign-up' }
 ] as const
 
@@ -527,7 +527,7 @@ export function HomePage() {
                   <Button
                     className="w-full sm:min-w-44 sm:w-auto hover:border-primary-400 hover:bg-white hover:shadow-[0_18px_34px_rgba(15,23,42,0.12)]"
                     variant="outline"
-                    onClick={() => void navigate('/jobs')}
+                    onClick={() => void navigate(surfacePaths.public.jobs)}
                   >
                     Explorar jobs
                   </Button>
@@ -1744,7 +1744,7 @@ export function HomePage() {
                 <Button
                   className="hover:border-primary-400 hover:bg-white hover:shadow-[0_18px_34px_rgba(15,23,42,0.12)]"
                   variant="outline"
-                  onClick={() => void navigate('/jobs')}
+                  onClick={() => void navigate(surfacePaths.public.jobs)}
                 >
                   Explorar jobs
                 </Button>

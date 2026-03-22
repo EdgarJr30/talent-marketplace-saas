@@ -1,17 +1,18 @@
 import type { NavigationItem } from '@/shared/types/navigation'
+import { surfacePaths } from '@/app/router/surface-paths'
 
 export const publicNavigationItems: NavigationItem[] = [
   {
     title: 'Producto',
     titleKey: 'navigation.home.title',
-    href: '/',
+    href: surfacePaths.public.home,
     description: 'Conoce la experiencia',
     descriptionKey: 'navigation.home.description'
   },
   {
     title: 'Jobs',
     titleKey: 'navigation.jobs.title',
-    href: '/jobs',
+    href: surfacePaths.public.jobsRoot,
     description: 'Oportunidades abiertas',
     descriptionKey: 'navigation.jobs.description'
   }
@@ -20,7 +21,7 @@ export const publicNavigationItems: NavigationItem[] = [
 export const candidateNavigationItems: NavigationItem[] = [
   {
     title: 'Jobs',
-    href: '/jobs',
+    href: surfacePaths.public.jobsRoot,
     description: 'Explora oportunidades abiertas'
   },
   {
@@ -52,35 +53,35 @@ export const candidateNavigationItems: NavigationItem[] = [
 export const employerNavigationItems: NavigationItem[] = [
   {
     title: 'Workspace',
-    href: '/workspace',
+    href: surfacePaths.workspace.root,
     description: 'Marca, equipo y presencia de empresa',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
     title: 'Jobs',
-    href: '/workspace/jobs',
+    href: surfacePaths.workspace.jobs,
     description: 'Publica y organiza vacantes',
     requiresAuth: true,
     requiredPermission: 'workspace:read'
   },
   {
     title: 'Candidates',
-    href: '/workspace/talent',
+    href: surfacePaths.workspace.talent,
     description: 'Descubre personas abiertas a oportunidades',
     requiresAuth: true,
     requiredPermission: 'candidate_directory:read'
   },
   {
     title: 'Pipeline',
-    href: '/workspace/pipeline',
+    href: surfacePaths.workspace.pipeline,
     description: 'Da seguimiento al proceso',
     requiresAuth: true,
     requiredPermission: 'application:read'
   },
   {
     title: 'Access',
-    href: '/workspace/settings/access',
+    href: surfacePaths.workspace.access,
     description: 'Accesos del equipo',
     requiresAuth: true,
     requiredPermission: 'role:read'
@@ -90,34 +91,34 @@ export const employerNavigationItems: NavigationItem[] = [
 export const adminNavigationItems: NavigationItem[] = [
   {
     title: 'Overview',
-    href: '/admin',
+    href: surfacePaths.admin.root,
     description: 'Centro operativo de plataforma',
     requiresAuth: true
   },
   {
     title: 'Approvals',
-    href: '/admin/approvals',
+    href: surfacePaths.admin.approvals,
     description: 'Recruiter requests',
     requiresAuth: true,
     requiredPermission: 'recruiter_request:review'
   },
   {
     title: 'Platform',
-    href: '/admin/platform',
+    href: surfacePaths.admin.platform,
     description: 'Planes y ops',
     requiresAuth: true,
     requiredPermission: 'platform_dashboard:read'
   },
   {
     title: 'Moderation',
-    href: '/admin/moderation',
+    href: surfacePaths.admin.moderation,
     description: 'Trust and safety',
     requiresAuth: true,
     requiredPermission: 'moderation:read'
   },
   {
     title: 'Errors',
-    href: '/admin/errors',
+    href: surfacePaths.admin.errors,
     description: 'Error review',
     requiresAuth: true,
     requiredPermission: 'audit_log:read'

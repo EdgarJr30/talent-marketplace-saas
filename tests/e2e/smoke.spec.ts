@@ -7,11 +7,14 @@ const candidateApplicationsPath = '/candidate/applications'
 const workspacePipelinePath = '/workspace/pipeline'
 
 test.describe('public shell smoke', () => {
-  test('loads the public home and jobs discovery on mobile', async ({ page }) => {
+  test('loads the institutional home and platform jobs discovery on mobile', async ({ page }) => {
     await page.goto('/')
+    await expect(page.getByRole('link', { name: /Donate/i })).toBeVisible()
+
+    await page.goto('/platform')
     await expect(page.getByRole('button', { name: /jobs/i })).toBeVisible()
 
-    await page.goto('/jobs')
+    await page.goto('/platform/jobs')
     await expect(page.getByText(/Descubre oportunidades con una experiencia clara y directa|Gestiona tus vacantes/i)).toBeVisible()
   })
 

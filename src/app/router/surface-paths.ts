@@ -1,10 +1,24 @@
 export const surfacePaths = {
-  public: {
+  institutional: {
     home: '/',
-    jobs: '/jobs',
-    jobDetail: (jobSlug: string) => `/jobs/${jobSlug}`,
-    jobApply: (jobSlug: string) => `/jobs/${jobSlug}/apply`,
-    offline: '/offline'
+    homeAlias: '/home',
+    membership: '/membership',
+    projects: '/projects',
+    projectFunding: '/projects/funding',
+    donate: '/donate',
+    whoWeAre: '/who-we-are',
+    contactUs: '/contact-us',
+    directory: '/directory',
+    news: '/news',
+    media: '/media'
+  },
+  public: {
+    home: '/platform',
+    jobs: '/platform/jobs',
+    jobsRoot: '/platform/jobs',
+    jobDetail: (jobSlug: string) => `/platform/jobs/${jobSlug}`,
+    jobApply: (jobSlug: string) => `/platform/jobs/${jobSlug}/apply`,
+    offline: '/platform/offline'
   },
   auth: {
     root: '/auth',

@@ -6,6 +6,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
+import { surfacePaths } from '@/app/router/surface-paths'
 import { useAppSession } from '@/app/providers/app-session-provider'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -172,7 +173,7 @@ function JobEditor({
       await reportErrorWithToast({
         title: 'No pudimos guardar la vacante',
         source: 'jobs.save',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -450,7 +451,7 @@ export function JobsOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar el estado de la vacante',
         source: 'jobs.update-status',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -478,7 +479,7 @@ export function JobsOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar tus vacantes guardadas',
         source: 'jobs.toggle-saved',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error,
         userMessage: session.isAuthenticated
@@ -519,7 +520,7 @@ export function JobsOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos crear la alerta',
         source: 'jobs.create-alert',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -549,7 +550,7 @@ export function JobsOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar la alerta',
         source: 'jobs.toggle-alert',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -579,7 +580,7 @@ export function JobsOverviewPage() {
       await reportErrorWithToast({
         title: 'No pudimos eliminar la alerta',
         source: 'jobs.delete-alert',
-        route: '/jobs',
+        route: surfacePaths.public.jobs,
         userId: session.authUser?.id ?? null,
         error
       })
@@ -659,7 +660,7 @@ export function JobsOverviewPage() {
                           Archivar
                         </Button>
                       ) : null}
-                      <Link className={cn(linkButtonClassName, 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900')} to={`/jobs/${job.slug}`}>
+                      <Link className={cn(linkButtonClassName, 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900')} to={surfacePaths.public.jobDetail(job.slug)}>
                         Ver publico
                       </Link>
                     </div>
@@ -720,7 +721,7 @@ export function JobsOverviewPage() {
                         {job.experience_level ? <Badge variant="outline">{job.experience_level}</Badge> : null}
                       </div>
                       <div className="mt-4 flex flex-wrap gap-2">
-                        <Link className={cn(linkButtonClassName, 'bg-primary-500 text-white hover:bg-primary-400 hover:text-white border-transparent')} to={`/jobs/${job.slug}`}>
+                        <Link className={cn(linkButtonClassName, 'bg-primary-500 text-white hover:bg-primary-400 hover:text-white border-transparent')} to={surfacePaths.public.jobDetail(job.slug)}>
                           Ver detalle
                         </Link>
                         {session.isAuthenticated ? (

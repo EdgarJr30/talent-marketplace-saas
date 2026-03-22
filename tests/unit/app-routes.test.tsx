@@ -9,7 +9,8 @@ function findTopLevelRoute(path: string) {
 
 describe('app route contract', () => {
   it('defines the canonical top-level surfaces', () => {
-    expect(findTopLevelRoute('/')).toBeDefined()
+    expect(findTopLevelRoute(surfacePaths.institutional.home)).toBeDefined()
+    expect(findTopLevelRoute(surfacePaths.public.home)).toBeDefined()
     expect(findTopLevelRoute(surfacePaths.auth.root)).toBeDefined()
     expect(findTopLevelRoute(surfacePaths.app.home)).toBeDefined()
     expect(findTopLevelRoute(surfacePaths.candidate.root)).toBeDefined()
@@ -35,12 +36,14 @@ describe('app route contract', () => {
   })
 
   it('defines catch-all routes inside every route surface', () => {
+    const institutionalRoute = findTopLevelRoute(surfacePaths.institutional.home)
     const publicRoute = findTopLevelRoute(surfacePaths.public.home)
     const authRoute = findTopLevelRoute(surfacePaths.auth.root)
     const candidateRoute = findTopLevelRoute(surfacePaths.candidate.root)
     const workspaceRoute = findTopLevelRoute(surfacePaths.workspace.root)
     const adminRoute = findTopLevelRoute(surfacePaths.admin.root)
 
+    expect(institutionalRoute?.children?.some((route) => route.path === '*')).toBe(true)
     expect(publicRoute?.children?.some((route) => route.path === '*')).toBe(true)
     expect(authRoute?.children?.some((route) => route.path === '*')).toBe(true)
     expect(candidateRoute?.children?.some((route) => route.path === '*')).toBe(true)

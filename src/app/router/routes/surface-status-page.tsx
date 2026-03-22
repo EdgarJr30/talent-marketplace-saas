@@ -4,7 +4,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { PageHeader } from '@/components/ui/page-header'
 import { surfacePaths } from '@/app/router/surface-paths'
 
-export type AppSurface = 'public' | 'auth' | 'candidate' | 'workspace' | 'admin'
+export type AppSurface = 'institutional' | 'public' | 'auth' | 'candidate' | 'workspace' | 'admin'
 export type SurfaceStatusKind = 'not-found' | 'forbidden'
 
 function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
@@ -42,18 +42,34 @@ function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
           actionLabel: 'Ir a sign in',
           actionHref: surfacePaths.auth.signIn
         }
+      case 'institutional':
+        return {
+          eyebrow: 'Acceso restringido',
+          title: 'No puedes abrir esta página institucional',
+          description: 'Vuelve al portal principal de ASI para continuar desde una ruta válida.',
+          actionLabel: 'Volver al portal',
+          actionHref: surfacePaths.institutional.home
+        }
       default:
         return {
           eyebrow: 'Acceso restringido',
           title: 'No puedes abrir esta sección',
           description: 'Esta vista no está disponible para tu sesión actual.',
-          actionLabel: 'Volver al inicio',
+          actionLabel: 'Volver a la plataforma',
           actionHref: surfacePaths.public.home
         }
     }
   }
 
   switch (surface) {
+    case 'institutional':
+      return {
+        eyebrow: 'Ruta no encontrada',
+        title: 'No encontramos esa página institucional',
+        description: 'El portal institucional sigue disponible, pero esta ruta no forma parte de la navegación principal.',
+        actionLabel: 'Ir al home institucional',
+        actionHref: surfacePaths.institutional.home
+      }
     case 'candidate':
       return {
         eyebrow: 'Ruta no encontrada',
@@ -89,9 +105,9 @@ function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
     default:
       return {
         eyebrow: 'Ruta no encontrada',
-        title: 'No encontramos esta página',
-        description: 'La landing y los jobs públicos siguen disponibles, pero esta ruta no forma parte de la experiencia pública actual.',
-        actionLabel: 'Volver al inicio',
+        title: 'No encontramos esta página de plataforma',
+        description: 'La landing comercial y los jobs públicos siguen disponibles dentro de la plataforma, pero esta ruta no forma parte de esa experiencia.',
+        actionLabel: 'Volver a la plataforma',
         actionHref: surfacePaths.public.home
       }
   }

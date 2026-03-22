@@ -7,8 +7,8 @@
 - Solicitud recruiter en `/candidate/recruiter-request`
 - Aprobacion admin en `/admin/approvals`
 - Workspace employer en `/workspace`
-- Creacion y publish de job en `/jobs`
-- Apply flow en `/jobs/:slug/apply`
+- Creacion y publish de job en `/platform/jobs`
+- Apply flow en `/platform/jobs/:slug/apply`
 - Pipeline recruiter en `/workspace/pipeline`
 
 ## PWA readiness

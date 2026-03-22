@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
+import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -50,7 +51,7 @@ export function JobDetailPage() {
       await reportErrorWithToast({
         title: 'No pudimos actualizar esta vacante guardada',
         source: 'jobs.detail.toggle-saved',
-        route: `/jobs/${jobSlug}`,
+        route: surfacePaths.public.jobDetail(jobSlug),
         userId: session.authUser?.id ?? null,
         error
       })
@@ -76,9 +77,9 @@ export function JobDetailPage() {
           <CardDescription>{toErrorMessage(jobQuery.error) || 'El slug no corresponde a una vacante publicada.'}</CardDescription>
         </CardHeader>
         <CardContent>
-                <Link className={linkButtonClassName} to="/jobs">
-                  Volver a jobs
-                </Link>
+          <Link className={linkButtonClassName} to={surfacePaths.public.jobs}>
+            Volver a jobs
+          </Link>
         </CardContent>
       </Card>
     )
@@ -111,7 +112,7 @@ export function JobDetailPage() {
             <div className="mt-4 flex flex-col gap-3">
               <Button disabled>Apply llega en la siguiente fase</Button>
               {session.isAuthenticated ? (
-                <Link className={cn(linkButtonClassName, 'bg-primary-500 text-white hover:bg-primary-400 hover:text-white border-transparent')} to={`/jobs/${jobSlug}/apply`}>
+                <Link className={cn(linkButtonClassName, 'bg-primary-500 text-white hover:bg-primary-400 hover:text-white border-transparent')} to={surfacePaths.public.jobApply(jobSlug)}>
                   Apply now
                 </Link>
               ) : null}
@@ -128,7 +129,7 @@ export function JobDetailPage() {
                   Inicia sesion para guardar
                 </Link>
               )}
-              <Link className={cn(linkButtonClassName, 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900')} to="/jobs">
+              <Link className={cn(linkButtonClassName, 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900')} to={surfacePaths.public.jobs}>
                 Volver al discovery
               </Link>
             </div>

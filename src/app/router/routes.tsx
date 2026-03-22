@@ -11,6 +11,16 @@ import { SignUpPage } from '@/features/auth/pages/sign-up-page'
 import { CandidateProfilePage } from '@/features/candidate-profile/pages/candidate-profile-page'
 import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-review-page'
 import { AdminConsolePage } from '@/features/internal/pages/admin-console-page'
+import { DirectoryPage } from '@/features/institutional/pages/directory-page'
+import { DonatePage } from '@/features/institutional/pages/donate-page'
+import { ContactUsPage } from '@/features/institutional/pages/contact-us-page'
+import { InstitutionalHomePage } from '@/features/institutional/pages/institutional-home-page'
+import { MediaPage } from '@/features/institutional/pages/media-page'
+import { MembershipPage } from '@/features/institutional/pages/membership-page'
+import { NewsPage } from '@/features/institutional/pages/news-page'
+import { ProjectFundingPage } from '@/features/institutional/pages/project-funding-page'
+import { ProjectsPage } from '@/features/institutional/pages/projects-page'
+import { WhoWeArePage } from '@/features/institutional/pages/who-we-are-page'
 import { JobDetailPage } from '@/features/jobs/pages/job-detail-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
 import { ModerationOverviewPage } from '@/features/moderation/pages/moderation-overview-page'
@@ -25,6 +35,7 @@ import { AuthShell } from '@/app/layouts/auth-shell'
 import { AdminShell } from '@/app/layouts/admin-shell'
 import { CandidateShell } from '@/app/layouts/candidate-shell'
 import { EmployerShell } from '@/app/layouts/employer-shell'
+import { InstitutionalShell } from '@/app/layouts/institutional-shell'
 import { PublicShell } from '@/app/layouts/public-shell'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { AppEntryRedirect } from '@/app/router/routes/app-entry-redirect'
@@ -35,7 +46,61 @@ import { OfflinePage } from '@/pages/offline-page'
 
 export const appRoutes: RouteObject[] = [
   {
-    path: '/',
+    path: surfacePaths.institutional.home,
+    element: <InstitutionalShell />,
+    children: [
+      {
+        index: true,
+        element: <InstitutionalHomePage />
+      },
+      {
+        path: 'home',
+        element: <InstitutionalHomePage />
+      },
+      {
+        path: 'membership',
+        element: <MembershipPage />
+      },
+      {
+        path: 'projects',
+        element: <ProjectsPage />
+      },
+      {
+        path: 'projects/funding',
+        element: <ProjectFundingPage />
+      },
+      {
+        path: 'donate',
+        element: <DonatePage />
+      },
+      {
+        path: 'who-we-are',
+        element: <WhoWeArePage />
+      },
+      {
+        path: 'contact-us',
+        element: <ContactUsPage />
+      },
+      {
+        path: 'directory',
+        element: <DirectoryPage />
+      },
+      {
+        path: 'news',
+        element: <NewsPage />
+      },
+      {
+        path: 'media',
+        element: <MediaPage />
+      },
+      {
+        path: '*',
+        element: <SurfaceStatusPage kind="not-found" surface="institutional" />
+      }
+    ]
+  },
+  {
+    path: surfacePaths.public.home,
     element: <PublicShell />,
     children: [
       {

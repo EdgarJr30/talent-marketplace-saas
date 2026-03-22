@@ -293,7 +293,7 @@ Apple-inspired UI rules:
 5. Use motion, blur, tint, elevation, and softness with restraint; they should support hierarchy, not dominate it.
 
 ### 8.4 Product landing requirements
-1. The public root route must function as a real product landing, not a development or configuration dashboard.
+1. The product marketing landing must live under `/platform` and must function as a real product landing, not a development or configuration dashboard.
 2. The landing should include:
 - hero
 - audience/value framing
@@ -304,6 +304,7 @@ Apple-inspired UI rules:
 4. Internal QA, launch-readiness, or foundations tools must never appear in the public landing experience for standard users.
 5. Public landing content must be product-specific. Do not ship Tailwind demo labels, placeholder navigation items, sample pricing copy, or generic FAQ text in customer-facing routes.
 6. Customer-facing copy in public, auth, candidate, and employer surfaces must be benefit-first and commercially legible. Terms such as `RBAC`, `RLS`, `tenant`, `membership`, `Supabase`, `audit`, and similar implementation language should stay in internal or admin-only contexts unless the user must act on that exact concept.
+7. The institutional portal under `/` may use a different visual system from the product landing, but it must still respect the shared mobile-first, accessibility, and clarity rules defined in this document. Its dedicated visual language belongs in `INSTITUTIONAL_UI_RULES.md`.
 
 ### 8.2 Color rules
 1. Pastel accents are allowed only as controlled brand surfaces, highlights, chips, or secondary emphasis.

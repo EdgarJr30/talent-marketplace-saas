@@ -69,11 +69,11 @@ function renderWithProviders(router: ReturnType<typeof createMemoryRouter>) {
   )
 }
 
-function renderPublicShell(initialEntry = '/') {
+function renderPublicShell(initialEntry = '/platform') {
   const router = createMemoryRouter(
     [
       {
-        path: '/',
+        path: '/platform',
         element: <PublicShell />,
         children: [
           {
@@ -108,6 +108,7 @@ describe('route shells', () => {
 
     expect(await screen.findByRole('link', { name: /Plataforma ASI/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Jobs' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'ASI institucional' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Crear cuenta' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Iniciar sesion' })).toBeInTheDocument()
   })

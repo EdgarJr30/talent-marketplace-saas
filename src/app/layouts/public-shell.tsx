@@ -3,17 +3,17 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 import { useAppSession } from '@/app/providers/app-session-provider'
-import { getAuthenticatedHomePath } from '@/app/router/surface-paths'
+import { getAuthenticatedHomePath, surfacePaths } from '@/app/router/surface-paths'
 import { BrandLockup } from '@/components/ui/app-brand'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { cn } from '@/lib/utils/cn'
 
 const publicNavigation = [
-  { label: 'Como funciona', to: '/#features' },
-  { label: 'Pricing', to: '/#pricing' },
-  { label: 'FAQ', to: '/#faq' },
-  { label: 'Jobs', to: '/jobs' }
+  { label: 'Como funciona', to: `${surfacePaths.public.home}#features` },
+  { label: 'Pricing', to: `${surfacePaths.public.home}#pricing` },
+  { label: 'FAQ', to: `${surfacePaths.public.home}#faq` },
+  { label: 'Jobs', to: surfacePaths.public.jobsRoot }
 ] as const
 
 function scrollToHashTarget(hash: string) {
@@ -36,7 +36,7 @@ export function PublicShell() {
   const session = useAppSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const isLanding = location.pathname === '/'
+  const isLanding = location.pathname === surfacePaths.public.home
   const showGuestAction = !session.isAuthenticated
   const primaryAction = session.isAuthenticated
     ? {
@@ -46,7 +46,7 @@ export function PublicShell() {
     : { label: 'Iniciar sesion', href: '/auth/sign-in' }
 
   useEffect(() => {
-    if (location.pathname !== '/' || !location.hash) {
+    if (location.pathname !== surfacePaths.public.home || !location.hash) {
       return
     }
 
@@ -81,7 +81,7 @@ export function PublicShell() {
                 : 'py-5'
             )}
           >
-            <Link className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4 text-left" to="/">
+            <Link className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4 text-left" to={surfacePaths.public.home}>
               <span className="shrink-0 rounded-[18px] border border-white/70 bg-white/92 px-2.5 py-2 shadow-[var(--app-shadow-card)] backdrop-blur sm:rounded-[22px] sm:px-3 sm:py-2 dark:border-white/10 dark:bg-[#0f1831]">
                 <BrandLockup className="w-[64px] sm:w-[88px]" surface="auto" />
               </span>
@@ -111,6 +111,9 @@ export function PublicShell() {
 
             <div className="hidden shrink-0 items-center gap-2 lg:flex">
               <ThemeToggle compact className="shadow-none" />
+              <Button className="rounded-full px-5" variant="ghost" onClick={() => void navigate(surfacePaths.institutional.home)}>
+                ASI institucional
+              </Button>
               {showGuestAction ? (
                 <Button className="rounded-full px-5" variant="outline" onClick={() => void navigate('/auth/sign-up')}>
                   Crear cuenta
@@ -172,6 +175,15 @@ export function PublicShell() {
               </div>
 
               <div className={cn('mt-6 grid gap-3', showGuestAction ? 'sm:grid-cols-2' : undefined)}>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    void navigate(surfacePaths.institutional.home)
+                  }}
+                >
+                  ASI institucional
+                </Button>
                 {showGuestAction ? (
                   <Button
                     variant="outline"

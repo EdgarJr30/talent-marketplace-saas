@@ -203,4 +203,184 @@
   .tm-hairline {
     border-color: var(--app-border);
   }
+
+  .asi-site {
+    --asi-primary: #002f6e;
+    --asi-primary-container: #004599;
+    --asi-surface: #f8f9fa;
+    --asi-surface-muted: #eef2f6;
+    --asi-surface-panel: rgba(255, 255, 255, 0.92);
+    --asi-surface-raised: #ffffff;
+    --asi-secondary: #585e6c;
+    --asi-outline: rgba(195, 198, 211, 0.2);
+    --asi-text: #191c1d;
+    --asi-text-muted: #4f5665;
+    --asi-shadow-soft: 0 12px 40px rgba(0, 47, 110, 0.08);
+    --asi-shadow-strong: 0 20px 60px rgba(0, 47, 110, 0.12);
+    color-scheme: light;
+    background: linear-gradient(180deg, #f8f9fa 0%, #f8f9fa 100%);
+    color: var(--asi-text);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+  }
+
+  .asi-hero-frame {
+    min-height: 48rem;
+  }
+
+  .asi-gesture-surface {
+    cursor: pointer;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .asi-gesture-surface:active {
+    cursor: grabbing;
+  }
+
+  .asi-container {
+    @apply mx-auto max-w-[1560px] px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+
+  .asi-section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .asi-display {
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+    font-size: clamp(2.35rem, 5.2vw, 4.65rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--asi-text);
+    font-weight: 700;
+  }
+
+  .asi-heading-lg {
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+    font-size: clamp(1.7rem, 3vw, 2.75rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--asi-text);
+    font-weight: 700;
+  }
+
+  .asi-copy {
+    color: var(--asi-text-muted);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .asi-kicker {
+    @apply inline-flex items-center rounded-full px-3 py-2 text-[0.72rem] font-semibold uppercase;
+    letter-spacing: 0.18em;
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--asi-secondary);
+    backdrop-filter: blur(12px);
+  }
+
+  .asi-accent-line {
+    margin-top: 1rem;
+    height: 3px;
+    width: 40px;
+    border-radius: 999px;
+    background: rgba(88, 94, 108, 0.38);
+  }
+
+  .asi-card {
+    @apply rounded-[1.5rem] p-5 sm:p-6;
+    background: var(--asi-surface-panel);
+    box-shadow: var(--asi-shadow-soft);
+    outline: 1px solid var(--asi-outline);
+  }
+
+  .asi-pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase;
+    letter-spacing: 0.16em;
+    background: rgba(0, 47, 110, 0.08);
+    color: var(--asi-primary);
+  }
+
+  .asi-button {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[1rem] px-5 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-300;
+    line-height: 1;
+  }
+
+  .asi-button-primary {
+    color: white;
+    background: linear-gradient(135deg, var(--asi-primary) 0%, var(--asi-primary-container) 100%);
+    box-shadow: 0 12px 40px rgba(0, 47, 110, 0.18);
+  }
+
+  .asi-button-primary:hover {
+    box-shadow: 0 18px 44px rgba(0, 47, 110, 0.24);
+  }
+
+  .asi-button-secondary {
+    background: rgba(255, 255, 255, 0.84);
+    color: var(--asi-primary);
+    box-shadow: var(--asi-shadow-soft);
+  }
+
+  .asi-button-secondary:hover {
+    transform: translateY(-1px);
+    background: white;
+  }
+
+  .asi-button-ghost {
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--asi-text);
+    backdrop-filter: blur(12px);
+  }
+
+  .asi-button-ghost:hover {
+    background: rgba(255, 255, 255, 0.26);
+  }
+
+  .asi-field-label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--asi-text);
+  }
+
+  .asi-field {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid rgba(195, 198, 211, 0.4);
+    background: transparent;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    color: var(--asi-text);
+    outline: none;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .asi-field:focus {
+    border-bottom-width: 2px;
+    border-bottom-color: var(--asi-primary-container);
+    box-shadow: 0 10px 20px rgba(0, 69, 153, 0.08);
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 640px) {
+  @layer components {
+    .asi-hero-frame {
+      height: min(49rem, calc(100svh - 8.2rem));
+      min-height: 36rem;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  @layer components {
+    .asi-hero-frame {
+      height: min(51rem, calc(100svh - 8.4rem));
+      min-height: 38rem;
+    }
+  }
 }

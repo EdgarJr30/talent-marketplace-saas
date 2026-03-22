@@ -63,7 +63,7 @@ export function JobApplicationPage() {
       await reportErrorWithToast({
         title: 'No pudimos enviar tu postulacion',
         source: 'applications.submit',
-        route: `/jobs/${jobSlug}/apply`,
+        route: surfacePaths.public.jobApply(jobSlug),
         userId: session.authUser?.id ?? null,
         error
       })
@@ -207,7 +207,7 @@ export function JobApplicationPage() {
               <Button onClick={() => applyMutation.mutate()} disabled={applyMutation.isPending}>
                 {applyMutation.isPending ? 'Enviando...' : 'Enviar postulacion'}
               </Button>
-              <Link to={`/jobs/${jobSlug}`}>
+              <Link to={surfacePaths.public.jobDetail(jobSlug)}>
                 <Button variant="outline">Volver a la vacante</Button>
               </Link>
             </div>

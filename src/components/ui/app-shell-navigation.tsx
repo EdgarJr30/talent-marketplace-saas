@@ -32,7 +32,8 @@ export interface AppNavGroup {
 
 const iconByHref: Record<string, LucideIcon> = {
   '/': Sparkles,
-  '/jobs': BriefcaseBusiness,
+  '/platform': Sparkles,
+  '/platform/jobs': BriefcaseBusiness,
   '/workspace/jobs': BriefcaseBusiness,
   '/candidate/profile': UserRound,
   '/candidate/applications': FileText,

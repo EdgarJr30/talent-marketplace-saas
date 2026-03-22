@@ -20,6 +20,7 @@ This folder contains the canonical Markdown documentation for the repository.
 - `adr/README.md`
 
 ### `governance/`
+- `governance/INSTITUTIONAL_UI_RULES.md`
 - `governance/UI_UX_RULES.md`
 - `governance/CODING_RULES.md`
 - `governance/DOCUMENTATION_RULES.md`
@@ -45,8 +46,9 @@ This folder contains the canonical Markdown documentation for the repository.
 4. Update this index whenever a canonical Markdown file is added, moved, or removed.
 
 ## Canonical product surfaces
-The modular monolith is organized around four canonical product surfaces:
-- `public` for marketing, pricing, and public jobs under `/`
+The modular monolith is organized around five canonical product surfaces:
+- `institutional` for the ASI portal under `/`
+- `public` for the product landing, pricing, and public jobs under `/platform`
 - `candidate` for authenticated talent flows under `/candidate/*`
 - `workspace` for employer tenant workflows under `/workspace/*`
 - `admin` for the restricted platform console under `/admin/*`

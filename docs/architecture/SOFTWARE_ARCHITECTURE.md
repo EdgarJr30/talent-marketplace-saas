@@ -295,8 +295,9 @@ Each feature may contain:
 This keeps logic close to the business domain.
 
 ### 7.2 Route surface ownership
-The modular monolith must expose four route surfaces with explicit ownership and shells:
-- `public`: landing, pricing, public jobs, and acquisition flows under `/`
+The modular monolith must expose five route surfaces with explicit ownership and shells:
+- `institutional`: portal, membership, projects, donation, news, media, and contact under `/`
+- `public`: product landing, pricing, public jobs, and acquisition flows under `/platform`
 - `candidate`: authenticated talent workflows under `/candidate/*`
 - `workspace`: authenticated employer tenant workflows under `/workspace/*`
 - `admin`: restricted platform console under `/admin/*`
