@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import {
   getTouchPanIntent,
   normalizeCarouselMotionProgress,
-  wrapCarouselCardPosition,
 } from '@/features/institutional/lib/carousel-gesture';
 
 describe('getTouchPanIntent', () => {
@@ -33,19 +32,5 @@ describe('normalizeCarouselMotionProgress', () => {
 
   it('leaves valid loop offsets untouched', () => {
     expect(normalizeCarouselMotionProgress(-320, 600)).toBe(-320);
-  });
-});
-
-describe('wrapCarouselCardPosition', () => {
-  it('recycles cards that drift left past the viewport window', () => {
-    expect(wrapCarouselCardPosition(-440, 200, 600)).toBe(160);
-  });
-
-  it('recycles cards that drift right past the loop end', () => {
-    expect(wrapCarouselCardPosition(440, 200, 600)).toBe(-160);
-  });
-
-  it('leaves in-range card positions untouched', () => {
-    expect(wrapCarouselCardPosition(180, 200, 600)).toBe(180);
   });
 });

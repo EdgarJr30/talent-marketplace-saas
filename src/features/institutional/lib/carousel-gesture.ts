@@ -45,27 +45,3 @@ export function normalizeCarouselMotionProgress(
 
   return normalized;
 }
-
-export function wrapCarouselCardPosition(
-  position: number,
-  advanceWidth: number,
-  loopWidth: number
-): number {
-  if (advanceWidth <= 0 || loopWidth <= 0) {
-    return position;
-  }
-
-  let wrapped = position;
-  const min = -advanceWidth;
-  const max = loopWidth - advanceWidth;
-
-  while (wrapped < min) {
-    wrapped += loopWidth;
-  }
-
-  while (wrapped >= max) {
-    wrapped -= loopWidth;
-  }
-
-  return wrapped;
-}

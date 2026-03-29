@@ -10,7 +10,6 @@ import {
 
 import {
   AnimatePresence,
-  animate,
   motion,
   useMotionValue,
   useReducedMotion,
@@ -46,25 +45,11 @@ import {
 import {
   getTouchPanIntent,
   normalizeCarouselMotionProgress,
-  wrapCarouselCardPosition,
 } from '@/features/institutional/lib/carousel-gesture';
 import { cn } from '@/lib/utils/cn';
 
 function wrapIndex(index: number, length: number) {
   return (index + length) % length;
-}
-
-function detectIosCarouselStepFallback(): boolean {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-
-  const { userAgent, platform, maxTouchPoints } = window.navigator;
-  const isAppleTouchDevice =
-    /iP(hone|ad|od)/i.test(userAgent) ||
-    (platform === 'MacIntel' && maxTouchPoints > 1);
-
-  return isAppleTouchDevice;
 }
 
 function getVisibleItems<T>(
@@ -96,8 +81,6 @@ function getSwipeDirection(info: {
 const CAROUSEL_AUTOPLAY_PIXELS_PER_MS = 0.045;
 const CAROUSEL_AUTOPLAY_MAX_DELTA_MS = 32;
 const CAROUSEL_AUTOPLAY_RESUME_DELAY_MS = 560;
-const CAROUSEL_STEP_AUTOPLAY_INTERVAL_MS = 3400;
-const CAROUSEL_STEP_AUTOPLAY_DURATION_S = 0.72;
 const CAROUSEL_CARD_GAP_REM = 0.6;
 
 type InstitutionalCarouselCardItem = (typeof homeCarouselCards)[number];
@@ -282,26 +265,18 @@ function InstitutionalCarouselCard({
 
 function LoopingInstitutionalCarouselCard({
   item,
-  index,
+  slotIndex,
   advanceWidth,
-  loopWidth,
   trackOffset,
   cardRef,
 }: {
   item: InstitutionalCarouselCardItem;
-  index: number;
+  slotIndex: number;
   advanceWidth: number;
-  loopWidth: number;
   trackOffset: MotionValue<number>;
   cardRef?: Ref<HTMLElement>;
 }) {
-  const x = useTransform(() =>
-    wrapCarouselCardPosition(
-      index * advanceWidth + trackOffset.get(),
-      advanceWidth,
-      loopWidth
-    )
-  );
+  const x = useTransform(() => slotIndex * advanceWidth + trackOffset.get());
 
   return <InstitutionalCarouselCard cardRef={cardRef} item={item} x={x} />;
 }
@@ -311,8 +286,8 @@ export function InstitutionalHomePage() {
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
   const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
-  const [isCarouselStepAutoplay] = useState(() =>
-    detectIosCarouselStepFallback()
+  const [carouselRenderSlotCount, setCarouselRenderSlotCount] = useState(
+    homeCarouselCards.length + 4
   );
   const [carouselAdvanceWidth, setCarouselAdvanceWidth] = useState(0);
   const [carouselLoopWidth, setCarouselLoopWidth] = useState(0);
@@ -326,9 +301,6 @@ export function InstitutionalHomePage() {
   const isCarouselHoveredRef = useRef(false);
   const isCarouselTouchingRef = useRef(false);
   const carouselResumeTimeoutRef = useRef<number | null>(null);
-  const carouselTrackAnimationRef = useRef<ReturnType<typeof animate> | null>(
-    null
-  );
   const carouselOffsetX = useMotionValue(0);
   const platformDemoVideoPath = '/media/demoApp.mp4';
   const christianEventVideoPath = '/media/christian-event.mp4';
@@ -379,6 +351,13 @@ export function InstitutionalHomePage() {
       const cardWidth = measureCard.getBoundingClientRect().width;
       const nextAdvanceWidth = cardWidth + gap;
       const nextLoopWidth = nextAdvanceWidth * homeCarouselCards.length;
+      const viewportWidth = viewport.getBoundingClientRect().width;
+      const visibleSlotCount = Math.max(
+        1,
+        Math.ceil(viewportWidth / nextAdvanceWidth)
+      );
+      const nextRenderSlotCount =
+        homeCarouselCards.length + visibleSlotCount + 2;
 
       if (nextAdvanceWidth <= 0 || nextLoopWidth <= 0) {
         return;
@@ -386,6 +365,7 @@ export function InstitutionalHomePage() {
 
       setCarouselAdvanceWidth(nextAdvanceWidth);
       setCarouselLoopWidth(nextLoopWidth);
+      setCarouselRenderSlotCount(nextRenderSlotCount);
       carouselOffsetX.set(
         normalizeCarouselMotionProgress(carouselOffsetX.get(), nextLoopWidth)
       );
@@ -419,7 +399,6 @@ export function InstitutionalHomePage() {
       }
 
       window.cancelAnimationFrame(carouselAnimationFrameRef.current);
-      carouselTrackAnimationRef.current?.stop();
     };
   }, []);
 
@@ -444,42 +423,8 @@ export function InstitutionalHomePage() {
     }, CAROUSEL_AUTOPLAY_RESUME_DELAY_MS);
   }, []);
 
-  const animateCarouselTrackTo = useCallback(
-    (targetOffset: number): void => {
-      if (carouselLoopWidth <= 0) {
-        return;
-      }
-
-      carouselTrackAnimationRef.current?.stop();
-
-      carouselTrackAnimationRef.current = animate(
-        carouselOffsetX,
-        targetOffset,
-        {
-          duration: CAROUSEL_STEP_AUTOPLAY_DURATION_S,
-          ease: [0.22, 1, 0.36, 1],
-          onComplete: () => {
-            carouselOffsetX.set(
-              normalizeCarouselMotionProgress(
-                carouselOffsetX.get(),
-                carouselLoopWidth
-              )
-            );
-            carouselTrackAnimationRef.current = null;
-          },
-        }
-      );
-    },
-    [carouselLoopWidth, carouselOffsetX]
-  );
-
   useEffect(() => {
-    if (
-      shouldReduceMotion ||
-      isCarouselPaused ||
-      isCarouselStepAutoplay ||
-      carouselLoopWidth <= 0
-    ) {
+    if (shouldReduceMotion || isCarouselPaused || carouselLoopWidth <= 0) {
       return;
     }
 
@@ -507,33 +452,6 @@ export function InstitutionalHomePage() {
     carouselLoopWidth,
     carouselOffsetX,
     isCarouselPaused,
-    isCarouselStepAutoplay,
-    shouldReduceMotion,
-  ]);
-
-  useEffect(() => {
-    if (
-      shouldReduceMotion ||
-      isCarouselPaused ||
-      !isCarouselStepAutoplay ||
-      carouselLoopWidth <= 0 ||
-      carouselAdvanceWidth <= 0
-    ) {
-      return;
-    }
-
-    const interval = window.setInterval(() => {
-      animateCarouselTrackTo(carouselOffsetX.get() - carouselAdvanceWidth);
-    }, CAROUSEL_STEP_AUTOPLAY_INTERVAL_MS);
-
-    return () => window.clearInterval(interval);
-  }, [
-    animateCarouselTrackTo,
-    carouselAdvanceWidth,
-    carouselLoopWidth,
-    carouselOffsetX,
-    isCarouselPaused,
-    isCarouselStepAutoplay,
     shouldReduceMotion,
   ]);
 
@@ -558,7 +476,7 @@ export function InstitutionalHomePage() {
   );
 
   const handleCarouselPanEnd = useCallback(
-    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
+    (): void => {
       isCarouselTouchingRef.current = false;
 
       if (carouselLoopWidth <= 0) {
@@ -572,32 +490,9 @@ export function InstitutionalHomePage() {
       );
       carouselOffsetX.set(currentOffset);
 
-      if (isCarouselStepAutoplay && carouselAdvanceWidth > 0) {
-        const direction = getSwipeDirection(info);
-
-        if (direction === 'next') {
-          animateCarouselTrackTo(currentOffset - carouselAdvanceWidth);
-          resumeCarouselAutoplay();
-          return;
-        }
-
-        if (direction === 'prev') {
-          animateCarouselTrackTo(currentOffset + carouselAdvanceWidth);
-          resumeCarouselAutoplay();
-          return;
-        }
-      }
-
       resumeCarouselAutoplay();
     },
-    [
-      animateCarouselTrackTo,
-      carouselAdvanceWidth,
-      carouselLoopWidth,
-      carouselOffsetX,
-      isCarouselStepAutoplay,
-      resumeCarouselAutoplay,
-    ]
+    [carouselLoopWidth, carouselOffsetX, resumeCarouselAutoplay]
   );
 
   useEffect(() => {
@@ -633,6 +528,15 @@ export function InstitutionalHomePage() {
       activeTestimonialIndex + (direction === 'next' ? 1 : -1)
     );
   };
+
+  const carouselRenderSlots = useMemo(
+    () =>
+      Array.from({ length: carouselRenderSlotCount }, (_, slotIndex) => ({
+        slotIndex,
+        item: homeCarouselCards[slotIndex % homeCarouselCards.length],
+      })),
+    [carouselRenderSlotCount]
+  );
 
   const activeHero = homeHeroSlides[activeHeroIndex];
   const isImageOnlyHero = activeHero.contentMode === 'image-only';
@@ -928,7 +832,6 @@ export function InstitutionalHomePage() {
 
                 event.preventDefault();
                 pauseCarouselAutoplay();
-                carouselTrackAnimationRef.current?.stop();
                 carouselOffsetX.set(
                   normalizeCarouselMotionProgress(
                     carouselOffsetX.get() - event.deltaX,
@@ -944,19 +847,17 @@ export function InstitutionalHomePage() {
                 onPanStart={() => {
                   isCarouselTouchingRef.current = true;
                   pauseCarouselAutoplay();
-                  carouselTrackAnimationRef.current?.stop();
                 }}
                 onPan={handleCarouselPan}
                 onPanEnd={handleCarouselPanEnd}
               >
-                {homeCarouselCards.map((item, index) => (
+                {carouselRenderSlots.map(({ item, slotIndex }) => (
                   <LoopingInstitutionalCarouselCard
-                    key={item.title}
+                    key={`${item.title}-${slotIndex}`}
                     advanceWidth={carouselAdvanceWidth}
-                    cardRef={index === 0 ? carouselMeasureCardRef : undefined}
-                    index={index}
+                    cardRef={slotIndex === 0 ? carouselMeasureCardRef : undefined}
                     item={item}
-                    loopWidth={carouselLoopWidth}
+                    slotIndex={slotIndex}
                     trackOffset={carouselOffsetX}
                   />
                 ))}
