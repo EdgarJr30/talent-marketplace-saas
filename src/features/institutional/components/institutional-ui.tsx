@@ -110,10 +110,12 @@ export function InstitutionalSection({
 
 export function InstitutionalCard({
   className,
-  children
+  children,
+  hoverMotion = true,
 }: {
   className?: string
   children: ReactNode
+  hoverMotion?: boolean
 }) {
   const shouldReduceMotion = useReducedMotion()
 
@@ -123,7 +125,11 @@ export function InstitutionalCard({
       initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
       transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
       viewport={{ once: true, amount: 0.18 }}
-      whileHover={shouldReduceMotion ? undefined : { y: -4, boxShadow: '0 18px 44px rgba(0, 47, 110, 0.12)' }}
+      whileHover={
+        shouldReduceMotion || !hoverMotion
+          ? undefined
+          : { y: -4, boxShadow: '0 18px 44px rgba(0, 47, 110, 0.12)' }
+      }
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
     >
       {children}
