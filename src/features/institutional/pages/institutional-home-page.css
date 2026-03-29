@@ -7,7 +7,12 @@
 }
 
 .institutional-home__image-backdrop {
-  background-image: linear-gradient(135deg, #0a2f6e 0%, #1b5ca8 48%, #6fb7d6 100%);
+  background-image: linear-gradient(
+    135deg,
+    #0a2f6e 0%,
+    #1b5ca8 48%,
+    #6fb7d6 100%
+  );
 }
 
 .institutional-home__image-glow {
@@ -16,13 +21,26 @@
 }
 
 .institutional-home__image-overlay {
-  background-image:
-    radial-gradient(circle at 20% 32%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 28%),
-    linear-gradient(90deg, rgba(4, 17, 43, 0.8) 0%, rgba(7, 32, 76, 0.3) 34%, rgba(18, 88, 160, 0.2) 66%, rgba(112, 189, 219, 0.3) 100%);
+  background-image: radial-gradient(
+      circle at 20% 32%,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0) 28%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(4, 17, 43, 0.8) 0%,
+      rgba(7, 32, 76, 0.3) 34%,
+      rgba(18, 88, 160, 0.2) 66%,
+      rgba(112, 189, 219, 0.3) 100%
+    );
 }
 
 .institutional-home__image-fade {
-  background-image: linear-gradient(180deg, rgba(3, 12, 28, 0) 0%, rgba(3, 12, 28, 0.52) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(3, 12, 28, 0) 0%,
+    rgba(3, 12, 28, 0.52) 100%
+  );
 }
 
 .institutional-home__image-frame {
@@ -30,11 +48,21 @@
 }
 
 .institutional-home__hero-overlay {
-  background-image: linear-gradient(180deg, rgba(10, 22, 44, 0.36) 0%, rgba(14, 26, 47, 0.52) 30%, rgba(10, 20, 39, 0.72) 64%, rgba(8, 16, 33, 0.9) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(10, 22, 44, 0.36) 0%,
+    rgba(14, 26, 47, 0.52) 30%,
+    rgba(10, 20, 39, 0.72) 64%,
+    rgba(8, 16, 33, 0.9) 100%
+  );
 }
 
 .institutional-home__hero-fade {
-  background-image: linear-gradient(180deg, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 0.95) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(248, 249, 250, 0) 0%,
+    rgba(248, 249, 250, 0.95) 100%
+  );
 }
 
 .institutional-home__hero-title {
@@ -64,7 +92,6 @@
 
 .institutional-home__carousel-shell {
   width: auto;
-  margin: 0;
   background: transparent;
   border: 0;
   box-shadow: none;
@@ -109,13 +136,25 @@
 }
 
 .institutional-home__carousel-image-overlay {
-  background-image:
-    linear-gradient(180deg, rgba(4, 11, 24, 0.08) 0%, rgba(4, 11, 24, 0.18) 24%, rgba(18, 28, 48, 0.86) 100%),
-    radial-gradient(circle at top right, rgba(111, 183, 214, 0.24) 0%, rgba(111, 183, 214, 0) 34%);
+  background-image: linear-gradient(
+      180deg,
+      rgba(4, 11, 24, 0.08) 0%,
+      rgba(4, 11, 24, 0.18) 24%,
+      rgba(18, 28, 48, 0.86) 100%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(111, 183, 214, 0.24) 0%,
+      rgba(111, 183, 214, 0) 34%
+    );
 }
 
 .institutional-home__carousel-quote {
-  background-image: linear-gradient(135deg, rgba(24, 35, 61, 0.9) 0%, rgba(0, 69, 153, 0.7) 100%);
+  background-image: linear-gradient(
+    135deg,
+    rgba(24, 35, 61, 0.9) 0%,
+    rgba(0, 69, 153, 0.7) 100%
+  );
 }
 
 .institutional-home__eyebrow-meta {
@@ -136,7 +175,11 @@
 }
 
 .institutional-home__event-overlay {
-  background-image: linear-gradient(180deg, rgba(11, 21, 40, 0.08) 0%, rgba(11, 21, 40, 0.22) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(11, 21, 40, 0.08) 0%,
+    rgba(11, 21, 40, 0.22) 100%
+  );
 }
 
 .institutional-home__event-caption {
@@ -153,7 +196,11 @@
 }
 
 .institutional-home__ecosystem-hero-overlay {
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(17, 27, 46, 0.82) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(17, 27, 46, 0.82) 100%
+  );
 }
 
 .institutional-home__ecosystem-hero-title {
@@ -165,7 +212,11 @@
 }
 
 .institutional-home__ecosystem-card-overlay {
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(17, 27, 46, 0.74) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(17, 27, 46, 0.74) 100%
+  );
 }
 
 .institutional-home__card-title {
@@ -200,7 +251,11 @@
 }
 
 .institutional-home__testimonial-card {
-  background-image: linear-gradient(180deg, rgba(22, 35, 60, 0.94) 0%, rgba(0, 47, 110, 0.92) 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(22, 35, 60, 0.94) 0%,
+    rgba(0, 47, 110, 0.92) 100%
+  );
   box-shadow: 0 18px 44px rgba(0, 47, 110, 0.14);
 }
 
@@ -210,7 +265,12 @@
   }
 
   .institutional-home__hero-overlay {
-    background-image: linear-gradient(90deg, rgba(24, 35, 61, 0.68) 0%, rgba(22, 34, 60, 0.38) 42%, rgba(0, 69, 153, 0.38) 100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(24, 35, 61, 0.68) 0%,
+      rgba(22, 34, 60, 0.38) 42%,
+      rgba(0, 69, 153, 0.38) 100%
+    );
   }
 
   .institutional-home__hero-title {
@@ -251,7 +311,6 @@
   .institutional-home__hero-title {
     font-size: 3.35rem;
   }
-
 }
 
 @media (min-width: 1280px) {
