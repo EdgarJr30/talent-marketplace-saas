@@ -809,16 +809,6 @@ export function InstitutionalHomePage() {
                       className={cn(
                         'institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)'
                       )}
-                      whileHover={
-                        shouldReduceMotion
-                          ? undefined
-                          : {
-                              y: -10,
-                              scale: 1.02,
-                              boxShadow: '0 34px 80px rgba(0, 47, 110, 0.24)',
-                              zIndex: 2,
-                            }
-                      }
                       transition={{
                         type: 'spring',
                         stiffness: 220,
