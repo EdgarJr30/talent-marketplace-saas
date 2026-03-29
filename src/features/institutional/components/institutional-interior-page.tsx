@@ -126,7 +126,7 @@ export function InstitutionalInteriorPage({ content }: { content: InstitutionalP
                   <div className="grid gap-5">
                     <img
                       alt={section.imageAlt}
-                      className="h-[22rem] w-full rounded-[1.75rem] object-cover shadow-(--asi-shadow-soft)"
+                      className="h-88 w-full rounded-[1.75rem] object-cover shadow-(--asi-shadow-soft)"
                       loading="lazy"
                       src={section.image}
                     />

@@ -6,10 +6,19 @@ import { Link } from 'react-router-dom'
 import type { InstitutionalAction, InstitutionalLeadContent, InstitutionalTone } from '@/features/institutional/content/site-content'
 import { cn } from '@/lib/utils/cn'
 
-const toneClassByTone: Record<InstitutionalTone, string> = {
-  plain: 'bg-(--asi-surface)',
-  muted: 'bg-(--asi-surface-muted)',
-  brand: 'bg-[linear-gradient(135deg,var(--asi-primary)_0%,var(--asi-primary-container)_100%)] text-white'
+type InstitutionalSectionTone = InstitutionalTone | 'transparent'
+type InstitutionalSectionSpacing = 'default' | 'none'
+
+const toneClassByTone: Record<InstitutionalSectionTone, string> = {
+  plain: 'asi-section-plain',
+  muted: 'asi-section-muted',
+  brand: 'asi-section-brand',
+  transparent: 'asi-section-transparent'
+}
+
+const spacingClassBySpacing: Record<InstitutionalSectionSpacing, string> = {
+  default: 'asi-section',
+  none: 'asi-section-none'
 }
 
 export function InstitutionalActionLink({
@@ -67,16 +76,25 @@ export function InstitutionalLead({
 
 export function InstitutionalSection({
   tone = 'plain',
+  spacing = 'default',
   className,
   children,
   ...props
 }: ComponentPropsWithoutRef<'section'> & {
-  tone?: InstitutionalTone
+  tone?: InstitutionalSectionTone
+  spacing?: InstitutionalSectionSpacing
 }) {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className={cn('asi-section', toneClassByTone[tone], className)} {...props}>
+    <section
+      className={cn(
+        spacingClassBySpacing[spacing],
+        toneClassByTone[tone],
+        className
+      )}
+      {...props}
+    >
       <motion.div
         className="asi-container"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}

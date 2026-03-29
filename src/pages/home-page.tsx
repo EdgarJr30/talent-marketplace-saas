@@ -476,11 +476,11 @@ export function HomePage() {
       <section className="relative isolate overflow-hidden">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-10 h-[60rem] opacity-90 bg-[radial-gradient(circle_at_10%_12%,rgba(57,85,184,0.18),transparent_22%),radial-gradient(circle_at_88%_8%,rgba(111,142,244,0.14),transparent_20%),radial-gradient(circle_at_78%_30%,rgba(143,160,185,0.12),transparent_18%)] dark:bg-[radial-gradient(circle_at_14%_10%,rgba(88,116,214,0.14),transparent_26%),radial-gradient(circle_at_84%_10%,rgba(68,97,194,0.12),transparent_24%),radial-gradient(circle_at_50%_32%,rgba(27,45,92,0.18),transparent_34%)]"
+          className="absolute inset-x-0 top-0 -z-10 h-240 opacity-90 bg-[radial-gradient(circle_at_10%_12%,rgba(57,85,184,0.18),transparent_22%),radial-gradient(circle_at_88%_8%,rgba(111,142,244,0.14),transparent_20%),radial-gradient(circle_at_78%_30%,rgba(143,160,185,0.12),transparent_18%)] dark:bg-[radial-gradient(circle_at_14%_10%,rgba(88,116,214,0.14),transparent_26%),radial-gradient(circle_at_84%_10%,rgba(68,97,194,0.12),transparent_24%),radial-gradient(circle_at_50%_32%,rgba(27,45,92,0.18),transparent_34%)]"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-20 h-[34rem] bg-[linear-gradient(180deg,rgba(244,247,255,0.94)_0%,rgba(255,255,255,0.72)_60%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,rgba(11,18,40,0.96)_0%,rgba(10,17,38,0.76)_42%,rgba(9,17,39,0.18)_74%,rgba(9,17,39,0)_100%)]"
+          className="absolute inset-x-0 top-0 -z-20 h-136 bg-[linear-gradient(180deg,rgba(244,247,255,0.94)_0%,rgba(255,255,255,0.72)_60%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,rgba(11,18,40,0.96)_0%,rgba(10,17,38,0.76)_42%,rgba(9,17,39,0.18)_74%,rgba(9,17,39,0)_100%)]"
         />
 
         <div className="mx-auto max-w-[98rem] px-4 pb-14 pt-36 sm:px-6 sm:pb-18 sm:pt-40 lg:px-8 lg:pb-18 lg:pt-40">
@@ -748,7 +748,7 @@ export function HomePage() {
                     {heroProofs.map((proof, proofIndex) => (
                       <LandingInteractiveSurface
                         key={proof.title}
-                        className="rounded-[20px] bg-(--app-surface-muted)/86 px-4 py-4 text-center sm:min-h-[8.5rem] sm:px-5 sm:py-5 sm:text-left"
+                        className="rounded-[20px] bg-(--app-surface-muted)/86 px-4 py-4 text-center sm:min-h-34 sm:px-5 sm:py-5 sm:text-left"
                         delay={proofIndex * 0.04}
                         hoverScale={1.01}
                         hoverShadow="0 20px 42px rgba(18, 31, 68, 0.1)"
@@ -789,7 +789,7 @@ export function HomePage() {
                   <div className="absolute left-1/2 top-8 h-24 w-24 -translate-x-1/2 rounded-full bg-primary-300/18 blur-3xl" />
                   <div className="relative mx-auto max-w-[18.25rem] rounded-[2.9rem] bg-[linear-gradient(180deg,#eef3ff_0%,#d9e1f1_38%,#c6cfdf_100%)] p-[0.72rem] shadow-[0_32px_72px_rgba(20,35,72,0.18)] ring-1 ring-white/82 dark:bg-[linear-gradient(180deg,#858fa1_0%,#596376_20%,#222b38_58%,#111827_100%)] dark:ring-white/18">
                     <div className="rounded-[2.35rem] bg-[linear-gradient(180deg,#101827_0%,#131f35_100%)] p-[0.48rem] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(0,0,0,0.28)]">
-                      <div className="relative min-h-[24rem] overflow-hidden rounded-[1.95rem] bg-[linear-gradient(180deg,#111b31_0%,#172441_100%)] px-4 pb-4 pt-4 text-white ring-1 ring-white/7">
+                      <div className="relative min-h-96 overflow-hidden rounded-[1.95rem] bg-[linear-gradient(180deg,#111b31_0%,#172441_100%)] px-4 pb-4 pt-4 text-white ring-1 ring-white/7">
                         <div className="mx-auto h-5 w-24 rounded-full bg-black/42 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" />
                         <div className="absolute left-[0.2rem] top-24 h-12 w-[2px] rounded-full bg-white/16" />
                         <div className="absolute right-[0.2rem] top-32 h-16 w-[2px] rounded-full bg-white/14" />

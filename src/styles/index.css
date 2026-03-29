@@ -263,6 +263,31 @@
     @apply py-16 sm:py-20 lg:py-24;
   }
 
+  .asi-section-none {
+    padding-block: 0;
+  }
+
+  .asi-section-plain {
+    background: var(--asi-surface);
+  }
+
+  .asi-section-muted {
+    background: var(--asi-surface-muted);
+  }
+
+  .asi-section-brand {
+    background: linear-gradient(
+      135deg,
+      var(--asi-primary) 0%,
+      var(--asi-primary-container) 100%
+    );
+    color: white;
+  }
+
+  .asi-section-transparent {
+    background: transparent;
+  }
+
   .asi-display {
     font-family: 'Manrope', 'Segoe UI', sans-serif;
     font-size: clamp(2.35rem, 5.2vw, 4.65rem);

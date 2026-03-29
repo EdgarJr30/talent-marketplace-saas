@@ -218,22 +218,25 @@ Do not leave the public pricing comparison trigger looking like a disconnected f
 ### R-063 — Actionable controls must never ship without visible hover feedback
 Do not ship pointer-accessible actions that stay visually inert on hover. Buttons, icon buttons, clickable cards, nav items, segmented controls, disclosure triggers, selectable list rows, and similar actionable surfaces must all show a clear hover response through color, border, background, shadow, or controlled motion. A cursor change by itself is not enough, and this rule applies across the product UI, not only the public landing.
 
-### R-064 — Institutional first-fold motion, header spacing, and hero framing must stay stable
+### R-064 — Tailwind utility syntax and override strategy must stay canonical
+Do not reintroduce non-canonical Tailwind utility spellings when the framework already provides an exact built-in token. Do not rely on CSS important overrides or Tailwind important modifiers as the default fix for styling conflicts; prefer semantic component APIs, Tailwind layer order, or clearer selectors so overrides resolve through the normal cascade. Prefer scale-based height utilities such as `h-88`, `sm:h-96`, `xl:h-108`, `2xl:h-112`, or `min-h-96` over arbitrary `rem` values like `h-[22rem]`, `sm:h-[24rem]`, `xl:h-[27rem]`, or `min-h-[24rem]` whenever the values map exactly to the Tailwind spacing scale.
+
+### R-065 — Institutional first-fold motion, header spacing, and hero framing must stay stable
 Do not let the ASI institutional header and hero regress into variable-height slide swaps, noisy carousel refresh effects, or ambiguous drag affordances. The institutional first fold must reserve real layout space for the fixed header so it never overlaps hero or following sections, keep a viewport-aware hero frame that preserves the same visual height across slide changes, use a correctly aligned logo lockup where the subtitle remains real selectable text separate from the logo image, and animate into a smaller header state on scroll without abrupt jumps. Swipeable institutional carousels must expose a visible pointer/drag cue on pointer-capable devices, and passive showcase videos in the institutional surface must not expose interactive browser controls unless explicitly requested.
 
-### R-064 — Route surfaces must stay canonical and separated
+### R-066 — Route surfaces must stay canonical and separated
 Do not collapse the modular monolith back into a flat route space for authenticated product flows. The canonical route surfaces are `institutional` under `/`, `public` under `/platform/*`, `candidate` under `/candidate/*`, `workspace` under `/workspace/*`, and the restricted platform console under `/admin/*`. Historical families such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` are not part of the active route contract and must not be reintroduced.
 
-### R-065 — Workspace shell must stay close to the sidebar-with-header product frame
+### R-067 — Workspace shell must stay close to the sidebar-with-header product frame
 Do not let the employer `workspace` shell drift back into a heavily stylized floating-dashboard treatment when the intended pattern is the cleaner Tailwind-like app frame with a fixed sidebar, bordered top bar, linear search row, restrained dropdowns, and straightforward page flow. The workspace shell should feel like a real product application frame first, not like a stack of oversized decorative cards wrapped around the content.
 
-### R-066 — Workspace shell must not duplicate logout in the top bar or reintroduce promo filler in the sidebar
+### R-068 — Workspace shell must not duplicate logout in the top bar or reintroduce promo filler in the sidebar
 Do not bring back a prominent `Cerrar sesion` button in the workspace top bar when the same action already lives in the profile menu. In the workspace shell, logout should stay quickly discoverable in the lower sidebar area with restrained danger styling, while the sidebar itself must avoid promotional filler blocks such as generic recruitment marketing copy that distracts from navigation.
 
-### R-067 — Workspace modules must use shared surfaces and preserve dark-mode contrast
+### R-069 — Workspace modules must use shared surfaces and preserve dark-mode contrast
 Do not regress workspace pages back to hardcoded light-only panels like `bg-white`, `bg-zinc-50`, or weak gray text that breaks hierarchy in dark mode. Forms, summary cards, detail panes, and supporting modules under `Company`, `Jobs`, `Candidates`, `Pipeline`, and `Roles` must prefer shared UI primitives and semantic surface tokens so the experience stays elegant, readable, and intuitive for first-time users in both themes.
 
-### R-068 — Pending follow-up work must always create Linear issues automatically
+### R-070 — Pending follow-up work must always create Linear issues automatically
 Do not finish a task with unresolved follow-up left only in chat or implied in the final message. Whenever any prompt leaves pending work of any kind, Codex must create the corresponding Linear issue or issues automatically in the canonical project for this repository, assign them immediately to `me`, and do so without asking for confirmation first, so the user can later verify completion explicitly from Linear.
 
 ---

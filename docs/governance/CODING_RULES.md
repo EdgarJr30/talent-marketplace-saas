@@ -37,6 +37,9 @@
 - use Tailwind CSS v4 utilities with design tokens/theme strategy
 - do not scatter hard-coded hex values in feature components
 - do not create one-off spacing/typography rules without reuse justification
+- use canonical Tailwind utility syntax when an exact built-in token already exists
+- avoid CSS important overrides and Tailwind important modifiers; prefer normal cascade, component APIs, layer order, or clearer selectors instead
+- prefer scale-based height utilities such as `h-88`, `sm:h-96`, or `min-h-96` over arbitrary `rem` values like `h-[22rem]` when Tailwind already provides the exact equivalent
 - shared UI primitives live in `components/ui` or equivalent
 - standardize reusable component primitives on the `shadcn/ui` approach, owned locally in `src/components/ui`
 - standardize product icon usage on `lucide-react`

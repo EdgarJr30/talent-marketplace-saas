@@ -348,7 +348,7 @@ export function InstitutionalHomePage() {
 
   return (
     <div>
-      <InstitutionalSection className="pt-0! pb-0! !bg-transparent">
+      <InstitutionalSection spacing="none" tone="transparent">
         <div className="space-y-8 sm:space-y-10">
           <motion.div
             className="institutional-home__hero-shell relative overflow-hidden bg-(--asi-primary) shadow-(--asi-shadow-strong) sm:-mx-7 lg:-mx-10 xl:-mx-14"
@@ -604,7 +604,7 @@ export function InstitutionalHomePage() {
                       className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
                     >
                       {item.image ? (
-                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
                           <img
                             alt=""
                             className="h-full w-full object-cover"
@@ -680,7 +680,7 @@ export function InstitutionalHomePage() {
                       layout
                     >
                       {item.image ? (
-                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
                           <img
                             alt={item.imageAlt ?? item.title}
                             className="h-full w-full object-cover"
@@ -736,7 +736,7 @@ export function InstitutionalHomePage() {
                       className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
                     >
                       {item.image ? (
-                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
                           <img
                             alt=""
                             className="h-full w-full object-cover"
@@ -787,7 +787,7 @@ export function InstitutionalHomePage() {
         </div>
       </InstitutionalSection>
 
-      <InstitutionalSection className="!bg-transparent">
+      <InstitutionalSection tone="transparent">
         <div className="institutional-home__ecosystem-layout grid gap-8 xl:items-start">
           <div className="space-y-5">
             <InstitutionalLead
