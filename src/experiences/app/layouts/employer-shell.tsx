@@ -674,14 +674,24 @@ function buildCandidateConfig(session: ReturnType<typeof useAppSession>) {
   const visibleNavigation = filterNavigationItems(candidateNavigationItems, session.permissions, session.isAuthenticated).map((item) =>
     mapNavItem(item, 'candidate')
   )
+  const hasWorkspaceAccess = session.permissions.includes('workspace:read')
+  const workspaceNavItem = hasWorkspaceAccess
+    ? ({
+        href: surfacePaths.workspace.root,
+        title: 'Workspace',
+        description: 'Entra al espacio operativo de tu empresa',
+        icon: Building2
+      } satisfies AppNavItem)
+    : null
 
   const primaryNav: AppNavItem[] = [
     surfacePaths.storefront.jobs,
     surfacePaths.candidate.applications,
     surfacePaths.candidate.profile,
-    surfacePaths.candidate.onboarding
+    surfacePaths.candidate.onboarding,
+    ...(hasWorkspaceAccess ? [surfacePaths.workspace.root] : [])
   ]
-    .map((href) => findNavItem(visibleNavigation, href))
+    .map((href) => (href === surfacePaths.workspace.root ? workspaceNavItem : findNavItem(visibleNavigation, href)))
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
 
   return {
@@ -691,10 +701,13 @@ function buildCandidateConfig(session: ReturnType<typeof useAppSession>) {
     mobileSidebarLabel: 'candidate',
     primaryNav,
     profileHref: surfacePaths.candidate.profile,
-    profileMenuLinks: [surfacePaths.candidate.applications, surfacePaths.candidate.onboarding]
-      .map((href) => findNavItem(visibleNavigation, href))
-      .filter((item): item is NonNullable<typeof item> => Boolean(item))
-      .map((item) => ({ href: item.href, label: item.title })),
+    profileMenuLinks: [
+      ...(hasWorkspaceAccess && workspaceNavItem ? [{ href: workspaceNavItem.href, label: workspaceNavItem.title }] : []),
+      ...[surfacePaths.candidate.applications, surfacePaths.candidate.onboarding]
+        .map((href) => findNavItem(visibleNavigation, href))
+        .filter((item): item is NonNullable<typeof item> => Boolean(item))
+        .map((item) => ({ href: item.href, label: item.title }))
+    ],
     publicActionHref: surfacePaths.storefront.jobs,
     publicActionLabel: 'Explorar jobs',
     routeMeta: candidateCopyByHref,
@@ -707,6 +720,7 @@ function buildCandidateConfig(session: ReturnType<typeof useAppSession>) {
       {
         title: 'Candidato',
         items: [
+          ...(workspaceNavItem ? [workspaceNavItem] : []),
           ...[surfacePaths.candidate.profile, surfacePaths.candidate.applications, surfacePaths.storefront.jobs]
             .map((href) => findNavItem(visibleNavigation, href))
             .filter((item): item is NonNullable<typeof item> => Boolean(item))
@@ -731,19 +745,22 @@ function buildStorefrontConfig(session: ReturnType<typeof useAppSession>) {
   const hasWorkspaceAccess = session.permissions.includes('workspace:read')
   const accountItems: AppNavItem[] = session.isAuthenticated
     ? [
-        hasWorkspaceAccess
-          ? {
-              href: surfacePaths.workspace.root,
-              title: 'Workspace',
-              description: 'Entra al espacio operativo de tu empresa',
-              icon: Building2
-            }
-          : {
-              href: surfacePaths.candidate.profile,
-              title: 'Mi perfil',
-              description: 'Abre tu espacio profesional y tus aplicaciones',
-              icon: UserRound
-            }
+        {
+          href: surfacePaths.candidate.profile,
+          title: 'Mi perfil',
+          description: 'Abre tu espacio profesional y tus aplicaciones',
+          icon: UserRound
+        },
+        ...(hasWorkspaceAccess
+          ? [
+              {
+                href: surfacePaths.workspace.root,
+                title: 'Workspace',
+                description: 'Entra al espacio operativo de tu empresa',
+                icon: Building2
+              } satisfies AppNavItem
+            ]
+          : [])
       ]
     : [
         {

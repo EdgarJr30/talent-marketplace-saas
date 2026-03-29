@@ -345,4 +345,11 @@ describe('workspace shell', () => {
     expect(screen.getAllByText('Perfil').length).toBeGreaterThan(0)
     expect(screen.getByRole('button', { name: 'Explorar jobs' })).toBeInTheDocument()
   })
+
+  it('keeps workspace visible in candidate navigation when the user has workspace access', async () => {
+    seedWorkspaceSession(['workspace:read'])
+    renderCandidateShell()
+
+    expect(await screen.findAllByText('Workspace')).not.toHaveLength(0)
+  })
 })
