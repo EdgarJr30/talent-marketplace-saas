@@ -62,8 +62,57 @@
   font-size: 1.4rem;
 }
 
+.institutional-home__carousel-shell {
+  width: auto;
+  margin: 0;
+  padding: 0 !important;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.institutional-home__carousel-viewport {
+  width: 100%;
+  background: transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.institutional-home__carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.institutional-home__carousel-track {
+  display: flex;
+  width: max-content;
+  gap: 0.6rem;
+  align-items: stretch;
+  will-change: transform;
+}
+
+.institutional-home__carousel-set {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.institutional-home__carousel-card {
+  flex: 0 0 clamp(15.5rem, 64vw, 19rem);
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 24px 54px rgba(0, 47, 110, 0.14);
+  border-radius: 1.9rem;
+}
+
 .institutional-home__carousel-image-overlay {
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(18, 28, 48, 0.72) 100%);
+  background-image:
+    linear-gradient(180deg, rgba(4, 11, 24, 0.08) 0%, rgba(4, 11, 24, 0.18) 24%, rgba(18, 28, 48, 0.86) 100%),
+    radial-gradient(circle at top right, rgba(111, 183, 214, 0.24) 0%, rgba(111, 183, 214, 0) 34%);
 }
 
 .institutional-home__carousel-quote {
@@ -189,12 +238,21 @@
 }
 
 @media (min-width: 768px) {
+  .institutional-home__carousel-card {
+    flex-basis: clamp(17rem, 34vw, 20rem);
+  }
+
   .institutional-home__ecosystem-grid {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   }
 }
 
 @media (min-width: 1024px) {
+  .institutional-home__carousel-track {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .institutional-home__hero-title {
     font-size: 3.35rem;
   }
@@ -205,6 +263,15 @@
 }
 
 @media (min-width: 1280px) {
+  .institutional-home__carousel-card {
+    flex-basis: clamp(18rem, 22vw, 21rem);
+  }
+
+  .institutional-home__carousel-track {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .institutional-home__hero-title {
     font-size: 3.8rem;
   }
@@ -215,5 +282,16 @@
 
   .institutional-home__device-layout {
     grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1.28fr);
+  }
+}
+
+@media (min-width: 1536px) {
+  .institutional-home__carousel-card {
+    flex-basis: clamp(18.5rem, 18vw, 20.5rem);
+  }
+
+  .institutional-home__carousel-track {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
