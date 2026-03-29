@@ -274,7 +274,7 @@ export function InstitutionalHomePage() {
       const image = new window.Image();
       image.src = item.image;
     });
-  }, [carouselTrackX]);
+  }, []);
 
   useEffect(() => {
     const syncCarouselMeasurements = (): void => {
@@ -837,8 +837,24 @@ export function InstitutionalHomePage() {
                 isCarouselHoveredRef.current = false;
                 resumeCarouselAutoplay();
               }}
-              onWheel={() => {
+              onWheel={(event) => {
+                if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) {
+                  return;
+                }
+
+                event.preventDefault();
                 pauseCarouselAutoplay();
+                carouselTrackAnimationRef.current?.stop();
+
+                if (carouselSetWidth > 0) {
+                  carouselTrackX.set(
+                    normalizeMotionCarouselTrack(
+                      carouselTrackX.get() - event.deltaX,
+                      carouselSetWidth
+                    )
+                  );
+                }
+
                 resumeCarouselAutoplay();
               }}
             >

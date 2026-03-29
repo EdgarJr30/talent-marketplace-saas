@@ -52,5 +52,21 @@ export function normalizeCarouselTrackOffset(
   trackOffset: number,
   setWidth: number
 ): number {
-  return -normalizeCarouselLoopOffset(-trackOffset, setWidth);
+  if (setWidth <= 0) {
+    return trackOffset;
+  }
+
+  let normalized = trackOffset;
+  const min = -setWidth * 2;
+  const max = -setWidth;
+
+  while (normalized <= min) {
+    normalized += setWidth;
+  }
+
+  while (normalized > max) {
+    normalized -= setWidth;
+  }
+
+  return normalized;
 }
