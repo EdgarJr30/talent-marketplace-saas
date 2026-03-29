@@ -33,7 +33,10 @@ src/
   app/
     router/
     providers/
-    layouts/
+  experiences/
+    institutional/
+    storefront/
+    app/
   features/
     auth/
     tenants/
@@ -58,7 +61,6 @@ src/
     utils/
     validations/
   hooks/
-  pages/
   shared/
   styles/
   test/
@@ -188,10 +190,13 @@ Use local state or lightweight store only for:
 
 Avoid using a client state store as a shadow backend.
 
-### Product surface strategy
-Keep the frontend split into explicit route surfaces:
+### Product experience strategy
+Keep the frontend split into three explicit top-level experiences:
 - institutional portal routes under `/`
-- public storefront routes for product landing, pricing, and public jobs under `/platform`
+- storefront routes for product landing, pricing, and public jobs under `/platform`
+- authenticated app routes for product usage
+
+Inside the authenticated app experience, keep explicit route surfaces:
 - auth routes under `/auth/*`
 - candidate app routes under `/candidate/*`
 - employer workspace routes under `/workspace/*`
@@ -200,8 +205,10 @@ Keep the frontend split into explicit route surfaces:
 The admin console may reuse product primitives, but it must remain route-isolated and must not be the default customer entrypoint.
 
 Implementation note:
-- `auth` must use its own route tree and shell, separate from both public marketing and authenticated dashboard shells
+- `auth` must use its own route tree and shell, separate from both storefront marketing and authenticated dashboard shells
 - candidate and employer routes may share primitives, but they should not share the same navigation chrome by default
+- route-owned shells, layouts, and route trees should live under `src/experiences/*`
+- domain modules in `src/features/*` should stay reusable across experiences instead of owning top-level route chrome
 - legacy route families are not part of the active route contract and must not be reintroduced
 - `/admin/bootstrap-owner` remains an explicitly restricted admin-only route for one-time first-platform-owner recovery/bootstrap, not a customer-facing flow
 

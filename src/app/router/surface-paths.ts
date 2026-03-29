@@ -1,3 +1,12 @@
+const storefrontPaths = {
+  home: '/platform',
+  jobs: '/platform/jobs',
+  jobsRoot: '/platform/jobs',
+  jobDetail: (jobSlug: string) => `/platform/jobs/${jobSlug}`,
+  jobApply: (jobSlug: string) => `/platform/jobs/${jobSlug}/apply`,
+  offline: '/platform/offline'
+} as const
+
 export const surfacePaths = {
   institutional: {
     home: '/',
@@ -12,14 +21,8 @@ export const surfacePaths = {
     news: '/news',
     media: '/media'
   },
-  public: {
-    home: '/platform',
-    jobs: '/platform/jobs',
-    jobsRoot: '/platform/jobs',
-    jobDetail: (jobSlug: string) => `/platform/jobs/${jobSlug}`,
-    jobApply: (jobSlug: string) => `/platform/jobs/${jobSlug}/apply`,
-    offline: '/platform/offline'
-  },
+  storefront: storefrontPaths,
+  public: storefrontPaths,
   auth: {
     root: '/auth',
     signIn: '/auth/sign-in',

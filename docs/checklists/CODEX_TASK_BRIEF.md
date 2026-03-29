@@ -12,7 +12,7 @@ Include only:
 Good example:
 
 ```text
-Fix the mobile layout bug in `src/pages/home-page.tsx`.
+Fix the mobile layout bug in `src/experiences/storefront/pages/home-page.tsx`.
 Do not change colors or copy.
 Run only the minimum validation needed.
 ```

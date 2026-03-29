@@ -43,11 +43,11 @@ talent-marketplace-saas/
   public/
   src/
     app/
+    experiences/
     components/
     features/
     hooks/
     lib/
-    pages/
     shared/
     styles/
     test/
@@ -61,6 +61,17 @@ talent-marketplace-saas/
     integration/
     e2e/
 ```
+
+### Experiencias canonicas
+
+```text
+src/experiences/
+  institutional/  portal institucional ASI
+  storefront/     landing, pricing y jobs publicos
+  app/            aplicacion autenticada
+```
+
+Dentro de `app`, las superficies activas siguen siendo `auth`, `candidate`, `workspace` y `admin`.
 
 ### Reglas de trabajo
 

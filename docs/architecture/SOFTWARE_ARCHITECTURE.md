@@ -26,9 +26,10 @@ This means:
 - one main application
 - one main codebase
 - one shared deployment flow
+- one runtime today, but source ownership split so institutional, storefront, and app can evolve independently later
 - one local workflow with preview and production deployments
 - clear separation by business domains/modules
-- clear separation by product surfaces (`public`, `candidate`, `workspace`, `admin`)
+- clear separation by top-level experiences (`institutional`, `storefront`, `app`) and by app route surfaces (`auth`, `candidate`, `workspace`, `admin`)
 - strict RBAC and tenant isolation
 - reusable UI system and shared design rules
 - ability to scale later without rewriting the foundation
@@ -239,11 +240,11 @@ talent-marketplace-saas/
     product/
   src/
     app/
+    experiences/
     components/
     features/
     hooks/
     lib/
-    pages/
     shared/
     styles/
     test/
@@ -294,10 +295,14 @@ Each feature may contain:
 
 This keeps logic close to the business domain.
 
-### 7.2 Route surface ownership
-The modular monolith must expose five route surfaces with explicit ownership and shells:
+### 7.2 Experience and route ownership
+The modular monolith must expose three top-level product experiences with explicit ownership:
 - `institutional`: portal, membership, projects, donation, news, media, and contact under `/`
-- `public`: product landing, pricing, public jobs, and acquisition flows under `/platform`
+- `storefront`: product landing, pricing, public jobs, and acquisition flows under `/platform`
+- `app`: authenticated product usage
+
+Inside `app`, the runtime must remain route-split:
+- `auth`: account access and recovery under `/auth/*`
 - `candidate`: authenticated talent workflows under `/candidate/*`
 - `workspace`: authenticated employer tenant workflows under `/workspace/*`
 - `admin`: restricted platform console under `/admin/*`

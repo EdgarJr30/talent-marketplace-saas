@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 
 import { AppSessionProvider } from '@/app/providers/app-session-provider'
-import { HomePage } from '@/pages/home-page'
+import { HomePage } from '@/experiences/storefront/pages/home-page'
 
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {

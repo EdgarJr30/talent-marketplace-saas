@@ -35,6 +35,7 @@ This folder contains the canonical Markdown documentation for the repository.
 
 ## Local operational READMEs
 - `../src/README.md`
+- `../src/experiences/README.md`
 - `../src/features/README.md`
 - `../supabase/README.md`
 - `../tests/README.md`
@@ -45,10 +46,14 @@ This folder contains the canonical Markdown documentation for the repository.
 3. Keep the repository root lightweight: `README.md` and `AGENTS.md` are the entrypoint docs.
 4. Update this index whenever a canonical Markdown file is added, moved, or removed.
 
-## Canonical product surfaces
-The modular monolith is organized around five canonical product surfaces:
+## Canonical product experiences
+The modular monolith is organized around three top-level product experiences:
 - `institutional` for the ASI portal under `/`
-- `public` for the product landing, pricing, and public jobs under `/platform`
-- `candidate` for authenticated talent flows under `/candidate/*`
-- `workspace` for employer tenant workflows under `/workspace/*`
-- `admin` for the restricted platform console under `/admin/*`
+- `storefront` for the product landing, pricing, and public jobs under `/platform`
+- `app` for authenticated product usage
+
+Inside `app`, the canonical route surfaces remain:
+- `auth` under `/auth/*`
+- `candidate` under `/candidate/*`
+- `workspace` under `/workspace/*`
+- `admin` under `/admin/*`

@@ -2,9 +2,9 @@ import type { PropsWithChildren } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
-import { AdminShell } from '@/app/layouts/admin-shell'
-import { CandidateShell } from '@/app/layouts/candidate-shell'
-import { EmployerShell } from '@/app/layouts/employer-shell'
+import { AdminShell } from '@/experiences/app/layouts/admin-shell'
+import { CandidateShell } from '@/experiences/app/layouts/candidate-shell'
+import { EmployerShell } from '@/experiences/app/layouts/employer-shell'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { SurfaceStatusPage, type AppSurface } from '@/app/router/routes/surface-status-page'
 import { useAppSession } from '@/app/providers/app-session-provider'

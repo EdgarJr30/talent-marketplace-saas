@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   getTouchPanIntent,
   normalizeCarouselMotionProgress,
-} from '@/features/institutional/lib/carousel-gesture';
+} from '@/experiences/institutional/lib/carousel-gesture';
 
 describe('getTouchPanIntent', () => {
   it('keeps small movements unlocked', () => {

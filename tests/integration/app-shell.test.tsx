@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AppProviders } from '@/app/providers/app-providers'
 import { appRoutes } from '@/app/router/routes'
-import { PublicShell } from '@/app/layouts/public-shell'
+import { StorefrontShell } from '@/experiences/storefront/layouts/storefront-shell'
 
 const authState = {
   session: null as null | { user: { id: string; email?: string } },
@@ -74,7 +74,7 @@ function renderPublicShell(initialEntry = '/platform') {
     [
       {
         path: '/platform',
-        element: <PublicShell />,
+        element: <StorefrontShell />,
         children: [
           {
             index: true,

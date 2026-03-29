@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { InstitutionalSection } from '@/features/institutional/components/institutional-ui'
+import { InstitutionalSection } from '@/experiences/institutional/components/institutional-ui'
 
 describe('InstitutionalSection', () => {
   it('supports transparent surfaces and zero spacing without important modifiers', () => {

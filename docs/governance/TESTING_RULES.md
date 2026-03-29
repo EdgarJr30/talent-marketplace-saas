@@ -100,6 +100,7 @@ src/test/               shared test setup
 tests/unit/             pure logic and helper tests
 tests/integration/      app shell, contracts, guards, module interactions
 tests/e2e/              browser-level flows once introduced
+src/experiences/*/      route-owned experience tests when co-location helps
 src/features/*/tests/   feature-local tests when co-location helps
 ```
 

@@ -11,3 +11,7 @@ tests/
 ```
 
 Keep business logic close to the owning domain and avoid leaking feature-specific concerns into global folders unless they are truly shared.
+
+Experience note:
+- route ownership and experience chrome live in `src/experiences/*`
+- `src/features/*` should stay domain-first so the same business module can be reused by `storefront`, `candidate`, `workspace`, or `admin` when needed

@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { EmployerShell } from '@/app/layouts/employer-shell'
+import { EmployerShell } from '@/experiences/app/layouts/employer-shell'
 import { AppProviders } from '@/app/providers/app-providers'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { fetchMyNotifications, markNotificationRead } from '@/lib/notifications/api'

@@ -200,7 +200,8 @@ The MVP should **not** initially include:
 - visible SaaS pricing section for commercial review, even before billing is connected
 - donation section and donation CTA as UI/UX-only surfaces until payment logic ships
 - admin console isolated from the client-facing product experience
-- canonical route surfaces for `public`, `candidate`, `workspace`, and `admin`
+- canonical product experiences for `institutional`, `storefront`, and `app`
+- authenticated `app` route surfaces for `auth`, `candidate`, `workspace`, and `admin`
 
 ---
 

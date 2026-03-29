@@ -166,10 +166,11 @@
 9. The public root experience under `/` must behave as an institutional portal, not as an internal control panel.
 10. The SaaS product landing under `/platform` must include visible pricing and may include donation-oriented bridge UI as long as the experience clearly stays separate from the institutional portal.
 11. Internal test, foundations, and launch-operations tooling must be visually and route-wise isolated from the customer-facing product experience.
-12. The product must keep five explicit route surfaces: institutional portal, public storefront, candidate app, employer workspace, and admin console.
-13. Candidate-owned authenticated workflows must live under `/candidate/*`; employer tenant workflows must live under `/workspace/*`.
-14. The restricted platform console must use `/admin/*` as the canonical route family.
-15. Historical aliases such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` are not part of the active route contract.
+12. The product must keep three explicit top-level experiences: institutional portal, SaaS storefront, and authenticated application.
+13. The authenticated application experience must stay subdivided into `auth`, `candidate`, `workspace`, and `admin` route surfaces.
+14. Candidate-owned authenticated workflows must live under `/candidate/*`; employer tenant workflows must live under `/workspace/*`.
+15. The restricted platform console must use `/admin/*` as the canonical route family.
+16. Historical aliases such as `/internal/*`, `/applications`, `/onboarding`, `/recruiter-request`, `/jobs/manage`, `/talent`, `/pipeline`, and `/rbac` are not part of the active route contract.
 
 ---
 

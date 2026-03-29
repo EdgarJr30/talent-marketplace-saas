@@ -4,7 +4,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { PageHeader } from '@/components/ui/page-header'
 import { surfacePaths } from '@/app/router/surface-paths'
 
-export type AppSurface = 'institutional' | 'public' | 'auth' | 'candidate' | 'workspace' | 'admin'
+export type AppSurface = 'institutional' | 'storefront' | 'auth' | 'candidate' | 'workspace' | 'admin'
 export type SurfaceStatusKind = 'not-found' | 'forbidden'
 
 function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
@@ -56,7 +56,7 @@ function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
           title: 'No puedes abrir esta sección',
           description: 'Esta vista no está disponible para tu sesión actual.',
           actionLabel: 'Volver a la plataforma',
-          actionHref: surfacePaths.public.home
+          actionHref: surfacePaths.storefront.home
         }
     }
   }
@@ -108,7 +108,7 @@ function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
         title: 'No encontramos esta página de plataforma',
         description: 'La landing comercial y los jobs públicos siguen disponibles dentro de la plataforma, pero esta ruta no forma parte de esa experiencia.',
         actionLabel: 'Volver a la plataforma',
-        actionHref: surfacePaths.public.home
+        actionHref: surfacePaths.storefront.home
       }
   }
 }

@@ -4,13 +4,22 @@ The app is organized by domain and shared platform layers.
 
 ```text
 src/
-  app/         router, providers, layouts
+  app/         root runtime, providers, shared router glue
   components/  shared UI primitives and cross-module building blocks
+  experiences/ route-owned product experiences
   features/    domain modules
   hooks/       reusable UI hooks
   lib/         infra and platform helpers
-  pages/       cross-feature pages
   shared/      constants, contracts, tokens, cross-domain types
   styles/      global styling entrypoints
   test/        shared test setup
+```
+
+Experience split:
+
+```text
+src/experiences/
+  institutional/  ASI institutional portal under `/`
+  storefront/     product landing, pricing, and public jobs under `/platform`
+  app/            authenticated application surfaces under `/auth`, `/candidate`, `/workspace`, and `/admin`
 ```
