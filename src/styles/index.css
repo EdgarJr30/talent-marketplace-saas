@@ -242,7 +242,8 @@
   }
 
   .asi-hero-frame {
-    min-height: 48rem;
+    height: min(48rem, calc(100svh - 5rem));
+    min-height: 38rem;
   }
 
   .asi-gesture-surface {
