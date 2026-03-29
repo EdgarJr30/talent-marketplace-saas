@@ -1,11 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import {
-  type PanInfo,
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -49,7 +44,10 @@ function getVisibleItems<T>(
   );
 }
 
-function getSwipeDirection(info: PanInfo) {
+function getSwipeDirection(info: {
+  offset: { x: number };
+  velocity: { x: number };
+}) {
   if (info.offset.x <= -70 || info.velocity.x <= -320) {
     return 'next';
   }
@@ -105,13 +103,19 @@ function AnimatedMetricValue({ value }: { value: string }) {
 export function InstitutionalHomePage() {
   const shouldReduceMotion = useReducedMotion();
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
-  const [activeCarouselIndex, setActiveCarouselIndex] = useState(0);
   const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [heroInteractionTick, setHeroInteractionTick] = useState(0);
-  const [carouselInteractionTick, setCarouselInteractionTick] = useState(0);
   const [testimonialInteractionTick, setTestimonialInteractionTick] =
     useState(0);
   const [platformVideoReady, setPlatformVideoReady] = useState(true);
+  const carouselViewportRef = useRef<HTMLDivElement | null>(null);
+  const carouselPrimarySetRef = useRef<HTMLDivElement | null>(null);
+  const carouselSetWidthRef = useRef(0);
+  const carouselAnimationFrameRef = useRef(0);
+  const isCarouselHoveredRef = useRef(false);
+  const isCarouselTouchingRef = useRef(false);
+  const carouselResumeTimeoutRef = useRef<number | null>(null);
   const platformDemoVideoPath = '/media/demoApp.mp4';
   const christianEventVideoPath = '/media/christian-event.mp4';
 
@@ -134,21 +138,131 @@ export function InstitutionalHomePage() {
       const image = new window.Image();
       image.src = slide.image;
     });
+
+    homeCarouselCards.forEach((item) => {
+      if (!item.image) {
+        return;
+      }
+
+      const image = new window.Image();
+      image.src = item.image;
+    });
   }, []);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
+    const syncCarouselMeasurements = () => {
+      const viewport = carouselViewportRef.current;
+      const primarySet = carouselPrimarySetRef.current;
+
+      if (!viewport || !primarySet) {
+        return;
+      }
+
+      const trackStyles = window.getComputedStyle(primarySet);
+      const gap = Number.parseFloat(trackStyles.gap || '0');
+
+      const nextSetWidth = primarySet.getBoundingClientRect().width + gap;
+
+      if (nextSetWidth <= 0) {
+        return;
+      }
+
+      const previousSetWidth = carouselSetWidthRef.current;
+      carouselSetWidthRef.current = nextSetWidth;
+
+      if (previousSetWidth <= 0) {
+        viewport.scrollLeft = nextSetWidth;
+        return;
+      }
+
+      const relativeOffset = viewport.scrollLeft - previousSetWidth;
+      viewport.scrollLeft = nextSetWidth + relativeOffset;
+    };
+
+    syncCarouselMeasurements();
+    const observer = new ResizeObserver(() => {
+      syncCarouselMeasurements();
+    });
+
+    if (carouselPrimarySetRef.current) {
+      observer.observe(carouselPrimarySetRef.current);
+    }
+
+    if (carouselViewportRef.current) {
+      observer.observe(carouselViewportRef.current);
+    }
+
+    window.addEventListener('resize', syncCarouselMeasurements);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', syncCarouselMeasurements);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (carouselResumeTimeoutRef.current !== null) {
+        window.clearTimeout(carouselResumeTimeoutRef.current);
+      }
+
+      window.cancelAnimationFrame(carouselAnimationFrameRef.current);
+    };
+  }, []);
+
+  const resumeCarouselAfterSettle = () => {
+    if (carouselResumeTimeoutRef.current !== null) {
+      window.clearTimeout(carouselResumeTimeoutRef.current);
+    }
+
+    carouselResumeTimeoutRef.current = window.setTimeout(() => {
+      if (!isCarouselHoveredRef.current && !isCarouselTouchingRef.current) {
+        setIsCarouselPaused(false);
+      }
+    }, 480);
+  };
+
+  const recirculateCarouselViewport = (viewport: HTMLDivElement) => {
+    const setWidth = carouselSetWidthRef.current;
+
+    if (setWidth <= 0) {
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      setActiveCarouselIndex((current) =>
-        wrapIndex(current + 1, homeCarouselCards.length)
-      );
-    }, 5200);
+    if (viewport.scrollLeft <= setWidth * 0.35) {
+      viewport.scrollLeft += setWidth;
+    } else if (viewport.scrollLeft >= setWidth * 1.65) {
+      viewport.scrollLeft -= setWidth;
+    }
+  };
 
-    return () => window.clearTimeout(timer);
-  }, [activeCarouselIndex, carouselInteractionTick, shouldReduceMotion]);
+  useEffect(() => {
+    if (shouldReduceMotion || isCarouselPaused) {
+      return;
+    }
+
+    const viewport = carouselViewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    let lastTimestamp = window.performance.now();
+
+    const tick = (timestamp: number) => {
+      const delta = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+
+      viewport.scrollLeft += delta * 0.045;
+      recirculateCarouselViewport(viewport);
+
+      carouselAnimationFrameRef.current = window.requestAnimationFrame(tick);
+    };
+
+    carouselAnimationFrameRef.current = window.requestAnimationFrame(tick);
+
+    return () => window.cancelAnimationFrame(carouselAnimationFrameRef.current);
+  }, [isCarouselPaused, shouldReduceMotion]);
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -173,15 +287,6 @@ export function InstitutionalHomePage() {
     goToHeroSlide(activeHeroIndex + (direction === 'next' ? 1 : -1));
   };
 
-  const goToCarouselSlide = (nextIndex: number) => {
-    setCarouselInteractionTick((current) => current + 1);
-    setActiveCarouselIndex(wrapIndex(nextIndex, homeCarouselCards.length));
-  };
-
-  const stepCarouselSlide = (direction: 'next' | 'prev') => {
-    goToCarouselSlide(activeCarouselIndex + (direction === 'next' ? 1 : -1));
-  };
-
   const goToTestimonialSlide = (nextIndex: number) => {
     setTestimonialInteractionTick((current) => current + 1);
     setActiveTestimonialIndex(wrapIndex(nextIndex, homeTestimonials.length));
@@ -195,10 +300,6 @@ export function InstitutionalHomePage() {
 
   const activeHero = homeHeroSlides[activeHeroIndex];
   const isImageOnlyHero = activeHero.contentMode === 'image-only';
-  const visibleCarouselCards = useMemo(
-    () => getVisibleItems(homeCarouselCards, activeCarouselIndex, 3),
-    [activeCarouselIndex]
-  );
   const visibleTestimonials = useMemo(
     () => getVisibleItems(homeTestimonials, activeTestimonialIndex, 3),
     [activeTestimonialIndex]
@@ -247,7 +348,7 @@ export function InstitutionalHomePage() {
 
   return (
     <div>
-      <InstitutionalSection className="pt-0! pb-0!">
+      <InstitutionalSection className="pt-0! pb-0! !bg-transparent">
         <div className="space-y-8 sm:space-y-10">
           <motion.div
             className="institutional-home__hero-shell relative overflow-hidden bg-(--asi-primary) shadow-(--asi-shadow-strong) sm:-mx-7 lg:-mx-10 xl:-mx-14"
@@ -457,126 +558,236 @@ export function InstitutionalHomePage() {
             </div>
           </motion.div>
 
-          <div className="rounded-4xl bg-white/92 px-3 py-4 shadow-(--asi-shadow-soft) backdrop-blur-md sm:px-5 sm:py-5">
-            <div className="flex items-center justify-between gap-4 px-2 sm:px-1">
-              <div>
-                <p className="asi-kicker px-0! py-0! bg-transparent">
-                  Historias en movimiento
-                </p>
-                <h2 className="institutional-home__editorial-title mt-2 font-semibold tracking-tight text-(--asi-text)">
-                  Una sección de carrusel inmediata debajo del hero, con una
-                  lectura más editorial.
-                </h2>
-              </div>
-              <div className="hidden items-center gap-2 sm:flex">
-                <button
-                  aria-label="Tarjeta anterior"
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--asi-surface-muted) text-(--asi-primary) transition hover:bg-white hover:shadow-(--asi-shadow-soft)"
-                  type="button"
-                  onClick={() => stepCarouselSlide('prev')}
+          <div className="institutional-home__carousel-shell py-4 sm:-mx-7 sm:py-5 lg:-mx-10 xl:-mx-14">
+            <div
+              ref={carouselViewportRef}
+              className="institutional-home__carousel-viewport overflow-x-auto overflow-y-hidden"
+              onMouseEnter={() => {
+                isCarouselHoveredRef.current = true;
+                setIsCarouselPaused(true);
+              }}
+              onMouseLeave={() => {
+                isCarouselHoveredRef.current = false;
+                setIsCarouselPaused(false);
+              }}
+              onTouchStart={() => {
+                isCarouselTouchingRef.current = true;
+                setIsCarouselPaused(true);
+              }}
+              onTouchMove={() => {
+                isCarouselTouchingRef.current = true;
+                setIsCarouselPaused(true);
+              }}
+              onTouchEnd={(event) => {
+                isCarouselTouchingRef.current = false;
+                recirculateCarouselViewport(event.currentTarget);
+                resumeCarouselAfterSettle();
+              }}
+              onTouchCancel={(event) => {
+                isCarouselTouchingRef.current = false;
+                recirculateCarouselViewport(event.currentTarget);
+                resumeCarouselAfterSettle();
+              }}
+              onScroll={(event) => {
+                const viewport = event.currentTarget;
+                recirculateCarouselViewport(viewport);
+              }}
+            >
+              <div className="institutional-home__carousel-track asi-gesture-surface">
+                <div
+                  aria-hidden="true"
+                  className="institutional-home__carousel-set"
                 >
-                  <ArrowLeft className="size-4" />
-                </button>
-                <button
-                  aria-label="Tarjeta siguiente"
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--asi-surface-muted) text-(--asi-primary) transition hover:bg-white hover:shadow-(--asi-shadow-soft)"
-                  type="button"
-                  onClick={() => stepCarouselSlide('next')}
+                  {homeCarouselCards.map((item) => (
+                    <article
+                      key={`${item.title}-prefix`}
+                      className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
+                    >
+                      {item.image ? (
+                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                          <img
+                            alt=""
+                            className="h-full w-full object-cover"
+                            fetchPriority="high"
+                            loading="eager"
+                            src={item.image}
+                          />
+                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
+                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
+                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
+                              {item.meta ?? 'ASI'}
+                            </span>
+                          </div>
+                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
+                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
+                              {item.title}
+                            </p>
+                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
+                              {item.description}
+                            </p>
+                            <button
+                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
+                              type="button"
+                            >
+                              Leer mas
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
+                          <Quote className="size-8 text-white/72" />
+                          <div>
+                            <p className="text-lg font-medium leading-8 text-white/92">
+                              {item.description}
+                            </p>
+                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
+                              {item.meta}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
+
+                <div
+                  ref={carouselPrimarySetRef}
+                  className="institutional-home__carousel-set"
+                  data-carousel-set="primary"
                 >
-                  <ArrowRight className="size-4" />
-                </button>
+                  {homeCarouselCards.map((item) => (
+                    <motion.article
+                      key={item.title}
+                      className={cn(
+                        'institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)'
+                      )}
+                      whileHover={
+                        shouldReduceMotion
+                          ? undefined
+                          : {
+                              y: -10,
+                              scale: 1.02,
+                              boxShadow: '0 34px 80px rgba(0, 47, 110, 0.24)',
+                              zIndex: 2,
+                            }
+                      }
+                      transition={{
+                        type: 'spring',
+                        stiffness: 220,
+                        damping: 24,
+                        mass: 0.7,
+                      }}
+                      layout
+                    >
+                      {item.image ? (
+                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                          <img
+                            alt={item.imageAlt ?? item.title}
+                            className="h-full w-full object-cover"
+                            fetchPriority="high"
+                            loading="eager"
+                            src={item.image}
+                          />
+                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
+                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
+                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
+                              {item.meta ?? 'ASI'}
+                            </span>
+                          </div>
+                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
+                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
+                              {item.title}
+                            </p>
+                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
+                              {item.description}
+                            </p>
+                            <button
+                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
+                              type="button"
+                            >
+                              Leer mas
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
+                          <Quote className="size-8 text-white/72" />
+                          <div>
+                            <p className="text-lg font-medium leading-8 text-white/92">
+                              {item.description}
+                            </p>
+                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
+                              {item.meta}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </motion.article>
+                  ))}
+                </div>
+
+                <div
+                  aria-hidden="true"
+                  className="institutional-home__carousel-set"
+                >
+                  {homeCarouselCards.map((item) => (
+                    <article
+                      key={`${item.title}-duplicate`}
+                      className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
+                    >
+                      {item.image ? (
+                        <div className="relative h-[22rem] sm:h-[24rem] xl:h-[27rem] 2xl:h-[28rem]">
+                          <img
+                            alt=""
+                            className="h-full w-full object-cover"
+                            fetchPriority="high"
+                            loading="eager"
+                            src={item.image}
+                          />
+                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
+                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
+                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
+                              {item.meta ?? 'ASI'}
+                            </span>
+                          </div>
+                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
+                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
+                              {item.title}
+                            </p>
+                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
+                              {item.description}
+                            </p>
+                            <button
+                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
+                              type="button"
+                            >
+                              Leer mas
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
+                          <Quote className="size-8 text-white/72" />
+                          <div>
+                            <p className="text-lg font-medium leading-8 text-white/92">
+                              {item.description}
+                            </p>
+                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
+                              {item.meta}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <AnimatePresence initial={false} mode="wait">
-              <motion.div
-                key={`carousel-${activeCarouselIndex}`}
-                className="asi-gesture-surface mt-5 grid gap-4 lg:grid-cols-3"
-                initial={shouldReduceMotion ? false : { opacity: 0.72 }}
-                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-                animate={shouldReduceMotion ? undefined : { opacity: 1 }}
-                exit={shouldReduceMotion ? undefined : { opacity: 0.72 }}
-                drag={shouldReduceMotion ? false : 'x'}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.08}
-                onDragEnd={(_, info) => {
-                  const direction = getSwipeDirection(info);
-
-                  if (direction === 'next') {
-                    stepCarouselSlide('next');
-                  }
-
-                  if (direction === 'prev') {
-                    stepCarouselSlide('prev');
-                  }
-                }}
-              >
-                {visibleCarouselCards.map((item, index) => (
-                  <motion.article
-                    key={item.title}
-                    className={cn(
-                      'overflow-hidden rounded-3xl bg-(--asi-surface-muted) shadow-(--asi-shadow-soft)',
-                      index > 0 && 'hidden lg:block'
-                    )}
-                    layout
-                  >
-                    {item.image ? (
-                      <div className="relative h-62">
-                        <img
-                          alt={item.imageAlt ?? item.title}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                          src={item.image}
-                        />
-                        <div className="institutional-home__carousel-image-overlay absolute inset-0" />
-                        <div className="absolute inset-x-0 bottom-0 p-5">
-                          <p className="text-xl font-semibold tracking-tight text-white">
-                            {item.title}
-                          </p>
-                          <p className="mt-2 text-sm leading-6 text-white/84">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
-                        <Quote className="size-8 text-white/72" />
-                        <div>
-                          <p className="text-lg font-medium leading-8 text-white/92">
-                            {item.description}
-                          </p>
-                          <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
-                            {item.meta}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </motion.article>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="mt-4 flex items-center justify-center gap-2">
-              {homeCarouselCards.map((item, index) => (
-                <button
-                  key={item.title}
-                  aria-label={`Ir a la tarjeta ${index + 1}`}
-                  className={cn(
-                    'h-2.5 rounded-full transition-all',
-                    index === activeCarouselIndex
-                      ? 'w-8 bg-(--asi-primary)'
-                      : 'w-2.5 bg-(--asi-outline) hover:bg-(--asi-secondary)/40'
-                  )}
-                  type="button"
-                  onClick={() => goToCarouselSlide(index)}
-                />
-              ))}
             </div>
           </div>
         </div>
       </InstitutionalSection>
 
-      <InstitutionalSection>
+      <InstitutionalSection className="!bg-transparent">
         <div className="institutional-home__ecosystem-layout grid gap-8 xl:items-start">
           <div className="space-y-5">
             <InstitutionalLead
