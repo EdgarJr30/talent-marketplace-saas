@@ -85,6 +85,7 @@ const CAROUSEL_AUTOPLAY_RESUME_DELAY_MS = 560;
 const CAROUSEL_CARD_GAP_REM = 0.6;
 const CAROUSEL_SWIPE_MOMENTUM_MIN_VELOCITY = 120;
 const CAROUSEL_SWIPE_MOMENTUM_DECAY_PER_MS = 0.996;
+const HERO_WHEEL_NAVIGATION_LOCK_MS = 520;
 
 type InstitutionalCarouselCardItem = (typeof homeCarouselCards)[number];
 
@@ -154,7 +155,7 @@ function FloatingEcosystemMedia({
         shouldReduceMotion
           ? undefined
           : {
-              y: [0, -floatAmplitude, 0, floatAmplitude * 0.68, 0]
+              y: [0, -floatAmplitude, 0, floatAmplitude * 0.68, 0],
             }
       }
       transition={{
@@ -298,6 +299,7 @@ export function InstitutionalHomePage() {
   const [testimonialInteractionTick, setTestimonialInteractionTick] =
     useState(0);
   const [platformVideoReady, setPlatformVideoReady] = useState(true);
+  const heroWheelNavigationTimeoutRef = useRef<number | null>(null);
   const carouselViewportRef = useRef<HTMLDivElement | null>(null);
   const carouselMeasureCardRef = useRef<HTMLElement | null>(null);
   const carouselAnimationFrameRef = useRef(0);
@@ -400,6 +402,10 @@ export function InstitutionalHomePage() {
 
   useEffect(() => {
     return () => {
+      if (heroWheelNavigationTimeoutRef.current !== null) {
+        window.clearTimeout(heroWheelNavigationTimeoutRef.current);
+      }
+
       if (carouselResumeTimeoutRef.current !== null) {
         window.clearTimeout(carouselResumeTimeoutRef.current);
       }
@@ -489,7 +495,12 @@ export function InstitutionalHomePage() {
 
       carouselMomentumFrameRef.current = window.requestAnimationFrame(tick);
     },
-    [carouselLoopWidth, carouselOffsetX, resumeCarouselAutoplay, stopCarouselMomentum]
+    [
+      carouselLoopWidth,
+      carouselOffsetX,
+      resumeCarouselAutoplay,
+      stopCarouselMomentum,
+    ]
   );
 
   useEffect(() => {
@@ -504,8 +515,7 @@ export function InstitutionalHomePage() {
       lastTimestamp = timestamp;
       const boundedDelta = Math.min(delta, CAROUSEL_AUTOPLAY_MAX_DELTA_MS);
       const nextOffset = normalizeCarouselMotionProgress(
-        carouselOffsetX.get() -
-          boundedDelta * CAROUSEL_AUTOPLAY_PIXELS_PER_MS,
+        carouselOffsetX.get() - boundedDelta * CAROUSEL_AUTOPLAY_PIXELS_PER_MS,
         carouselLoopWidth
       );
 
@@ -554,10 +564,7 @@ export function InstitutionalHomePage() {
   );
 
   const handleCarouselPanEnd = useCallback(
-    (
-      _event: MouseEvent | TouchEvent | PointerEvent,
-      info: PanInfo
-    ): void => {
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
       const endedHorizontalSwipe =
         carouselTouchIntentRef.current === 'horizontal';
       carouselTouchIntentRef.current = 'undetermined';
@@ -604,6 +611,24 @@ export function InstitutionalHomePage() {
 
   const stepHeroSlide = (direction: 'next' | 'prev') => {
     goToHeroSlide(activeHeroIndex + (direction === 'next' ? 1 : -1));
+  };
+
+  const handleHeroWheelNavigation = (deltaX: number): void => {
+    if (heroWheelNavigationTimeoutRef.current !== null) {
+      return;
+    }
+
+    if (deltaX > 0) {
+      stepHeroSlide('next');
+    } else if (deltaX < 0) {
+      stepHeroSlide('prev');
+    } else {
+      return;
+    }
+
+    heroWheelNavigationTimeoutRef.current = window.setTimeout(() => {
+      heroWheelNavigationTimeoutRef.current = null;
+    }, HERO_WHEEL_NAVIGATION_LOCK_MS);
   };
 
   const goToTestimonialSlide = (nextIndex: number) => {
@@ -687,6 +712,14 @@ export function InstitutionalHomePage() {
               cursor: 'default',
               touchAction: 'pan-y',
               userSelect: 'none',
+            }}
+            onWheel={(event) => {
+              if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) {
+                return;
+              }
+
+              event.preventDefault();
+              handleHeroWheelNavigation(event.deltaX);
             }}
             onPanEnd={(_, info) => {
               const direction = getSwipeDirection(info);
@@ -944,7 +977,9 @@ export function InstitutionalHomePage() {
                   <LoopingInstitutionalCarouselCard
                     key={`${item.title}-${slotIndex}`}
                     advanceWidth={carouselAdvanceWidth}
-                    cardRef={slotIndex === 0 ? carouselMeasureCardRef : undefined}
+                    cardRef={
+                      slotIndex === 0 ? carouselMeasureCardRef : undefined
+                    }
                     item={item}
                     slotIndex={slotIndex}
                     trackOffset={carouselOffsetX}
@@ -994,9 +1029,9 @@ export function InstitutionalHomePage() {
                       Evento destacado
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/88">
-                      Encuentro congregacional que muestra cómo la adoración,
-                      la enseñanza bíblica y la vida en comunidad siguen
-                      siendo el corazón informativo de nuestra misión.
+                      Encuentro congregacional que muestra cómo la adoración, la
+                      enseñanza bíblica y la vida en comunidad siguen siendo el
+                      corazón informativo de nuestra misión.
                     </p>
                   </div>
                 </div>
@@ -1129,29 +1164,30 @@ export function InstitutionalHomePage() {
             <InstitutionalLead
               content={{
                 eyebrow: 'Experiencia móvil',
-                title: 'ASI en la palma de tu mano.',
+                title: 'Conecta tu fe con nuevas oportunidades.',
                 description:
-                  'Una sección limpia y profesional para comunicar que la experiencia institucional y la plataforma pueden seguirse también desde móvil, sin romper el ritmo visual.',
+                  'Descubre una plataforma donde profesionales, emprendedores y empresas cristianas pueden encontrarse, crecer y avanzar con propósito.',
               }}
             />
             <div className="mt-6 max-w-xl">
               <p className="asi-copy">
-                Usamos un mockup elegante en lugar de una tarjeta genérica para
-                reforzar continuidad de marca, claridad y intención editorial.
+                Crea conexiones valiosas, encuentra oportunidades alineadas con
+                tus principios y forma parte de una comunidad que impulsa el
+                talento, el servicio y el crecimiento profesional.
               </p>
             </div>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <InstitutionalActionLink
                 action={{
-                  label: 'Explorar plataforma',
-                  to: surfacePaths.public.home,
+                  label: 'Suscribirme ahora',
+                  to: surfacePaths.institutional.membership,
                   variant: 'primary',
                 }}
               />
               <InstitutionalActionLink
                 action={{
-                  label: 'Conocer comunidad',
-                  to: surfacePaths.institutional.membership,
+                  label: 'Conocer la plataforma',
+                  to: surfacePaths.public.home,
                   variant: 'secondary',
                 }}
               />
