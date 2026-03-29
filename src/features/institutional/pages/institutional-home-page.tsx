@@ -43,6 +43,13 @@ function wrapIndex(index: number, length: number) {
   return (index + length) % length;
 }
 
+function setCarouselScrollPosition(
+  viewport: HTMLDivElement,
+  left: number
+): void {
+  viewport.scrollLeft = left;
+}
+
 function getVisibleItems<T>(
   items: readonly T[],
   startIndex: number,
@@ -246,7 +253,7 @@ export function InstitutionalHomePage() {
   }, []);
 
   useEffect(() => {
-    const syncCarouselMeasurements = () => {
+    const syncCarouselMeasurements = (): void => {
       const viewport = carouselViewportRef.current;
       const primarySet = carouselPrimarySetRef.current;
 
@@ -267,15 +274,16 @@ export function InstitutionalHomePage() {
       carouselSetWidthRef.current = nextSetWidth;
 
       if (previousSetWidth <= 0) {
-        viewport.scrollLeft = nextSetWidth;
+        setCarouselScrollPosition(viewport, nextSetWidth);
         return;
       }
 
       const relativeOffset = viewport.scrollLeft - previousSetWidth;
-      viewport.scrollLeft = normalizeCarouselLoopOffset(
+      const normalizedOffset: number = normalizeCarouselLoopOffset(
         nextSetWidth + relativeOffset,
         nextSetWidth
       );
+      setCarouselScrollPosition(viewport, normalizedOffset);
     };
 
     syncCarouselMeasurements();
@@ -313,7 +321,7 @@ export function InstitutionalHomePage() {
     };
   }, []);
 
-  const pauseCarouselAutoplay = () => {
+  const pauseCarouselAutoplay = (): void => {
     if (carouselResumeTimeoutRef.current !== null) {
       window.clearTimeout(carouselResumeTimeoutRef.current);
       carouselResumeTimeoutRef.current = null;
@@ -322,7 +330,7 @@ export function InstitutionalHomePage() {
     setIsCarouselPaused(true);
   };
 
-  const settleCarouselViewport = useCallback((viewport: HTMLDivElement) => {
+  const settleCarouselViewport = useCallback((viewport: HTMLDivElement): void => {
     if (carouselScrollSettleTimeoutRef.current !== null) {
       window.clearTimeout(carouselScrollSettleTimeoutRef.current);
       carouselScrollSettleTimeoutRef.current = null;
@@ -331,7 +339,7 @@ export function InstitutionalHomePage() {
     const setWidth = carouselSetWidthRef.current;
 
     if (setWidth > 0) {
-      const normalizedLeft = normalizeCarouselLoopOffset(
+      const normalizedLeft: number = normalizeCarouselLoopOffset(
         viewport.scrollLeft,
         setWidth
       );
@@ -340,7 +348,7 @@ export function InstitutionalHomePage() {
         Math.abs(normalizedLeft - viewport.scrollLeft) >
         CAROUSEL_NORMALIZATION_EPSILON
       ) {
-        viewport.scrollLeft = normalizedLeft;
+        setCarouselScrollPosition(viewport, normalizedLeft);
       }
     }
 
@@ -356,7 +364,7 @@ export function InstitutionalHomePage() {
   }, []);
 
   const scheduleCarouselLoopNormalization = useCallback(
-    (viewport: HTMLDivElement) => {
+    (viewport: HTMLDivElement): void => {
       if (carouselScrollSettleTimeoutRef.current !== null) {
         window.clearTimeout(carouselScrollSettleTimeoutRef.current);
       }
@@ -375,7 +383,7 @@ export function InstitutionalHomePage() {
       return;
     }
 
-    const handleScrollEnd = () => {
+    const handleScrollEnd = (): void => {
       settleCarouselViewport(viewport);
     };
 
@@ -399,17 +407,20 @@ export function InstitutionalHomePage() {
 
     let lastTimestamp = window.performance.now();
 
-    const tick = (timestamp: number) => {
+    const tick = (timestamp: number): void => {
       const delta = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
       const boundedDelta = Math.min(delta, CAROUSEL_AUTOPLAY_MAX_DELTA_MS);
+      const currentScrollLeft = viewport.scrollLeft;
+      const setWidth = carouselSetWidthRef.current;
 
-      const nextLeft = normalizeCarouselLoopOffset(
-        viewport.scrollLeft + boundedDelta * CAROUSEL_AUTOPLAY_PIXELS_PER_MS,
-        carouselSetWidthRef.current
+      const nextLeft: number = normalizeCarouselLoopOffset(
+        currentScrollLeft +
+          boundedDelta * CAROUSEL_AUTOPLAY_PIXELS_PER_MS,
+        setWidth
       );
 
-      viewport.scrollLeft = nextLeft;
+      setCarouselScrollPosition(viewport, nextLeft);
 
       carouselAnimationFrameRef.current = window.requestAnimationFrame(tick);
     };

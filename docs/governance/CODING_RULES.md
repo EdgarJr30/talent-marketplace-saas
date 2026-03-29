@@ -21,6 +21,8 @@
 - when handling errors, prefer `unknown` and narrow safely
 - keep DTOs and domain types explicit
 - centralize shared enums/types where appropriate
+- when interacting with DOM/browser APIs in app code, prefer small typed helper functions and explicit return types over inline chained calls that rely on fragile inference
+- if a corrected area previously triggered `@typescript-eslint/no-unsafe-*`, keep intermediate values explicitly typed and avoid reintroducing unresolved DOM/API call chains in that surface
 
 ---
 

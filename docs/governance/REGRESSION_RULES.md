@@ -248,6 +248,9 @@ Do not ship mobile editorial carousels that trap vertical scroll when the user s
 ### R-073 — Institutional informative mosaics must use grounded christocentric content and restrained motion
 Do not leave the institutional ecosystem-style mosaics with placeholder editorial copy or abrupt decorative motion. When a section is informational, its copy must read as concrete christocentric guidance about worship, formation, membership, community, and service. Floating or pointer-reactive image motion may feel present, but it must remain controlled, preserve rounded image framing, and avoid abrupt jumps, broken geometry, or harsh hover responses.
 
+### R-074 — Corrected DOM scroll logic must stay explicitly typed
+Do not reintroduce `@typescript-eslint/no-unsafe-assignment` or `@typescript-eslint/no-unsafe-call` patterns in corrected interactive surfaces such as the institutional home carousel. When browser APIs like `scrollLeft`, `setTimeout`, `requestAnimationFrame`, `ResizeObserver`, or normalization helpers are involved, keep the flow explicit with typed helpers, explicit return types, and typed intermediate values instead of chaining DOM reads and writes inline in page components.
+
 ---
 
 ## Maintenance rule
