@@ -104,37 +104,52 @@
   background: transparent;
   touch-action: pan-y;
   overscroll-behavior: contain;
-}
-
-.institutional-home__carousel-viewport::-webkit-scrollbar {
-  display: none;
-}
-
-.institutional-home__carousel-track {
-  display: flex;
-  width: max-content;
-  gap: 0.6rem;
-  align-items: stretch;
-  touch-action: pan-y;
-  will-change: transform;
   cursor: grab;
 }
 
-.institutional-home__carousel-track:active {
+.institutional-home__carousel-viewport:active {
   cursor: grabbing;
 }
 
-.institutional-home__carousel-set {
-  display: flex;
-  gap: 0.6rem;
+.institutional-home__carousel-stage {
+  position: relative;
+  min-height: 22rem;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+@media (min-width: 640px) {
+  .institutional-home__carousel-stage {
+    min-height: 24rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .institutional-home__carousel-stage {
+    min-height: 27rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .institutional-home__carousel-stage {
+    min-height: 28rem;
+  }
 }
 
 .institutional-home__carousel-card {
+  width: clamp(15.5rem, 64vw, 19rem);
   flex: 0 0 clamp(15.5rem, 64vw, 19rem);
   min-width: 0;
   border: 1px solid rgba(255, 255, 255, 0.24);
   box-shadow: 0 24px 54px rgba(0, 47, 110, 0.14);
   border-radius: 1.9rem;
+}
+
+.institutional-home__carousel-loop-card {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  will-change: transform;
 }
 
 .institutional-home__carousel-image-overlay {
@@ -303,6 +318,7 @@
 
 @media (min-width: 768px) {
   .institutional-home__carousel-card {
+    width: clamp(17rem, 34vw, 20rem);
     flex-basis: clamp(17rem, 34vw, 20rem);
   }
 
@@ -312,11 +328,6 @@
 }
 
 @media (min-width: 1024px) {
-  .institutional-home__carousel-track {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
   .institutional-home__hero-title {
     font-size: 3.35rem;
   }
@@ -324,12 +335,8 @@
 
 @media (min-width: 1280px) {
   .institutional-home__carousel-card {
+    width: clamp(18rem, 22vw, 21rem);
     flex-basis: clamp(18rem, 22vw, 21rem);
-  }
-
-  .institutional-home__carousel-track {
-    margin-left: 0;
-    margin-right: 0;
   }
 
   .institutional-home__hero-title {
@@ -347,11 +354,7 @@
 
 @media (min-width: 1536px) {
   .institutional-home__carousel-card {
+    width: clamp(18.5rem, 18vw, 20.5rem);
     flex-basis: clamp(18.5rem, 18vw, 20.5rem);
-  }
-
-  .institutional-home__carousel-track {
-    margin-left: 0;
-    margin-right: 0;
   }
 }

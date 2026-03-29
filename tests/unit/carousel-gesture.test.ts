@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
   getTouchPanIntent,
-  normalizeCarouselLoopOffset,
-  normalizeCarouselTrackOffset,
+  normalizeCarouselMotionProgress,
+  wrapCarouselCardPosition,
 } from '@/features/institutional/lib/carousel-gesture';
 
 describe('getTouchPanIntent', () => {
@@ -22,32 +22,30 @@ describe('getTouchPanIntent', () => {
   });
 });
 
-describe('normalizeCarouselLoopOffset', () => {
-  it('keeps the viewport inside the middle loop when it drifts too far left', () => {
-    expect(normalizeCarouselLoopOffset(120, 600)).toBe(720);
+describe('normalizeCarouselMotionProgress', () => {
+  it('wraps offsets that drift past the loop end', () => {
+    expect(normalizeCarouselMotionProgress(-1320, 600)).toBe(-120);
   });
 
-  it('keeps the viewport inside the middle loop when it drifts too far right', () => {
-    expect(normalizeCarouselLoopOffset(1310, 600)).toBe(710);
-    expect(normalizeCarouselLoopOffset(1910, 600)).toBe(710);
+  it('wraps offsets that drift past the loop start', () => {
+    expect(normalizeCarouselMotionProgress(80, 600)).toBe(-520);
   });
 
-  it('leaves valid middle-loop positions untouched', () => {
-    expect(normalizeCarouselLoopOffset(760, 600)).toBe(760);
+  it('leaves valid loop offsets untouched', () => {
+    expect(normalizeCarouselMotionProgress(-320, 600)).toBe(-320);
   });
 });
 
-describe('normalizeCarouselTrackOffset', () => {
-  it('keeps the motion track inside the middle loop when it drifts too far right', () => {
-    expect(normalizeCarouselTrackOffset(-120, 600)).toBe(-720);
+describe('wrapCarouselCardPosition', () => {
+  it('recycles cards that drift left past the viewport window', () => {
+    expect(wrapCarouselCardPosition(-440, 200, 600)).toBe(160);
   });
 
-  it('keeps the motion track inside the middle loop when it drifts too far left', () => {
-    expect(normalizeCarouselTrackOffset(-1310, 600)).toBe(-710);
-    expect(normalizeCarouselTrackOffset(-1910, 600)).toBe(-710);
+  it('recycles cards that drift right past the loop end', () => {
+    expect(wrapCarouselCardPosition(440, 200, 600)).toBe(-160);
   });
 
-  it('leaves valid middle-loop offsets untouched', () => {
-    expect(normalizeCarouselTrackOffset(-760, 600)).toBe(-760);
+  it('leaves in-range card positions untouched', () => {
+    expect(wrapCarouselCardPosition(180, 200, 600)).toBe(180);
   });
 });

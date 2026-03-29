@@ -1,10 +1,36 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator } from '@playwright/test'
+
+async function readCarouselSnapshot(locator: Locator) {
+  return locator.evaluate((node: HTMLElement) => {
+    const viewportRect = node.getBoundingClientRect()
+    const cards = Array.from(
+      node.querySelectorAll<HTMLElement>('.institutional-home__carousel-loop-card')
+    )
+
+    const visibleCount = cards.filter((card) => {
+      const rect = card.getBoundingClientRect()
+      return (
+        rect.right > viewportRect.left &&
+        rect.left < viewportRect.right &&
+        rect.bottom > viewportRect.top &&
+        rect.top < viewportRect.bottom
+      )
+    }).length
+
+    const firstTransform =
+      cards[0] ? window.getComputedStyle(cards[0]).transform : 'none'
+
+    return {
+      visibleCount,
+      firstTransform,
+    }
+  })
+}
 
 test.describe('institutional editorial carousel', () => {
-  test('keeps autoplay moving and recenters the loop before edge blanks appear', async ({
+  test('keeps visible cards while autoplay advances in webkit and mobile fallbacks', async ({
     page,
-    browserName
-  }) => {
+  }, testInfo) => {
     await page.emulateMedia({ reducedMotion: 'no-preference' })
     await page.goto('/')
 
@@ -12,69 +38,39 @@ test.describe('institutional editorial carousel', () => {
     await expect(viewport).toBeVisible()
     await viewport.scrollIntoViewIfNeeded()
 
-    const readMetrics = async () =>
-      viewport.evaluate((node) => {
-        const viewportElement = node as HTMLDivElement
-        const primarySet = viewportElement.querySelector(
-          '[data-carousel-set="primary"]'
-        )
-        const gap = primarySet
-          ? Number.parseFloat(window.getComputedStyle(primarySet).gap || '0')
-          : 0
-        const setWidth = primarySet
-          ? primarySet.getBoundingClientRect().width + gap
-          : 0
+    const start = await readCarouselSnapshot(viewport)
+    expect(start.visibleCount).toBeGreaterThan(0)
 
-        return {
-          scrollLeft: viewportElement.scrollLeft,
-          scrollWidth: viewportElement.scrollWidth,
-          clientWidth: viewportElement.clientWidth,
-          setWidth
-        }
-      })
+    const autoplayWaitMs =
+      testInfo.project.name === 'mobile-webkit' ? 4200 : 1500
 
-    await expect
-      .poll(async () => {
-        const metrics = await readMetrics()
-        return metrics.scrollLeft > 0 && metrics.setWidth > 0
-      })
-      .toBe(true)
+    await page.waitForTimeout(autoplayWaitMs)
 
-    if (browserName === 'webkit') {
-      const initialMetrics = await readMetrics()
+    const next = await readCarouselSnapshot(viewport)
+    expect(next.visibleCount).toBeGreaterThan(0)
+    expect(next.firstTransform).not.toBe(start.firstTransform)
+  })
 
-      await page.waitForTimeout(900)
+  test('accepts horizontal wheel input on desktop webkit without requiring drag', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-webkit')
 
-      const autoplayMetrics = await readMetrics()
+    await page.goto('/')
 
-      expect(
-        Math.abs(autoplayMetrics.scrollLeft - initialMetrics.scrollLeft)
-      ).toBeGreaterThan(4)
-    }
+    const viewport = page.getByLabel('Historias destacadas de ASI')
+    await expect(viewport).toBeVisible()
+    await viewport.scrollIntoViewIfNeeded()
+    await viewport.hover()
 
-    await viewport.evaluate((node) => {
-      const viewportElement = node as HTMLDivElement
-      viewportElement.scrollLeft =
-        viewportElement.scrollWidth - viewportElement.clientWidth
-      viewportElement.dispatchEvent(new Event('scroll'))
-    })
+    const start = await readCarouselSnapshot(viewport)
+    expect(start.visibleCount).toBeGreaterThan(0)
 
-    await expect
-      .poll(async () => {
-        const metrics = await readMetrics()
-        return metrics.scrollLeft < metrics.scrollWidth - metrics.clientWidth - 24
-      })
-      .toBe(true)
+    await page.mouse.wheel(480, 0)
+    await page.waitForTimeout(160)
 
-    await expect
-      .poll(async () => {
-        const metrics = await readMetrics()
-
-        return (
-          metrics.scrollLeft > metrics.setWidth * 0.5 &&
-          metrics.scrollLeft < metrics.setWidth * 1.5
-        )
-      })
-      .toBe(true)
+    const next = await readCarouselSnapshot(viewport)
+    expect(next.visibleCount).toBeGreaterThan(0)
+    expect(next.firstTransform).not.toBe(start.firstTransform)
   })
 })

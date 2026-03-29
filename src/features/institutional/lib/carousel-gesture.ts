@@ -25,48 +25,47 @@ export function getTouchPanIntent(offset: {
   return 'undetermined';
 }
 
-export function normalizeCarouselLoopOffset(
-  scrollLeft: number,
-  setWidth: number
+export function normalizeCarouselMotionProgress(
+  trackOffset: number,
+  loopWidth: number
 ): number {
-  if (setWidth <= 0) {
-    return scrollLeft;
+  if (loopWidth <= 0) {
+    return trackOffset;
   }
 
-  let normalized = scrollLeft;
-  const min = setWidth * 0.5;
-  const max = setWidth * 1.5;
+  let normalized = trackOffset;
 
-  while (normalized < min) {
-    normalized += setWidth;
+  while (normalized <= -loopWidth) {
+    normalized += loopWidth;
   }
 
-  while (normalized >= max) {
-    normalized -= setWidth;
+  while (normalized > 0) {
+    normalized -= loopWidth;
   }
 
   return normalized;
 }
 
-export function normalizeCarouselTrackOffset(
-  trackOffset: number,
-  setWidth: number
+export function wrapCarouselCardPosition(
+  position: number,
+  advanceWidth: number,
+  loopWidth: number
 ): number {
-  if (setWidth <= 0) {
-    return trackOffset;
+  if (advanceWidth <= 0 || loopWidth <= 0) {
+    return position;
   }
 
-  let normalized = trackOffset;
-  const min = -setWidth * 2;
-  const max = -setWidth;
+  let wrapped = position;
+  const min = -advanceWidth;
+  const max = loopWidth - advanceWidth;
 
-  while (normalized <= min) {
-    normalized += setWidth;
+  while (wrapped < min) {
+    wrapped += loopWidth;
   }
 
-  while (normalized > max) {
-    normalized -= setWidth;
+  while (wrapped >= max) {
+    wrapped -= loopWidth;
   }
 
-  return normalized;
+  return wrapped;
 }

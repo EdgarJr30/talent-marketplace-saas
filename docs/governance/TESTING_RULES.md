@@ -15,6 +15,7 @@ Testing is a required safety layer, not a polish step.
 5. Fast feedback matters: lint, typecheck, unit, and integration checks must be runnable by default from the repository root.
 6. CI must mirror the same primary verification command used locally so quality gates do not drift.
 7. Launch-readiness gaps must add either browser smoke coverage in `tests/e2e/` or a documented blocker in the same task.
+8. WebKit-sensitive motion surfaces must be exercised in the browser family where they regress, not inferred only from Chromium.
 
 ---
 
@@ -53,6 +54,7 @@ Test the repo contract itself:
 E2E coverage becomes mandatory as soon as auth, job application, and ATS flows are interactive.
 These tests should prioritize mobile viewport coverage for the core hiring loop.
 Minimum smoke coverage now includes auth callback shell, onboarding, recruiter request, jobs discovery, applications, and pipeline surfaces.
+Institutional motion carousels that depend on looping, autoplay, or gesture negotiation must add WebKit coverage for both desktop and mobile fallbacks when their behavior changes.
 
 ### Manual QA
 Manual checks remain required for:

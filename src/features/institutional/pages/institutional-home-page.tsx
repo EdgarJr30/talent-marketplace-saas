@@ -4,6 +4,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type Ref,
   type ReactNode,
 } from 'react';
 
@@ -13,6 +14,8 @@ import {
   motion,
   useMotionValue,
   useReducedMotion,
+  useTransform,
+  type MotionValue,
   type PanInfo,
 } from 'motion/react';
 import {
@@ -41,7 +44,9 @@ import {
   homeTestimonials,
 } from '@/features/institutional/content/site-content';
 import {
-  normalizeCarouselTrackOffset,
+  getTouchPanIntent,
+  normalizeCarouselMotionProgress,
+  wrapCarouselCardPosition,
 } from '@/features/institutional/lib/carousel-gesture';
 import { cn } from '@/lib/utils/cn';
 
@@ -60,13 +65,6 @@ function detectIosCarouselStepFallback(): boolean {
     (platform === 'MacIntel' && maxTouchPoints > 1);
 
   return isAppleTouchDevice;
-}
-
-function normalizeMotionCarouselTrack(
-  trackOffset: number,
-  setWidth: number
-): number {
-  return normalizeCarouselTrackOffset(trackOffset, setWidth);
 }
 
 function getVisibleItems<T>(
@@ -98,9 +96,11 @@ function getSwipeDirection(info: {
 const CAROUSEL_AUTOPLAY_PIXELS_PER_MS = 0.045;
 const CAROUSEL_AUTOPLAY_MAX_DELTA_MS = 32;
 const CAROUSEL_AUTOPLAY_RESUME_DELAY_MS = 560;
-const CAROUSEL_NORMALIZATION_EPSILON = 0.5;
 const CAROUSEL_STEP_AUTOPLAY_INTERVAL_MS = 3400;
 const CAROUSEL_STEP_AUTOPLAY_DURATION_S = 0.72;
+const CAROUSEL_CARD_GAP_REM = 0.6;
+
+type InstitutionalCarouselCardItem = (typeof homeCarouselCards)[number];
 
 function AnimatedMetricValue({ value }: { value: string }) {
   const numericValue = Number.parseInt(value.replace(/\D/g, ''), 10);
@@ -218,6 +218,94 @@ function FloatingEcosystemMedia({
   );
 }
 
+function InstitutionalCarouselCard({
+  item,
+  cardRef,
+  x,
+}: {
+  item: InstitutionalCarouselCardItem;
+  cardRef?: Ref<HTMLElement>;
+  x: MotionValue<number>;
+}) {
+  return (
+    <motion.article
+      ref={cardRef}
+      className="institutional-home__carousel-card institutional-home__carousel-loop-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
+      style={{ x }}
+    >
+      {item.image ? (
+        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
+          <img
+            alt={item.imageAlt ?? item.title}
+            className="h-full w-full object-cover"
+            fetchPriority="high"
+            loading="eager"
+            src={item.image}
+          />
+          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
+            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
+              {item.meta ?? 'ASI'}
+            </span>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
+            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
+              {item.title}
+            </p>
+            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
+              {item.description}
+            </p>
+            <button
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
+              type="button"
+            >
+              Leer mas
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
+          <Quote className="size-8 text-white/72" />
+          <div>
+            <p className="text-lg font-medium leading-8 text-white/92">
+              {item.description}
+            </p>
+            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
+              {item.meta}
+            </p>
+          </div>
+        </div>
+      )}
+    </motion.article>
+  );
+}
+
+function LoopingInstitutionalCarouselCard({
+  item,
+  index,
+  advanceWidth,
+  loopWidth,
+  trackOffset,
+  cardRef,
+}: {
+  item: InstitutionalCarouselCardItem;
+  index: number;
+  advanceWidth: number;
+  loopWidth: number;
+  trackOffset: MotionValue<number>;
+  cardRef?: Ref<HTMLElement>;
+}) {
+  const x = useTransform(() =>
+    wrapCarouselCardPosition(
+      index * advanceWidth + trackOffset.get(),
+      advanceWidth,
+      loopWidth
+    )
+  );
+
+  return <InstitutionalCarouselCard cardRef={cardRef} item={item} x={x} />;
+}
+
 export function InstitutionalHomePage() {
   const shouldReduceMotion = useReducedMotion();
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
@@ -226,23 +314,22 @@ export function InstitutionalHomePage() {
   const [isCarouselStepAutoplay] = useState(() =>
     detectIosCarouselStepFallback()
   );
-  const [carouselSetWidth, setCarouselSetWidth] = useState(0);
   const [carouselAdvanceWidth, setCarouselAdvanceWidth] = useState(0);
+  const [carouselLoopWidth, setCarouselLoopWidth] = useState(0);
   const [heroInteractionTick, setHeroInteractionTick] = useState(0);
   const [testimonialInteractionTick, setTestimonialInteractionTick] =
     useState(0);
   const [platformVideoReady, setPlatformVideoReady] = useState(true);
   const carouselViewportRef = useRef<HTMLDivElement | null>(null);
-  const carouselPrimarySetRef = useRef<HTMLDivElement | null>(null);
+  const carouselMeasureCardRef = useRef<HTMLElement | null>(null);
   const carouselAnimationFrameRef = useRef(0);
-  const carouselMeasuredSetWidthRef = useRef(0);
   const isCarouselHoveredRef = useRef(false);
   const isCarouselTouchingRef = useRef(false);
   const carouselResumeTimeoutRef = useRef<number | null>(null);
   const carouselTrackAnimationRef = useRef<ReturnType<typeof animate> | null>(
     null
   );
-  const carouselTrackX = useMotionValue(0);
+  const carouselOffsetX = useMotionValue(0);
   const platformDemoVideoPath = '/media/demoApp.mp4';
   const christianEventVideoPath = '/media/christian-event.mp4';
 
@@ -278,42 +365,30 @@ export function InstitutionalHomePage() {
 
   useEffect(() => {
     const syncCarouselMeasurements = (): void => {
-      const primarySet = carouselPrimarySetRef.current;
+      const viewport = carouselViewportRef.current;
+      const measureCard = carouselMeasureCardRef.current;
 
-      if (!primarySet) {
+      if (!viewport || !measureCard) {
         return;
       }
 
-      const trackStyles = window.getComputedStyle(primarySet);
-      const gap = Number.parseFloat(trackStyles.gap || '0');
-      const nextSetWidth = primarySet.getBoundingClientRect().width + gap;
-      const firstCard = primarySet.firstElementChild;
-      const nextAdvanceWidth =
-        firstCard instanceof HTMLElement
-          ? firstCard.getBoundingClientRect().width + gap
-          : nextSetWidth / homeCarouselCards.length;
-
-      if (nextSetWidth <= 0 || nextAdvanceWidth <= 0) {
-        return;
-      }
-
-      setCarouselSetWidth(nextSetWidth);
-      setCarouselAdvanceWidth(nextAdvanceWidth);
-
-      const previousSetWidth = carouselMeasuredSetWidthRef.current;
-      carouselMeasuredSetWidthRef.current = nextSetWidth;
-
-      if (previousSetWidth <= 0) {
-        carouselTrackX.set(-nextSetWidth);
-        return;
-      }
-
-      const relativeOffset = -carouselTrackX.get() - previousSetWidth;
-      const normalizedOffset = normalizeMotionCarouselTrack(
-        -(nextSetWidth + relativeOffset),
-        nextSetWidth
+      const rootFontSize = Number.parseFloat(
+        window.getComputedStyle(document.documentElement).fontSize || '16'
       );
-      carouselTrackX.set(normalizedOffset);
+      const gap = rootFontSize * CAROUSEL_CARD_GAP_REM;
+      const cardWidth = measureCard.getBoundingClientRect().width;
+      const nextAdvanceWidth = cardWidth + gap;
+      const nextLoopWidth = nextAdvanceWidth * homeCarouselCards.length;
+
+      if (nextAdvanceWidth <= 0 || nextLoopWidth <= 0) {
+        return;
+      }
+
+      setCarouselAdvanceWidth(nextAdvanceWidth);
+      setCarouselLoopWidth(nextLoopWidth);
+      carouselOffsetX.set(
+        normalizeCarouselMotionProgress(carouselOffsetX.get(), nextLoopWidth)
+      );
     };
 
     syncCarouselMeasurements();
@@ -321,12 +396,12 @@ export function InstitutionalHomePage() {
       syncCarouselMeasurements();
     });
 
-    if (carouselPrimarySetRef.current) {
-      observer.observe(carouselPrimarySetRef.current);
-    }
-
     if (carouselViewportRef.current) {
       observer.observe(carouselViewportRef.current);
+    }
+
+    if (carouselMeasureCardRef.current) {
+      observer.observe(carouselMeasureCardRef.current);
     }
 
     window.addEventListener('resize', syncCarouselMeasurements);
@@ -335,7 +410,7 @@ export function InstitutionalHomePage() {
       observer.disconnect();
       window.removeEventListener('resize', syncCarouselMeasurements);
     };
-  }, [carouselTrackX]);
+  }, [carouselOffsetX]);
 
   useEffect(() => {
     return () => {
@@ -371,28 +446,23 @@ export function InstitutionalHomePage() {
 
   const animateCarouselTrackTo = useCallback(
     (targetOffset: number): void => {
-      if (carouselSetWidth <= 0) {
+      if (carouselLoopWidth <= 0) {
         return;
       }
 
       carouselTrackAnimationRef.current?.stop();
 
-      const normalizedTarget = normalizeMotionCarouselTrack(
-        targetOffset,
-        carouselSetWidth
-      );
-
       carouselTrackAnimationRef.current = animate(
-        carouselTrackX,
-        normalizedTarget,
+        carouselOffsetX,
+        targetOffset,
         {
           duration: CAROUSEL_STEP_AUTOPLAY_DURATION_S,
           ease: [0.22, 1, 0.36, 1],
           onComplete: () => {
-            carouselTrackX.set(
-              normalizeMotionCarouselTrack(
-                carouselTrackX.get(),
-                carouselSetWidth
+            carouselOffsetX.set(
+              normalizeCarouselMotionProgress(
+                carouselOffsetX.get(),
+                carouselLoopWidth
               )
             );
             carouselTrackAnimationRef.current = null;
@@ -400,7 +470,7 @@ export function InstitutionalHomePage() {
         }
       );
     },
-    [carouselSetWidth, carouselTrackX]
+    [carouselLoopWidth, carouselOffsetX]
   );
 
   useEffect(() => {
@@ -408,7 +478,7 @@ export function InstitutionalHomePage() {
       shouldReduceMotion ||
       isCarouselPaused ||
       isCarouselStepAutoplay ||
-      carouselSetWidth <= 0
+      carouselLoopWidth <= 0
     ) {
       return;
     }
@@ -419,13 +489,13 @@ export function InstitutionalHomePage() {
       const delta = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
       const boundedDelta = Math.min(delta, CAROUSEL_AUTOPLAY_MAX_DELTA_MS);
-      const nextOffset = normalizeMotionCarouselTrack(
-        carouselTrackX.get() -
+      const nextOffset = normalizeCarouselMotionProgress(
+        carouselOffsetX.get() -
           boundedDelta * CAROUSEL_AUTOPLAY_PIXELS_PER_MS,
-        carouselSetWidth
+        carouselLoopWidth
       );
 
-      carouselTrackX.set(nextOffset);
+      carouselOffsetX.set(nextOffset);
 
       carouselAnimationFrameRef.current = window.requestAnimationFrame(tick);
     };
@@ -434,8 +504,8 @@ export function InstitutionalHomePage() {
 
     return () => window.cancelAnimationFrame(carouselAnimationFrameRef.current);
   }, [
-    carouselSetWidth,
-    carouselTrackX,
+    carouselLoopWidth,
+    carouselOffsetX,
     isCarouselPaused,
     isCarouselStepAutoplay,
     shouldReduceMotion,
@@ -446,40 +516,61 @@ export function InstitutionalHomePage() {
       shouldReduceMotion ||
       isCarouselPaused ||
       !isCarouselStepAutoplay ||
-      carouselSetWidth <= 0 ||
+      carouselLoopWidth <= 0 ||
       carouselAdvanceWidth <= 0
     ) {
       return;
     }
 
     const interval = window.setInterval(() => {
-      animateCarouselTrackTo(carouselTrackX.get() - carouselAdvanceWidth);
+      animateCarouselTrackTo(carouselOffsetX.get() - carouselAdvanceWidth);
     }, CAROUSEL_STEP_AUTOPLAY_INTERVAL_MS);
 
     return () => window.clearInterval(interval);
   }, [
     animateCarouselTrackTo,
     carouselAdvanceWidth,
-    carouselSetWidth,
-    carouselTrackX,
+    carouselLoopWidth,
+    carouselOffsetX,
     isCarouselPaused,
     isCarouselStepAutoplay,
-      shouldReduceMotion,
-    ]);
+    shouldReduceMotion,
+  ]);
 
-  const handleCarouselDragEnd = useCallback(
+  const handleCarouselPan = useCallback(
+    (_event: PointerEvent, info: PanInfo): void => {
+      if (carouselLoopWidth <= 0) {
+        return;
+      }
+
+      if (getTouchPanIntent(info.offset) !== 'horizontal') {
+        return;
+      }
+
+      carouselOffsetX.set(
+        normalizeCarouselMotionProgress(
+          carouselOffsetX.get() + info.delta.x,
+          carouselLoopWidth
+        )
+      );
+    },
+    [carouselLoopWidth, carouselOffsetX]
+  );
+
+  const handleCarouselPanEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
       isCarouselTouchingRef.current = false;
 
-      if (carouselSetWidth <= 0) {
+      if (carouselLoopWidth <= 0) {
         resumeCarouselAutoplay();
         return;
       }
 
-      const currentOffset = normalizeMotionCarouselTrack(
-        carouselTrackX.get(),
-        carouselSetWidth
+      const currentOffset = normalizeCarouselMotionProgress(
+        carouselOffsetX.get(),
+        carouselLoopWidth
       );
+      carouselOffsetX.set(currentOffset);
 
       if (isCarouselStepAutoplay && carouselAdvanceWidth > 0) {
         const direction = getSwipeDirection(info);
@@ -497,20 +588,13 @@ export function InstitutionalHomePage() {
         }
       }
 
-      if (
-        Math.abs(currentOffset - carouselTrackX.get()) >
-        CAROUSEL_NORMALIZATION_EPSILON
-      ) {
-        animateCarouselTrackTo(currentOffset);
-      }
-
       resumeCarouselAutoplay();
     },
     [
       animateCarouselTrackTo,
       carouselAdvanceWidth,
-      carouselSetWidth,
-      carouselTrackX,
+      carouselLoopWidth,
+      carouselOffsetX,
       isCarouselStepAutoplay,
       resumeCarouselAutoplay,
     ]
@@ -845,207 +929,37 @@ export function InstitutionalHomePage() {
                 event.preventDefault();
                 pauseCarouselAutoplay();
                 carouselTrackAnimationRef.current?.stop();
-
-                if (carouselSetWidth > 0) {
-                  carouselTrackX.set(
-                    normalizeMotionCarouselTrack(
-                      carouselTrackX.get() - event.deltaX,
-                      carouselSetWidth
-                    )
-                  );
-                }
+                carouselOffsetX.set(
+                  normalizeCarouselMotionProgress(
+                    carouselOffsetX.get() - event.deltaX,
+                    carouselLoopWidth
+                  )
+                );
 
                 resumeCarouselAutoplay();
               }}
             >
               <motion.div
-                className="institutional-home__carousel-track"
-                drag="x"
-                dragConstraints={{
-                  left: carouselSetWidth > 0 ? -carouselSetWidth * 2 : 0,
-                  right: 0,
-                }}
-                dragDirectionLock
-                dragElastic={0.02}
-                dragMomentum={false}
-                onDragStart={() => {
+                className="institutional-home__carousel-stage"
+                onPanStart={() => {
                   isCarouselTouchingRef.current = true;
                   pauseCarouselAutoplay();
                   carouselTrackAnimationRef.current?.stop();
                 }}
-                onDragEnd={handleCarouselDragEnd}
-                style={{ x: carouselTrackX }}
+                onPan={handleCarouselPan}
+                onPanEnd={handleCarouselPanEnd}
               >
-                <div
-                  aria-hidden="true"
-                  className="institutional-home__carousel-set"
-                >
-                  {homeCarouselCards.map((item) => (
-                    <article
-                      key={`${item.title}-prefix`}
-                      className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
-                    >
-                      {item.image ? (
-                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
-                          <img
-                            alt=""
-                            className="h-full w-full object-cover"
-                            fetchPriority="high"
-                            loading="eager"
-                            src={item.image}
-                          />
-                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
-                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
-                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
-                              {item.meta ?? 'ASI'}
-                            </span>
-                          </div>
-                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
-                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
-                              {item.title}
-                            </p>
-                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
-                              {item.description}
-                            </p>
-                            <button
-                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
-                              type="button"
-                            >
-                              Leer mas
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
-                          <Quote className="size-8 text-white/72" />
-                          <div>
-                            <p className="text-lg font-medium leading-8 text-white/92">
-                              {item.description}
-                            </p>
-                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
-                              {item.meta}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </article>
-                  ))}
-                </div>
-
-                <div
-                  ref={carouselPrimarySetRef}
-                  className="institutional-home__carousel-set"
-                  data-carousel-set="primary"
-                >
-                  {homeCarouselCards.map((item) => (
-                    <article
-                      key={item.title}
-                      className={cn(
-                        'institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)'
-                      )}
-                    >
-                      {item.image ? (
-                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
-                          <img
-                            alt={item.imageAlt ?? item.title}
-                            className="h-full w-full object-cover"
-                            fetchPriority="high"
-                            loading="eager"
-                            src={item.image}
-                          />
-                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
-                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
-                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
-                              {item.meta ?? 'ASI'}
-                            </span>
-                          </div>
-                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
-                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
-                              {item.title}
-                            </p>
-                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
-                              {item.description}
-                            </p>
-                            <button
-                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
-                              type="button"
-                            >
-                              Leer mas
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
-                          <Quote className="size-8 text-white/72" />
-                          <div>
-                            <p className="text-lg font-medium leading-8 text-white/92">
-                              {item.description}
-                            </p>
-                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
-                              {item.meta}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </article>
-                  ))}
-                </div>
-
-                <div
-                  aria-hidden="true"
-                  className="institutional-home__carousel-set"
-                >
-                  {homeCarouselCards.map((item) => (
-                    <article
-                      key={`${item.title}-duplicate`}
-                      className="institutional-home__carousel-card overflow-hidden rounded-3xl shadow-(--asi-shadow-soft)"
-                    >
-                      {item.image ? (
-                        <div className="relative h-88 sm:h-96 xl:h-108 2xl:h-112">
-                          <img
-                            alt=""
-                            className="h-full w-full object-cover"
-                            fetchPriority="high"
-                            loading="eager"
-                            src={item.image}
-                          />
-                          <div className="institutional-home__carousel-image-overlay absolute inset-0" />
-                          <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-4 sm:p-5">
-                            <span className="rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-white/86 backdrop-blur-sm">
-                              {item.meta ?? 'ASI'}
-                            </span>
-                          </div>
-                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 xl:p-7">
-                            <p className="text-xl font-semibold tracking-tight text-white xl:text-[1.5rem]">
-                              {item.title}
-                            </p>
-                            <p className="mt-3 max-w-[28ch] text-sm leading-6 text-white/86 xl:text-[1rem]">
-                              {item.description}
-                            </p>
-                            <button
-                              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/12 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
-                              type="button"
-                            >
-                              Leer mas
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="institutional-home__carousel-quote flex h-full min-h-62 flex-col justify-between p-6 text-white">
-                          <Quote className="size-8 text-white/72" />
-                          <div>
-                            <p className="text-lg font-medium leading-8 text-white/92">
-                              {item.description}
-                            </p>
-                            <p className="institutional-home__eyebrow-meta mt-5 text-sm font-semibold uppercase text-white/62">
-                              {item.meta}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </article>
-                  ))}
-                </div>
+                {homeCarouselCards.map((item, index) => (
+                  <LoopingInstitutionalCarouselCard
+                    key={item.title}
+                    advanceWidth={carouselAdvanceWidth}
+                    cardRef={index === 0 ? carouselMeasureCardRef : undefined}
+                    index={index}
+                    item={item}
+                    loopWidth={carouselLoopWidth}
+                    trackOffset={carouselOffsetX}
+                  />
+                ))}
               </motion.div>
             </div>
           </motion.div>

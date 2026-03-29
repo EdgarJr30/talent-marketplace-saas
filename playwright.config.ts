@@ -22,6 +22,13 @@ export default defineConfig({
       },
   projects: [
     {
+      name: 'desktop-webkit',
+      use: {
+        browserName: 'webkit',
+        viewport: { width: 1440, height: 1200 }
+      }
+    },
+    {
       name: 'mobile-chromium',
       use: {
         ...devices['Pixel 7']
