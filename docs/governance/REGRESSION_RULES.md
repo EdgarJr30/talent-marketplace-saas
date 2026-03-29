@@ -246,7 +246,7 @@ Do not finish any task that changed repository files, documentation, configurati
 Do not ship mobile editorial carousels that trap vertical scroll when the user starts the gesture on top of the carousel surface. On touch devices, a vertical gesture over the carousel must keep scrolling the page naturally, while a clear horizontal swipe must still move the carousel without dead zones or broken gesture negotiation.
 
 ### R-073 — Institutional informative mosaics must use grounded christocentric content and restrained motion
-Do not leave the institutional ecosystem-style mosaics with placeholder editorial copy or abrupt decorative motion. When a section is informational, its copy must read as concrete christocentric guidance about worship, formation, membership, community, and service, while any floating or pointer-reactive image motion must stay soft, calm, and clearly secondary to the message.
+Do not leave the institutional ecosystem-style mosaics with placeholder editorial copy or abrupt decorative motion. When a section is informational, its copy must read as concrete christocentric guidance about worship, formation, membership, community, and service. Floating or pointer-reactive image motion may feel present, but it must remain controlled, preserve rounded image framing, and avoid abrupt jumps, broken geometry, or harsh hover responses.
 
 ---
 

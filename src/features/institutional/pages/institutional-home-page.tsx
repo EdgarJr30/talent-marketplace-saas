@@ -140,9 +140,9 @@ function FloatingEcosystemMedia({
         animate={shouldReduceMotion ? undefined : hoverOffset}
         transition={{
           type: 'spring',
-          stiffness: 88,
-          damping: 24,
-          mass: 0.92,
+          stiffness: 94,
+          damping: 22,
+          mass: 0.88,
         }}
         onMouseLeave={() => {
           setHoverOffset({
@@ -162,10 +162,10 @@ function FloatingEcosystemMedia({
           );
 
           setHoverOffset({
-            x: normalizedX * 10,
-            y: normalizedY * 8,
-            rotate: normalizedX * 1.8,
-            scale: 1 + intensity * 0.012,
+            x: normalizedX * 14,
+            y: normalizedY * 11,
+            rotate: normalizedX * 2.4,
+            scale: 1 + intensity * 0.018,
           });
         }}
       >
@@ -989,7 +989,7 @@ export function InstitutionalHomePage() {
               hoverMotion={false}
             >
               <FloatingEcosystemMedia floatIndex={0}>
-                <div className="relative h-full min-h-84">
+                <div className="relative h-full min-h-84 overflow-hidden rounded-[1.5rem]">
                   <img
                     alt={homeEcosystemCards[0].imageAlt}
                     className="h-full w-full object-cover"
@@ -1017,7 +1017,7 @@ export function InstitutionalHomePage() {
               >
                 {item.image ? (
                   <FloatingEcosystemMedia floatIndex={index + 1}>
-                    <div className="institutional-home__ecosystem-card-media relative">
+                    <div className="institutional-home__ecosystem-card-media relative overflow-hidden rounded-[1.5rem]">
                       <img
                         alt={item.imageAlt ?? item.title}
                         className="h-full w-full object-cover"
