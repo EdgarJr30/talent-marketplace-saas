@@ -102,8 +102,9 @@
 .institutional-home__carousel-viewport {
   width: 100%;
   background: transparent;
-  touch-action: pan-y;
-  overscroll-behavior: contain;
+  touch-action: pan-y pinch-zoom;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   cursor: grab;
 }
 
@@ -114,7 +115,7 @@
 .institutional-home__carousel-stage {
   position: relative;
   min-height: 22rem;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   user-select: none;
 }
 

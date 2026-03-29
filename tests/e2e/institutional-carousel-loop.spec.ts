@@ -64,10 +64,13 @@ test.describe('institutional editorial carousel', () => {
     }
   })
 
-  test('keeps continuous autoplay on mobile webkit instead of step advances', async ({
+  test('keeps continuous autoplay on mobile browsers instead of step advances', async ({
     page,
   }, testInfo) => {
-    test.skip(testInfo.project.name !== 'mobile-webkit')
+    test.skip(
+      testInfo.project.name !== 'mobile-webkit' &&
+        testInfo.project.name !== 'mobile-chromium'
+    )
 
     await page.emulateMedia({ reducedMotion: 'no-preference' })
     await page.goto('/')

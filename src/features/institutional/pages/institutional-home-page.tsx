@@ -45,6 +45,7 @@ import {
 import {
   getTouchPanIntent,
   normalizeCarouselMotionProgress,
+  type TouchPanIntent,
 } from '@/features/institutional/lib/carousel-gesture';
 import { cn } from '@/lib/utils/cn';
 
@@ -82,6 +83,8 @@ const CAROUSEL_AUTOPLAY_PIXELS_PER_MS = 0.045;
 const CAROUSEL_AUTOPLAY_MAX_DELTA_MS = 32;
 const CAROUSEL_AUTOPLAY_RESUME_DELAY_MS = 560;
 const CAROUSEL_CARD_GAP_REM = 0.6;
+const CAROUSEL_SWIPE_MOMENTUM_MIN_VELOCITY = 120;
+const CAROUSEL_SWIPE_MOMENTUM_DECAY_PER_MS = 0.996;
 
 type InstitutionalCarouselCardItem = (typeof homeCarouselCards)[number];
 
@@ -298,8 +301,11 @@ export function InstitutionalHomePage() {
   const carouselViewportRef = useRef<HTMLDivElement | null>(null);
   const carouselMeasureCardRef = useRef<HTMLElement | null>(null);
   const carouselAnimationFrameRef = useRef(0);
+  const carouselMomentumFrameRef = useRef(0);
   const isCarouselHoveredRef = useRef(false);
   const isCarouselTouchingRef = useRef(false);
+  const isCarouselMomentumActiveRef = useRef(false);
+  const carouselTouchIntentRef = useRef<TouchPanIntent>('undetermined');
   const carouselResumeTimeoutRef = useRef<number | null>(null);
   const carouselOffsetX = useMotionValue(0);
   const platformDemoVideoPath = '/media/demoApp.mp4';
@@ -399,6 +405,7 @@ export function InstitutionalHomePage() {
       }
 
       window.cancelAnimationFrame(carouselAnimationFrameRef.current);
+      window.cancelAnimationFrame(carouselMomentumFrameRef.current);
     };
   }, []);
 
@@ -417,11 +424,73 @@ export function InstitutionalHomePage() {
     }
 
     carouselResumeTimeoutRef.current = window.setTimeout(() => {
-      if (!isCarouselHoveredRef.current && !isCarouselTouchingRef.current) {
+      if (
+        !isCarouselHoveredRef.current &&
+        !isCarouselTouchingRef.current &&
+        !isCarouselMomentumActiveRef.current
+      ) {
         setIsCarouselPaused(false);
       }
     }, CAROUSEL_AUTOPLAY_RESUME_DELAY_MS);
   }, []);
+
+  const stopCarouselMomentum = useCallback((): void => {
+    if (carouselMomentumFrameRef.current !== 0) {
+      window.cancelAnimationFrame(carouselMomentumFrameRef.current);
+      carouselMomentumFrameRef.current = 0;
+    }
+
+    isCarouselMomentumActiveRef.current = false;
+  }, []);
+
+  const startCarouselMomentum = useCallback(
+    (initialVelocity: number): void => {
+      if (
+        carouselLoopWidth <= 0 ||
+        Math.abs(initialVelocity) < CAROUSEL_SWIPE_MOMENTUM_MIN_VELOCITY
+      ) {
+        isCarouselMomentumActiveRef.current = false;
+        resumeCarouselAutoplay();
+        return;
+      }
+
+      stopCarouselMomentum();
+      isCarouselMomentumActiveRef.current = true;
+
+      let velocity = initialVelocity;
+      let lastTimestamp = window.performance.now();
+
+      const tick = (timestamp: number): void => {
+        const deltaMs = Math.min(timestamp - lastTimestamp, 32);
+        lastTimestamp = timestamp;
+
+        if (Math.abs(velocity) < 16) {
+          stopCarouselMomentum();
+          carouselOffsetX.set(
+            normalizeCarouselMotionProgress(
+              carouselOffsetX.get(),
+              carouselLoopWidth
+            )
+          );
+          resumeCarouselAutoplay();
+          return;
+        }
+
+        carouselOffsetX.set(
+          normalizeCarouselMotionProgress(
+            carouselOffsetX.get() + velocity * (deltaMs / 1000),
+            carouselLoopWidth
+          )
+        );
+
+        velocity *= Math.pow(CAROUSEL_SWIPE_MOMENTUM_DECAY_PER_MS, deltaMs);
+        carouselMomentumFrameRef.current = window.requestAnimationFrame(tick);
+      };
+
+      carouselMomentumFrameRef.current = window.requestAnimationFrame(tick);
+    },
+    [carouselLoopWidth, carouselOffsetX, resumeCarouselAutoplay, stopCarouselMomentum]
+  );
 
   useEffect(() => {
     if (shouldReduceMotion || isCarouselPaused || carouselLoopWidth <= 0) {
@@ -461,8 +530,17 @@ export function InstitutionalHomePage() {
         return;
       }
 
-      if (getTouchPanIntent(info.offset) !== 'horizontal') {
+      const intent = getTouchPanIntent(info.offset);
+      carouselTouchIntentRef.current = intent;
+
+      if (intent !== 'horizontal') {
         return;
+      }
+
+      if (!isCarouselTouchingRef.current) {
+        stopCarouselMomentum();
+        isCarouselTouchingRef.current = true;
+        pauseCarouselAutoplay();
       }
 
       carouselOffsetX.set(
@@ -472,14 +550,20 @@ export function InstitutionalHomePage() {
         )
       );
     },
-    [carouselLoopWidth, carouselOffsetX]
+    [carouselLoopWidth, carouselOffsetX, stopCarouselMomentum]
   );
 
   const handleCarouselPanEnd = useCallback(
-    (): void => {
+    (
+      _event: MouseEvent | TouchEvent | PointerEvent,
+      info: PanInfo
+    ): void => {
+      const endedHorizontalSwipe =
+        carouselTouchIntentRef.current === 'horizontal';
+      carouselTouchIntentRef.current = 'undetermined';
       isCarouselTouchingRef.current = false;
 
-      if (carouselLoopWidth <= 0) {
+      if (!endedHorizontalSwipe || carouselLoopWidth <= 0) {
         resumeCarouselAutoplay();
         return;
       }
@@ -489,10 +573,14 @@ export function InstitutionalHomePage() {
         carouselLoopWidth
       );
       carouselOffsetX.set(currentOffset);
-
-      resumeCarouselAutoplay();
+      startCarouselMomentum(info.velocity.x);
     },
-    [carouselLoopWidth, carouselOffsetX, resumeCarouselAutoplay]
+    [
+      carouselLoopWidth,
+      carouselOffsetX,
+      resumeCarouselAutoplay,
+      startCarouselMomentum,
+    ]
   );
 
   useEffect(() => {
@@ -831,6 +919,7 @@ export function InstitutionalHomePage() {
                 }
 
                 event.preventDefault();
+                stopCarouselMomentum();
                 pauseCarouselAutoplay();
                 carouselOffsetX.set(
                   normalizeCarouselMotionProgress(
@@ -845,8 +934,8 @@ export function InstitutionalHomePage() {
               <motion.div
                 className="institutional-home__carousel-stage"
                 onPanStart={() => {
-                  isCarouselTouchingRef.current = true;
-                  pauseCarouselAutoplay();
+                  carouselTouchIntentRef.current = 'undetermined';
+                  stopCarouselMomentum();
                 }}
                 onPan={handleCarouselPan}
                 onPanEnd={handleCarouselPanEnd}
