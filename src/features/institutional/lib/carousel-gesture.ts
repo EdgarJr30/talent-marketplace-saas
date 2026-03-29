@@ -24,3 +24,26 @@ export function getTouchPanIntent(offset: {
 
   return 'undetermined';
 }
+
+export function normalizeCarouselLoopOffset(
+  scrollLeft: number,
+  setWidth: number
+) {
+  if (setWidth <= 0) {
+    return scrollLeft;
+  }
+
+  let normalized = scrollLeft;
+  const min = setWidth * 0.5;
+  const max = setWidth * 1.5;
+
+  while (normalized < min) {
+    normalized += setWidth;
+  }
+
+  while (normalized >= max) {
+    normalized -= setWidth;
+  }
+
+  return normalized;
+}

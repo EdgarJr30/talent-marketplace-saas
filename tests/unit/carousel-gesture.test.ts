@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { getTouchPanIntent } from '@/features/institutional/lib/carousel-gesture';
+import {
+  getTouchPanIntent,
+  normalizeCarouselLoopOffset,
+} from '@/features/institutional/lib/carousel-gesture';
 
 describe('getTouchPanIntent', () => {
   it('keeps small movements unlocked', () => {
@@ -15,5 +18,20 @@ describe('getTouchPanIntent', () => {
   it('detects clear vertical scroll gestures', () => {
     expect(getTouchPanIntent({ x: 10, y: 40 })).toBe('vertical');
     expect(getTouchPanIntent({ x: -8, y: -34 })).toBe('vertical');
+  });
+});
+
+describe('normalizeCarouselLoopOffset', () => {
+  it('keeps the viewport inside the middle loop when it drifts too far left', () => {
+    expect(normalizeCarouselLoopOffset(120, 600)).toBe(720);
+  });
+
+  it('keeps the viewport inside the middle loop when it drifts too far right', () => {
+    expect(normalizeCarouselLoopOffset(1310, 600)).toBe(710);
+    expect(normalizeCarouselLoopOffset(1910, 600)).toBe(710);
+  });
+
+  it('leaves valid middle-loop positions untouched', () => {
+    expect(normalizeCarouselLoopOffset(760, 600)).toBe(760);
   });
 });

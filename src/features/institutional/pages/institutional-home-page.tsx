@@ -26,7 +26,10 @@ import {
   homeProgramShowcase,
   homeTestimonials,
 } from '@/features/institutional/content/site-content';
-import { getTouchPanIntent } from '@/features/institutional/lib/carousel-gesture';
+import {
+  getTouchPanIntent,
+  normalizeCarouselLoopOffset,
+} from '@/features/institutional/lib/carousel-gesture';
 import { cn } from '@/lib/utils/cn';
 
 function wrapIndex(index: number, length: number) {
@@ -250,12 +253,18 @@ export function InstitutionalHomePage() {
       carouselSetWidthRef.current = nextSetWidth;
 
       if (previousSetWidth <= 0) {
-        viewport.scrollLeft = nextSetWidth;
+        viewport.scrollTo({
+          left: nextSetWidth,
+          behavior: 'auto',
+        });
         return;
       }
 
       const relativeOffset = viewport.scrollLeft - previousSetWidth;
-      viewport.scrollLeft = nextSetWidth + relativeOffset;
+      viewport.scrollTo({
+        left: normalizeCarouselLoopOffset(nextSetWidth + relativeOffset, nextSetWidth),
+        behavior: 'auto',
+      });
     };
 
     syncCarouselMeasurements();
@@ -308,10 +317,16 @@ export function InstitutionalHomePage() {
       return;
     }
 
-    if (viewport.scrollLeft <= setWidth * 0.35) {
-      viewport.scrollLeft += setWidth;
-    } else if (viewport.scrollLeft >= setWidth * 1.65) {
-      viewport.scrollLeft -= setWidth;
+    const normalizedLeft = normalizeCarouselLoopOffset(
+      viewport.scrollLeft,
+      setWidth
+    );
+
+    if (Math.abs(normalizedLeft - viewport.scrollLeft) > 0.5) {
+      viewport.scrollTo({
+        left: normalizedLeft,
+        behavior: 'auto',
+      });
     }
   };
 
@@ -332,7 +347,15 @@ export function InstitutionalHomePage() {
       const delta = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
 
-      viewport.scrollLeft += delta * 0.045;
+      const nextLeft = normalizeCarouselLoopOffset(
+        viewport.scrollLeft + delta * 0.045,
+        carouselSetWidthRef.current
+      );
+
+      viewport.scrollTo({
+        left: nextLeft,
+        behavior: 'auto',
+      });
       recirculateCarouselViewport(viewport);
 
       carouselAnimationFrameRef.current = window.requestAnimationFrame(tick);
