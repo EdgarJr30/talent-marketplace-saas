@@ -102,10 +102,13 @@
 .institutional-home__carousel-viewport {
   width: 100%;
   background: transparent;
+  border-radius: 1.9rem;
+  isolation: isolate;
   touch-action: pan-y pinch-zoom;
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   cursor: grab;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .institutional-home__carousel-viewport:active {
