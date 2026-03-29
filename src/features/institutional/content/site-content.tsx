@@ -280,21 +280,24 @@ export const homeCarouselCards: InstitutionalFeatureItem[] = [
 export const homeEcosystemCards: InstitutionalFeatureItem[] = [
   {
     title: 'Eventos & convenciones',
-    description: 'Encuentros que reúnen inspiración, networking y visión compartida.',
+    description:
+      'Espacios donde la adoración, la enseñanza bíblica y la visión misional se comparten con orden, claridad y participación de toda la red.',
     image:
       'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
     imageAlt: 'Evento con luces cálidas y público'
   },
   {
     title: 'Programas',
-    description: 'Crecimiento espiritual, mentoría y formación con dirección editorial clara.',
+    description:
+      'Procesos de formación que integran fe, liderazgo y servicio para acompañar decisiones concretas en la vida profesional y familiar.',
     image:
       'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
     imageAlt: 'Grupo de personas conversando y aprendiendo'
   },
   {
     title: 'Membresía',
-    description: 'Comunidad de fe para profesionales y empresarios con visión de misión.',
+    description:
+      'Una comunidad de creyentes que se fortalece en oración, acompañamiento y compromiso con una presencia cristiana coherente en la sociedad.',
     image:
       'https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80',
     imageAlt: 'Profesionales compartiendo en un encuentro de comunidad cristiana',
@@ -302,7 +305,8 @@ export const homeEcosystemCards: InstitutionalFeatureItem[] = [
   },
   {
     title: 'Comunidad',
-    description: 'Compartiendo experiencias, recursos y servicio en una red más cercana.',
+    description:
+      'Relaciones de apoyo mutuo, testimonios y recursos que ayudan a vivir el evangelio con cercanía, unidad y servicio visible.',
     image:
       'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
     imageAlt: 'Comunidad reunida'

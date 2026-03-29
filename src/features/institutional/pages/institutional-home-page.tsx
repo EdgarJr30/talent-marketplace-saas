@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
@@ -97,6 +97,81 @@ function AnimatedMetricValue({ value }: { value: string }) {
       {displayValue}
       {suffix}
     </>
+  );
+}
+
+function FloatingEcosystemMedia({
+  children,
+  floatIndex,
+}: {
+  children: ReactNode;
+  floatIndex: number;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+  const [hoverOffset, setHoverOffset] = useState({
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+  });
+
+  const floatAmplitude = 7 + floatIndex * 1.5;
+  const floatDuration = 7.6 + floatIndex * 0.55;
+
+  return (
+    <motion.div
+      className="h-full"
+      animate={
+        shouldReduceMotion
+          ? undefined
+          : {
+              y: [0, -floatAmplitude, 0, floatAmplitude * 0.68, 0]
+            }
+      }
+      transition={{
+        duration: floatDuration,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: 'easeInOut',
+        delay: floatIndex * 0.32,
+      }}
+    >
+      <motion.div
+        className="h-full"
+        animate={shouldReduceMotion ? undefined : hoverOffset}
+        transition={{
+          type: 'spring',
+          stiffness: 120,
+          damping: 20,
+          mass: 0.75,
+        }}
+        onMouseLeave={() => {
+          setHoverOffset({
+            x: 0,
+            y: 0,
+            rotate: 0,
+            scale: 1,
+          });
+        }}
+        onMouseMove={(event) => {
+          const rect = event.currentTarget.getBoundingClientRect();
+          const normalizedX = (event.clientX - rect.left) / rect.width - 0.5;
+          const normalizedY = (event.clientY - rect.top) / rect.height - 0.5;
+          const intensity = Math.min(
+            1,
+            Math.max(Math.abs(normalizedX), Math.abs(normalizedY)) * 2
+          );
+
+          setHoverOffset({
+            x: normalizedX * 18,
+            y: normalizedY * 14,
+            rotate: normalizedX * 3.2,
+            scale: 1 + intensity * 0.02,
+          });
+        }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -869,7 +944,7 @@ export function InstitutionalHomePage() {
                 title:
                   'Transformando vidas a través del compromiso laico y la fe.',
                 description:
-                  'La siguiente sección replica una lectura más cercana a tu referencia: mosaico editorial, jerarquía clara y tarjetas con mejor uso del espacio.',
+                  'ASI articula espacios de adoración, formación, membresía y servicio para acompañar a profesionales y familias que desean vivir una fe cristocéntrica con impacto visible en su comunidad.',
               }}
             />
 
@@ -898,9 +973,9 @@ export function InstitutionalHomePage() {
                       Evento destacado
                     </p>
                     <p className="mt-2 text-sm leading-6 text-white/88">
-                      Encuentro breve de adoración y comunidad que acompaña esta
-                      lectura editorial sin competir con las imágenes del
-                      mosaico.
+                      Encuentro congregacional que muestra cómo la adoración,
+                      la enseñanza bíblica y la vida en comunidad siguen
+                      siendo el corazón informativo de nuestra misión.
                     </p>
                   </div>
                 </div>
@@ -910,48 +985,52 @@ export function InstitutionalHomePage() {
 
           <div className="institutional-home__ecosystem-grid grid gap-4">
             <InstitutionalCard className="overflow-hidden p-0 md:row-span-2">
-              <div className="relative h-full min-h-84">
-                <img
-                  alt={homeEcosystemCards[0].imageAlt}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  src={homeEcosystemCards[0].image}
-                />
-                <div className="institutional-home__ecosystem-hero-overlay absolute inset-0" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <p className="institutional-home__ecosystem-hero-title font-semibold leading-tight tracking-tight text-white">
-                    {homeEcosystemCards[0].title}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-white/82">
-                    {homeEcosystemCards[0].description}
-                  </p>
+              <FloatingEcosystemMedia floatIndex={0}>
+                <div className="relative h-full min-h-84">
+                  <img
+                    alt={homeEcosystemCards[0].imageAlt}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                    src={homeEcosystemCards[0].image}
+                  />
+                  <div className="institutional-home__ecosystem-hero-overlay absolute inset-0" />
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <p className="institutional-home__ecosystem-hero-title font-semibold leading-tight tracking-tight text-white">
+                      {homeEcosystemCards[0].title}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/82">
+                      {homeEcosystemCards[0].description}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </FloatingEcosystemMedia>
             </InstitutionalCard>
 
-            {homeEcosystemCards.slice(1).map((item) => (
+            {homeEcosystemCards.slice(1).map((item, index) => (
               <InstitutionalCard
                 key={item.title}
                 className="overflow-hidden p-0"
               >
                 {item.image ? (
-                  <div className="institutional-home__ecosystem-card-media relative">
-                    <img
-                      alt={item.imageAlt ?? item.title}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      src={item.image}
-                    />
-                    <div className="institutional-home__ecosystem-card-overlay absolute inset-0" />
-                    <div className="absolute inset-x-0 bottom-0 p-5">
-                      <p className="institutional-home__card-title font-semibold tracking-tight text-white">
-                        {item.title}
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-white/82">
-                        {item.description}
-                      </p>
+                  <FloatingEcosystemMedia floatIndex={index + 1}>
+                    <div className="institutional-home__ecosystem-card-media relative">
+                      <img
+                        alt={item.imageAlt ?? item.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        src={item.image}
+                      />
+                      <div className="institutional-home__ecosystem-card-overlay absolute inset-0" />
+                      <div className="absolute inset-x-0 bottom-0 p-5">
+                        <p className="institutional-home__card-title font-semibold tracking-tight text-white">
+                          {item.title}
+                        </p>
+                        <p className="mt-1 text-sm leading-6 text-white/82">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </FloatingEcosystemMedia>
                 ) : (
                   <div className="p-5">
                     <div className="flex size-12 items-center justify-center rounded-2xl bg-(--asi-surface-muted) text-(--asi-primary)">
