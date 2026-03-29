@@ -239,6 +239,9 @@ Do not regress workspace pages back to hardcoded light-only panels like `bg-whit
 ### R-070 — Pending follow-up work must always create Linear issues automatically
 Do not finish a task with unresolved follow-up left only in chat or implied in the final message. Whenever any prompt leaves pending work of any kind, Codex must create the corresponding Linear issue or issues automatically in the canonical project for this repository, assign them immediately to `me`, and do so without asking for confirmation first, so the user can later verify completion explicitly from Linear.
 
+### R-071 — Every repository change must end with a git commit
+Do not finish any task that changed repository files, documentation, configuration, or code without creating a git commit for the completed work in the same task. The commit message must reflect the real scope of the change, and uncommitted repository changes must be treated as incomplete work rather than an acceptable stopping point.
+
 ---
 
 ## Maintenance rule

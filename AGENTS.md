@@ -26,7 +26,8 @@ This file is intentionally compact. Keep the root guidance lightweight and use `
 6. Reuse the design system before introducing one-off UI.
 7. Documentation must stay aligned with implementation.
 8. User corrections become durable rules.
-9. Prefer the smallest correct MVP-safe implementation.
+9. Every repository change must end with a git commit created in the same task.
+10. Prefer the smallest correct MVP-safe implementation.
 
 ## Context-efficiency protocol
 Use the minimum context needed to complete the task well.
@@ -82,6 +83,7 @@ Keep these aligned when the task affects their area:
 - Testing or quality change: update `docs/governance/TESTING_RULES.md`.
 - Security or permission change: update `docs/governance/SECURITY_RULES.md` and RBAC docs.
 - Explicit user correction: update `docs/governance/REGRESSION_RULES.md` in the same task.
+- Any repository change: create a git commit for the completed change in the same task.
 
 ## Linear follow-up rule
 - If any task ends with pending work of any kind, Codex must create one or more Linear issues automatically without asking for confirmation first.
@@ -123,3 +125,4 @@ A meaningful feature is not done unless:
 - tests or explicit verification were added when risk justifies them
 - affected docs were reconciled
 - regression risk was reduced, not deferred
+- the completed change was committed to git in the same task

@@ -10,6 +10,7 @@
 - Prefer reusable primitives over duplication
 - Use `npm` as the only package manager for local commands, scripts, installs, and lockfile updates
 - Do not introduce or reference `pnpm`, `yarn`, or additional lockfiles unless the repo standard changes explicitly
+- Every repository change must end with a git commit created in the same task
 
 ---
 
@@ -117,7 +118,12 @@ Examples:
 ## 11. Anti-regression rule
 Before finalizing a task, check `docs/governance/REGRESSION_RULES.md` and confirm the implementation does not reintroduce corrected mistakes.
 
-## 12. Versioning rule
+## 12. Commit rule
+- do not leave repository changes uncommitted at task closure
+- create a git commit for every completed repository change in the same task
+- use a commit message that describes the actual scope of the change
+
+## 13. Versioning rule
 - follow `docs/governance/VERSIONING_RULES.md` for release classification
 - meaningful changes should ship with a changeset entry before version application
 - do not guess SemVer bumps ad hoc outside the documented rules

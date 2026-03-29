@@ -16,6 +16,7 @@ Documentation is a living contract, not an afterthought.
 6. Canonical project docs live under `docs/` grouped by concern, while the repository root stays limited to entrypoint docs such as `README.md` and `AGENTS.md`.
 7. Keep `AGENTS.md` concise and operational. Detailed product, architecture, and governance content should be referenced from `docs/` instead of duplicated at the repo root.
 8. If a task closes with any unresolved follow-up, that follow-up must be recorded immediately as a Linear issue in the canonical project for the repository, assigned to `me`, and created without waiting for user confirmation.
+9. If a task changes the repository, it must also create a git commit in the same task before closure.
 
 ---
 
@@ -103,6 +104,7 @@ When a change request arrives:
 6. If repo guidance grew enough to increase task friction or context cost, compact `AGENTS.md` and move detail back into the relevant canonical docs.
 7. Never leave a known documentation mismatch for “later” once the implementation already changed.
 8. Never leave unresolved operational follow-up undocumented outside the repo. If work remains pending, create the Linear issue in the same task before closing it and assign it to `me`.
+9. Never close a repository change task without creating the corresponding git commit in the same task.
 
 ---
 
@@ -117,6 +119,7 @@ Before closing any meaningful task, confirm:
 - README setup instructions remain correct
 - regression rules were updated if a user correction introduced a durable rule
 - any remaining follow-up was turned into a Linear issue in the canonical project and assigned to `me`
+- any repository change made in the task was committed to git with a scope-accurate message
 
 ---
 
