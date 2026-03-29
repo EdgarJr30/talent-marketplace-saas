@@ -204,10 +204,6 @@
   box-shadow: 0 18px 44px rgba(0, 47, 110, 0.14);
 }
 
-.institutional-home__bridge-layout {
-  grid-template-columns: 1fr;
-}
-
 @media (min-width: 640px) {
   .institutional-home__hero-shell {
     border-radius: 2.4rem;
@@ -256,9 +252,6 @@
     font-size: 3.35rem;
   }
 
-  .institutional-home__bridge-layout {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  }
 }
 
 @media (min-width: 1280px) {

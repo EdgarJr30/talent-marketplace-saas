@@ -15,7 +15,6 @@ import './institutional-home-page.css';
 import {
   InstitutionalActionLink,
   InstitutionalCard,
-  InstitutionalCtaBand,
   InstitutionalLead,
   InstitutionalSection,
 } from '@/features/institutional/components/institutional-ui';
@@ -1175,56 +1174,6 @@ export function InstitutionalHomePage() {
         </div>
       </InstitutionalSection>
 
-      <InstitutionalCtaBand
-        title="Desde el portal institucional puedes pasar a membresía, proyectos o a la plataforma sin perder coherencia visual."
-        description="El rediseño prioriza amplitud, elegancia y movimiento suave con Motion, manteniendo botones compactos, imágenes lazy y una composición más cercana a tus referencias."
-        primaryAction={{
-          label: 'Ir a donaciones',
-          to: surfacePaths.institutional.donate,
-          variant: 'primary',
-        }}
-        secondaryAction={{
-          label: 'Abrir /platform',
-          to: surfacePaths.public.home,
-          variant: 'secondary',
-        }}
-      />
-
-      <InstitutionalSection>
-        <div className="institutional-home__bridge-layout grid gap-6 lg:items-center">
-          <div>
-            <p className="asi-kicker">Puente digital</p>
-            <h2 className="asi-heading-lg mt-4">
-              La institución presenta contexto. La plataforma habilita
-              workflows.
-            </h2>
-          </div>
-          <InstitutionalCard>
-            <div className="flex items-start gap-4">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
-                <ArrowRight className="size-5" />
-              </div>
-              <div>
-                <p className="text-lg font-semibold tracking-tight text-(--asi-text)">
-                  Abrir plataforma ASI
-                </p>
-                <p className="asi-copy mt-2">
-                  Lleva a la persona visitante desde el portal institucional
-                  hacia el producto, jobs públicos o autenticación con una
-                  transición clara y profesional.
-                </p>
-                <Link
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-(--asi-primary) transition hover:gap-3"
-                  to={surfacePaths.public.home}
-                >
-                  Ir a /platform
-                  <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            </div>
-          </InstitutionalCard>
-        </div>
-      </InstitutionalSection>
     </div>
   );
 }
