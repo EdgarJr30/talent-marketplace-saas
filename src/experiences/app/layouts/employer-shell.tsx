@@ -234,6 +234,23 @@ function getRouteMeta(
   }
 }
 
+function resolveActiveShellItemHref(groups: AppNavGroup[], pathname: string) {
+  return groups
+    .flatMap((group) => group.items)
+    .filter((item) => {
+      if (pathname === item.href) {
+        return true
+      }
+
+      if (item.href === '/' || item.href.includes('#')) {
+        return false
+      }
+
+      return pathname.startsWith(`${item.href}/`)
+    })
+    .sort((left, right) => right.href.length - left.href.length)[0]?.href
+}
+
 function WorkspaceNotificationPanel({
   isLoading,
   notifications,
@@ -510,6 +527,7 @@ function WorkspaceSidebarContent({
 }) {
   const isDesktop = mode === 'desktop'
   const showCollapsedLabels = isDesktop && isCollapsed
+  const activeItemHref = resolveActiveShellItemHref(config.sidebarGroups, activeHref)
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden border-r border-slate-200 bg-white text-slate-900 dark:border-white/10 dark:bg-slate-950 dark:text-white">
@@ -549,13 +567,14 @@ function WorkspaceSidebarContent({
               ) : null}
               <div className="space-y-1">
                 {group.items.map((item) => {
-                  const isActive = activeHref === item.href || activeHref.startsWith(`${item.href}/`)
+                  const isActive = activeItemHref === item.href
                   const Icon = item.icon
 
                   return (
                     <button
                       key={item.href}
                       aria-label={item.title}
+                      aria-current={isActive ? 'page' : undefined}
                       className={cn(
                         'group flex min-h-11 w-full items-center rounded-xl text-left text-sm font-medium transition',
                         showCollapsedLabels ? 'justify-center px-2' : 'gap-3 px-3',
@@ -563,6 +582,7 @@ function WorkspaceSidebarContent({
                           ? 'bg-slate-900 text-white shadow-[0_14px_28px_rgba(15,23,42,0.16)] dark:bg-white dark:text-slate-950'
                           : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white'
                       )}
+                      data-active={isActive ? 'true' : 'false'}
                       title={showCollapsedLabels ? item.title : undefined}
                       type="button"
                       onClick={() => onActionNavigate(item.href)}
