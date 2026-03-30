@@ -229,6 +229,13 @@ function seedWorkspaceAdminSession(permissions: string[]) {
   authState.snapshot.isPlatformAdmin = true
 }
 
+function seedWorkspaceInternalDeveloperSession(permissions: string[]) {
+  seedWorkspaceSession(permissions)
+  if (authState.snapshot.profile) {
+    authState.snapshot.profile.is_internal_developer = true
+  }
+}
+
 function isActiveNavigationButton(button: HTMLElement) {
   return button.getAttribute('data-active') === 'true' && button.getAttribute('aria-current') === 'page'
 }
@@ -382,6 +389,14 @@ describe('workspace shell', () => {
     renderWorkspaceShell()
 
     expect(await screen.findAllByText('Owner')).not.toHaveLength(0)
+  })
+
+  it('keeps tenant role labels hidden for internal developer sessions without platform admin access', async () => {
+    seedWorkspaceInternalDeveloperSession(['workspace:read'])
+    renderWorkspaceShell()
+
+    expect(await screen.findAllByText('Ana Torres')).not.toHaveLength(0)
+    expect(screen.queryByText('Owner')).not.toBeInTheDocument()
   })
 
   it('marks only the current workspace destination as active', async () => {

@@ -633,7 +633,7 @@ function WorkspaceSidebarContent({
 }
 
 function buildWorkspaceConfig(session: ReturnType<typeof useAppSession>) {
-  const shouldExposeRoleSummary = session.canAccessAdminConsole
+  const shouldExposeRoleSummary = session.isPlatformAdmin
   const visibleNavigation = filterNavigationItems(employerNavigationItems, session.permissions, session.isAuthenticated).map((item) =>
     mapNavItem(item, 'workspace')
   )
@@ -711,7 +711,7 @@ function buildWorkspaceConfig(session: ReturnType<typeof useAppSession>) {
 }
 
 function buildCandidateConfig(session: ReturnType<typeof useAppSession>) {
-  const shouldExposeRoleSummary = session.canAccessAdminConsole
+  const shouldExposeRoleSummary = session.isPlatformAdmin
   const visibleNavigation = filterNavigationItems(candidateNavigationItems, session.permissions, session.isAuthenticated).map((item) =>
     mapNavItem(item, 'candidate')
   )
@@ -784,7 +784,7 @@ function buildCandidateConfig(session: ReturnType<typeof useAppSession>) {
 
 function buildStorefrontConfig(session: ReturnType<typeof useAppSession>) {
   const hasWorkspaceAccess = session.permissions.includes('workspace:read')
-  const shouldExposeRoleSummary = session.canAccessAdminConsole
+  const shouldExposeRoleSummary = session.isPlatformAdmin
   const accountItems: AppNavItem[] = session.isAuthenticated
     ? [
         {
