@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/ui/page-header'
-import { StatCard } from '@/components/ui/stat-card'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
   fetchCandidateDirectoryDetail,
@@ -29,7 +28,7 @@ function CandidateSummaryCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`grid w-full gap-3 rounded-[24px] border px-4 py-4 text-left transition ${
+      className={`grid w-full gap-2.5 rounded-[20px] border px-3.5 py-3.5 text-left transition ${
         isSelected
           ? 'border-primary-300 bg-primary-50/60 shadow-[0_18px_40px_rgba(79,110,216,0.1)] hover:border-primary-400 hover:bg-primary-50/80 dark:border-primary-700 dark:bg-primary-950/30 dark:hover:border-primary-600 dark:hover:bg-primary-950/40'
           : 'border-(--app-border) bg-(--app-surface-muted) hover:border-primary-300 hover:bg-(--app-surface-elevated) hover:shadow-[0_16px_34px_rgba(15,23,42,0.08)] dark:hover:border-primary-500/30'
@@ -38,7 +37,7 @@ function CandidateSummaryCard({
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-(--app-text)">{candidate.display_name}</p>
-          <p className="mt-1 text-sm text-(--app-text-muted)">
+          <p className="mt-0.5 text-sm text-(--app-text-muted)">
             {candidate.desired_role || candidate.headline || 'Perfil visible para nuevas oportunidades'}
           </p>
         </div>
@@ -98,40 +97,31 @@ export function TalentDirectoryPage() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Talent search"
-        title="Encuentra personas abiertas a nuevas oportunidades"
-        description="Busca perfiles visibles, revisa su historia y encuentra talento alineado con lo que tu equipo necesita hoy."
-      >
-        <StatCard label="Búsqueda" value="Directa" helper="Keyword, skill, idioma y país en una sola vista." />
-        <StatCard label="Visibilidad" value="Activa" helper="Cada candidato decide si aparece o no en el directorio." />
-        <StatCard
-          className="bg-(--app-surface-muted)"
-          label="Seguimiento"
-          value="Activa"
-          helper="Tu equipo puede revisar el historial de consulta cuando hace falta."
-        />
-      </PageHeader>
+        title="Busca talento visible con filtros simples y contexto suficiente para decidir"
+        description="Encuentra perfiles disponibles, compara señales clave y abre el detalle solo cuando el perfil ya merece seguimiento."
+      />
 
       <Card className="bg-(--app-surface-muted)">
         <CardHeader>
-          <CardTitle>Filtros</CardTitle>
-          <CardDescription>Define el tipo de perfil que quieres encontrar antes de revisar resultados.</CardDescription>
+          <CardTitle>Buscar talento</CardTitle>
+          <CardDescription>Combina rol, skill, idioma y país para reducir ruido antes de revisar perfiles.</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <CardContent className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="grid gap-2 text-sm">
             <span className="text-[0.82rem] font-medium text-(--app-text-muted)">Keyword o rol</span>
-            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ingeniero electrico" />
+            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ej. Ingeniero eléctrico" />
           </label>
           <label className="grid gap-2 text-sm">
             <span className="text-[0.82rem] font-medium text-(--app-text-muted)">Skill</span>
-            <Input value={skill} onChange={(event) => setSkill(event.target.value)} placeholder="AutoCAD, React..." />
+            <Input value={skill} onChange={(event) => setSkill(event.target.value)} placeholder="Ej. AutoCAD, React" />
           </label>
           <label className="grid gap-2 text-sm">
             <span className="text-[0.82rem] font-medium text-(--app-text-muted)">Idioma</span>
-            <Input value={language} onChange={(event) => setLanguage(event.target.value)} placeholder="Español, English..." />
+            <Input value={language} onChange={(event) => setLanguage(event.target.value)} placeholder="Ej. Español, English" />
           </label>
           <label className="grid gap-2 text-sm">
-            <span className="text-[0.82rem] font-medium text-(--app-text-muted)">Pais</span>
-            <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} />
+            <span className="text-[0.82rem] font-medium text-(--app-text-muted)">País</span>
+            <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} placeholder="DO" />
           </label>
         </CardContent>
       </Card>
@@ -141,7 +131,9 @@ export function TalentDirectoryPage() {
           <CardHeader>
             <CardTitle>Resultados</CardTitle>
             <CardDescription>
-              {searchQuery.data ? `${searchQuery.data.length} perfiles visibles encontrados para este filtro.` : 'Usa filtros para buscar talento visible.'}
+              {searchQuery.data
+                ? `${searchQuery.data.length} perfiles visibles encontrados con este criterio.`
+                : 'Usa los filtros para comenzar una búsqueda más precisa.'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -160,7 +152,7 @@ export function TalentDirectoryPage() {
               ))
             ) : (
               <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
-                No hay perfiles visibles que coincidan todavia con estos criterios.
+                No encontramos perfiles visibles con esta combinación de filtros.
               </div>
             )}
           </CardContent>
@@ -170,7 +162,7 @@ export function TalentDirectoryPage() {
           <CardHeader>
             <CardTitle>Perfil completo</CardTitle>
             <CardDescription>
-              Selecciona un resultado para abrir su experiencia, habilidades y materiales más importantes.
+              Abre un resultado para revisar experiencia, formación y señales útiles antes de contactar.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

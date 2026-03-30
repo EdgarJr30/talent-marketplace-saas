@@ -14,7 +14,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
-import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import { fetchMyCandidateProfile } from '@/features/candidate-profile/lib/candidate-profile-api'
@@ -185,14 +184,14 @@ function JobEditor({
       <CardHeader>
         <CardTitle>{selectedJob ? 'Editar vacante' : 'Nueva vacante'}</CardTitle>
         <CardDescription>
-          Prepara cada vacante con calma y publícala solo cuando esté lista para mostrarse al talento.
+          Define la vacante con el nivel de detalle necesario antes de publicarla al talento.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={(event) => void form.handleSubmit((values) => saveMutation.mutate(values))(event)}>
           <div className="grid gap-4 sm:grid-cols-[1fr_0.7fr]">
             <label className="grid gap-2 text-sm">
-              <span>Titulo</span>
+              <span>Título</span>
               <Input
                 {...form.register('title')}
                 onChange={(event) => {
@@ -205,7 +204,7 @@ function JobEditor({
               <p className="text-xs text-rose-600">{form.formState.errors.title?.message}</p>
             </label>
             <label className="grid gap-2 text-sm">
-              <span>Slug publico</span>
+              <span>Slug público</span>
               <Input {...form.register('slug')} />
               <p className="text-xs text-rose-600">{form.formState.errors.slug?.message}</p>
             </label>
@@ -225,7 +224,7 @@ function JobEditor({
 
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="grid gap-2 text-sm">
-              <span>Workplace</span>
+              <span>Modalidad</span>
               <Select {...form.register('workplaceType')}>
                 <option value="remote">Remote</option>
                 <option value="hybrid">Hybrid</option>
@@ -250,7 +249,7 @@ function JobEditor({
               <Input {...form.register('cityName')} />
             </label>
             <label className="grid gap-2 text-sm">
-              <span>Pais</span>
+              <span>País</span>
               <Input maxLength={2} {...form.register('countryCode')} />
             </label>
             <label className="grid gap-2 text-sm">
@@ -271,11 +270,11 @@ function JobEditor({
             {salaryVisible ? (
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <label className="grid gap-2 text-sm">
-                  <span>Minimo</span>
+                  <span>Mínimo</span>
                   <Input {...form.register('salaryMinAmount')} />
                 </label>
                 <label className="grid gap-2 text-sm">
-                  <span>Maximo</span>
+                  <span>Máximo</span>
                   <Input {...form.register('salaryMaxAmount')} />
                   <p className="text-xs text-rose-600">{form.formState.errors.salaryMaxAmount?.message}</p>
                 </label>
@@ -295,9 +294,9 @@ function JobEditor({
           <div className="space-y-3 rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-(--app-text)">Preguntas screening</p>
+                <p className="text-sm font-semibold text-(--app-text)">Preguntas de screening</p>
                 <p className="text-sm text-(--app-text-muted)">
-                  Las dejamos preparadas ahora para usarlas en la fase de applications.
+                  Déjalas listas desde ahora para pedir información clave cuando la vacante reciba postulaciones.
                 </p>
               </div>
               <Button type="button" variant="outline" onClick={() => setQuestions((current) => [...current, createEmptyScreeningQuestion()])}>
@@ -591,23 +590,13 @@ export function JobsOverviewPage() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Jobs"
-        title={canManageJobs ? 'Gestiona tus vacantes y compártelas con una experiencia clara y atractiva' : 'Descubre oportunidades con una experiencia clara y directa'}
+        title={canManageJobs ? 'Gestiona vacantes internas y públicas desde una misma vista' : 'Descubre oportunidades con filtros simples y contexto suficiente'}
         description={
           canManageJobs
-            ? 'Publica, actualiza y comparte tus vacantes desde un solo lugar sin perder claridad entre lo interno y lo público.'
-            : 'Explora vacantes publicadas, guarda las que te interesan y revisa detalles sin distracciones.'
+            ? 'Crea borradores, publica cuando corresponda y mantén ordenado el frente público de talento.'
+            : 'Explora vacantes publicadas, guarda las más relevantes y vuelve a ellas con menos fricción.'
         }
-      >
-        <StatCard label="Mercado" value={`${publicJobsQuery.data?.jobs.length ?? 0} jobs`} helper="Vacantes publicadas visibles para nuevos candidatos." />
-        <StatCard label="Tus vacantes" value={tenantJobsQuery.data?.length ?? 0} helper="Borradores, publicadas o cerradas para tu empresa." />
-        <StatCard label="Guardadas" value={publicJobsQuery.data?.savedJobIds.length ?? 0} helper="Vacantes guardadas para volver más tarde." />
-        <StatCard
-          className="bg-(--app-surface-muted)"
-          label="Publicacion"
-          value="Estado real"
-          helper="Controla cuándo una vacante sale a público y cuándo sigue en preparación."
-        />
-      </PageHeader>
+      />
 
       {canManageJobs && workspaceQuery.data ? (
         <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
@@ -628,8 +617,8 @@ export function JobsOverviewPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Gestion de vacantes</CardTitle>
-              <CardDescription>Publica, cierra o archiva vacantes según el ritmo real de tu búsqueda.</CardDescription>
+              <CardTitle>Gestión de vacantes</CardTitle>
+              <CardDescription>Revisa el inventario actual, publica cuando toque y cierra vacantes sin perder trazabilidad.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {tenantJobsQuery.data?.length ? (
@@ -679,19 +668,19 @@ export function JobsOverviewPage() {
       <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Discovery publico</CardTitle>
-            <CardDescription>Filtra vacantes publicadas y guarda las que quieras revisar luego.</CardDescription>
+            <CardTitle>Vacantes publicadas</CardTitle>
+            <CardDescription>Busca oportunidades activas, filtra por modalidad o país y guarda las más relevantes.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-3">
-              <Input placeholder="Buscar por titulo o keyword" value={publicQuery} onChange={(event) => setPublicQuery(event.target.value)} />
+            <div className="grid gap-3 md:grid-cols-[1.2fr_0.8fr_0.55fr]">
+              <Input placeholder="Buscar por título o palabra clave" value={publicQuery} onChange={(event) => setPublicQuery(event.target.value)} />
               <Select value={workplaceFilter} onChange={(event) => setWorkplaceFilter(event.target.value)}>
                 <option value="">Cualquier modalidad</option>
                 <option value="remote">Remote</option>
                 <option value="hybrid">Hybrid</option>
                 <option value="on_site">On-site</option>
               </Select>
-              <Input placeholder="Pais" maxLength={2} value={countryFilter} onChange={(event) => setCountryFilter(event.target.value.toUpperCase())} />
+              <Input placeholder="País" maxLength={2} value={countryFilter} onChange={(event) => setCountryFilter(event.target.value.toUpperCase())} />
             </div>
 
             <div className="space-y-3">
@@ -730,7 +719,7 @@ export function JobsOverviewPage() {
                             onClick={() => saveJobMutation.mutate({ jobId: job.id, shouldSave: !isSaved })}
                             disabled={saveJobMutation.isPending || !candidateProfileQuery.data?.profile}
                           >
-                            {isSaved ? 'Quitar guardado' : 'Guardar job'}
+                            {isSaved ? 'Quitar guardado' : 'Guardar vacante'}
                           </Button>
                         ) : null}
                       </div>
@@ -746,53 +735,29 @@ export function JobsOverviewPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Estado de la experiencia pública</CardTitle>
-            <CardDescription>Todo lo necesario para mostrar vacantes con claridad y ayudar al talento a volver cuando quiera.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
-              <p className="font-semibold text-(--app-text)">Detalle listo para compartir</p>
-              <p className="mt-1">Cada vacante publicada tiene su propia página pública lista para enviar y promocionar.</p>
-            </div>
-            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
-              <p className="font-semibold text-(--app-text)">Vacantes guardadas</p>
-              <p className="mt-1">Los candidatos ya pueden guardar vacantes para volver más tarde cuando estén listos.</p>
-            </div>
-            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
-              <p className="font-semibold text-(--app-text)">Preparación de filtros</p>
-              <p className="mt-1">Las preguntas clave quedan listas para usarse cuando quieras profundizar el proceso.</p>
-            </div>
-            <div className="rounded-[24px] border border-(--app-border) bg-(--app-surface-muted) px-4 py-4 text-sm text-(--app-text-muted)">
-              <p className="font-semibold text-(--app-text)">Alertas de vacantes</p>
-              <p className="mt-1">Los candidatos pueden guardar criterios básicos y activarlos o pausarlos desde esta misma vista.</p>
-            </div>
-          </CardContent>
-        </Card>
       </section>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Alertas guardadas</CardTitle>
-          <CardDescription>
-            Guarda filtros básicos para volver rápido a las vacantes que más se parecen a lo que estás buscando.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          <CardHeader>
+            <CardTitle>Alertas guardadas</CardTitle>
+            <CardDescription>
+            Guarda búsquedas útiles para reutilizarlas sin reconstruir filtros cada vez.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
           {!candidateProfileQuery.data?.profile ? (
             <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
               Completa tu perfil para crear alertas y guardar búsquedas que quieras repetir más adelante.
             </div>
           ) : (
             <>
-              <div className="grid gap-3 sm:grid-cols-[1fr_0.5fr_auto] sm:items-end">
+              <div className="grid gap-3 md:grid-cols-[1fr_0.55fr_auto] md:items-end">
                 <label className="grid gap-2 text-sm">
                   <span>Etiqueta</span>
                   <Input
                     value={alertLabel}
                     onChange={(event) => setAlertLabel(event.target.value)}
-                    placeholder="Ingeniero electrico remoto"
+                    placeholder="Ej. Ingeniero eléctrico remoto"
                   />
                 </label>
                 <label className="grid gap-2 text-sm">

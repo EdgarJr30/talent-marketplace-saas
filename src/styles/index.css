@@ -200,7 +200,7 @@
   }
 
   .tm-kicker {
-    @apply inline-flex items-center gap-2 rounded-full px-3 py-2 text-[0.72rem] font-semibold;
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[0.68rem] font-semibold;
     letter-spacing: 0.08em;
     background: var(--app-surface);
     color: var(--app-text-muted);
@@ -208,13 +208,13 @@
   }
 
   .tm-page-title {
-    @apply text-[1.625rem] font-semibold tracking-tight sm:text-[1.875rem];
+    @apply text-[1.5rem] font-semibold tracking-tight sm:text-[1.7rem];
     line-height: 1.15;
     color: var(--app-text);
   }
 
   .tm-page-copy {
-    @apply text-sm leading-6 sm:text-[0.95rem];
+    @apply text-sm leading-5.5 sm:text-[0.92rem];
     color: var(--app-text-muted);
   }
 

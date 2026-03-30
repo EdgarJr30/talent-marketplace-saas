@@ -9,18 +9,18 @@ const workspacePipelinePath = '/workspace/pipeline'
 test.describe('public shell smoke', () => {
   test('loads the institutional home and platform jobs discovery on mobile', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('link', { name: /Donate/i })).toBeVisible()
+    await expect(page.getByText(/Transformando vidas a través del compromiso laico y la fe/i)).toBeVisible()
 
     await page.goto('/platform')
-    await expect(page.getByRole('button', { name: /jobs/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Jobs', exact: true })).toBeVisible()
 
     await page.goto('/platform/jobs')
-    await expect(page.getByText(/Descubre oportunidades con una experiencia clara y directa|Gestiona tus vacantes/i)).toBeVisible()
+    await expect(page.getByText(/Descubre oportunidades con filtros simples y contexto suficiente|Gestiona vacantes internas y públicas/i)).toBeVisible()
   })
 
   test('treats removed legacy routes as no longer part of the public contract', async ({ page }) => {
     await page.goto('/pipeline')
-    await expect(page.getByText(/No encontramos esta página|No encontramos esa pantalla del workspace/i)).toBeVisible()
+    await expect(page.getByRole('heading', { name: /No encontramos esa página institucional/i, level: 1 })).toBeVisible()
   })
 })
 

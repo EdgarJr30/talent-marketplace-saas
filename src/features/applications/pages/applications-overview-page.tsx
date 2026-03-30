@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { PageHeader } from '@/components/ui/page-header'
-import { StatCard } from '@/components/ui/stat-card'
 import { useAppSession } from '@/app/providers/app-session-provider'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
@@ -28,16 +27,9 @@ export function ApplicationsOverviewPage() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Applications"
-        title="Revisa tu avance y vuelve a cada oportunidad con contexto"
-        description="Sigue cada proceso en un solo lugar y vuelve a tus oportunidades favoritas cuando quieras."
-      >
-        <StatCard helper="Postulaciones enviadas con tu perfil actual." label="Enviadas" value={applications.length} />
-        <StatCard
-          helper="Estados visibles para que sepas dónde va cada proceso."
-          label="Tracking"
-          value={applications.length > 0 ? 'Activo' : 'Pendiente'}
-        />
-      </PageHeader>
+        title="Da seguimiento a tus postulaciones sin perder el contexto de cada proceso"
+        description="Consulta el estado más reciente de cada oportunidad y vuelve al detalle de la vacante cuando lo necesites."
+      />
 
       <Card>
         <CardHeader>

@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
-import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { exportApplicationsCsv } from '@/features/applications/lib/applications-api'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
@@ -201,20 +200,16 @@ export function PipelineBoardPage() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Pipeline"
-        title="Opera applicants por stage con una vista más clara y accionable"
-        description="Recruiters y hiring managers comparten una superficie limpia para filtrar, revisar detalle y mover candidatos sin perder contexto."
-      >
-        <StatCard label="Applicants" value={filteredApplications.length} helper="Visibles después de aplicar filtros." />
-        <StatCard label="Stages" value={boardQuery.data.stages.length} helper="Etapas activas configuradas para el tenant." />
-        <StatCard label="Jobs" value={tenantJobs.length} helper="Vacantes que hoy tienen applicants en pipeline." />
-      </PageHeader>
+        title="Mueve candidatos por etapa sin perder contexto del proceso"
+        description="Filtra rápido, revisa actividad y registra decisiones del equipo desde un pipeline más compacto y accionable."
+      />
 
       <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Filtros del pipeline</CardTitle>
-              <CardDescription>Filtra por candidato, vacante, stage o estado antes de revisar o exportar.</CardDescription>
+              <CardDescription>Reduce la vista por candidato, vacante, etapa o estado antes de revisar detalle o exportar.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
               <Input

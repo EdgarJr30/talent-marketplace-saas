@@ -109,7 +109,7 @@ vi.mock('@/lib/notifications/api', async () => {
   }
 })
 
-function renderWorkspaceShell(initialEntry = surfacePaths.workspace.root) {
+function renderWorkspaceShell(initialEntry: string = surfacePaths.workspace.root) {
   const router = createMemoryRouter(
     [
       {
@@ -159,7 +159,7 @@ function renderWorkspaceShell(initialEntry = surfacePaths.workspace.root) {
   )
 }
 
-function renderCandidateShell(initialEntry = surfacePaths.candidate.profile) {
+function renderCandidateShell(initialEntry: string = surfacePaths.candidate.profile) {
   const router = createMemoryRouter(
     [
       {
@@ -222,6 +222,10 @@ function seedWorkspaceSession(permissions: string[]) {
     platformPermissions: [],
     isPlatformAdmin: false
   }
+}
+
+function isActiveNavigationButton(button: HTMLElement) {
+  return button.getAttribute('data-active') === 'true' && button.getAttribute('aria-current') === 'page'
 }
 
 beforeEach(() => {
@@ -358,5 +362,27 @@ describe('workspace shell', () => {
     renderWorkspaceShell()
 
     expect(await screen.findAllByText('Mi perfil')).not.toHaveLength(0)
+  })
+
+  it('marks only the current workspace destination as active', async () => {
+    seedWorkspaceSession(['workspace:read', 'candidate_directory:read', 'application:read', 'role:read'])
+    renderWorkspaceShell(surfacePaths.workspace.jobs)
+
+    const jobsButtons = await screen.findAllByRole('button', { name: 'Jobs' })
+    const companyButtons = screen.getAllByRole('button', { name: 'Company' })
+
+    expect(jobsButtons.some((button) => isActiveNavigationButton(button))).toBe(true)
+    expect(companyButtons.some((button) => isActiveNavigationButton(button))).toBe(false)
+  })
+
+  it('keeps only the current candidate destination active when workspace access is also visible', async () => {
+    seedWorkspaceSession(['workspace:read'])
+    renderCandidateShell(surfacePaths.candidate.applications)
+
+    const applicationsButtons = await screen.findAllByRole('button', { name: 'Aplicaciones' })
+    const workspaceButtons = screen.getAllByRole('button', { name: 'Workspace' })
+
+    expect(applicationsButtons.some((button) => isActiveNavigationButton(button))).toBe(true)
+    expect(workspaceButtons.some((button) => isActiveNavigationButton(button))).toBe(false)
   })
 })

@@ -55,16 +55,24 @@ function resolveIcon(item: AppNavItem) {
   return item.icon ?? iconByHref[item.href] ?? Sparkles
 }
 
-function isActiveHref(activeHref: string, itemHref: string) {
-  if (activeHref === itemHref) {
-    return true
-  }
+function resolveActiveItemHref(items: AppNavItem[], pathname: string) {
+  return items
+    .filter((item) => {
+      if (pathname === item.href) {
+        return true
+      }
 
-  if (itemHref === '/' || itemHref.includes('#')) {
-    return false
-  }
+      if (item.href === '/' || item.href.includes('#')) {
+        return false
+      }
 
-  return activeHref.startsWith(`${itemHref}/`)
+      return pathname.startsWith(`${item.href}/`)
+    })
+    .sort((left, right) => right.href.length - left.href.length)[0]?.href
+}
+
+function isActiveHref(activeItemHref: string | undefined, itemHref: string) {
+  return activeItemHref === itemHref
 }
 
 function WorkspaceSidebarContent({
@@ -82,6 +90,8 @@ function WorkspaceSidebarContent({
   onNavigate: (href: string) => void
   tenantName: string
 }) {
+  const activeItemHref = resolveActiveItemHref(groups.flatMap((group) => group.items), activeHref)
+
   return (
     <div className="relative flex h-full flex-col overflow-y-auto border-r border-slate-200 bg-white px-6 pb-5 dark:border-white/10 dark:bg-slate-950">
       <div className="flex h-16 shrink-0 items-center gap-3">
@@ -101,17 +111,19 @@ function WorkspaceSidebarContent({
               <ul className="-mx-2 mt-2 space-y-1">
                 {group.items.map((item) => {
                   const Icon = resolveIcon(item)
-                  const isActive = isActiveHref(activeHref, item.href)
+                  const isActive = isActiveHref(activeItemHref, item.href)
 
                   return (
                     <li key={item.href}>
                       <button
+                        aria-current={isActive ? 'page' : undefined}
                         className={cn(
                           'group flex w-full items-center gap-x-3 rounded-md p-2 text-left text-sm/6 font-semibold transition-colors',
                           isActive
                             ? 'bg-slate-100 text-primary-700 dark:bg-white/5 dark:text-white'
                             : 'text-slate-700 hover:bg-slate-50 hover:text-primary-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white'
                         )}
+                        data-active={isActive ? 'true' : 'false'}
                         type="button"
                         onClick={() => void onNavigate(item.href)}
                       >
@@ -246,6 +258,8 @@ export function AppSidebarNav({
   onNavigate: (href: string) => void
   footer?: ReactNode
 }) {
+  const activeItemHref = resolveActiveItemHref(items, activeHref)
+
   return (
     <aside className="hidden w-[296px] shrink-0 rounded-[28px] border bg-(--app-surface-elevated) p-5 shadow-(--app-shadow-soft) lg:flex lg:flex-col">
       <div className="space-y-4">
@@ -262,10 +276,11 @@ export function AppSidebarNav({
       <nav className="mt-8 flex flex-1 flex-col gap-2">
         {items.map((item) => {
           const Icon = resolveIcon(item)
-          const isActive = isActiveHref(activeHref, item.href)
+          const isActive = isActiveHref(activeItemHref, item.href)
 
           return (
             <button
+              aria-current={isActive ? 'page' : undefined}
               key={item.href}
               className={cn(
                 'flex items-start gap-3 rounded-[20px] px-4 py-3 text-left transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-out hover:-translate-y-px',
@@ -273,6 +288,7 @@ export function AppSidebarNav({
                   ? 'border border-primary-200 bg-primary-50 text-primary-700 shadow-sm hover:border-primary-300 hover:bg-primary-50/90 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:border-primary-500/18 dark:bg-primary-500/10 dark:text-primary-200 dark:hover:border-primary-500/24 dark:hover:bg-primary-500/14'
                   : 'border border-transparent text-(--app-text-muted) hover:border-(--app-border) hover:bg-(--app-surface-muted) hover:text-(--app-text) hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
               )}
+              data-active={isActive ? 'true' : 'false'}
               type="button"
               onClick={() => void onNavigate(item.href)}
             >
@@ -305,6 +321,7 @@ export function AppBottomNav({
   variant?: 'default' | 'workspace'
 }) {
   const columns = Math.min(Math.max(items.length, 1), 5)
+  const activeItemHref = resolveActiveItemHref(items, activeHref)
 
   return (
     <nav
@@ -318,10 +335,11 @@ export function AppBottomNav({
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
         {items.map((item) => {
           const Icon = resolveIcon(item)
-          const isActive = isActiveHref(activeHref, item.href)
+          const isActive = activeItemHref === item.href
 
           return (
             <button
+              aria-current={isActive ? 'page' : undefined}
               key={item.href}
               className={cn(
                 'flex min-h-12 flex-col items-center justify-center gap-1 rounded-[18px] px-2 py-2 text-[0.7rem] font-semibold transition-[transform,box-shadow,background-color,color] duration-200 ease-out hover:-translate-y-px',
@@ -333,6 +351,7 @@ export function AppBottomNav({
                     ? 'bg-primary-50 text-primary-700 hover:bg-primary-100 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] dark:bg-primary-500/10 dark:text-primary-200 dark:hover:bg-primary-500/16'
                     : 'text-(--app-text-subtle) hover:bg-(--app-surface-muted) hover:text-(--app-text) hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]'
               )}
+              data-active={isActive ? 'true' : 'false'}
               type="button"
               onClick={() => void onNavigate(item.href)}
             >

@@ -364,6 +364,7 @@ Apple-inspired UI rules:
 2. Unauthorized destinations should be hidden unless intentional discoverability is part of the product.
 3. Navigation labels must use stable domain language: `Jobs`, `Applications`, `Candidates`, `Company`, `Roles`, `Settings`.
 4. Never force users to relearn the same workflow between mobile and desktop.
+5. In any sidebar or bottom navigation group, only the single best-matching destination may appear active at a time. Parent modules must not stay highlighted when the user is clearly inside a deeper sibling or child destination.
 
 ---
 
@@ -378,6 +379,9 @@ Apple-inspired UI rules:
 ### 10.2 Field rules
 1. Every field must have a permanently visible label above or adjacent to the control.
 2. Placeholders are examples only. They are never the only label.
+3. Operational app controls should default to compact product density, not landing-page proportions. Standard text inputs, selects, and primary buttons should usually sit around the `40px` to `44px` height range unless a mobile-specific accessibility constraint requires more space.
+4. Dense internal forms should group related fields into compact sections and parallel columns on desktop, while preserving a single-column flow on mobile.
+5. Do not add decorative summary cards, checklist banners, or “status explainer” blocks above forms unless they directly change a user decision in that workflow.
 3. Match the keyboard and input type to the field purpose.
 4. Use `autocomplete`, `inputmode`, and appropriate validation hints where supported.
 5. If a field has a tricky requirement, show helper text before the user fails validation.

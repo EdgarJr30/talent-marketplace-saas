@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
-import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
@@ -249,19 +248,9 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Company"
-        title="Haz que tu empresa se vea bien y mantén a tu equipo listo para contratar"
-        description="La historia de tu empresa, su imagen y las personas que participan en contratación viven aquí."
-      >
-        <StatCard label="Espacio" value={bundle.tenant.slug} helper="Nombre corto de tu espacio y referencia pública." />
-        <StatCard label="Estado" value={bundle.tenant.status} helper="Cómo se encuentra hoy tu espacio de empresa." />
-        <StatCard label="Miembros" value={activeMembershipCount} helper="Personas activas dentro del espacio de trabajo." />
-        <StatCard
-          className="bg-(--app-surface-muted)"
-          helper="Invitaciones y accesos pendientes para seguir creciendo el equipo."
-          label="Pendientes"
-          value={invitedMembershipCount > 0 ? `${invitedMembershipCount} invitaciones` : 'Listo'}
-        />
-      </PageHeader>
+        title="Administra la identidad de tu empresa y el acceso del equipo desde una sola vista"
+        description="Mantén claro cómo se presenta tu empresa, quién puede operar vacantes y qué accesos siguen pendientes."
+      />
 
       <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <Card>
@@ -304,7 +293,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
                 <Input value={websiteUrl} onChange={(event) => setWebsiteUrl(event.target.value)} placeholder="https://..." />
               </label>
               <label className={fieldLabelClassName}>
-                <span className={fieldLabelTextClassName}>Email company</span>
+                <span className={fieldLabelTextClassName}>Email de reclutamiento</span>
                 <Input value={companyEmail} onChange={(event) => setCompanyEmail(event.target.value)} placeholder="careers@empresa.com" />
               </label>
             </div>
@@ -319,16 +308,16 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
               <label className={fieldLabelClassName}>
-                <span className={fieldLabelTextClassName}>Telefono</span>
+                <span className={fieldLabelTextClassName}>Teléfono</span>
                 <Input value={companyPhone} onChange={(event) => setCompanyPhone(event.target.value)} />
               </label>
               <label className={fieldLabelClassName}>
-                <span className={fieldLabelTextClassName}>Pais</span>
+                <span className={fieldLabelTextClassName}>País</span>
                 <Input value={countryCode} onChange={(event) => setCountryCode(event.target.value.toUpperCase())} maxLength={2} />
               </label>
               <label className={fieldLabelClassName}>
                 <span className={fieldLabelTextClassName}>Industria</span>
-                <Input value={industry} onChange={(event) => setIndustry(event.target.value)} placeholder="Energy, SaaS, Health..." />
+                <Input value={industry} onChange={(event) => setIndustry(event.target.value)} placeholder="Ej. Energía, SaaS, Salud" />
               </label>
             </div>
             </div>
@@ -336,7 +325,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             <div className={mutedPanelClassName}>
               <div className="grid gap-4 sm:grid-cols-[0.55fr_0.45fr]">
               <label className={fieldLabelClassName}>
-                <span className={fieldLabelTextClassName}>Rango de tamano</span>
+                <span className={fieldLabelTextClassName}>Tamaño del equipo</span>
                 <Select value={sizeRange} onChange={(event) => setSizeRange(event.target.value)}>
                   <option value="">Selecciona un rango</option>
                   <option value="1-10">1-10</option>
@@ -359,12 +348,12 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </div>
 
             <label className={fieldLabelClassName}>
-              <span className={fieldLabelTextClassName}>Descripcion</span>
+              <span className={fieldLabelTextClassName}>Descripción</span>
               <Textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                rows={6}
-                placeholder="Explica a que se dedica la empresa, su cultura y el tipo de talento que atrae."
+                rows={5}
+                placeholder="Describe a qué se dedica la empresa, cómo trabaja y qué tipo de talento busca atraer."
               />
             </label>
 
@@ -396,7 +385,7 @@ function WorkspaceEditor({ bundle }: { bundle: WorkspaceBundle }) {
             </div>
 
             <Button onClick={() => saveProfileMutation.mutate()} disabled={saveProfileMutation.isPending}>
-              {saveProfileMutation.isPending ? 'Guardando cambios...' : 'Guardar cambios'}
+              {saveProfileMutation.isPending ? 'Guardando cambios...' : 'Guardar perfil de empresa'}
             </Button>
           </CardContent>
         </Card>

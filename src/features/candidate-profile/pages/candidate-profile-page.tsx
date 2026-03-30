@@ -13,7 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { PageHeader } from '@/components/ui/page-header'
 import { Select } from '@/components/ui/select'
-import { StatCard } from '@/components/ui/stat-card'
 import { Textarea } from '@/components/ui/textarea'
 import { toErrorMessage } from '@/features/auth/lib/auth-api'
 import {
@@ -361,14 +360,7 @@ function CandidateProfileEditor({
     }
   })
 
-  const profile = bundle.profile
   const resumes = bundle.resumes
-  const completenessScore = profile?.completeness_score ?? 0
-  const completionTone =
-    completenessScore >= 80 ? 'bg-primary-50 text-primary-700 dark:bg-primary-500/12 dark:text-primary-200'
-    : completenessScore >= 50
-      ? 'bg-secondary-50 text-secondary-600 dark:bg-secondary-500/12 dark:text-secondary-200'
-      : 'bg-accent-50 text-accent-600 dark:bg-accent-500/12 dark:text-accent-200'
 
   async function openResume(storagePath: string) {
     try {
@@ -389,56 +381,15 @@ function CandidateProfileEditor({
     <div className="space-y-6">
       <PageHeader
         eyebrow="Candidate profile"
-        title="Haz que tu perfil se vea fuerte y esté listo para cada oportunidad"
-        description="Aquí guardas tu CV, tu resumen y lo que quieres mostrar para aplicar más rápido y presentarte mejor."
-      >
-        <StatCard
-          helper={session.profile?.email}
-          label="Cuenta"
-          value={session.profile?.display_name ?? session.profile?.full_name ?? 'Perfil candidato'}
-        />
-        <StatCard
-          helper="Mientras más completo esté el perfil, más rápido será aplicar después."
-          label="Completitud"
-          value={`${completenessScore}%`}
-        />
-        <StatCard label="CVs" value={resumes.length} helper={`Tus archivos listos para reutilizarlos, con límite de ${MAX_UPLOAD_SIZE_LABEL}.`} />
-        <StatCard
-          className="bg-(--app-surface-muted)"
-          helper={isVisibleToRecruiters ? 'Tu perfil puede aparecer para empresas que buscan talento.' : 'Tu perfil sigue privado por ahora.'}
-          label="Visibilidad"
-          value={isVisibleToRecruiters ? 'Activa' : 'Privada'}
-        />
-      </PageHeader>
-
-      <Card className="bg-(--app-surface-muted)">
-        <CardHeader>
-          <CardTitle>Checklist viva del perfil</CardTitle>
-          <CardDescription>
-            Mantén estas piezas al día para que aplicar sea rápido y tu perfil se vea sólido cuando te busquen.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-2 sm:grid-cols-2">
-          <div className={`rounded-2xl px-3 py-3 text-sm ${completionTone}`}>
-            Perfil base profesional y metadatos de ubicación conectados a la cuenta.
-          </div>
-          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
-            CV privado, listo para volver a usar cuando aparezca la oportunidad correcta.
-          </div>
-          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
-            Experiencia, educación, skills, idiomas y links como bloques editables.
-          </div>
-          <div className="rounded-2xl bg-(--app-surface) px-3 py-3 text-sm text-(--app-text-muted)">
-            Activa tu visibilidad si quieres que empresas te encuentren sin haber aplicado.
-          </div>
-        </CardContent>
-      </Card>
+        title="Mantén un perfil profesional listo para aplicar y para ser encontrado"
+        description="Tu historial, CV y visibilidad viven aquí para que postularte o compartir tu perfil requiera menos esfuerzo."
+      />
 
       <Card>
-        <CardHeader>
-          <CardTitle>Estado del candidato</CardTitle>
-          <CardDescription>Tu perfil te acompaña aunque también colabores con una empresa dentro de la plataforma.</CardDescription>
-        </CardHeader>
+          <CardHeader>
+            <CardTitle>Estado del perfil</CardTitle>
+            <CardDescription>Revisa en un vistazo qué tan completo está tu perfil y si hoy puede aparecer en el directorio.</CardDescription>
+          </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline">{resumes.length > 0 ? `${resumes.length} CVs` : 'Sin CV'}</Badge>
@@ -482,13 +433,13 @@ function CandidateProfileEditor({
             <form className="space-y-4" onSubmit={(event) => void form.handleSubmit((values) => saveMutation.mutate(values))(event)}>
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Titular profesional</span>
-                <Input placeholder="Recruiter operations specialist" {...form.register('headline')} />
+                <Input placeholder="Ej. Recruiter Operations Specialist" {...form.register('headline')} />
                 <p className="text-xs text-rose-600 dark:text-rose-300">{form.formState.errors.headline?.message}</p>
               </label>
 
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Rol objetivo</span>
-                <Input placeholder="Talent acquisition lead" {...form.register('desiredRole')} />
+                <Input placeholder="Ej. Talent Acquisition Lead" {...form.register('desiredRole')} />
                 <p className="text-xs text-rose-600 dark:text-rose-300">{form.formState.errors.desiredRole?.message}</p>
               </label>
 
@@ -507,14 +458,14 @@ function CandidateProfileEditor({
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Resumen profesional</span>
                 <Textarea
-                  placeholder="Resume tu experiencia, stack, logros y el tipo de oportunidad que buscas."
+                  placeholder="Resume experiencia, fortalezas, logros y el tipo de oportunidad que quieres atraer."
                   {...form.register('summary')}
                 />
                 <p className="text-xs text-rose-600 dark:text-rose-300">{form.formState.errors.summary?.message}</p>
               </label>
 
-              <Button className="w-full" disabled={saveMutation.isPending} type="submit">
-                {saveMutation.isPending ? 'Guardando perfil candidato...' : 'Guardar perfil candidato'}
+              <Button disabled={saveMutation.isPending} type="submit">
+                {saveMutation.isPending ? 'Guardando perfil candidato...' : 'Guardar perfil profesional'}
               </Button>
             </form>
           </CardContent>
@@ -604,7 +555,7 @@ function CandidateProfileEditor({
         <Card>
           <CardHeader>
             <CardTitle>Experiencia y educacion</CardTitle>
-            <CardDescription>Bloques ligeros y editables para el loop MVP.</CardDescription>
+            <CardDescription>Organiza antecedentes laborales y académicos en bloques cortos y fáciles de actualizar.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
@@ -767,7 +718,7 @@ function CandidateProfileEditor({
         <Card>
           <CardHeader>
             <CardTitle>Skills, idiomas y links</CardTitle>
-            <CardDescription>Metadata reusable para matching y perfiles publicables mas adelante.</CardDescription>
+            <CardDescription>Señales clave para matching, búsquedas de reclutadores y futuras postulaciones.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
@@ -879,11 +830,7 @@ function CandidateProfileEditor({
               ))}
             </div>
 
-            <Button
-              className="w-full"
-              onClick={() => void form.handleSubmit((values) => saveMutation.mutate(values))()}
-              disabled={saveMutation.isPending}
-            >
+            <Button onClick={() => void form.handleSubmit((values) => saveMutation.mutate(values))()} disabled={saveMutation.isPending}>
               {saveMutation.isPending ? 'Sincronizando secciones...' : 'Guardar experiencia, educacion y metadata'}
             </Button>
           </CardContent>
