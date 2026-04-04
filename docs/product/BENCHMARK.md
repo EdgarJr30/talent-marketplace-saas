@@ -11,7 +11,7 @@ The market spans several overlapping categories:
 - job board
 - ATS
 - recruiting CRM
-- talent marketplace
+- ats
 
 Your product should start as:
 > a multi-tenant recruiting platform with candidate profiles, job discovery, and ATS-lite workflow
@@ -60,7 +60,7 @@ Strong in:
 - autofill/reuse
 - candidate-side productivity
 
-### Gloat / talent marketplace style products
+### Gloat / asi_do style products
 Strong in:
 - skills-based opportunity matching
 - marketplace logic

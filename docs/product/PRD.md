@@ -1,7 +1,7 @@
 # PRD.md — Product Requirements Document
 
 ## 1. Product summary
-A **multi-tenant talent marketplace and recruiting SaaS** that allows:
+A **multi-tenant ats and recruiting SaaS** that allows:
 - companies to publish jobs and manage applicants
 - candidates to create reusable professional profiles, keep a preloaded CV, and apply quickly
 - hiring teams to collaborate through an ATS-lite workflow
