@@ -1,4 +1,4 @@
-# Talent Marketplace SaaS
+# asi_do
 
 ## Espanol
 
@@ -29,7 +29,7 @@ Construir una base escalable para:
 ### Estructura principal
 
 ```text
-talent-marketplace-saas/
+asi_do/
   AGENTS.md
   README.md
   docs/
@@ -146,7 +146,7 @@ npm run version:apply
 Copiar `.env.example` y completar:
 
 ```bash
-VITE_APP_NAME=Talent Marketplace SaaS
+VITE_APP_NAME=asi_do
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_WEB_PUSH_PUBLIC_KEY=

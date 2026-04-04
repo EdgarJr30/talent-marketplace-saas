@@ -9,7 +9,7 @@ import {
 describe('release plan', () => {
   it('parses package entries from a changeset frontmatter block', () => {
     const entries = parseChangesetEntries(`---
-"talent-marketplace-saas": minor
+"asi_do": minor
 ---
 
 Add release planning
@@ -17,7 +17,7 @@ Add release planning
 
     expect(entries).toEqual([
       {
-        packageName: 'talent-marketplace-saas',
+        packageName: 'asi_do',
         releaseType: 'minor'
       }
     ])

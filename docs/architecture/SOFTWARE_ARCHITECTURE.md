@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-This document defines the recommended software architecture for the **Talent Marketplace SaaS** project.
+This document defines the recommended software architecture for the **asi_do** project.
 
 The system is a **multi-tenant job and talent platform** where:
 
@@ -227,7 +227,7 @@ The repository should be organized to reflect product boundaries.
 Suggested top-level structure:
 
 ```txt
-talent-marketplace-saas/
+asi_do/
   AGENTS.md
   README.md
   docs/

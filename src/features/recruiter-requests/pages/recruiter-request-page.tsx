@@ -293,7 +293,7 @@ export function RecruiterRequestPage() {
 
               <label className="space-y-2 text-sm font-medium text-zinc-800 dark:text-zinc-100">
                 <span>Slug del tenant</span>
-                <Input placeholder="talent-marketplace-dr" {...form.register('requestedTenantSlug')} />
+                <Input placeholder="asi-do-dr" {...form.register('requestedTenantSlug')} />
                 <p className="text-xs text-rose-600 dark:text-rose-300">{form.formState.errors.requestedTenantSlug?.message}</p>
               </label>
 

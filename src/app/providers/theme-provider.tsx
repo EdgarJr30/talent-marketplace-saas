@@ -9,7 +9,7 @@ export function ThemeProvider({ children }: PropsWithChildren) {
       defaultTheme="system"
       disableTransitionOnChange
       enableSystem
-      storageKey="talent-marketplace-theme"
+      storageKey="asi_do-theme"
     >
       {children}
     </NextThemesProvider>
