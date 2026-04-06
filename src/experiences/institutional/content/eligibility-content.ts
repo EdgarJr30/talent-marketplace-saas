@@ -206,6 +206,7 @@ export const internationalDivisionCountries: { country: string; iso: string; url
   { country: 'Denmark', iso: 'DK', url: 'http://asiscandinavia.org' },
   { country: 'Djibouti', iso: 'DJ', url: 'https://www.ecdadventist.org/contact-us' },
   { country: 'Dominica', iso: 'DM', url: 'https://asi.interamerica.org' },
+  { country: 'República Dominicana', iso: 'DO', url: 'https://asi.interamerica.org' },
   { country: 'Ecuador', iso: 'EC', url: 'http://www.adventistas.org/pt' },
   { country: 'El Salvador', iso: 'SV', url: 'https://asi.interamerica.org' },
   { country: 'Equatorial Guinea', iso: 'GQ', url: 'http://wad.adventist.org/contact' },

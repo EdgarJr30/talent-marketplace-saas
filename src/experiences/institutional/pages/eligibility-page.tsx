@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Combobox,
@@ -315,6 +315,19 @@ function CountryCombobox({
 function OtherDivisionsStep({ onBack }: { onBack: () => void }) {
   const [selectedCountry, setSelectedCountry] = useState('')
   const selected = internationalDivisionCountries.find((c) => c.country === selectedCountry)
+
+  useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then((res) => res.json())
+      .then((data: { country_code?: string }) => {
+        if (!data.country_code) return
+        const match = internationalDivisionCountries.find(
+          (c) => c.iso.toUpperCase() === data.country_code!.toUpperCase()
+        )
+        if (match) setSelectedCountry(match.country)
+      })
+      .catch(() => { /* silently ignore geolocation failures */ })
+  }, [])
 
   return (
     <StepWrapper stepKey="other-divisions">
