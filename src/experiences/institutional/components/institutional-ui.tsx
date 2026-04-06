@@ -1,35 +1,39 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-import { motion, useReducedMotion } from 'motion/react'
-import { Link } from 'react-router-dom'
+import { motion, useReducedMotion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
-import type { InstitutionalAction, InstitutionalLeadContent, InstitutionalTone } from '@/experiences/institutional/content/site-content'
-import { cn } from '@/lib/utils/cn'
+import type {
+  InstitutionalAction,
+  InstitutionalLeadContent,
+  InstitutionalTone,
+} from '@/experiences/institutional/content/site-content';
+import { cn } from '@/lib/utils/cn';
 
-type InstitutionalSectionTone = InstitutionalTone | 'transparent'
-type InstitutionalSectionSpacing = 'default' | 'none'
+type InstitutionalSectionTone = InstitutionalTone | 'transparent';
+type InstitutionalSectionSpacing = 'default' | 'none';
 
 const toneClassByTone: Record<InstitutionalSectionTone, string> = {
   plain: 'asi-section-plain',
   muted: 'asi-section-muted',
   brand: 'asi-section-brand',
-  transparent: 'asi-section-transparent'
-}
+  transparent: 'asi-section-transparent',
+};
 
 const spacingClassBySpacing: Record<InstitutionalSectionSpacing, string> = {
   default: 'asi-section',
-  none: 'asi-section-none'
-}
+  none: 'asi-section-none',
+};
 
 export function InstitutionalActionLink({
   action,
-  className
+  className,
 }: {
-  action: InstitutionalAction
-  className?: string
+  action: InstitutionalAction;
+  className?: string;
 }) {
-  const variant = action.variant ?? 'primary'
-  const shouldReduceMotion = useReducedMotion()
+  const variant = action.variant ?? 'primary';
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.div
@@ -50,28 +54,41 @@ export function InstitutionalActionLink({
         {action.label}
       </Link>
     </motion.div>
-  )
+  );
 }
 
 export function InstitutionalLead({
   content,
   invert = false,
-  className
+  className,
 }: {
-  content: InstitutionalLeadContent
-  invert?: boolean
-  className?: string
+  content: InstitutionalLeadContent;
+  invert?: boolean;
+  className?: string;
 }) {
   return (
     <div className={cn('max-w-3xl', className)}>
       {content.eyebrow ? (
-        <p className={cn('asi-kicker', invert && 'border-white/15 bg-white/10 text-white/82')}>{content.eyebrow}</p>
+        <p
+          className={cn(
+            'asi-kicker',
+            invert && 'border-white/15 bg-white/10 text-white/82'
+          )}
+        >
+          {content.eyebrow}
+        </p>
       ) : null}
       <div className={cn('asi-accent-line', invert && 'bg-white/45')} />
-      <h2 className={cn('asi-heading-lg', invert && 'text-white')}>{content.title}</h2>
-      <p className={cn('asi-copy mt-4 max-w-[66ch]', invert && 'text-white/78')}>{content.description}</p>
+      <h2 className={cn('asi-heading-lg', invert && 'text-white')}>
+        {content.title}
+      </h2>
+      <p
+        className={cn('asi-copy mt-4 max-w-[66ch]', invert && 'text-white/78')}
+      >
+        {content.description}
+      </p>
     </div>
-  )
+  );
 }
 
 export function InstitutionalSection({
@@ -81,10 +98,10 @@ export function InstitutionalSection({
   children,
   ...props
 }: ComponentPropsWithoutRef<'section'> & {
-  tone?: InstitutionalSectionTone
-  spacing?: InstitutionalSectionSpacing
+  tone?: InstitutionalSectionTone;
+  spacing?: InstitutionalSectionSpacing;
 }) {
-  const shouldReduceMotion = useReducedMotion()
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
@@ -105,7 +122,7 @@ export function InstitutionalSection({
         {children}
       </motion.div>
     </section>
-  )
+  );
 }
 
 export function InstitutionalCard({
@@ -113,11 +130,11 @@ export function InstitutionalCard({
   children,
   hoverMotion = true,
 }: {
-  className?: string
-  children: ReactNode
-  hoverMotion?: boolean
+  className?: string;
+  children: ReactNode;
+  hoverMotion?: boolean;
 }) {
-  const shouldReduceMotion = useReducedMotion()
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.article
@@ -134,25 +151,27 @@ export function InstitutionalCard({
     >
       {children}
     </motion.article>
-  )
+  );
 }
 
 export function InstitutionalCtaBand({
   title,
   description,
   primaryAction,
-  secondaryAction
+  secondaryAction,
 }: {
-  title: string
-  description: string
-  primaryAction: InstitutionalAction
-  secondaryAction: InstitutionalAction
+  title: string;
+  description: string;
+  primaryAction: InstitutionalAction;
+  secondaryAction: InstitutionalAction;
 }) {
   return (
     <InstitutionalSection tone="brand">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end">
         <div>
-          <p className="asi-kicker border-white/15 bg-white/10 text-white/82">Siguiente paso</p>
+          <p className="asi-kicker border-white/15 bg-white/10 text-white/82">
+            Siguiente paso
+          </p>
           <h2 className="asi-heading-lg mt-4 text-white">{title}</h2>
         </div>
         <div className="lg:justify-self-end lg:text-right">
@@ -164,5 +183,5 @@ export function InstitutionalCtaBand({
         </div>
       </div>
     </InstitutionalSection>
-  )
+  );
 }
