@@ -733,7 +733,7 @@ export function EligibilityPage() {
                 <EligibleResult
                   key="result-eligible"
                   result={state.result}
-                  onContinue={() => navigate(surfacePaths.institutional.membershipApply)}
+                  onContinue={() => void navigate(surfacePaths.institutional.membershipApply)}
                 />
               ) : (
                 <IneligibleResult
