@@ -143,7 +143,7 @@ export function MembershipPage() {
       {/* ── Membership Action Cards ──────────────────────────── */}
       <InstitutionalSection tone="muted">
         <div className="space-y-10 sm:space-y-14">
-          <h2 className="asi-heading-lg text-center text-(--asi-primary)">
+          <h2 className="asi-heading-lg mx-auto max-w-[22ch] text-center">
             Únete a nuestra familia de miembros dedicados y sé parte de algo mayor.
           </h2>
 
@@ -189,9 +189,9 @@ export function MembershipPage() {
       </InstitutionalSection>
 
       {/* ── Benefits columns ─────────────────────────────────── */}
-      <InstitutionalSection tone="plain">
+      <InstitutionalSection tone="brand">
         <div className="space-y-10">
-          <h2 className="asi-heading-lg text-center">
+          <h2 className="asi-heading-lg text-center text-white">
             Beneficios de la membresía ASI
           </h2>
           <div className="grid gap-8 lg:grid-cols-2">
@@ -221,19 +221,19 @@ export function MembershipPage() {
       </InstitutionalSection>
 
       {/* ── FAQ ──────────────────────────────────────────────── */}
-      <InstitutionalSection tone="brand">
+      <InstitutionalSection tone="plain">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-          <h2 className="asi-heading-lg text-white">
+          <h2 className="asi-heading-lg">
             Preguntas frecuentes
           </h2>
-          <dl className="divide-y divide-white/10">
+          <dl className="divide-y divide-(--asi-outline)">
             {membershipFaqs.map((faq) => {
               const isOpen = openFaq === faq.question;
               return (
                 <div key={faq.question} className="py-5 first:pt-0 last:pb-0">
                   <dt>
                     <button
-                      className="flex w-full items-start justify-between gap-4 text-left text-white"
+                      className="flex w-full items-start justify-between gap-4 text-left text-(--asi-text)"
                       onClick={() => setOpenFaq(isOpen ? null : faq.question)}
                     >
                       <span className="text-base font-semibold leading-7">{faq.question}</span>
@@ -264,7 +264,7 @@ export function MembershipPage() {
                           className="w-full cursor-pointer text-left"
                           onClick={() => setOpenFaq(null)}
                         >
-                          <p className="pt-3 pr-8 pb-1 text-sm leading-7 text-white/72">
+                          <p className="pt-3 pr-8 pb-1 text-sm leading-7 text-(--asi-text-muted)">
                             {faq.answer}
                           </p>
                         </button>

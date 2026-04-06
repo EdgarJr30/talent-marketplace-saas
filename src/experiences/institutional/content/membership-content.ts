@@ -45,6 +45,8 @@ export const membershipBenefitColumns = [
       'Formación con líderes experimentados en fe y negocios',
       'Red de colaboración con pares que comparten tu visión',
       'Acceso a oportunidades concretas de servicio e impacto',
+      'Profesionales activos: integra vocación, testimonio y servicio desde tu ejercicio profesional',
+      'Familias y voluntariado: súmate a proyectos, eventos y dinámicas de comunidad',
     ],
     cta: { label: 'Nueva membresía', to: surfacePaths.institutional.contactUs },
   },
@@ -56,6 +58,8 @@ export const membershipBenefitColumns = [
       'Potencia el crecimiento y alcance de tu ministerio',
       'Conéctate con otros ministerios en el mundo',
       'Avanza el reino con el respaldo de una familia institucional',
+      'Empresarios y patrocinadores: moviliza redes, recursos y oportunidades con visión de misión',
+      'Liderazgo regional: articula capítulos y mantén viva la identidad institucional',
     ],
     cta: { label: 'Formulario de interés', to: surfacePaths.institutional.contactUs },
   },
@@ -151,43 +155,5 @@ export const membershipPageContent: InstitutionalPageContent = {
       },
     ],
   },
-  sections: [
-    {
-      type: 'list',
-      tone: 'muted',
-      lead: {
-        eyebrow: 'Perfiles',
-        title: 'Frentes donde la membresía encuentra su lugar.',
-        description:
-          'No todos participan igual; la web debe comunicar opciones con claridad.',
-      },
-      columns: 2,
-      items: [
-        {
-          title: 'Profesionales activos',
-          description:
-            'Personas que desean integrar vocación, testimonio y servicio desde su ejercicio profesional.',
-          tag: 'Vocación',
-        },
-        {
-          title: 'Empresarios y patrocinadores',
-          description:
-            'Aliados que movilizan redes, recursos y oportunidades con visión de misión.',
-          tag: 'Mayordomía',
-        },
-        {
-          title: 'Familias y voluntariado',
-          description:
-            'Núcleos que se suman a proyectos, eventos y dinámicas de comunidad.',
-          tag: 'Comunidad',
-        },
-        {
-          title: 'Liderazgo regional',
-          description:
-            'Equipos que articulan capítulos y mantienen viva la identidad institucional.',
-          tag: 'Coordinación',
-        },
-      ],
-    },
-  ],
+  sections: [],
 };
