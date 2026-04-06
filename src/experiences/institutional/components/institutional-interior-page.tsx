@@ -344,12 +344,14 @@ export function InstitutionalInteriorPage({
         }
       })}
 
-      <InstitutionalCtaBand
-        title={content.cta.title}
-        description={content.cta.description}
-        primaryAction={content.cta.primaryAction}
-        secondaryAction={content.cta.secondaryAction}
-      />
+      {content.cta && (
+        <InstitutionalCtaBand
+          title={content.cta.title}
+          description={content.cta.description}
+          primaryAction={content.cta.primaryAction}
+          secondaryAction={content.cta.secondaryAction}
+        />
+      )}
     </div>
   );
 }
