@@ -934,6 +934,9 @@ export function InstitutionalHomePage() {
                 : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
             }
           >
+            <div className="mb-4 flex items-center gap-2 sm:mb-5 sm:px-7 lg:px-10 xl:px-14">
+              <span className="asi-kicker">Noticias Relevantes</span>
+            </div>
             <div
               ref={carouselViewportRef}
               aria-label="Historias destacadas de ASI"
