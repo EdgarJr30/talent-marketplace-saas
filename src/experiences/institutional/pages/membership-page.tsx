@@ -3,7 +3,6 @@ import { motion, useReducedMotion } from 'motion/react';
 import {
   InstitutionalActionLink,
   InstitutionalCard,
-  InstitutionalCtaBand,
   InstitutionalLead,
   InstitutionalSection,
 } from '@/experiences/institutional/components/institutional-ui';
@@ -48,7 +47,7 @@ const imageVariants = {
 
 export function MembershipPage() {
   const shouldReduceMotion = useReducedMotion();
-  const { hero, sections, cta } = membershipPageContent;
+  const { hero, sections } = membershipPageContent;
 
   return (
     <div>
@@ -387,13 +386,6 @@ export function MembershipPage() {
             );
         }
       })}
-
-      <InstitutionalCtaBand
-        description={cta.description}
-        primaryAction={cta.primaryAction}
-        secondaryAction={cta.secondaryAction}
-        title={cta.title}
-      />
     </div>
   );
 }
