@@ -9,6 +9,7 @@ import {
   CircleDollarSign,
   Globe2,
   HandCoins,
+  LayoutDashboard,
   HandHeart,
   HeartHandshake,
   Landmark,
@@ -120,6 +121,15 @@ export type InstitutionalSection =
       tone?: InstitutionalTone;
       lead: InstitutionalLeadContent;
       items: InstitutionalPerson[];
+    }
+  | {
+      type: 'stats-and-features';
+      tone?: InstitutionalTone;
+      statsLead: InstitutionalLeadContent;
+      stats: InstitutionalStat[];
+      featuresLead: InstitutionalLeadContent;
+      features: InstitutionalFeatureItem[];
+      featuresColumns?: 2 | 3 | 4;
     };
 
 export type InstitutionalPageContent = {
@@ -509,25 +519,19 @@ export const membershipPageContent: InstitutionalPageContent = {
   },
   sections: [
     {
-      type: 'stats',
+      type: 'stats-and-features',
       tone: 'muted',
-      lead: {
+      statsLead: {
         eyebrow: 'Valor',
         title: 'Lo que la membresía hace posible.',
         description:
           'La propuesta de valor se organiza como acompañamiento relacional, formación y movilización.',
       },
-      items: [
+      stats: [
         {
           value: '4',
           label: 'Pilares',
           description: 'Comunidad, mentoría, recursos y servicio.',
-        },
-        {
-          value: '12',
-          label: 'Momentos al año',
-          description:
-            'Entre eventos, encuentros, briefings y espacios de coordinación.',
         },
         {
           value: '1 red',
@@ -536,16 +540,13 @@ export const membershipPageContent: InstitutionalPageContent = {
             'Una sola voz institucional para contar misión, impacto y colaboración.',
         },
       ],
-    },
-    {
-      type: 'feature-grid',
-      lead: {
+      featuresLead: {
         eyebrow: 'Beneficios',
         title: 'Qué recibe una persona o familia miembro.',
         description:
           'La experiencia debe sentirse útil desde la primera interacción y sostenible en el tiempo.',
       },
-      items: [
+      features: [
         {
           title: 'Mentoría y cercanía',
           description:
@@ -570,41 +571,14 @@ export const membershipPageContent: InstitutionalPageContent = {
             'Vínculos con capítulos, equipos y aliados que multiplican el alcance de cada iniciativa.',
           icon: Building2,
         },
-      ],
-      columns: 2,
-    },
-    {
-      type: 'split',
-      tone: 'brand',
-      lead: {
-        eyebrow: 'Proceso',
-        title: 'Una incorporación clara, humana y gradual.',
-        description:
-          'La membresía se presenta como una relación, no como una transacción aislada.',
-      },
-      image:
-        'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
-      imageAlt: 'Miembros en un evento institucional',
-      bodyTitle: 'Cómo se vive el ingreso',
-      bodyCopy: [
-        'El proceso combina orientación, presentación institucional y conexión con frentes de participación relevantes.',
-        'La experiencia inicial debe dejar claro dónde está la comunidad, qué recursos existen y cómo empezar a servir desde el contexto real de cada miembro.',
-      ],
-      highlights: [
         {
-          title: 'Paso 1',
-          description: 'Contacto inicial y conversación de contexto.',
-        },
-        {
-          title: 'Paso 2',
-          description: 'Integración a comunidad, calendario y recursos clave.',
-        },
-        {
-          title: 'Paso 3',
+          title: 'Plataforma de afiliación en línea',
           description:
-            'Activación en proyectos, mentoría o frentes de colaboración.',
+            'Solicita, renueva y da seguimiento a tu membresía desde nuestra plataforma digital. Accede a tu perfil institucional y beneficios desde cualquier dispositivo.',
+          icon: LayoutDashboard,
         },
       ],
+      featuresColumns: 2,
     },
     {
       type: 'list',

@@ -1,4 +1,7 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { useState } from 'react';
+import { ArrowRight, Minus, Plus } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 import {
   InstitutionalActionLink,
@@ -7,6 +10,9 @@ import {
   InstitutionalSection,
 } from '@/experiences/institutional/components/institutional-ui';
 import {
+  membershipActionCards,
+  membershipBenefitColumns,
+  membershipFaqs,
   membershipFeatures,
   membershipHeroImage,
   membershipPageContent,
@@ -48,6 +54,7 @@ const imageVariants = {
 export function MembershipPage() {
   const shouldReduceMotion = useReducedMotion();
   const { hero, sections } = membershipPageContent;
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   return (
     <div>
@@ -133,6 +140,144 @@ export function MembershipPage() {
         </div>
       </InstitutionalSection>
 
+      {/* ── Membership Action Cards ──────────────────────────── */}
+      <InstitutionalSection tone="muted">
+        <div className="space-y-10 sm:space-y-14">
+          <h2 className="asi-heading-lg text-center text-(--asi-primary)">
+            Únete a nuestra familia de miembros dedicados y sé parte de algo mayor.
+          </h2>
+
+          <div className="grid gap-5 lg:grid-cols-3">
+            {membershipActionCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className="flex flex-col rounded-[1.5rem] p-8 sm:p-10"
+                  style={{
+                    background:
+                      'linear-gradient(135deg, var(--asi-primary) 0%, var(--asi-primary-container) 100%)',
+                  }}
+                >
+                  <div className="flex size-14 items-center justify-center rounded-2xl bg-white/10">
+                    <Icon className="size-7 text-white" />
+                  </div>
+                  <p className="mt-6 text-xl font-semibold tracking-tight text-white">
+                    {card.title}
+                  </p>
+                  <p className="mt-3 grow text-sm leading-7 text-white/72">
+                    {card.description}
+                  </p>
+                  <div className="mt-8">
+                    <Link
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                      to={card.cta.to}
+                    >
+                      {card.cta.label}
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center">
+            <InstitutionalActionLink action={hero.primaryAction} />
+          </div>
+        </div>
+      </InstitutionalSection>
+
+      {/* ── Benefits columns ─────────────────────────────────── */}
+      <InstitutionalSection tone="plain">
+        <div className="space-y-10">
+          <h2 className="asi-heading-lg text-center">
+            Beneficios de la membresía ASI
+          </h2>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {membershipBenefitColumns.map((col) => (
+              <div key={col.title} className="flex flex-col gap-6 rounded-[1.5rem] bg-(--asi-surface-raised) p-8 shadow-(--asi-shadow-soft) outline-1 outline-(--asi-outline) sm:p-10">
+                <div>
+                  <p className="text-xl font-semibold tracking-tight text-(--asi-primary)">
+                    {col.title}
+                  </p>
+                  <p className="asi-copy mt-3">{col.description}</p>
+                </div>
+                <ul className="grow space-y-3">
+                  {col.highlights.map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-sm leading-6 text-(--asi-text-muted)">
+                      <span className="size-1.5 shrink-0 rounded-full bg-(--asi-primary)" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-2">
+                  <InstitutionalActionLink action={{ label: col.cta.label, to: col.cta.to, variant: 'primary' }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </InstitutionalSection>
+
+      {/* ── FAQ ──────────────────────────────────────────────── */}
+      <InstitutionalSection tone="brand">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+          <h2 className="asi-heading-lg text-white">
+            Preguntas frecuentes
+          </h2>
+          <dl className="divide-y divide-white/10">
+            {membershipFaqs.map((faq) => {
+              const isOpen = openFaq === faq.question;
+              return (
+                <div key={faq.question} className="py-5 first:pt-0 last:pb-0">
+                  <dt>
+                    <button
+                      className="flex w-full items-start justify-between gap-4 text-left text-white"
+                      onClick={() => setOpenFaq(isOpen ? null : faq.question)}
+                    >
+                      <span className="text-base font-semibold leading-7">{faq.question}</span>
+                      <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center">
+                        {isOpen ? (
+                          <Minus aria-hidden="true" className="size-5" />
+                        ) : (
+                          <Plus aria-hidden="true" className="size-5" />
+                        )}
+                      </span>
+                    </button>
+                  </dt>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.dd
+                        key="answer"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }
+                        }
+                        className="overflow-hidden"
+                      >
+                        <button
+                          className="w-full cursor-pointer text-left"
+                          onClick={() => setOpenFaq(null)}
+                        >
+                          <p className="pt-3 pr-8 pb-1 text-sm leading-7 text-white/72">
+                            {faq.answer}
+                          </p>
+                        </button>
+                      </motion.dd>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
+      </InstitutionalSection>
+
       {/* ── Content sections ─────────────────────────────────── */}
       {sections.map((section) => {
         switch (section.type) {
@@ -186,6 +331,64 @@ export function MembershipPage() {
                         </p>
                       </InstitutionalCard>
                     ))}
+                  </div>
+                </div>
+              </InstitutionalSection>
+            );
+
+          case 'stats-and-features':
+            return (
+              <InstitutionalSection
+                key={section.statsLead.title}
+                tone={section.tone ?? 'muted'}
+              >
+                <div className="space-y-16">
+                  <div className="grid gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-end">
+                    <InstitutionalLead content={section.statsLead} />
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {section.stats.map((item) => (
+                        <InstitutionalCard key={item.label}>
+                          <p className="text-4xl font-semibold tracking-tight text-(--asi-primary)">
+                            {item.value}
+                          </p>
+                          <p className="mt-3 text-base font-semibold text-(--asi-text)">
+                            {item.label}
+                          </p>
+                          <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
+                            {item.description}
+                          </p>
+                        </InstitutionalCard>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="space-y-8">
+                    <InstitutionalLead content={section.featuresLead} />
+                    <div
+                      className={cn(
+                        section.featuresColumns === 4
+                          ? 'grid gap-4 md:grid-cols-2 xl:grid-cols-4'
+                          : section.featuresColumns === 2
+                          ? 'grid gap-4 lg:grid-cols-2'
+                          : 'grid gap-4 md:grid-cols-2 xl:grid-cols-3'
+                      )}
+                    >
+                      {section.features.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <InstitutionalCard key={item.title}>
+                            {Icon ? (
+                              <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-surface-raised) text-(--asi-primary)">
+                                <Icon className="size-5" />
+                              </div>
+                            ) : null}
+                            <p className="mt-4 text-lg font-semibold tracking-tight text-(--asi-text)">
+                              {item.title}
+                            </p>
+                            <p className="asi-copy mt-2">{item.description}</p>
+                          </InstitutionalCard>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </InstitutionalSection>
@@ -247,93 +450,6 @@ export function MembershipPage() {
                         </InstitutionalCard>
                       );
                     })}
-                  </div>
-                </div>
-              </InstitutionalSection>
-            );
-
-          case 'split':
-            return (
-              <InstitutionalSection
-                key={section.lead.title}
-                tone={section.tone ?? 'plain'}
-              >
-                <div className="grid gap-8 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-center">
-                  <div>
-                    <InstitutionalLead
-                      content={section.lead}
-                      invert={section.tone === 'brand'}
-                    />
-                    <div className="mt-6 space-y-4">
-                      {section.highlights.map((item) => (
-                        <div
-                          key={item.title}
-                          className={
-                            section.tone === 'brand'
-                              ? 'rounded-panel bg-white/10 px-5 py-4 backdrop-blur-md'
-                              : 'rounded-panel bg-(--asi-surface-panel) px-5 py-4'
-                          }
-                        >
-                          <p
-                            className={
-                              section.tone === 'brand'
-                                ? 'text-sm font-semibold uppercase tracking-[0.14em] text-white/72'
-                                : 'text-sm font-semibold uppercase tracking-[0.14em] text-(--asi-secondary)'
-                            }
-                          >
-                            {item.title}
-                          </p>
-                          <p
-                            className={
-                              section.tone === 'brand'
-                                ? 'mt-2 text-sm leading-6 text-white/82'
-                                : 'mt-2 text-sm leading-6 text-(--asi-text-muted)'
-                            }
-                          >
-                            {item.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="grid gap-5">
-                    <img
-                      alt={section.imageAlt}
-                      className="h-88 w-full rounded-[1.75rem] object-cover shadow-(--asi-shadow-soft)"
-                      loading="lazy"
-                      src={section.image}
-                    />
-                    <InstitutionalCard
-                      className={
-                        section.tone === 'brand'
-                          ? 'bg-white/10 text-white backdrop-blur-md'
-                          : undefined
-                      }
-                    >
-                      <p
-                        className={
-                          section.tone === 'brand'
-                            ? 'text-lg font-semibold tracking-tight text-white'
-                            : 'text-lg font-semibold tracking-tight text-(--asi-text)'
-                        }
-                      >
-                        {section.bodyTitle}
-                      </p>
-                      <div className="mt-3 space-y-3">
-                        {section.bodyCopy.map((paragraph) => (
-                          <p
-                            key={paragraph}
-                            className={
-                              section.tone === 'brand'
-                                ? 'text-sm leading-7 text-white/82'
-                                : 'text-sm leading-7 text-(--asi-text-muted)'
-                            }
-                          >
-                            {paragraph}
-                          </p>
-                        ))}
-                      </div>
-                    </InstitutionalCard>
                   </div>
                 </div>
               </InstitutionalSection>

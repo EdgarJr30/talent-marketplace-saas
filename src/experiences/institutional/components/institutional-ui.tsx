@@ -37,6 +37,7 @@ export function InstitutionalActionLink({
 
   return (
     <motion.div
+      className="w-fit"
       transition={{ type: 'spring', stiffness: 320, damping: 24, mass: 0.72 }}
       whileHover={shouldReduceMotion ? undefined : { y: -2, scale: 1.01 }}
       whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
