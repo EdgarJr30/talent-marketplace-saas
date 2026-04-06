@@ -12,7 +12,7 @@ export function StatCard({ label, value, helper, className, ...props }: StatCard
   return (
     <div
       className={cn(
-        'rounded-[20px] border border-(--app-border) bg-(--app-surface-elevated) px-4 py-4 shadow-[0_14px_34px_rgba(10,18,36,0.07)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.18)]',
+        'rounded-panel border border-(--app-border) bg-(--app-surface-elevated) px-4 py-4 shadow-[0_14px_34px_rgba(10,18,36,0.07)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.18)]',
         className
       )}
       {...props}

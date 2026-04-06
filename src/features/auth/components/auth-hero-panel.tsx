@@ -29,7 +29,7 @@ export function AuthHeroPanel({
               'Completa tu perfil a tu ritmo antes de aplicar.',
               'Si tu empresa entra a la plataforma, el acceso llega después.'
             ].map((item) => (
-              <div key={item} className="rounded-[20px] border bg-(--app-surface) px-4 py-4 text-sm leading-6 text-(--app-text-muted)">
+              <div key={item} className="rounded-panel border bg-(--app-surface) px-4 py-4 text-sm leading-6 text-(--app-text-muted)">
                 {item}
               </div>
             ))}
