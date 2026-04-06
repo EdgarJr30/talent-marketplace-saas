@@ -6,8 +6,11 @@ import { InstitutionalShell } from '@/experiences/institutional/layouts/institut
 import { ContactUsPage } from '@/experiences/institutional/pages/contact-us-page'
 import { DirectoryPage } from '@/experiences/institutional/pages/directory-page'
 import { DonatePage } from '@/experiences/institutional/pages/donate-page'
+import { EligibilityPage } from '@/experiences/institutional/pages/eligibility-page'
 import { InstitutionalHomePage } from '@/experiences/institutional/pages/institutional-home-page'
 import { MediaPage } from '@/experiences/institutional/pages/media-page'
+import { MembershipApplyPage } from '@/experiences/institutional/pages/membership-apply-page'
+import { MembershipCategoriesPage } from '@/experiences/institutional/pages/membership-categories-page'
 import { MembershipPage } from '@/experiences/institutional/pages/membership-page'
 import { NewsPage } from '@/experiences/institutional/pages/news-page'
 import { ProjectFundingPage } from '@/experiences/institutional/pages/project-funding-page'
@@ -30,6 +33,18 @@ export const institutionalRoutes: RouteObject[] = [
       {
         path: 'membership',
         element: <MembershipPage />
+      },
+      {
+        path: 'membership/categories',
+        element: <MembershipCategoriesPage />
+      },
+      {
+        path: 'membership/apply',
+        element: <MembershipApplyPage />
+      },
+      {
+        path: 'eligibility',
+        element: <EligibilityPage />
       },
       {
         path: 'projects',

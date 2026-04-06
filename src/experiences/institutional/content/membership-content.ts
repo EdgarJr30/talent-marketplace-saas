@@ -48,7 +48,7 @@ export const membershipBenefitColumns = [
       'Profesionales activos: integra vocación, testimonio y servicio desde tu ejercicio profesional',
       'Familias y voluntariado: súmate a proyectos, eventos y dinámicas de comunidad',
     ],
-    cta: { label: 'Nueva membresía', to: surfacePaths.institutional.contactUs },
+    cta: { label: 'Nueva membresía', to: '/eligibility' },
   },
   {
     title: 'Organizaciones y ministerios',
@@ -99,14 +99,14 @@ export const membershipActionCards = [
     title: 'Formulario de elegibilidad',
     description:
       'Los miembros de ASI se comprometen a vivir y ejercer su trabajo en armonía con los principios adventistas, manteniéndose en buena posición con la Iglesia Adventista del Séptimo Día.',
-    cta: { label: 'Completar formulario', to: surfacePaths.institutional.contactUs },
+    cta: { label: 'Completar formulario', to: '/eligibility' },
   },
   {
     icon: Layers,
     title: 'Categorías y cuotas',
     description:
       'La membresía está abierta a adventistas que dirigen negocios, ofrecen servicios profesionales o apoyan ministerios. Estudiantes y recientes graduados son también bienvenidos.',
-    cta: { label: 'Ver categorías', to: surfacePaths.institutional.membership },
+    cta: { label: 'Ver categorías', to: '/membership/categories' },
   },
   {
     icon: RefreshCw,
@@ -126,7 +126,7 @@ export const membershipPageContent: InstitutionalPageContent = {
       'ASI reúne profesionales y empresarios en una red que comparte recursos, mentoría, formación y oportunidades de impacto con una identidad institucional clara.',
     primaryAction: {
       label: 'Solicitar membresía',
-      to: surfacePaths.institutional.contactUs,
+      to: '/eligibility',
       variant: 'primary',
     },
     secondaryAction: {
