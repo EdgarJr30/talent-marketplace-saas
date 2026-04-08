@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -162,5 +162,52 @@ describe('institutional membership application flow', () => {
     expect(
       screen.queryByRole('textbox', { name: /nombre de la organización/i })
     ).not.toBeInTheDocument()
+  })
+
+  it('opens the filtered application after completing the eligibility wizard', async () => {
+    renderRoute(surfacePaths.institutional.eligibility)
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /sí/i,
+      })
+    )
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /unión dominicana/i,
+      })
+    )
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /yo personalmente/i,
+      })
+    )
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /no/i,
+      })
+    )
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /joven profesional/i,
+      })
+    )
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: /continuar con la solicitud/i,
+      })
+    )
+
+    expect(
+      await screen.findByRole('heading', { name: 'Solicitud de membresía ASI' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('combobox', { name: /etapa actual/i })
+    ).toBeInTheDocument()
   })
 })

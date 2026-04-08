@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { surfacePaths } from '@/app/router/surface-paths';
 import { MembershipApplicationForm } from '@/experiences/institutional/components/membership-application-form';
 import { InstitutionalSection } from '@/experiences/institutional/components/institutional-ui';
 import {
   readEligibilityToken,
+  saveEligibilityToken,
   membershipCategories,
   type EligibilityToken,
+  type EligibilityTokenPayload,
 } from '@/experiences/institutional/content/eligibility-content';
 import { getMembershipApplicationVariant } from '@/experiences/institutional/content/membership-application-content';
 
@@ -16,7 +18,20 @@ import { getMembershipApplicationVariant } from '@/experiences/institutional/con
 
 function useEligibilityGuard() {
   const navigate = useNavigate();
-  const [token] = useState<EligibilityToken | null>(() => readEligibilityToken());
+  const location = useLocation();
+  const routeToken = (location.state as { eligibilityToken?: EligibilityTokenPayload } | null)
+    ?.eligibilityToken;
+  const [token] = useState<EligibilityToken | null>(() => {
+    if (routeToken) {
+      saveEligibilityToken(routeToken);
+      return {
+        ...routeToken,
+        timestamp: Date.now(),
+      };
+    }
+
+    return readEligibilityToken();
+  });
   const hasKnownCategory = token
     ? getMembershipApplicationVariant(token.categorySlug) !== null
     : false;

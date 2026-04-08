@@ -16,6 +16,7 @@ import { InstitutionalSection } from '@/experiences/institutional/components/ins
 import {
   internationalDivisionCountries,
   saveEligibilityToken,
+  type EligibilityTokenPayload,
 } from '@/experiences/institutional/content/eligibility-content'
 import { cn } from '@/lib/utils/cn'
 
@@ -187,7 +188,7 @@ function EligibleResult({
   onContinue,
 }: {
   result: EligibilityResult
-  onContinue: () => void
+  onContinue: (result: EligibilityResult) => void
 }) {
   return (
     <StepWrapper stepKey="result-eligible">
@@ -217,7 +218,7 @@ function EligibleResult({
         <div className="flex w-full max-w-sm flex-col gap-3">
           <button
             type="button"
-            onClick={onContinue}
+            onClick={() => onContinue(result)}
             className="asi-button asi-button-primary w-full justify-center"
           >
             Continuar con la solicitud
@@ -414,6 +415,23 @@ export function EligibilityPage() {
       })
     }
     goTo('result', { result })
+  }
+
+  const continueToApplication = (result: EligibilityResult) => {
+    const tokenPayload: EligibilityTokenPayload = {
+      eligible: true,
+      category: result.category,
+      categorySlug: result.categorySlug,
+      dues: result.dues,
+    }
+
+    saveEligibilityToken(tokenPayload)
+
+    void navigate(surfacePaths.institutional.membershipApply, {
+      state: {
+        eligibilityToken: tokenPayload,
+      },
+    })
   }
 
   const { current, total } = getProgress(state)
@@ -746,7 +764,7 @@ export function EligibilityPage() {
                 <EligibleResult
                   key="result-eligible"
                   result={state.result}
-                  onContinue={() => void navigate(surfacePaths.institutional.membershipApply)}
+                  onContinue={continueToApplication}
                 />
               ) : (
                 <IneligibleResult

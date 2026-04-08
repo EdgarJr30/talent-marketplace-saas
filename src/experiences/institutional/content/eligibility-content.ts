@@ -9,9 +9,20 @@ export interface EligibilityToken {
   timestamp: number
 }
 
-export function saveEligibilityToken(token: Omit<EligibilityToken, 'timestamp'>) {
-  const data: EligibilityToken = { ...token, timestamp: Date.now() }
-  sessionStorage.setItem(ELIGIBILITY_SESSION_KEY, JSON.stringify(data))
+export interface EligibilityTokenPayload {
+  eligible: boolean
+  category: string
+  categorySlug: string
+  dues: string
+}
+
+export function saveEligibilityToken(token: EligibilityTokenPayload) {
+  try {
+    const data: EligibilityToken = { ...token, timestamp: Date.now() }
+    sessionStorage.setItem(ELIGIBILITY_SESSION_KEY, JSON.stringify(data))
+  } catch {
+    return
+  }
 }
 
 export function readEligibilityToken(): EligibilityToken | null {
