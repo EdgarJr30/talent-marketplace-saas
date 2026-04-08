@@ -10,19 +10,16 @@ import {
   saveEligibilityToken,
   membershipCategories,
   type EligibilityToken,
-  type EligibilityTokenPayload,
 } from '@/experiences/institutional/content/eligibility-content';
 import { getMembershipApplicationVariant } from '@/experiences/institutional/content/membership-application-content';
 
 // ─── Guard ────────────────────────────────────────────────────────────────────
 
-interface MembershipApplyLocationState {
-  eligibilityToken?: EligibilityTokenPayload;
-}
+type RouteEligibilityToken = Omit<EligibilityToken, 'timestamp'>;
 
-function isEligibilityTokenPayload(
+function isRouteEligibilityToken(
   value: unknown
-): value is EligibilityTokenPayload {
+): value is RouteEligibilityToken {
   if (typeof value !== 'object' || value === null) return false;
 
   const candidate = value as Record<string, unknown>;
@@ -37,13 +34,16 @@ function isEligibilityTokenPayload(
 
 function readRouteEligibilityToken(
   state: unknown
-): EligibilityTokenPayload | null {
+): RouteEligibilityToken | null {
   if (typeof state !== 'object' || state === null) return null;
 
-  const candidate = state as MembershipApplyLocationState;
+  const eligibilityToken =
+    'eligibilityToken' in state
+      ? (state as { eligibilityToken?: unknown }).eligibilityToken
+      : undefined;
 
-  return isEligibilityTokenPayload(candidate.eligibilityToken)
-    ? candidate.eligibilityToken
+  return isRouteEligibilityToken(eligibilityToken)
+    ? eligibilityToken
     : null;
 }
 
@@ -159,10 +159,7 @@ export function MembershipApplyPage() {
           </div>
         )}
 
-        <MembershipApplicationForm
-          token={token}
-          categoryInfo={categoryInfo}
-        />
+        <MembershipApplicationForm token={token} categoryInfo={categoryInfo} />
 
         {/* Info note */}
         <div className="mt-6 rounded-2xl border border-(--asi-outline) bg-(--asi-surface-raised) p-5">
