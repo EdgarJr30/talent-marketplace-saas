@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -21,20 +21,25 @@ function useEligibilityGuard() {
   const location = useLocation();
   const routeToken = (location.state as { eligibilityToken?: EligibilityTokenPayload } | null)
     ?.eligibilityToken;
-  const [token] = useState<EligibilityToken | null>(() => {
+  const token = useMemo<EligibilityToken | null>(() => {
     if (routeToken) {
-      saveEligibilityToken(routeToken);
       return {
         ...routeToken,
-        timestamp: Date.now(),
+        timestamp: 0,
       };
     }
 
     return readEligibilityToken();
-  });
+  }, [routeToken]);
   const hasKnownCategory = token
     ? getMembershipApplicationVariant(token.categorySlug) !== null
     : false;
+
+  useEffect(() => {
+    if (routeToken) {
+      saveEligibilityToken(routeToken);
+    }
+  }, [routeToken]);
 
   useEffect(() => {
     if (!token || !hasKnownCategory) {

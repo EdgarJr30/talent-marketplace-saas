@@ -77,6 +77,18 @@ function renderRoute(initialEntry: string) {
   )
 }
 
+function renderRouteEntry(entry: string | { pathname: string; state?: unknown }) {
+  const router = createMemoryRouter(appRoutes, {
+    initialEntries: [entry],
+  })
+
+  render(
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
+  )
+}
+
 function saveEligibilityToken(token: {
   category: string
   categorySlug: string
@@ -162,6 +174,27 @@ describe('institutional membership application flow', () => {
     expect(
       screen.queryByRole('textbox', { name: /nombre de la organización/i })
     ).not.toBeInTheDocument()
+  })
+
+  it('renders the application when the eligibility token arrives through route state', async () => {
+    renderRouteEntry({
+      pathname: surfacePaths.institutional.membershipApply,
+      state: {
+        eligibilityToken: {
+          eligible: true,
+          category: 'Propietario Individual',
+          categorySlug: 'sole-proprietor',
+          dues: '$200',
+        },
+      },
+    })
+
+    expect(
+      await screen.findByRole('heading', { name: 'Solicitud de membresía ASI' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', { name: /nombre del negocio o práctica/i })
+    ).toBeInTheDocument()
   })
 
   it('opens the filtered application after completing the eligibility wizard', async () => {
