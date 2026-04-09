@@ -1,4 +1,5 @@
 export const ELIGIBILITY_SESSION_KEY = 'asi:eligibility_result'
+export const ELIGIBILITY_ACCESS_TOKEN_PREFIX = 'asi:eligibility_access:'
 export const ELIGIBILITY_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 export interface EligibilityToken {
@@ -25,6 +26,18 @@ export function saveEligibilityToken(token: EligibilityTokenPayload) {
   }
 }
 
+function buildEligibilityAccessStorageKey(accessToken: string) {
+  return `${ELIGIBILITY_ACCESS_TOKEN_PREFIX}${accessToken}`
+}
+
+function createEligibilityAccessTokenValue() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `eligibility-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+}
+
 export function readEligibilityToken(): EligibilityToken | null {
   try {
     const raw = sessionStorage.getItem(ELIGIBILITY_SESSION_KEY)
@@ -34,6 +47,44 @@ export function readEligibilityToken(): EligibilityToken | null {
       sessionStorage.removeItem(ELIGIBILITY_SESSION_KEY)
       return null
     }
+    return data
+  } catch {
+    return null
+  }
+}
+
+export function createEligibilityAccessToken(token: EligibilityTokenPayload) {
+  const accessToken = createEligibilityAccessTokenValue()
+
+  try {
+    const data: EligibilityToken = { ...token, timestamp: Date.now() }
+    sessionStorage.setItem(
+      buildEligibilityAccessStorageKey(accessToken),
+      JSON.stringify(data)
+    )
+  } catch {
+    return ''
+  }
+
+  return accessToken
+}
+
+export function readEligibilityTokenFromAccessToken(
+  accessToken: string
+): EligibilityToken | null {
+  if (!accessToken) return null
+
+  try {
+    const storageKey = buildEligibilityAccessStorageKey(accessToken)
+    const raw = sessionStorage.getItem(storageKey)
+    if (!raw) return null
+
+    const data = JSON.parse(raw) as EligibilityToken
+    if (Date.now() - data.timestamp > ELIGIBILITY_TTL_MS) {
+      sessionStorage.removeItem(storageKey)
+      return null
+    }
+
     return data
   } catch {
     return null

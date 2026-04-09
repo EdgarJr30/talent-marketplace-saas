@@ -6,6 +6,7 @@ import { surfacePaths } from '@/app/router/surface-paths';
 import { MembershipApplicationForm } from '@/experiences/institutional/components/membership-application-form';
 import { InstitutionalSection } from '@/experiences/institutional/components/institutional-ui';
 import {
+  readEligibilityTokenFromAccessToken,
   readEligibilityToken,
   saveEligibilityToken,
   membershipCategories,
@@ -51,6 +52,10 @@ function useEligibilityGuard() {
   const navigate = useNavigate();
   const location = useLocation();
   const routeToken = readRouteEligibilityToken(location.state);
+  const accessToken = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('eligibilityToken') ?? '';
+  }, [location.search]);
   const token = useMemo<EligibilityToken | null>(() => {
     if (routeToken) {
       return {
@@ -59,8 +64,13 @@ function useEligibilityGuard() {
       };
     }
 
+    const tokenFromAccessLink = readEligibilityTokenFromAccessToken(accessToken);
+    if (tokenFromAccessLink) {
+      return tokenFromAccessLink;
+    }
+
     return readEligibilityToken();
-  }, [routeToken]);
+  }, [accessToken, routeToken]);
   const hasKnownCategory = token
     ? getMembershipApplicationVariant(token.categorySlug) !== null
     : false;
@@ -70,6 +80,12 @@ function useEligibilityGuard() {
       saveEligibilityToken(routeToken);
     }
   }, [routeToken]);
+
+  useEffect(() => {
+    if (token) {
+      saveEligibilityToken(token);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!token || !hasKnownCategory) {
@@ -87,7 +103,7 @@ function CategoryBadge({ category, dues }: { category: string; dues: string }) {
     <div className="inline-flex items-center gap-3 rounded-2xl bg-(--asi-primary)/8 px-5 py-3">
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-(--asi-secondary)">
-          Qualified category
+          Categoría aprobada
         </p>
         <p className="mt-0.5 text-lg font-semibold text-(--asi-primary)">
           {category}
@@ -96,7 +112,7 @@ function CategoryBadge({ category, dues }: { category: string; dues: string }) {
       <div className="h-8 w-px bg-(--asi-primary)/20" />
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-(--asi-secondary)">
-          Annual Dues
+          Cuota anual
         </p>
         <p className="mt-0.5 text-lg font-semibold text-(--asi-primary)">
           {dues}
@@ -143,7 +159,7 @@ export function MembershipApplyPage() {
         {categoryInfo && (
           <div className="mb-8 rounded-[1.5rem] border border-(--asi-outline) bg-(--asi-surface-raised) p-6">
             <p className="text-sm font-semibold text-(--asi-text)">
-              {categoryInfo.name} — Requirements
+              {categoryInfo.name} — Requisitos
             </p>
             <ul className="mt-3 space-y-1.5">
               {categoryInfo.requirements.map((req) => (

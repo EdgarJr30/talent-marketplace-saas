@@ -23,19 +23,18 @@ export const ministryOptions = [
   'Estudios bíblicos locales',
   'Evangelismo local o internacional',
   'Ministerio de oración',
-  'Mentoría espiritual',
   'Otro'
 ] as const
 
 export const volunteerOptions = [
   'Conferencia anual',
-  'Presentaciones evangelísticas',
-  'Capacitación evangelística',
+  'Presentador de evangelismo',
+  'Capacitador de evangelismo',
   'Misiones internacionales',
-  'Medios y comunicación',
+  'Medios (web, video, TV, etc.)',
   'Reclutamiento de membresía',
   'Mentoría',
-  'Boletín o newsletter',
+  'Boletín',
   'Ministerio de oración',
   'Misiones de corto plazo',
   'Otro'
@@ -64,6 +63,16 @@ export const paymentPreferenceOptions = [
     value: 'in-person',
     label: 'Pagar presencialmente o por un canal acordado',
   },
+] as const
+
+export const bankAccountTypeOptions = [
+  { value: 'checking', label: 'Cuenta corriente' },
+  { value: 'savings', label: 'Cuenta de ahorros' },
+] as const
+
+export const checkingTypeOptions = [
+  { value: 'personal', label: 'Cuenta personal' },
+  { value: 'business', label: 'Cuenta comercial' },
 ] as const
 
 export const youngProfessionalStageOptions = [

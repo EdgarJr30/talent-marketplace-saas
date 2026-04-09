@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { InstitutionalSection } from '@/experiences/institutional/components/institutional-ui'
 import {
+  createEligibilityAccessToken,
   internationalDivisionCountries,
   saveEligibilityToken,
   type EligibilityTokenPayload,
@@ -424,10 +425,15 @@ export function EligibilityPage() {
       categorySlug: result.categorySlug,
       dues: result.dues,
     }
+    const accessToken = createEligibilityAccessToken(tokenPayload)
 
     saveEligibilityToken(tokenPayload)
 
-    void navigate(surfacePaths.institutional.membershipApply, {
+    const membershipApplyPath = accessToken
+      ? `${surfacePaths.institutional.membershipApply}?eligibilityToken=${encodeURIComponent(accessToken)}`
+      : surfacePaths.institutional.membershipApply
+
+    void navigate(membershipApplyPath, {
       state: {
         eligibilityToken: tokenPayload,
       },

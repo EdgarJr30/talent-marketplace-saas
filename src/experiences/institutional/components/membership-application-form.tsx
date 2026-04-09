@@ -16,6 +16,8 @@ import { z } from 'zod'
 import type { EligibilityToken } from '@/experiences/institutional/content/eligibility-content'
 import type { MembershipCategoryInfo } from '@/experiences/institutional/content/eligibility-content'
 import {
+  bankAccountTypeOptions,
+  checkingTypeOptions,
   certificatePreferenceOptions,
   genderOptions,
   getMembershipApplicationVariant,
@@ -28,6 +30,7 @@ import {
 import { cn } from '@/lib/utils/cn'
 
 const DEFAULT_COUNTRY = 'República Dominicana'
+const ORGANIZATIONAL_FOR_PROFIT_SLUG = 'organizational-for-profit'
 
 export interface MembershipApplicationValues {
   categorySlug: string
@@ -95,6 +98,16 @@ export interface MembershipApplicationValues {
   billingStateProvince: string
   billingPostalCode: string
   billingCountry: string
+  paymentType: string
+  bankAccountType: string
+  checkingType: string
+  accountName: string
+  accountNumber: string
+  routingNumber: string
+  bankName: string
+  bankCity: string
+  bankState: string
+  discountCode: string
   paymentPreference: string
   membershipPrompt: string
   commitmentStatusChanges: boolean
@@ -113,6 +126,8 @@ type StringFieldName = {
 
 function buildApplicationSchema(categorySlug: string) {
   const variant = getMembershipApplicationVariant(categorySlug)
+  const isOrganizationalForProfit =
+    variant?.slug === ORGANIZATIONAL_FOR_PROFIT_SLUG
 
   return z
     .object({
@@ -184,6 +199,16 @@ function buildApplicationSchema(categorySlug: string) {
       billingStateProvince: z.string().trim(),
       billingPostalCode: z.string().trim(),
       billingCountry: z.string().trim(),
+      paymentType: z.string().trim(),
+      bankAccountType: z.string().trim(),
+      checkingType: z.string().trim(),
+      accountName: z.string().trim(),
+      accountNumber: z.string().trim(),
+      routingNumber: z.string().trim(),
+      bankName: z.string().trim(),
+      bankCity: z.string().trim(),
+      bankState: z.string().trim(),
+      discountCode: z.string().trim(),
       paymentPreference: z.string().trim().min(1, 'Selecciona cómo deseas coordinar el pago.'),
       membershipPrompt: z
         .string()
@@ -279,7 +304,7 @@ function buildApplicationSchema(categorySlug: string) {
         })
       }
 
-      if (!values.billingSameAsHome) {
+      if (isOrganizationalForProfit || !values.billingSameAsHome) {
         requireField('billingAddress1', 'la dirección de facturación', 5)
         requireField('billingCity', 'la ciudad de facturación', 2)
         requireField('billingStateProvince', 'la provincia o estado de facturación', 2)
@@ -325,6 +350,17 @@ function buildApplicationSchema(categorySlug: string) {
           requireField('certificatePreference', 'la preferencia del certificado', 1)
           requireFourDigitYear('yearEstablished', 'El año de establecimiento')
           requirePositiveNumber('employeeCount', 'la cantidad de colaboradores')
+          if (isOrganizationalForProfit) {
+            requireField('paymentType', 'el tipo de pago', 1)
+            requireField('bankAccountType', 'el tipo de cuenta', 1)
+            requireField('checkingType', 'el tipo de cuenta corriente', 1)
+            requireField('accountName', 'el nombre de la cuenta', 2)
+            requireField('accountNumber', 'el número de cuenta', 4)
+            requireField('routingNumber', 'el número de ruta', 4)
+            requireField('bankName', 'el nombre del banco', 2)
+            requireField('bankCity', 'la ciudad del banco', 2)
+            requireField('bankState', 'el estado del banco', 2)
+          }
           break
         case 'executive-professional':
           requireField('employerName', 'el nombre de la organización empleadora', 2)
@@ -369,7 +405,7 @@ function buildApplicationSchema(categorySlug: string) {
     })
 }
 
-function createDefaultValues(token: EligibilityToken) {
+function createDefaultValues(token: EligibilityToken): MembershipApplicationValues {
   return {
     categorySlug: token.categorySlug,
     categoryName: token.category,
@@ -436,6 +472,16 @@ function createDefaultValues(token: EligibilityToken) {
     billingStateProvince: '',
     billingPostalCode: '',
     billingCountry: DEFAULT_COUNTRY,
+    paymentType: '',
+    bankAccountType: '',
+    checkingType: '',
+    accountName: '',
+    accountNumber: '',
+    routingNumber: '',
+    bankName: '',
+    bankCity: '',
+    bankState: '',
+    discountCode: '',
     paymentPreference: 'contact',
     membershipPrompt: '',
     commitmentStatusChanges: false,
@@ -844,11 +890,13 @@ function SubmissionSuccess({
           </p>
           <p className="mt-1 text-sm text-(--asi-text-muted)">Cuota anual: {submission.dues}</p>
           <p className="mt-1 text-sm text-(--asi-text-muted)">
-            Coordinación de pago: {
-              paymentPreferenceOptions.find(
-                (option) => option.value === submission.paymentPreference
-              )?.label
-            }
+            {submission.categorySlug === ORGANIZATIONAL_FOR_PROFIT_SLUG
+              ? 'Tipo de pago: eCheck'
+              : `Coordinación de pago: ${
+                  paymentPreferenceOptions.find(
+                    (option) => option.value === submission.paymentPreference
+                  )?.label ?? 'Pendiente'
+                }`}
           </p>
         </div>
         <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
@@ -891,6 +939,8 @@ export function MembershipApplicationForm({
   categoryInfo: MembershipCategoryInfo
 }) {
   const variant = getMembershipApplicationVariant(token.categorySlug)
+  const isOrganizationalForProfit =
+    token.categorySlug === ORGANIZATIONAL_FOR_PROFIT_SLUG
   const draftKey = `asi:membership_application_draft:${token.categorySlug}`
   const [submission, setSubmission] = useState<SubmissionSnapshot | null>(null)
 
@@ -900,6 +950,13 @@ export function MembershipApplicationForm({
     if (variant?.id === 'organization') {
       initial.organizationType =
         variant.organizationTypeLabel ?? variant.lockedBadgeLabel
+    }
+
+    if (isOrganizationalForProfit) {
+      initial.billingSameAsHome = false
+      initial.paymentType = 'echeck'
+      initial.paymentPreference = 'bank-transfer'
+      initial.organizationType = ''
     }
 
     try {
@@ -912,7 +969,7 @@ export function MembershipApplicationForm({
     } catch {
       return initial
     }
-  }, [draftKey, token, variant])
+  }, [draftKey, isOrganizationalForProfit, token, variant])
 
   const form = useForm<MembershipApplicationValues>({
     resolver: zodResolver(buildApplicationSchema(token.categorySlug)),
@@ -961,6 +1018,14 @@ export function MembershipApplicationForm({
     control: form.control,
     name: 'currentStage',
   })
+  const bankAccountType = useWatch({
+    control: form.control,
+    name: 'bankAccountType',
+  })
+  const checkingType = useWatch({
+    control: form.control,
+    name: 'checkingType',
+  })
   const commitmentStatusChanges = useWatch({
     control: form.control,
     name: 'commitmentStatusChanges',
@@ -975,6 +1040,16 @@ export function MembershipApplicationForm({
   })
 
   const errors = form.formState.errors
+
+  useEffect(() => {
+    if (!isOrganizationalForProfit) return
+
+    if (form.getValues('paymentType') !== 'echeck') {
+      form.setValue('paymentType', 'echeck', {
+        shouldDirty: false,
+      })
+    }
+  }, [form, isOrganizationalForProfit])
 
   function toggleMultiValue(
     fieldName: 'ministries' | 'volunteerAreas',
@@ -1032,7 +1107,7 @@ export function MembershipApplicationForm({
 
       <ApplicationSection
         title="Datos de contacto"
-        description="Estos datos identifican a la persona responsable de la solicitud y el punto principal de seguimiento."
+        description="Estos datos identifican a la persona de contacto principal de la solicitud y serán usados para el seguimiento del expediente."
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <TextField
@@ -1093,7 +1168,7 @@ export function MembershipApplicationForm({
         <TextField
           label="Correo electrónico"
           required
-          hint="Será el correo principal de seguimiento para esta solicitud."
+          hint="Se usará para iniciar sesión y para dar seguimiento a la solicitud."
           error={errors.email?.message}
           placeholder="nombre@correo.com"
           type="email"
@@ -1101,7 +1176,7 @@ export function MembershipApplicationForm({
         />
 
         <TextField
-          label="Dirección principal"
+          label="Dirección del hogar"
           required
           error={errors.address1?.message}
           placeholder="Calle, número y sector"
@@ -1109,7 +1184,7 @@ export function MembershipApplicationForm({
         />
 
         <TextField
-          label="Dirección complementaria"
+          label="Dirección del hogar (línea 2)"
           error={errors.address2?.message}
           placeholder="Apartamento, edificio o referencia"
           {...form.register('address2')}
@@ -1152,31 +1227,45 @@ export function MembershipApplicationForm({
           <>
             <div className="grid gap-4 sm:grid-cols-2">
               <TextField
-                label="Nombre de la organización"
+                label={
+                  isOrganizationalForProfit
+                    ? 'Nombre de la organización o empresa'
+                    : 'Nombre de la organización'
+                }
                 required
                 error={errors.organizationName?.message}
                 {...form.register('organizationName')}
               />
-              <TextField
-                label="Tipo de organización"
-                required
-                error={errors.organizationType?.message}
-                value={form.getValues('organizationType')}
-                readOnly
-                inputClassName="bg-(--asi-primary)/6 text-(--asi-primary)"
-                {...form.register('organizationType')}
-              />
+              {isOrganizationalForProfit ? (
+                <TextField
+                  label="Tipo de organización"
+                  required
+                  error={errors.organizationType?.message}
+                  placeholder="Ej. corporación, SRL o empresa familiar"
+                  {...form.register('organizationType')}
+                />
+              ) : (
+                <TextField
+                  label="Tipo de organización"
+                  required
+                  error={errors.organizationType?.message}
+                  value={form.getValues('organizationType')}
+                  readOnly
+                  inputClassName="bg-(--asi-primary)/6 text-(--asi-primary)"
+                  {...form.register('organizationType')}
+                />
+              )}
             </div>
 
             <TextField
-              label="Dirección de la organización"
+              label="Dirección"
               required
               error={errors.organizationAddress1?.message}
               {...form.register('organizationAddress1')}
             />
 
             <TextField
-              label="Dirección complementaria"
+              label="Dirección (línea 2)"
               error={errors.organizationAddress2?.message}
               {...form.register('organizationAddress2')}
             />
@@ -1227,7 +1316,7 @@ export function MembershipApplicationForm({
                 {...form.register('yearEstablished')}
               />
               <TextField
-                label="Número de colaboradores"
+                label="Número de empleados"
                 required
                 error={errors.employeeCount?.message}
                 inputMode="numeric"
@@ -1252,7 +1341,7 @@ export function MembershipApplicationForm({
             </div>
 
             <RadioTileGroup
-              label="¿Deseas recibir un certificado de membresía enmarcado si la solicitud es aprobada?"
+              label="¿Le gustaría que le enviemos un certificado de membresía de ASI de cortesía, bellamente enmarcado, si su solicitud es aprobada?"
               required
               error={errors.certificatePreference?.message}
               options={certificatePreferenceOptions}
@@ -1521,11 +1610,11 @@ export function MembershipApplicationForm({
       </ApplicationSection>
 
       <ApplicationSection
-        title="Testimonio y servicio"
-        description="Estas respuestas ayudan a entender cómo tu vida profesional y tu misión personal se conectan con la visión de ASI."
+        title="Evangelismo personal"
+        description="Estas respuestas ayudan a entender cómo su vida profesional y su misión personal se conectan con la visión de ASI."
       >
         <TextAreaField
-          label="¿Cómo compartes tu fe en tu contexto profesional?"
+          label="Describa brevemente cómo comparte su fe en su entorno profesional"
           required
           error={errors.shareFaith?.message}
           placeholder="Describe prácticas, conversaciones, iniciativas o hábitos concretos."
@@ -1551,7 +1640,7 @@ export function MembershipApplicationForm({
         ) : null}
 
         <MultiCheckboxGroup
-          label="Me interesaría apoyar a ASI voluntariamente en"
+          label="Me interesaría colaborar como voluntario con ASI en lo siguiente"
           hint="Selecciona todas las áreas donde te gustaría servir."
           error={errors.volunteerAreas?.message}
           onToggle={(value) => toggleMultiValue('volunteerAreas', value)}
@@ -1577,12 +1666,12 @@ export function MembershipApplicationForm({
       </ApplicationSection>
 
       <ApplicationSection
-        title="Referencia pastoral"
+        title="Referencia"
         description="La referencia pastoral forma parte obligatoria del expediente. El pastor recibirá seguimiento adicional cuando corresponda."
       >
         <div className="grid gap-4 md:grid-cols-3">
           <TextField
-            label="Iglesia local"
+            label="Nombre de la iglesia local"
             required
             error={errors.homeChurchName?.message}
             {...form.register('homeChurchName')}
@@ -1602,7 +1691,7 @@ export function MembershipApplicationForm({
         </div>
 
         <TextField
-          label="Asociación o conferencia"
+          label="Conferencia"
           required
           error={errors.conference?.message}
           {...form.register('conference')}
@@ -1622,7 +1711,7 @@ export function MembershipApplicationForm({
             {...form.register('pastorPhone')}
           />
           <TextField
-            label="Correo del pastor"
+            label="Correo electrónico del pastor"
             required
             error={errors.pastorEmail?.message}
             type="email"
@@ -1632,44 +1721,14 @@ export function MembershipApplicationForm({
       </ApplicationSection>
 
       <ApplicationSection
-        title="Cuota anual y facturación"
-        description="La cuota anual ya está determinada por la categoría aprobada. Aquí solo registramos cómo debe quedar el expediente de facturación."
+        title="Cuotas de membresía"
+        description={
+          isOrganizationalForProfit
+            ? 'Complete la dirección de facturación y los datos de eCheck requeridos para esta solicitud.'
+            : 'La cuota anual ya está determinada por la categoría aprobada. Aquí solo registramos cómo debe quedar el expediente de facturación.'
+        }
       >
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-          <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--asi-text-muted)">
-              Monto de membresía
-            </p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-(--asi-primary)">
-              {token.dues}
-            </p>
-            <p className="mt-2 text-sm leading-7 text-(--asi-text-muted)">
-              El cobro se coordinará por un canal seguro después de la revisión inicial del expediente y la referencia pastoral.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-dashed border-(--asi-outline) bg-white p-4">
-            <div className="flex gap-3">
-              <CircleAlert className="mt-0.5 size-5 shrink-0 text-(--asi-primary)" />
-              <p className="text-sm leading-7 text-(--asi-text-muted)">
-                Para esta iteración del portal no se solicitan datos bancarios en línea. Solo registramos la preferencia de coordinación de pago para mantener el expediente saneado y seguro.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <CheckboxCard
-          checked={billingSameAsHome}
-          label="Usar la misma dirección principal como dirección de facturación"
-          onChange={(checked) =>
-            form.setValue('billingSameAsHome', checked, {
-              shouldDirty: true,
-              shouldValidate: true,
-            })
-          }
-        />
-
-        {!billingSameAsHome ? (
+        {isOrganizationalForProfit ? (
           <>
             <TextField
               label="Dirección de facturación"
@@ -1678,7 +1737,7 @@ export function MembershipApplicationForm({
               {...form.register('billingAddress1')}
             />
             <TextField
-              label="Dirección complementaria"
+              label="Dirección de facturación (línea 2)"
               error={errors.billingAddress2?.message}
               {...form.register('billingAddress2')}
             />
@@ -1708,45 +1767,247 @@ export function MembershipApplicationForm({
               error={errors.billingCountry?.message}
               {...form.register('billingCountry')}
             />
-          </>
-        ) : null}
 
-        <SelectField
-          label="Preferencia para coordinar el pago"
-          required
-          error={errors.paymentPreference?.message}
-          {...form.register('paymentPreference')}
-        >
-          {paymentPreferenceOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </SelectField>
+            <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
+              <p className="text-sm font-semibold text-(--asi-text)">Tipo de pago</p>
+              <p className="mt-2 text-base font-semibold text-(--asi-primary)">eCheck</p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <SelectField
+                label="Tipo de cuenta"
+                required
+                error={errors.bankAccountType?.message}
+                value={bankAccountType}
+                onChange={(event) =>
+                  form.setValue('bankAccountType', event.target.value, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  })
+                }
+              >
+                <option value="">Selecciona una opción</option>
+                {bankAccountTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SelectField>
+              <SelectField
+                label="Tipo de cuenta corriente"
+                required
+                error={errors.checkingType?.message}
+                value={checkingType}
+                onChange={(event) =>
+                  form.setValue('checkingType', event.target.value, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  })
+                }
+              >
+                <option value="">Selecciona una opción</option>
+                {checkingTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SelectField>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TextField
+                label="Nombre de la cuenta"
+                required
+                error={errors.accountName?.message}
+                {...form.register('accountName')}
+              />
+              <TextField
+                label="Número de cuenta"
+                required
+                error={errors.accountNumber?.message}
+                inputMode="numeric"
+                {...form.register('accountNumber')}
+              />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TextField
+                label="Número de ruta"
+                required
+                error={errors.routingNumber?.message}
+                inputMode="numeric"
+                {...form.register('routingNumber')}
+              />
+              <TextField
+                label="Nombre del banco"
+                required
+                error={errors.bankName?.message}
+                {...form.register('bankName')}
+              />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TextField
+                label="Ciudad del banco"
+                required
+                error={errors.bankCity?.message}
+                {...form.register('bankCity')}
+              />
+              <TextField
+                label="Estado del banco"
+                required
+                error={errors.bankState?.message}
+                {...form.register('bankState')}
+              />
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+              <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--asi-text-muted)">
+                  Cuota de membresía
+                </p>
+                <p className="mt-2 text-3xl font-semibold tracking-tight text-(--asi-primary)">
+                  {token.dues}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <TextField
+                    label="Código de descuento"
+                    error={errors.discountCode?.message}
+                    {...form.register('discountCode')}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="asi-button asi-button-secondary mt-[2.15rem] justify-center whitespace-nowrap"
+                  onClick={() =>
+                    form.setValue('discountCode', form.getValues('discountCode').trim(), {
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  Aplicar código
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+              <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--asi-text-muted)">
+                  Monto de membresía
+                </p>
+                <p className="mt-2 text-3xl font-semibold tracking-tight text-(--asi-primary)">
+                  {token.dues}
+                </p>
+                <p className="mt-2 text-sm leading-7 text-(--asi-text-muted)">
+                  El cobro se coordinará por un canal seguro después de la revisión inicial del expediente y la referencia pastoral.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-dashed border-(--asi-outline) bg-white p-4">
+                <div className="flex gap-3">
+                  <CircleAlert className="mt-0.5 size-5 shrink-0 text-(--asi-primary)" />
+                  <p className="text-sm leading-7 text-(--asi-text-muted)">
+                    Para esta iteración del portal no se solicitan datos bancarios en línea. Solo registramos la preferencia de coordinación de pago para mantener el expediente saneado y seguro.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <CheckboxCard
+              checked={billingSameAsHome}
+              label="Usar la misma dirección principal como dirección de facturación"
+              onChange={(checked) =>
+                form.setValue('billingSameAsHome', checked, {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                })
+              }
+            />
+
+            {!billingSameAsHome ? (
+              <>
+                <TextField
+                  label="Dirección de facturación"
+                  required
+                  error={errors.billingAddress1?.message}
+                  {...form.register('billingAddress1')}
+                />
+                <TextField
+                  label="Dirección complementaria"
+                  error={errors.billingAddress2?.message}
+                  {...form.register('billingAddress2')}
+                />
+                <div className="grid gap-4 md:grid-cols-3">
+                  <TextField
+                    label="Ciudad"
+                    required
+                    error={errors.billingCity?.message}
+                    {...form.register('billingCity')}
+                  />
+                  <TextField
+                    label="Provincia o estado"
+                    required
+                    error={errors.billingStateProvince?.message}
+                    {...form.register('billingStateProvince')}
+                  />
+                  <TextField
+                    label="Código postal"
+                    required
+                    error={errors.billingPostalCode?.message}
+                    {...form.register('billingPostalCode')}
+                  />
+                </div>
+                <TextField
+                  label="País"
+                  required
+                  error={errors.billingCountry?.message}
+                  {...form.register('billingCountry')}
+                />
+              </>
+            ) : null}
+
+            <SelectField
+              label="Preferencia para coordinar el pago"
+              required
+              error={errors.paymentPreference?.message}
+              {...form.register('paymentPreference')}
+            >
+              {paymentPreferenceOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </SelectField>
+          </>
+        )}
 
         <TextAreaField
-          label="¿Qué te motivó a solicitar la membresía ASI?"
+          label="¿Qué le motivó a solicitar la membresía de ASI?"
           required
           error={errors.membershipPrompt?.message}
-          placeholder="Comparte la razón principal por la que deseas integrarte a la comunidad ASI."
+          placeholder="Comparta la razón principal por la que desea integrarse a la comunidad ASI."
           {...form.register('membershipPrompt')}
         />
       </ApplicationSection>
 
       <ApplicationSection
         title="Compromiso"
-        description="Al continuar, confirmas que entiendes el propósito de ASI y que tu solicitud debe sostenerse en información veraz y actualizada."
+        description="Al continuar, confirma que entiende el propósito de ASI y que su solicitud debe sostenerse en información veraz y actualizada."
       >
         <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
           <p className="text-sm leading-7 text-(--asi-text-muted)">
-            Habiendo leído el propósito y los objetivos de ASI, y reconociendo que mi negocio, profesión o ministerio es también una plataforma de servicio, deseo sostener los valores de la organización y dedicar mis talentos a compartir a Cristo en el marketplace.
+            Habiendo leído el propósito y los objetivos de ASI, y reconociendo que mi negocio o profesión es un ministerio, deseo y me comprometo a sostener los estándares y metas de ASI. Comprometo mi vida, mi oficina, mis talentos y mis fortalezas a compartir a Cristo en el mercado.
           </p>
         </div>
 
         <CheckboxCard
           checked={commitmentStatusChanges}
           error={errors.commitmentStatusChanges?.message}
-          label="Me comprometo a notificar a ASI si cambian mi negocio, ministerio o condición profesional respecto a la categoría aprobada."
+          label="Me comprometo a notificar a ASI si mi negocio, ministerio o condición profesional cambia de la categoría para la cual he aplicado y sido aprobado."
           onChange={(checked) =>
             form.setValue('commitmentStatusChanges', checked, {
               shouldDirty: true,
@@ -1758,7 +2019,7 @@ export function MembershipApplicationForm({
         <CheckboxCard
           checked={commitmentProcessing}
           error={errors.commitmentProcessing?.message}
-          label="Reconozco que el proceso de evaluación y aprobación puede requerir al menos tres meses."
+          label="Reconozco que el proceso de solicitud de membresía toma un mínimo de tres meses para ser procesado y aprobado."
           onChange={(checked) =>
             form.setValue('commitmentProcessing', checked, {
               shouldDirty: true,
@@ -1768,7 +2029,7 @@ export function MembershipApplicationForm({
         />
 
         <TextField
-          label="Firma digital"
+          label="Firma"
           required
           hint="Escribe tu nombre completo tal como deseas dejar constancia en la solicitud."
           error={errors.signature?.message}
