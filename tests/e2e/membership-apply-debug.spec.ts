@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
-async function completeForProfitFlow(page: Parameters<typeof test>[0]['page']) {
+async function completeForProfitFlow(page: Page) {
   await page.goto('/eligibility')
 
   await page.getByRole('button', { name: 'Sí' }).click()
@@ -26,6 +26,14 @@ async function completeForProfitFlow(page: Parameters<typeof test>[0]['page']) {
     .click()
 }
 
+function readFirstInstitutionalSectionOpacity(page: Page) {
+  return page.evaluate(() => {
+    const section = document.querySelector('main section .asi-container')
+    if (!section) return null
+    return getComputedStyle(section).opacity
+  })
+}
+
 test('debug membership application for organizational for profit mobile', async ({
   page
 }) => {
@@ -47,13 +55,16 @@ test('debug membership application for organizational for profit mobile', async 
     path: 'tmp/playwright-membership-apply-debug.png',
     fullPage: true
   })
+  const opacity = await readFirstInstitutionalSectionOpacity(page)
 
   console.log('URL final:', page.url())
   console.log('PAGE ERRORS:', pageErrors)
   console.log('CONSOLE MESSAGES:', consoleMessages)
   console.log('BODY TEXT:', await page.locator('body').innerText())
+  console.log('SECTION OPACITY:', opacity)
 
   expect(pageErrors).toEqual([])
+  expect(opacity).toBe('1')
   await expect(
     page.getByRole('heading', { name: /Solicitud de membresía ASI/i })
   ).toBeVisible()
@@ -80,12 +91,15 @@ test.describe('desktop viewport', () => {
       path: 'tmp/playwright-membership-apply-debug-desktop.png',
       fullPage: true
     })
+    const opacity = await readFirstInstitutionalSectionOpacity(page)
 
     console.log('DESKTOP URL FINAL:', page.url())
     console.log('DESKTOP PAGE ERRORS:', pageErrors)
     console.log('DESKTOP BODY TEXT:', await page.locator('body').innerText())
+    console.log('DESKTOP SECTION OPACITY:', opacity)
 
     expect(pageErrors).toEqual([])
+    expect(opacity).toBe('1')
     await expect(
       page.getByRole('heading', { name: /Solicitud de membresía ASI/i })
     ).toBeVisible()

@@ -98,7 +98,7 @@ function useEligibilityGuard() {
 
 function RedirectNotice() {
   return (
-    <InstitutionalSection className="min-h-[70vh]">
+    <InstitutionalSection className="min-h-[70vh]" reveal="mount">
       <div className="mx-auto max-w-2xl rounded-[1.75rem] border border-(--asi-outline) bg-(--asi-surface-raised) p-8 text-center shadow-(--asi-shadow-soft)">
         <p className="asi-kicker">Membresía</p>
         <h1 className="asi-heading-md mt-3">
@@ -154,7 +154,7 @@ export function MembershipApplyPage() {
   if (!categoryInfo) return <RedirectNotice />;
 
   return (
-    <InstitutionalSection className="min-h-[70vh]">
+    <InstitutionalSection className="min-h-[70vh]" reveal="mount">
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-8">

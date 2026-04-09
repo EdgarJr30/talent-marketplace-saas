@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils/cn';
 
 type InstitutionalSectionTone = InstitutionalTone | 'transparent';
 type InstitutionalSectionSpacing = 'default' | 'none';
+type InstitutionalSectionReveal = 'in-view' | 'mount';
 
 const toneClassByTone: Record<InstitutionalSectionTone, string> = {
   plain: 'asi-section-plain',
@@ -98,14 +99,17 @@ export function InstitutionalLead({
 export function InstitutionalSection({
   tone = 'plain',
   spacing = 'default',
+  reveal = 'in-view',
   className,
   children,
   ...props
 }: ComponentPropsWithoutRef<'section'> & {
   tone?: InstitutionalSectionTone;
   spacing?: InstitutionalSectionSpacing;
+  reveal?: InstitutionalSectionReveal;
 }) {
   const shouldReduceMotion = useReducedMotion();
+  const shouldRevealOnMount = reveal === 'mount';
 
   return (
     <section
@@ -120,8 +124,17 @@ export function InstitutionalSection({
         className="asi-container"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
         transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-        viewport={{ once: true, amount: 0.18 }}
-        whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={shouldRevealOnMount ? undefined : { once: true, amount: 0.18 }}
+        animate={
+          shouldReduceMotion || !shouldRevealOnMount
+            ? undefined
+            : { opacity: 1, y: 0 }
+        }
+        whileInView={
+          shouldReduceMotion || shouldRevealOnMount
+            ? undefined
+            : { opacity: 1, y: 0 }
+        }
       >
         {children}
       </motion.div>
