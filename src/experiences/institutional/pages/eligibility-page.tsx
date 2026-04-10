@@ -87,19 +87,39 @@ function RadioOption({
   label,
   description,
   onClick,
+  selected = false,
 }: {
   label: string
   description?: string
   onClick: () => void
+  selected?: boolean
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full rounded-2xl border-2 border-(--asi-outline) bg-(--asi-surface-raised) p-5 text-left transition-all duration-150 hover:border-(--asi-primary) hover:bg-(--asi-primary)/5 active:scale-[0.99]"
+      aria-pressed={selected}
+      className={cn(
+        'w-full rounded-2xl border-2 bg-(--asi-surface-raised) p-5 text-left transition-all duration-150 active:scale-[0.99]',
+        selected
+          ? 'border-(--asi-primary) bg-(--asi-primary)/5'
+          : 'border-(--asi-outline) hover:border-(--asi-primary) hover:bg-(--asi-primary)/5',
+      )}
     >
       <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-(--asi-outline) transition-colors" />
+        <div
+          className={cn(
+            'mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+            selected ? 'border-(--asi-primary)' : 'border-(--asi-outline)',
+          )}
+        >
+          <div
+            className={cn(
+              'size-2.5 rounded-full transition-colors',
+              selected ? 'bg-(--asi-primary)' : 'bg-transparent',
+            )}
+          />
+        </div>
         <div>
           <p className="font-semibold text-(--asi-text)">{label}</p>
           {description && (
@@ -404,7 +424,10 @@ export function EligibilityPage() {
     })
   }
 
-  const resolveResult = (result: EligibilityResult) => {
+  const resolveResult = (
+    result: EligibilityResult,
+    updates: Partial<EligibilityState> = {},
+  ) => {
     if (result.eligible) {
       saveEligibilityToken({
         eligible: true,
@@ -413,7 +436,7 @@ export function EligibilityPage() {
         dues: result.dues,
       })
     }
-    goTo('result', { result })
+    goTo('result', { ...updates, result })
   }
 
   const continueToApplication = (result: EligibilityResult) => {
@@ -440,7 +463,7 @@ export function EligibilityPage() {
 
   const { current, total } = getProgress(state)
   const showProgress = !['other-divisions', 'result'].includes(state.step)
-  const showBack = state.history.length > 0 && state.step !== 'result'
+  const showBack = state.history.length > 0
 
   return (
     <InstitutionalSection className="min-h-[70vh]">
@@ -481,10 +504,12 @@ export function EligibilityPage() {
                   <div className="space-y-3">
                     <RadioOption
                       label="Sí"
+                      selected={state.isAdventist === true}
                       onClick={() => goTo('location', { isAdventist: true })}
                     />
                     <RadioOption
                       label="No"
+                      selected={state.isAdventist === false}
                       onClick={() => goTo('location', { isAdventist: false })}
                     />
                   </div>
@@ -502,10 +527,12 @@ export function EligibilityPage() {
                   <div className="space-y-3">
                     <RadioOption
                       label="Unión Dominicana (UDA)"
+                      selected={state.location === 'nad'}
                       onClick={() => goTo('applicant-type', { location: 'nad' })}
                     />
                     <RadioOption
                       label="Otras divisiones"
+                      selected={state.location === 'other'}
                       onClick={() => goTo('other-divisions', { location: 'other' })}
                     />
                   </div>
@@ -529,11 +556,13 @@ export function EligibilityPage() {
                     <RadioOption
                       label="Mi organización"
                       description="Solicito en nombre de un negocio, ministerio u organización."
+                      selected={state.applicantType === 'organization'}
                       onClick={() => goTo('org-type', { applicantType: 'organization' })}
                     />
                     <RadioOption
                       label="Yo personalmente"
                       description="Solicito como profesional o laico individual."
+                      selected={state.applicantType === 'myself'}
                       onClick={() => goTo('church-employee', { applicantType: 'myself' })}
                     />
                   </div>
@@ -551,16 +580,21 @@ export function EligibilityPage() {
                   <div className="space-y-3">
                     <RadioOption
                       label="Sí"
-                      onClick={() => resolveResult({
-                        eligible: false,
-                        category: '',
-                        categorySlug: '',
-                        dues: '',
-                        message: 'Adventist-laymen\'s Services and Industries está diseñado para laicos y organizaciones lideradas por laicos. Las entidades propiedad de la iglesia y los empleados eclesiásticos no califican para la membresía ASI.',
-                      })}
+                      selected={state.isChurchEmployee === true}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: false,
+                          category: '',
+                          categorySlug: '',
+                          dues: '',
+                          message: 'Adventist-laymen\'s Services and Industries está diseñado para laicos y organizaciones lideradas por laicos. Las entidades propiedad de la iglesia y los empleados eclesiásticos no califican para la membresía ASI.',
+                        },
+                        { isChurchEmployee: true },
+                      )}
                     />
                     <RadioOption
                       label="No"
+                      selected={state.isChurchEmployee === false}
                       onClick={() => goTo('employment-status', { isChurchEmployee: false })}
                     />
                   </div>
@@ -579,29 +613,38 @@ export function EligibilityPage() {
                     <RadioOption
                       label="Empleado"
                       description="Actualmente trabaja en un rol profesional o gerencial."
+                      selected={state.employmentStatus === 'employed'}
                       onClick={() => goTo('authority', { employmentStatus: 'employed' })}
                     />
                     <RadioOption
                       label="Jubilado"
                       description="Se ha retirado de la vida profesional o empresarial."
-                      onClick={() => resolveResult({
-                        eligible: true,
-                        category: 'Profesional o Empresario Jubilado',
-                        categorySlug: 'retired',
-                        dues: '$150',
-                        message: '¡Felicitaciones! Puede calificar para la membresía de Profesional o Empresario Jubilado. Esta categoría es para personas que hubiesen sido elegibles para membresía Organizacional, Profesional Ejecutivo o Propietario Individual y que se han jubilado o vendido su negocio.',
-                      })}
+                      selected={state.employmentStatus === 'retired'}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: true,
+                          category: 'Profesional o Empresario Jubilado',
+                          categorySlug: 'retired',
+                          dues: '$150',
+                          message: '¡Felicitaciones! Puede calificar para la membresía de Profesional o Empresario Jubilado. Esta categoría es para personas que hubiesen sido elegibles para membresía Organizacional, Profesional Ejecutivo o Propietario Individual y que se han jubilado o vendido su negocio.',
+                        },
+                        { employmentStatus: 'retired' },
+                      )}
                     />
                     <RadioOption
                       label="Joven Profesional (18–35 años)"
                       description="Estudiante, recién graduado, pasante, residente o joven emprendedor."
-                      onClick={() => resolveResult({
-                        eligible: true,
-                        category: 'Joven Profesional',
-                        categorySlug: 'young-professional',
-                        dues: '$25',
-                        message: '¡Felicitaciones! Puede calificar para la membresía de Joven Profesional. Esta categoría está abierta a personas de 18 a 35 años que sean estudiantes, recién graduados, pasantes, residentes o jóvenes emprendedores.',
-                      })}
+                      selected={state.employmentStatus === 'young-professional'}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: true,
+                          category: 'Joven Profesional',
+                          categorySlug: 'young-professional',
+                          dues: '$25',
+                          message: '¡Felicitaciones! Puede calificar para la membresía de Joven Profesional. Esta categoría está abierta a personas de 18 a 35 años que sean estudiantes, recién graduados, pasantes, residentes o jóvenes emprendedores.',
+                        },
+                        { employmentStatus: 'young-professional' },
+                      )}
                     />
                   </div>
                 </div>
@@ -619,24 +662,32 @@ export function EligibilityPage() {
                     <RadioOption
                       label="Sí"
                       description="Gerencio, contrato o superviso al menos dos empleados equivalentes a tiempo completo."
-                      onClick={() => resolveResult({
-                        eligible: true,
-                        category: 'Profesional Ejecutivo',
-                        categorySlug: 'executive-professional',
-                        dues: '$250',
-                        message: '¡Felicitaciones! Puede calificar para la membresía de Profesional Ejecutivo. Esta categoría es para gerentes y ejecutivos que han ocupado su cargo por al menos un año, tienen autoridad para contratar y despedir, y supervisan un mínimo de dos equivalentes a tiempo completo.',
-                      })}
+                      selected={state.hasAuthority === true}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: true,
+                          category: 'Profesional Ejecutivo',
+                          categorySlug: 'executive-professional',
+                          dues: '$250',
+                          message: '¡Felicitaciones! Puede calificar para la membresía de Profesional Ejecutivo. Esta categoría es para gerentes y ejecutivos que han ocupado su cargo por al menos un año, tienen autoridad para contratar y despedir, y supervisan un mínimo de dos equivalentes a tiempo completo.',
+                        },
+                        { hasAuthority: true },
+                      )}
                     />
                     <RadioOption
                       label="No"
                       description="Trabajo de forma independiente o no superviso a otros."
-                      onClick={() => resolveResult({
-                        eligible: true,
-                        category: 'Asociado',
-                        categorySlug: 'associate',
-                        dues: '$150',
-                        message: '¡Felicitaciones! Puede calificar para la membresía Asociada. Esta categoría es para profesionales con un alto nivel de responsabilidad en una organización controlada por otra persona, que no supervisan a otros empleados.',
-                      })}
+                      selected={state.hasAuthority === false}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: true,
+                          category: 'Asociado',
+                          categorySlug: 'associate',
+                          dues: '$150',
+                          message: '¡Felicitaciones! Puede calificar para la membresía Asociada. Esta categoría es para profesionales con un alto nivel de responsabilidad en una organización controlada por otra persona, que no supervisan a otros empleados.',
+                        },
+                        { hasAuthority: false },
+                      )}
                     />
                   </div>
                 </div>
@@ -654,11 +705,13 @@ export function EligibilityPage() {
                     <RadioOption
                       label="Sin fines de lucro"
                       description="Un ministerio, organización religiosa o entidad sin fines de lucro registrada."
+                      selected={state.orgType === 'non-profit'}
                       onClick={() => goTo('org-tax-deductible', { orgType: 'non-profit' })}
                     />
                     <RadioOption
                       label="Con fines de lucro"
                       description="Un negocio, empresa o empresa comercial."
+                      selected={state.orgType === 'for-profit'}
                       onClick={() => goTo('org-size', { orgType: 'for-profit' })}
                     />
                   </div>
@@ -676,17 +729,22 @@ export function EligibilityPage() {
                   <div className="space-y-3">
                     <RadioOption
                       label="Sí"
+                      selected={state.orgTaxDeductible === true}
                       onClick={() => goTo('org-size', { orgTaxDeductible: true })}
                     />
                     <RadioOption
                       label="No"
-                      onClick={() => resolveResult({
-                        eligible: false,
-                        category: '',
-                        categorySlug: '',
-                        dues: '',
-                        message: 'Solo las organizaciones autorizadas a emitir recibos deducibles de impuestos califican como miembros ASI sin fines de lucro.',
-                      })}
+                      selected={state.orgTaxDeductible === false}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: false,
+                          category: '',
+                          categorySlug: '',
+                          dues: '',
+                          message: 'Solo las organizaciones autorizadas a emitir recibos deducibles de impuestos califican como miembros ASI sin fines de lucro.',
+                        },
+                        { orgTaxDeductible: false },
+                      )}
                     />
                   </div>
                 </div>
@@ -703,17 +761,22 @@ export function EligibilityPage() {
                   <div className="space-y-3">
                     <RadioOption
                       label="Dos o más"
+                      selected={state.orgSize === 'two-or-more'}
                       onClick={() => goTo('org-church', { orgSize: 'two-or-more' })}
                     />
                     <RadioOption
                       label="Solo uno (yo mismo)"
-                      onClick={() => resolveResult({
-                        eligible: true,
-                        category: 'Propietario Individual',
-                        categorySlug: 'sole-proprietor',
-                        dues: '$200',
-                        message: '¡Felicitaciones! Según sus respuestas, puede calificar para la membresía de Propietario Individual. Esta membresía está disponible para propietarios/operadores que no emplean a nadie más que a sí mismos. Su negocio debe haber estado en operación continua por un mínimo de un año.',
-                      })}
+                      selected={state.orgSize === 'only-one'}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: true,
+                          category: 'Propietario Individual',
+                          categorySlug: 'sole-proprietor',
+                          dues: '$200',
+                          message: '¡Felicitaciones! Según sus respuestas, puede calificar para la membresía de Propietario Individual. Esta membresía está disponible para propietarios/operadores que no emplean a nadie más que a sí mismos. Su negocio debe haber estado en operación continua por un mínimo de un año.',
+                        },
+                        { orgSize: 'only-one' },
+                      )}
                     />
                   </div>
                 </div>
@@ -731,28 +794,36 @@ export function EligibilityPage() {
                     <RadioOption
                       label="Sí"
                       description="La organización es una escuela, hospital u otra entidad propiedad de la iglesia."
-                      onClick={() => resolveResult({
-                        eligible: false,
-                        category: '',
-                        categorySlug: '',
-                        dues: '',
-                        message: 'Adventist-laymen\'s Services and Industries está diseñado para laicos y organizaciones lideradas por laicos. Las entidades propiedad de la iglesia y los empleados eclesiásticos no califican para la membresía ASI.',
-                      })}
+                      selected={state.orgChurchOwned === true}
+                      onClick={() => resolveResult(
+                        {
+                          eligible: false,
+                          category: '',
+                          categorySlug: '',
+                          dues: '',
+                          message: 'Adventist-laymen\'s Services and Industries está diseñado para laicos y organizaciones lideradas por laicos. Las entidades propiedad de la iglesia y los empleados eclesiásticos no califican para la membresía ASI.',
+                        },
+                        { orgChurchOwned: true },
+                      )}
                     />
                     <RadioOption
                       label="No"
                       description="La organización es de propiedad y operación independiente."
+                      selected={state.orgChurchOwned === false}
                       onClick={() => {
                         const isNonProfit = state.orgType === 'non-profit'
-                        resolveResult({
-                          eligible: true,
-                          category: isNonProfit ? 'Organizacional Sin Fines de Lucro' : 'Organizacional Con Fines de Lucro',
-                          categorySlug: isNonProfit ? 'organizational-non-profit' : 'organizational-for-profit',
-                          dues: '$250',
-                          message: isNonProfit
-                            ? '¡Felicitaciones! Su organización puede calificar para la membresía Organizacional Sin Fines de Lucro. La membresía se registra a nombre de la organización y requiere al menos dos equivalentes a tiempo completo y un mínimo de un año de operación.'
-                            : '¡Felicitaciones! Su organización puede calificar para la membresía Organizacional Con Fines de Lucro. La membresía se registra a nombre de la organización y requiere al menos dos equivalentes a tiempo completo y un mínimo de un año de operación.',
-                        })
+                        resolveResult(
+                          {
+                            eligible: true,
+                            category: isNonProfit ? 'Organizacional Sin Fines de Lucro' : 'Organizacional Con Fines de Lucro',
+                            categorySlug: isNonProfit ? 'organizational-non-profit' : 'organizational-for-profit',
+                            dues: '$250',
+                            message: isNonProfit
+                              ? '¡Felicitaciones! Su organización puede calificar para la membresía Organizacional Sin Fines de Lucro. La membresía se registra a nombre de la organización y requiere al menos dos equivalentes a tiempo completo y un mínimo de un año de operación.'
+                              : '¡Felicitaciones! Su organización puede calificar para la membresía Organizacional Con Fines de Lucro. La membresía se registra a nombre de la organización y requiere al menos dos equivalentes a tiempo completo y un mínimo de un año de operación.',
+                          },
+                          { orgChurchOwned: false },
+                        )
                       }}
                     />
                   </div>
