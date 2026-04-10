@@ -150,7 +150,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-center gap-2 text-sm font-semibold text-(--asi-text-muted) hover:text-(--asi-text) transition-colors"
+      className="inline-flex items-center gap-2 rounded-full px-2 py-1 text-sm font-semibold text-(--asi-text-muted) transition-colors hover:text-(--asi-text)"
     >
       <ArrowLeft className="size-4" />
       Atrás
@@ -314,7 +314,7 @@ function CountryCombobox({
   )
 }
 
-function OtherDivisionsStep({ onBack }: { onBack: () => void }) {
+function OtherDivisionsStep() {
   const [selectedCountry, setSelectedCountry] = useState('')
   const selected = internationalDivisionCountries.find((c) => c.country === selectedCountry)
 
@@ -372,8 +372,6 @@ function OtherDivisionsStep({ onBack }: { onBack: () => void }) {
             </a>
           </motion.div>
         )}
-
-        <BackButton onClick={onBack} />
       </div>
     </StepWrapper>
   )
@@ -458,9 +456,16 @@ export function EligibilityPage() {
 
         {/* Tarjeta del wizard */}
         <div className="rounded-[1.75rem] bg-(--asi-surface-raised) p-8 shadow-(--asi-shadow-soft) outline-1 outline-(--asi-outline) sm:p-10">
-          {showProgress && (
-            <div className="mb-8">
-              <ProgressBar current={current} total={total} />
+          {(showBack || showProgress) && (
+            <div className="mb-8 space-y-4">
+              {showBack && (
+                <div className="flex justify-start">
+                  <BackButton onClick={goBack} />
+                </div>
+              )}
+              {showProgress && (
+                <ProgressBar current={current} total={total} />
+              )}
             </div>
           )}
 
@@ -504,14 +509,13 @@ export function EligibilityPage() {
                       onClick={() => goTo('other-divisions', { location: 'other' })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
 
             {/* ── Paso: Otras divisiones (terminal) ────────────── */}
             {state.step === 'other-divisions' && (
-              <OtherDivisionsStep key="other-divisions" onBack={goBack} />
+              <OtherDivisionsStep key="other-divisions" />
             )}
 
             {/* ── Paso 3: Tipo de solicitante ───────────────────── */}
@@ -533,7 +537,6 @@ export function EligibilityPage() {
                       onClick={() => goTo('church-employee', { applicantType: 'myself' })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -561,7 +564,6 @@ export function EligibilityPage() {
                       onClick={() => goTo('employment-status', { isChurchEmployee: false })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -602,7 +604,6 @@ export function EligibilityPage() {
                       })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -638,7 +639,6 @@ export function EligibilityPage() {
                       })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -662,7 +662,6 @@ export function EligibilityPage() {
                       onClick={() => goTo('org-size', { orgType: 'for-profit' })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -690,7 +689,6 @@ export function EligibilityPage() {
                       })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -718,7 +716,6 @@ export function EligibilityPage() {
                       })}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -759,7 +756,6 @@ export function EligibilityPage() {
                       }}
                     />
                   </div>
-                  {showBack && <BackButton onClick={goBack} />}
                 </div>
               </StepWrapper>
             )}
@@ -779,7 +775,6 @@ export function EligibilityPage() {
                 />
               )
             )}
-
           </AnimatePresence>
         </div>
 
