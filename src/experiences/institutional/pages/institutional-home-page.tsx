@@ -768,25 +768,15 @@ export function InstitutionalHomePage() {
                 >
                   {slide.contentMode === 'image-only' ? (
                     <>
-                      <div className="institutional-home__image-backdrop absolute inset-0 overflow-hidden">
+                      <div className="institutional-home__image-backdrop absolute inset-0">
                         <img
-                          alt=""
-                          aria-hidden="true"
-                          className="institutional-home__image-glow h-full w-full object-cover opacity-55"
+                          alt={slide.imageAlt}
+                          className="institutional-home__image-frame h-full w-full object-cover"
                           loading="lazy"
                           src={slide.image}
                         />
                         <div className="institutional-home__image-overlay absolute inset-0" />
                         <div className="institutional-home__image-fade absolute inset-x-0 bottom-0 h-28 sm:h-32" />
-                      </div>
-
-                      <div className="absolute inset-x-3 inset-y-3 flex items-center justify-center pb-22 sm:inset-x-8 sm:inset-y-8 sm:pb-28 lg:inset-x-12 lg:inset-y-10 lg:pb-32 xl:inset-x-16">
-                        <img
-                          alt={slide.imageAlt}
-                          className="institutional-home__image-frame max-h-full w-auto max-w-full rounded-3xl object-contain"
-                          loading="lazy"
-                          src={slide.image}
-                        />
                       </div>
                     </>
                   ) : (
