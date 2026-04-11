@@ -214,6 +214,10 @@ Rules:
 - minimum gap between adjacent touch controls: **8px**
 - preferred gap when actions conflict or are destructive: **12px to 16px**
 
+### 6.5 Carousel controls
+1. Motion-scrolling or autoplay carousel regions must keep visible adjacent arrow controls when the surrounding UI already establishes that pattern.
+2. Carousel arrow controls must update the same track state used by drag, wheel, autoplay, and momentum behavior instead of replacing or disabling those interactions.
+
 ---
 
 ## 8. Typography, titles, and paragraphs

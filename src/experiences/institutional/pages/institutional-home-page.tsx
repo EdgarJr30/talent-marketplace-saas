@@ -613,6 +613,23 @@ export function InstitutionalHomePage() {
     goToHeroSlide(activeHeroIndex + (direction === 'next' ? 1 : -1));
   };
 
+  const stepNewsCarousel = (direction: 'next' | 'prev') => {
+    if (carouselLoopWidth <= 0 || carouselAdvanceWidth <= 0) {
+      return;
+    }
+
+    stopCarouselMomentum();
+    pauseCarouselAutoplay();
+    carouselOffsetX.set(
+      normalizeCarouselMotionProgress(
+        carouselOffsetX.get() +
+          carouselAdvanceWidth * (direction === 'next' ? -1 : 1),
+        carouselLoopWidth
+      )
+    );
+    resumeCarouselAutoplay();
+  };
+
   const handleHeroWheelNavigation = (deltaX: number): void => {
     if (heroWheelNavigationTimeoutRef.current !== null) {
       return;
@@ -934,8 +951,26 @@ export function InstitutionalHomePage() {
                 : { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }
             }
           >
-            <div className="mb-4 flex items-center gap-2 sm:mb-5 sm:px-7 lg:px-10 xl:px-14">
+            <div className="mb-4 flex items-center justify-between gap-4 sm:mb-5 sm:px-7 lg:px-10 xl:px-14">
               <span className="asi-kicker">Noticias Relevantes</span>
+              <div className="flex items-center gap-3">
+                <button
+                  aria-label="Ver noticia anterior"
+                  className="institutional-home__hero-control flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-(--asi-primary) transition hover:bg-white"
+                  type="button"
+                  onClick={() => stepNewsCarousel('prev')}
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
+                <button
+                  aria-label="Ver noticia siguiente"
+                  className="institutional-home__hero-control flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/92 text-(--asi-primary) transition hover:bg-white"
+                  type="button"
+                  onClick={() => stepNewsCarousel('next')}
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+              </div>
             </div>
             <div
               ref={carouselViewportRef}
