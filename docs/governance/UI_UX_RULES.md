@@ -183,6 +183,7 @@ Rules:
 3. New customer-facing marketing sections should reuse shared landing spacing utilities instead of inventing one-off `py-*`, `pt-*`, or `pb-*` values.
 4. Expandable landing details should visually connect their trigger and revealed panel. When a disclosure opens a comparison or secondary content block, the same trigger should remain visible as the origin of the expansion, slightly overlapping or anchoring to the panel edge instead of floating above it or disappearing fully into the panel header. In the open state, prefer a tab-like trigger treatment with the bottom visually integrated into the panel rather than a fully enclosed pill.
 5. Motion-driven disclosures and comparison panels should animate as a connected surface expansion, not as unrelated pieces. The shell should expand first from the trigger origin, then reveal the inner content with a short stagger. Closed state controls must stay fully rounded; open state controls may overlap or anchor into the panel, but must still look intentional and remain readable on mobile widths.
+6. Customer-facing media-led hero sections may break out to full viewport width when the image or experience is the primary content, while keeping the rest of the page on the shared container rhythm.
 
 ---
 

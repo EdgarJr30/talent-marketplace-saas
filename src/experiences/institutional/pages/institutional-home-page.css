@@ -3,7 +3,16 @@
 }
 
 .institutional-home__hero-shell {
-  border-radius: 2rem;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+}
+
+@supports (width: 100dvw) {
+  .institutional-home__hero-shell {
+    width: 100dvw;
+    margin-inline: calc(50% - 50dvw);
+  }
 }
 
 .institutional-home__hero-frame {
@@ -290,7 +299,7 @@
   }
 
   .institutional-home__hero-shell {
-    border-radius: 2.4rem;
+    border-radius: 0;
   }
 
   .institutional-home__hero-overlay {

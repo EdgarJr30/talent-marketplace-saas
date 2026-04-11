@@ -721,7 +721,7 @@ export function InstitutionalHomePage() {
       <InstitutionalSection spacing="none" tone="transparent">
         <div className="space-y-8 sm:space-y-10">
           <motion.div
-            className="institutional-home__hero-shell relative overflow-hidden bg-(--asi-primary) shadow-(--asi-shadow-strong) sm:-mx-7 lg:-mx-10 xl:-mx-14"
+            className="institutional-home__hero-shell relative overflow-hidden bg-(--asi-primary) shadow-(--asi-shadow-strong)"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
