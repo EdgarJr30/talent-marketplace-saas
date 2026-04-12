@@ -132,18 +132,6 @@ export function WhoWeArePage() {
                 />
               </motion.div>
             </motion.div>
-
-            <motion.article
-              className="asi-card bg-white"
-              variants={itemVariants}
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-(--asi-secondary)">
-                {whoWeAreHeroContent.supportTitle}
-              </p>
-              <p className="mt-3 text-base leading-7 text-(--asi-text-muted)">
-                {whoWeAreHeroContent.supportCopy}
-              </p>
-            </motion.article>
           </motion.div>
 
           <motion.div className="grid gap-4" variants={mediaVariants}>
