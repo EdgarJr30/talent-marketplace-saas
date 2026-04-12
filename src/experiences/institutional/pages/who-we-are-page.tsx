@@ -69,7 +69,7 @@ export function WhoWeArePage() {
         >
           <motion.div className="grid gap-5 lg:gap-6" variants={containerVariants}>
             <motion.div
-              className="rounded-[1.75rem] bg-(--asi-surface-panel) p-6 sm:p-8"
+              className="p-0 sm:p-0"
               variants={itemVariants}
             >
               <motion.p className="asi-kicker" variants={itemVariants}>
