@@ -2,7 +2,6 @@ import { ArrowRight, ExternalLink, HeartHandshake, PlayCircle } from 'lucide-rea
 
 import {
   InstitutionalActionLink,
-  InstitutionalCard,
   InstitutionalLead,
   InstitutionalSection,
 } from '@/experiences/institutional/components/institutional-ui';
@@ -52,19 +51,21 @@ function ProjectCard({ project }: { project: ProjectFeature }) {
 export function ProjectsPage() {
   return (
     <div>
-      <InstitutionalSection className="overflow-hidden pt-28 sm:pt-32" reveal="mount">
-        <div className="grid gap-10 xl:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] xl:items-center">
+      <InstitutionalSection className="overflow-hidden" reveal="mount">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="asi-kicker">{projectsHeroContent.eyebrow}</p>
-            <h1 className="mt-5 max-w-[9ch] text-[3.2rem] font-bold leading-[0.92] tracking-normal text-(--asi-primary) sm:text-[4.7rem] lg:text-[5.6rem]">
+            <h1 className="asi-heading-lg mt-4 max-w-[22ch]">
               {projectsHeroContent.titleLines.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
             </h1>
-            <div className="mt-7 max-w-[62ch]">
-              <h2 className="asi-heading-lg">{projectsHeroContent.heading}</h2>
+            <div className="mt-5 max-w-[58ch]">
+              <p className="text-xl font-semibold text-(--asi-primary)">
+                {projectsHeroContent.heading}
+              </p>
               <p className="asi-copy mt-4 text-[1.02rem]">
                 {projectsHeroContent.description}
               </p>
@@ -72,17 +73,17 @@ export function ProjectsPage() {
                 {projectsHeroContent.followUp}
               </p>
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <InstitutionalActionLink action={projectsHeroContent.primaryAction} />
               <InstitutionalActionLink action={projectsHeroContent.secondaryAction} />
             </div>
           </div>
 
-          <div className="grid gap-4">
-            <div className="overflow-hidden rounded-[1.75rem] bg-[#08111f] shadow-(--asi-shadow-strong)">
+          <div className="grid gap-5">
+            <div className="overflow-hidden rounded-[1.75rem] bg-[#08111f] shadow-2xl ring-1 ring-black/8">
               <video
                 aria-label={projectsHeroMedia.videoLabel}
-                className="aspect-video w-full object-cover"
+                className="aspect-4/3 w-full object-cover lg:aspect-square lg:max-h-110"
                 controls
                 muted
                 playsInline
@@ -94,17 +95,17 @@ export function ProjectsPage() {
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {projectsImpactStats.map((stat) => (
-                <InstitutionalCard key={stat.label} className="bg-white/82">
-                  <p className="text-3xl font-semibold text-(--asi-primary)">
+                <article key={stat.label} className="asi-card bg-white/82">
+                  <p className="text-4xl font-semibold text-(--asi-primary)">
                     {stat.value}
                   </p>
-                  <p className="mt-3 text-sm font-semibold text-(--asi-text)">
+                  <p className="mt-3 text-base font-semibold text-(--asi-text)">
                     {stat.label}
                   </p>
-                  <p className="mt-2 text-xs leading-5 text-(--asi-text-muted)">
+                  <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
                     {stat.description}
                   </p>
-                </InstitutionalCard>
+                </article>
               ))}
             </div>
           </div>
@@ -138,10 +139,11 @@ export function ProjectsPage() {
         </div>
       </InstitutionalSection>
 
-      <InstitutionalSection reveal="mount">
+      <InstitutionalSection tone="brand" reveal="mount">
         <div className="space-y-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <InstitutionalLead
+              invert
               content={{
                 eyebrow: 'Latest published project year',
                 title: '2025 Projects',
@@ -149,14 +151,14 @@ export function ProjectsPage() {
                   'A focused selection from the published project list, shaped for quick scanning while still showing the mission, use of funds, images, and allocation for each initiative.',
               }}
             />
-            <div className="rounded-[1.5rem] bg-(--asi-primary)/6 p-5">
-              <p className="text-sm font-semibold text-(--asi-primary)">
+            <div className="rounded-[1.5rem] bg-white/10 p-5 backdrop-blur-md">
+              <p className="text-sm font-semibold text-white/82">
                 Published total
               </p>
-              <p className="mt-1 text-2xl font-semibold text-(--asi-text)">
+              <p className="mt-1 text-2xl font-semibold text-white">
                 41 projects - $1.932M
               </p>
-              <p className="mt-2 max-w-[34ch] text-sm leading-6 text-(--asi-text-muted)">
+              <p className="mt-2 max-w-[34ch] text-sm leading-6 text-white/76">
                 Presented as allocations for the ASI International Convention
                 offering.
               </p>
@@ -174,14 +176,14 @@ export function ProjectsPage() {
       <InstitutionalSection tone="muted" reveal="mount">
         <div className="mx-auto max-w-5xl text-center">
           <p className="asi-kicker">Archives</p>
-          <h2 className="mt-5 text-[2.5rem] font-bold leading-tight tracking-normal text-(--asi-primary) sm:text-[4rem]">
+          <h2 className="asi-heading-lg mx-auto mt-5 max-w-[22ch] text-(--asi-primary)">
             Past Year&apos;s Projects
           </h2>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 sm:gap-x-10">
             {pastProjectYears.map((item, index) => (
               <a
                 key={item.year}
-                className="group inline-flex min-h-12 items-center gap-5 text-2xl font-semibold text-(--asi-primary) transition hover:text-(--asi-primary-container)"
+                className="group inline-flex min-h-12 items-center gap-5 text-xl font-semibold text-(--asi-primary) transition hover:text-(--asi-primary-container) sm:text-2xl"
                 href={item.href}
                 rel="noreferrer"
                 target="_blank"
