@@ -17,6 +17,18 @@ const institutionalPrimaryNavigation = [
   { label: 'Quiénes somos', to: surfacePaths.institutional.whoWeAre },
 ] as const;
 
+const HEADER_BACKGROUND_SCROLL_DISTANCE = 72;
+const HEADER_BACKGROUND_ALPHA = 0.92;
+const HEADER_BORDER_ALPHA = 0.55;
+const HEADER_SHADOW_ALPHA = 0.08;
+
+function getHeaderScrollProgress(scrollY: number) {
+  return Math.min(
+    1,
+    Math.max(0, scrollY / HEADER_BACKGROUND_SCROLL_DISTANCE)
+  );
+}
+
 function isActiveRoute(currentPathname: string, targetPath: string) {
   if (targetPath === surfacePaths.institutional.home) {
     return (
@@ -36,17 +48,38 @@ export function InstitutionalShell() {
   const shouldReduceMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isCondensed, setIsCondensed] = useState(false);
+  const [headerScrollProgress, setHeaderScrollProgress] = useState(0);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsCondensed(window.scrollY > 24);
+    let animationFrame: number | null = null;
+
+    const updateHeaderState = () => {
+      const scrollY = window.scrollY;
+
+      setHeaderScrollProgress(getHeaderScrollProgress(scrollY));
+      setIsCondensed(scrollY > 24);
+      animationFrame = null;
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (animationFrame !== null) {
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(updateHeaderState);
+    };
+
+    updateHeaderState();
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -56,6 +89,11 @@ export function InstitutionalShell() {
 
     return () => window.cancelAnimationFrame(frame);
   }, [location.pathname]);
+
+  const headerBackdropBlur = 18 * headerScrollProgress;
+  const headerPanelAlpha = HEADER_BACKGROUND_ALPHA * headerScrollProgress;
+  const headerBorderAlpha = HEADER_BORDER_ALPHA * headerScrollProgress;
+  const headerShadowAlpha = HEADER_SHADOW_ALPHA * headerScrollProgress;
 
   return (
     <div className="asi-site min-h-screen overflow-x-clip">
@@ -69,7 +107,14 @@ export function InstitutionalShell() {
       >
         <div className="asi-container px-0">
           <motion.div
-            className="rounded-[1.7rem] border border-white/55 bg-[#f8f9fa]/92 px-4 shadow-(--asi-shadow-soft) backdrop-blur-[18px] sm:px-5"
+            className="rounded-[1.7rem] border px-4 py-3 transition-all duration-300 ease-out sm:px-5"
+            style={{
+              WebkitBackdropFilter: `blur(${headerBackdropBlur}px)`,
+              backdropFilter: `blur(${headerBackdropBlur}px)`,
+              backgroundColor: `rgba(248, 249, 250, ${headerPanelAlpha})`,
+              borderColor: `rgba(255, 255, 255, ${headerBorderAlpha})`,
+              boxShadow: `0 12px 40px rgba(0, 47, 110, ${headerShadowAlpha})`,
+            }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             animate={
               shouldReduceMotion
