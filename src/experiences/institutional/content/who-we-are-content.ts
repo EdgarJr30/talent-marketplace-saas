@@ -20,6 +20,9 @@ export const whoWeAreHeroContent = {
     'ASI une empresas, profesionales y ministerios para vivir y extender una misión centrada en Cristo.',
   description:
     'Comprometidos con apoyar a la Iglesia Adventista del Séptimo Día, caminamos junto a personas de distintas vocaciones que desean servir con integridad, propósito y presencia misionera en cada espacio donde trabajan y viven.',
+  supportTitle: 'Una misma misión, vivida en comunidad',
+  supportCopy:
+    'Historia, servicio y colaboración se encuentran en una red que acompaña a la Iglesia y lleva el evangelio al trabajo cotidiano.',
   primaryAction: {
     label: 'Conocer membership',
     to: surfacePaths.institutional.membership,
@@ -31,6 +34,12 @@ export const whoWeAreHeroContent = {
     variant: 'secondary' as const,
   },
 } as const;
+
+export const whoWeAreHeroHighlights = [
+  'Fe visible en la vida profesional',
+  'Apoyo real a la misión global',
+  'Comunidad adventista diversa y conectada',
+] as const;
 
 export const whoWeAreHeroMedia = {
   image:

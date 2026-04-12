@@ -10,6 +10,7 @@ import {
   whoWeAreAboutPoints,
   whoWeAreGlobalNetwork,
   whoWeAreHeroContent,
+  whoWeAreHeroHighlights,
   whoWeAreHeroMedia,
   whoWeAreHeroStats,
   whoWeAreHistoryTimeline,
@@ -38,6 +39,16 @@ const itemVariants = {
   },
 };
 
+const mediaVariants = {
+  hidden: { opacity: 0, x: 24, scale: 0.98 },
+  show: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 export function WhoWeArePage() {
   const shouldReduceMotion = useReducedMotion();
   const revealProps = shouldReduceMotion
@@ -53,63 +64,95 @@ export function WhoWeArePage() {
     <div>
       <InstitutionalSection className="overflow-hidden" reveal="mount">
         <motion.div
-          className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16"
+          className="grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start lg:gap-12"
           {...revealProps}
         >
-          <motion.div variants={itemVariants}>
-            <motion.p className="asi-kicker" variants={itemVariants}>
-              {whoWeAreHeroContent.eyebrow}
-            </motion.p>
-            <motion.h1
-              className="asi-heading-lg mt-4 max-w-[22ch]"
-              variants={itemVariants}
-            >
-              {whoWeAreHeroContent.titleLines.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </motion.h1>
-            <motion.div className="mt-5 max-w-[58ch]" variants={itemVariants}>
-              <p className="text-xl font-semibold text-(--asi-primary)">
-                {whoWeAreHeroContent.heading}
-              </p>
-              <p className="asi-copy mt-4 text-[1.02rem]">
-                {whoWeAreHeroContent.description}
-              </p>
-            </motion.div>
+          <motion.div className="grid gap-5 lg:gap-6" variants={containerVariants}>
             <motion.div
-              className="mt-10 flex flex-col gap-3 sm:flex-row"
+              className="rounded-[1.75rem] bg-(--asi-surface-panel) p-6 sm:p-8"
               variants={itemVariants}
             >
-              <InstitutionalActionLink action={whoWeAreHeroContent.primaryAction} />
-              <InstitutionalActionLink
-                action={whoWeAreHeroContent.secondaryAction}
-              />
+              <motion.p className="asi-kicker" variants={itemVariants}>
+                {whoWeAreHeroContent.eyebrow}
+              </motion.p>
+              <motion.h1
+                className="asi-heading-lg mt-4 max-w-[18ch]"
+                variants={itemVariants}
+              >
+                {whoWeAreHeroContent.titleLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </motion.h1>
+              <motion.div className="mt-5 max-w-[56ch]" variants={itemVariants}>
+                <p className="text-xl font-semibold text-(--asi-primary)">
+                  {whoWeAreHeroContent.heading}
+                </p>
+                <p className="asi-copy mt-4 text-[1.02rem]">
+                  {whoWeAreHeroContent.description}
+                </p>
+              </motion.div>
+              <motion.ul
+                className="mt-6 grid gap-3 sm:grid-cols-3"
+                variants={containerVariants}
+              >
+                {whoWeAreHeroHighlights.map((item) => (
+                  <motion.li
+                    key={item}
+                    className="rounded-panel bg-white px-4 py-3 text-sm font-semibold text-(--asi-text)"
+                    variants={itemVariants}
+                  >
+                    {item}
+                  </motion.li>
+                ))}
+              </motion.ul>
+              <motion.div
+                className="mt-8 flex flex-col gap-3 sm:flex-row"
+                variants={itemVariants}
+              >
+                <InstitutionalActionLink action={whoWeAreHeroContent.primaryAction} />
+                <InstitutionalActionLink
+                  action={whoWeAreHeroContent.secondaryAction}
+                />
+              </motion.div>
             </motion.div>
+
+            <motion.article
+              className="asi-card bg-white"
+              variants={itemVariants}
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-(--asi-secondary)">
+                {whoWeAreHeroContent.supportTitle}
+              </p>
+              <p className="mt-3 text-base leading-7 text-(--asi-text-muted)">
+                {whoWeAreHeroContent.supportCopy}
+              </p>
+            </motion.article>
           </motion.div>
 
-          <motion.div className="grid gap-5" variants={itemVariants}>
+          <motion.div className="grid gap-4" variants={mediaVariants}>
             <div className="overflow-hidden rounded-[1.75rem] shadow-2xl ring-1 ring-black/8">
               <img
                 alt={whoWeAreHeroMedia.imageAlt}
                 className="aspect-4/3 w-full object-cover lg:aspect-square lg:max-h-110"
-                fetchPriority="high"
-                loading="eager"
+                decoding="async"
+                loading="lazy"
+                sizes="(max-width: 1023px) 100vw, 52vw"
                 src={whoWeAreHeroMedia.image}
               />
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3">
               {whoWeAreHeroStats.map((stat) => (
                 <motion.article
                   key={stat.label}
-                  className="asi-card bg-white/82"
+                  className="asi-card bg-white/88 px-5 py-5"
                   variants={itemVariants}
                 >
-                  <p className="text-4xl font-semibold text-(--asi-primary)">
+                  <p className="text-3xl font-semibold text-(--asi-primary) sm:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-3 text-base font-semibold text-(--asi-text)">
+                  <p className="mt-2 text-base font-semibold text-(--asi-text)">
                     {stat.label}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
@@ -124,7 +167,7 @@ export function WhoWeArePage() {
 
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
-          className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start"
+          className="space-y-8"
           {...revealProps}
         >
           <InstitutionalLead
@@ -135,23 +178,26 @@ export function WhoWeArePage() {
                 'La filosofía de ASI promueve una vida centrada en Cristo, expresada en una relación diaria con Dios y en el deseo de compartir su amor con cada persona encontrada en el trabajo y en la rutina cotidiana. De ahí nace nuestro lema: compartir a Cristo en el mercado.',
             }}
           />
-          <motion.div className="grid gap-4" variants={containerVariants}>
+          <motion.div
+            className="grid gap-4 md:grid-cols-3"
+            variants={containerVariants}
+          >
             {whoWeAreAboutPoints.map((item) => {
               const Icon = item.icon;
 
               return (
                 <motion.article
                   key={item.title}
-                  className="asi-card bg-white"
+                  className="asi-card bg-white px-5 py-5"
                   variants={itemVariants}
                 >
-                  <div className="flex size-12 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                    <Icon className="size-6" />
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
+                    <Icon className="size-5" />
                   </div>
-                  <p className="mt-5 text-lg font-semibold text-(--asi-text)">
+                  <p className="mt-4 text-lg font-semibold text-(--asi-text)">
                     {item.title}
                   </p>
-                  <p className="mt-2 text-sm leading-7 text-(--asi-text-muted)">
+                  <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
                     {item.description}
                   </p>
                 </motion.article>
@@ -199,7 +245,9 @@ export function WhoWeArePage() {
             <img
               alt="Reunión histórica e institucional con enfoque en legado y servicio"
               className="h-88 w-full rounded-[1.75rem] object-cover shadow-(--asi-shadow-soft)"
+              decoding="async"
               loading="lazy"
+              sizes="(max-width: 1023px) 100vw, 48vw"
               src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1400&q=80"
             />
             <div className="asi-card bg-white">
