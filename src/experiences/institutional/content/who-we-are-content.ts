@@ -24,7 +24,7 @@ export const whoWeAreHeroContent = {
   supportCopy:
     'Historia, servicio y colaboración se encuentran en una red que acompaña a la Iglesia y lleva el evangelio al trabajo cotidiano.',
   primaryAction: {
-    label: 'Conocer membership',
+    label: 'Membresía',
     to: surfacePaths.institutional.membership,
     variant: 'primary' as const,
   },
