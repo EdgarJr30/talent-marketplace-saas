@@ -571,7 +571,7 @@ export function WhoWeArePage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:justify-end">
               <InstitutionalActionLink
                 action={{
-                  label: 'Membresía',
+                  label: 'Hazte miembro',
                   to: surfacePaths.institutional.membership,
                   variant: 'primary',
                 }}
