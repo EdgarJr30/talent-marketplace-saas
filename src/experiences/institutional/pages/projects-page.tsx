@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { motion, useReducedMotion } from 'motion/react';
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from 'motion/react';
 import { ArrowRight, HeartHandshake, PlayCircle } from 'lucide-react';
 
 import {
@@ -15,6 +22,7 @@ import {
   projectsHeroContent,
   projectsHeroMedia,
   projectsImpactStats,
+  type ProjectImpactStat,
   type ProjectFeature,
 } from '@/experiences/institutional/content/projects-content';
 
@@ -75,7 +83,7 @@ function LazyAutoplayVideo() {
       {shouldLoadVideo ? (
         <iframe
           allow="autoplay; encrypted-media; picture-in-picture"
-          className="pointer-events-none h-full w-full"
+          className="pointer-events-none absolute top-1/2 left-1/2 h-[138%] w-[138%] -translate-x-1/2 -translate-y-1/2 border-0 lg:h-[150%] lg:w-[150%]"
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
           src={projectsHeroMedia.video}
@@ -92,6 +100,49 @@ function LazyAutoplayVideo() {
         />
       )}
     </div>
+  );
+}
+
+function AnimatedStatValue({
+  shouldReduceMotion,
+  stat,
+}: {
+  shouldReduceMotion: boolean;
+  stat: ProjectImpactStat;
+}) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.72 });
+  const counter = useMotionValue(0);
+  const displayValue = useTransform(counter, (latest) => {
+    const formatted = latest.toLocaleString('en-US', {
+      maximumFractionDigits: stat.counter.decimals ?? 0,
+      minimumFractionDigits: stat.counter.decimals ?? 0,
+    });
+
+    return `${stat.counter.prefix ?? ''}${formatted}${stat.counter.suffix ?? ''}`;
+  });
+
+  useEffect(() => {
+    if (!isInView || shouldReduceMotion) {
+      return;
+    }
+
+    const controls = animate(counter, stat.counter.end, {
+      duration: 1.35,
+      ease: [0.22, 1, 0.36, 1],
+    });
+
+    return () => controls.stop();
+  }, [counter, isInView, shouldReduceMotion, stat.counter.end]);
+
+  if (shouldReduceMotion) {
+    return <span ref={ref}>{stat.value}</span>;
+  }
+
+  return (
+    <motion.span ref={ref} aria-label={stat.value}>
+      {displayValue}
+    </motion.span>
   );
 }
 
@@ -196,7 +247,10 @@ export function ProjectsPage() {
                   variants={itemVariants}
                 >
                   <p className="text-4xl font-semibold text-(--asi-primary)">
-                    {stat.value}
+                    <AnimatedStatValue
+                      shouldReduceMotion={Boolean(shouldReduceMotion)}
+                      stat={stat}
+                    />
                   </p>
                   <p className="mt-3 text-base font-semibold text-(--asi-text)">
                     {stat.label}

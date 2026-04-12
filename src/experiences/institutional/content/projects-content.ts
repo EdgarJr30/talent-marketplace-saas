@@ -14,6 +14,18 @@ export type PastProjectYear = {
   year: string;
 };
 
+export type ProjectImpactStat = {
+  value: string;
+  label: string;
+  description: string;
+  counter: {
+    end: number;
+    prefix?: string;
+    suffix?: string;
+    decimals?: number;
+  };
+};
+
 export const projectsHeroContent = {
   eyebrow: 'Proyectos',
   titleLines: ['Juntos', 'Transformamos', 'Vidas'],
@@ -45,23 +57,35 @@ export const projectsHeroMedia = {
   videoLabel: 'Video motivador sobre proyectos de ayuda misionera',
 } as const;
 
-export const projectsImpactStats = [
+export const projectsImpactStats: ProjectImpactStat[] = [
   {
     value: '41',
     label: 'Proyectos 2025',
     description: 'Colección publicada más reciente de ASI Missions Inc.',
+    counter: {
+      end: 41,
+    },
   },
   {
     value: '$1.932M',
     label: 'Fondos asignados',
     description: 'Asignación combinada para la lista publicada de proyectos 2025.',
+    counter: {
+      end: 1.932,
+      prefix: '$',
+      suffix: 'M',
+      decimals: 3,
+    },
   },
   {
     value: '3',
     label: 'Proyectos adicionales',
     description: 'Iniciativas apoyadas cuando las ofrendas superan la meta.',
+    counter: {
+      end: 3,
+    },
   },
-] as const;
+];
 
 export const overflowProjects2025 = [
   'Ellen G. White Estate Digital Project',
