@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { Mail, MapPin, MessageSquareMore, PhoneCall, Send, UsersRound } from 'lucide-react'
+import { Mail, PhoneCall, Send, UsersRound } from 'lucide-react'
 import { motion, useReducedMotion } from 'motion/react'
 
 import { surfacePaths } from '@/app/router/surface-paths'
@@ -31,34 +31,32 @@ const itemVariants = {
   },
 }
 
-const directChannels = [
+const heroImage = {
+  src: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1800&q=80',
+  alt: 'Personas dialogando con alegría en un encuentro comunitario',
+} as const
+
+const quickActions = [
   {
-    title: 'Llámanos',
+    label: 'Llámanos',
     value: '+1 809 555 0140',
-    description: 'Canal principal para orientación general y soporte institucional.',
     href: 'tel:+18095550140',
     icon: PhoneCall,
   },
   {
-    title: 'Escríbenos',
+    label: 'Escríbenos',
     value: 'secretaria@asirdo.org',
-    description: 'Atención para consultas, seguimiento y coordinación general.',
     href: 'mailto:secretaria@asirdo.org',
     icon: Mail,
   },
-  {
-    title: 'Ubicación',
-    value: 'Santo Domingo, República Dominicana',
-    description: 'Punto de referencia para atención institucional y acompañamiento.',
-    href: null,
-    icon: MapPin,
-  },
 ] as const
 
-const contactHeroImage = {
-  src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80',
-  alt: 'Personas conversando con alegría en un encuentro comunitario',
-} as const
+const priorityContacts = contactPoints.filter(
+  (item) =>
+    item.title === 'Secretaría general' ||
+    item.title === 'Membresía' ||
+    item.title === 'Proyectos y financiamiento'
+)
 
 export function ContactUsPage() {
   const shouldReduceMotion = useReducedMotion()
@@ -89,150 +87,97 @@ export function ContactUsPage() {
   return (
     <div>
       <InstitutionalSection className="overflow-hidden" reveal="mount">
-        <motion.div
-          className="grid gap-10 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-start lg:gap-12"
-          {...revealProps}
-        >
-          <motion.div className="space-y-6" variants={itemVariants}>
-            <div>
-              <p className="asi-kicker">Contáctanos</p>
-              <h1 className="asi-heading-lg mt-4 max-w-[16ch]">
-                Habla con nosotros.
-              </h1>
-            </div>
+        <motion.div className="space-y-8" {...revealProps}>
+          <motion.div
+            className="relative overflow-hidden rounded-[1.75rem] shadow-2xl ring-1 ring-black/8"
+            variants={itemVariants}
+          >
+            <img
+              alt={heroImage.alt}
+              className="h-[24rem] w-full object-cover sm:h-[28rem] lg:h-[34rem]"
+              decoding="async"
+              loading="lazy"
+              sizes="100vw"
+              src={heroImage.src}
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-[#071327]/88 via-[#0b2246]/58 to-[#0b2246]/24" />
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 lg:p-10">
+              <div className="max-w-3xl">
+                <p className="asi-kicker border-white/15 bg-white/10 text-white/82">
+                  Contáctanos
+                </p>
+                <h1 className="asi-heading-lg mt-4 max-w-[12ch] text-white">
+                  Habla con nosotros.
+                </h1>
+                <p className="mt-4 max-w-[44rem] text-base leading-7 text-white/86 sm:text-[1.02rem]">
+                  Si necesitas orientación, apoyo o quieres iniciar una
+                  conversación con ASI, aquí tienes la forma más directa de
+                  hacerlo.
+                </p>
+              </div>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                {quickActions.map((action) => {
+                  const Icon = action.icon
 
-            <p className="asi-copy max-w-[60ch] text-[1.02rem]">
-              Encuentra aquí la forma más directa de escribirnos, llamarnos o
-              dejar tu mensaje para que podamos ayudarte.
-            </p>
-
-            <motion.div
-              className="overflow-hidden rounded-[1.5rem] shadow-(--asi-shadow-soft) ring-1 ring-black/8"
-              variants={itemVariants}
-            >
-              <img
-                alt={contactHeroImage.alt}
-                className="aspect-4/3 w-full object-cover"
-                decoding="async"
-                loading="lazy"
-                sizes="(max-width: 1023px) 100vw, 42vw"
-                src={contactHeroImage.src}
-              />
-            </motion.div>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {directChannels.map((item) => {
-                const Icon = item.icon
-
-                return (
-                  <motion.article
-                    key={item.title}
-                    className="asi-card bg-white px-4 py-4 sm:px-5 sm:py-5"
-                    variants={itemVariants}
-                  >
-                    <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                      <Icon className="size-4.5" />
-                    </div>
-                    <p className="mt-3 text-[0.98rem] font-semibold text-(--asi-text)">
-                      {item.title}
-                    </p>
-                    {item.href ? (
-                      <a
-                        className="mt-2 block text-[0.98rem] font-semibold text-(--asi-primary) hover:underline"
-                        href={item.href}
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="mt-2 text-[0.98rem] font-semibold text-(--asi-primary)">
-                        {item.value}
-                      </p>
-                    )}
-                    <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
-                      {item.description}
-                    </p>
-                  </motion.article>
-                )
-              })}
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <InstitutionalActionLink
-                action={{
-                  label: 'Hazte miembro',
-                  to: surfacePaths.institutional.membership,
-                  variant: 'secondary',
-                }}
-              />
-              <InstitutionalActionLink
-                action={{
-                  label: 'Ver proyectos',
-                  to: surfacePaths.institutional.projects,
-                  variant: 'ghost',
-                }}
-              />
+                  return (
+                    <a
+                      key={action.label}
+                      className="inline-flex min-h-12 items-center gap-3 rounded-full bg-white/96 px-5 text-sm font-semibold text-(--asi-primary) shadow-(--asi-shadow-soft) transition-colors hover:bg-white"
+                      href={action.href}
+                    >
+                      <Icon className="size-4" />
+                      <span>{action.label}</span>
+                      <span className="text-(--asi-text-muted)">{action.value}</span>
+                    </a>
+                  )
+                })}
+              </div>
             </div>
           </motion.div>
 
-          <motion.div className="grid gap-4" variants={containerVariants}>
-            <motion.div className="asi-card bg-white px-5 py-5" variants={itemVariants}>
-              <div className="flex items-start gap-4">
-                <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                  <MessageSquareMore className="size-5" />
-                </div>
-                <div>
-                  <p className="text-[1.02rem] font-semibold text-(--asi-text)">
-                    Te respondemos por la vía adecuada
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-(--asi-text-muted)">
-                    Si tu consulta es general, de membresía o de seguimiento,
-                    empieza por el correo principal o el formulario.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+          <motion.div
+            className="grid gap-3 md:grid-cols-3"
+            variants={containerVariants}
+          >
+            {priorityContacts.map((item) => {
+              const Icon = item.icon ?? UsersRound
 
-            <motion.div className="grid gap-3 sm:grid-cols-2" variants={containerVariants}>
-              {contactPoints.map((item) => {
-                const Icon = item.icon ?? UsersRound
-
-                return (
-                  <motion.article
-                    key={item.title}
-                    className="asi-card bg-white/88 px-4 py-4 sm:px-5 sm:py-5"
-                    variants={itemVariants}
-                  >
-                    <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                      <Icon className="size-4.5" />
-                    </div>
-                    <p className="mt-3 text-[0.98rem] font-semibold text-(--asi-text)">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
-                      {item.description}
-                    </p>
-                    <p className="mt-4 text-sm font-semibold text-(--asi-primary)">
-                      {item.meta}
-                    </p>
-                  </motion.article>
-                )
-              })}
-            </motion.div>
+              return (
+                <motion.article
+                  key={item.title}
+                  className="asi-card bg-white px-4 py-4 sm:px-5 sm:py-5"
+                  variants={itemVariants}
+                >
+                  <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
+                    <Icon className="size-4.5" />
+                  </div>
+                  <p className="mt-3 text-[0.98rem] font-semibold text-(--asi-text)">
+                    {item.title}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
+                    {item.description}
+                  </p>
+                  <p className="mt-3 text-sm font-semibold text-(--asi-primary)">
+                    {item.meta}
+                  </p>
+                </motion.article>
+              )
+            })}
           </motion.div>
         </motion.div>
       </InstitutionalSection>
 
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
-          className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start"
+          className="grid gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start"
           {...revealProps}
         >
           <InstitutionalLead
             content={{
               eyebrow: 'Formulario',
-              title: 'Envía tu consulta con el contexto necesario.',
+              title: 'Déjanos tu mensaje.',
               description:
-                'Este formulario prepara un correo con tus datos básicos para que el equipo reciba tu mensaje mejor organizado desde el inicio.',
+                'Si prefieres escribir con más detalle, completa este formulario y prepararemos tu correo con toda la información básica.',
             }}
           />
 
@@ -275,7 +220,6 @@ export function ContactUsPage() {
                     <option>Consulta general</option>
                     <option>Membresía</option>
                     <option>Proyectos y financiamiento</option>
-                    <option>Multimedia y comunicaciones</option>
                   </select>
                 </label>
 
@@ -326,8 +270,8 @@ export function ContactUsPage() {
               />
               <InstitutionalActionLink
                 action={{
-                  label: 'Abrir plataforma',
-                  to: surfacePaths.public.home,
+                  label: 'Ver proyectos',
+                  to: surfacePaths.institutional.projects,
                   variant: 'secondary',
                 }}
               />
