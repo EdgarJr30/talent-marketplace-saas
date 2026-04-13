@@ -136,9 +136,20 @@ export function ContactUsPage() {
           </motion.div>
 
           <motion.div
-            className="grid gap-3 md:grid-cols-3"
+            className="space-y-4"
             variants={containerVariants}
           >
+            <motion.div variants={itemVariants}>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-(--asi-secondary)">
+                Canales directos
+              </p>
+              <p className="mt-2 max-w-[48rem] text-sm leading-6 text-(--asi-text-muted)">
+                Si ya sabes a qué frente deseas escribir, aquí tienes los tres
+                accesos principales.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-3 md:grid-cols-3">
             {priorityContacts.map((item) => {
               const Icon = item.icon ?? UsersRound
 
@@ -163,6 +174,7 @@ export function ContactUsPage() {
                 </motion.article>
               )
             })}
+            </div>
           </motion.div>
         </motion.div>
       </InstitutionalSection>
