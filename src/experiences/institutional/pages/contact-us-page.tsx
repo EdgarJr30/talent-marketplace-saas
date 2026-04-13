@@ -55,6 +55,11 @@ const directChannels = [
   },
 ] as const
 
+const contactHeroImage = {
+  src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80',
+  alt: 'Personas conversando con alegría en un encuentro comunitario',
+} as const
+
 export function ContactUsPage() {
   const shouldReduceMotion = useReducedMotion()
   const [name, setName] = useState('')
@@ -85,48 +90,61 @@ export function ContactUsPage() {
     <div>
       <InstitutionalSection className="overflow-hidden" reveal="mount">
         <motion.div
-          className="grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start lg:gap-12"
+          className="grid gap-10 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-start lg:gap-12"
           {...revealProps}
         >
           <motion.div className="space-y-6" variants={itemVariants}>
             <div>
               <p className="asi-kicker">Contáctanos</p>
               <h1 className="asi-heading-lg mt-4 max-w-[16ch]">
-                Soporte claro para hablar con ASI sin dar vueltas.
+                Habla con nosotros.
               </h1>
             </div>
 
             <p className="asi-copy max-w-[60ch] text-[1.02rem]">
-              Aquí puedes encontrar el número principal, los correos por frente
-              y un formulario breve para iniciar tu consulta con contexto
-              suficiente.
+              Encuentra aquí la forma más directa de escribirnos, llamarnos o
+              dejar tu mensaje para que podamos ayudarte.
             </p>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <motion.div
+              className="overflow-hidden rounded-[1.5rem] shadow-(--asi-shadow-soft) ring-1 ring-black/8"
+              variants={itemVariants}
+            >
+              <img
+                alt={contactHeroImage.alt}
+                className="aspect-4/3 w-full object-cover"
+                decoding="async"
+                loading="lazy"
+                sizes="(max-width: 1023px) 100vw, 42vw"
+                src={contactHeroImage.src}
+              />
+            </motion.div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
               {directChannels.map((item) => {
                 const Icon = item.icon
 
                 return (
                   <motion.article
                     key={item.title}
-                    className="asi-card bg-white"
+                    className="asi-card bg-white px-4 py-4 sm:px-5 sm:py-5"
                     variants={itemVariants}
                   >
-                    <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                      <Icon className="size-5" />
+                    <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
+                      <Icon className="size-4.5" />
                     </div>
-                    <p className="mt-4 text-base font-semibold text-(--asi-text)">
+                    <p className="mt-3 text-[0.98rem] font-semibold text-(--asi-text)">
                       {item.title}
                     </p>
                     {item.href ? (
                       <a
-                        className="mt-2 block text-base font-semibold text-(--asi-primary) hover:underline"
+                        className="mt-2 block text-[0.98rem] font-semibold text-(--asi-primary) hover:underline"
                         href={item.href}
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <p className="mt-2 text-base font-semibold text-(--asi-primary)">
+                      <p className="mt-2 text-[0.98rem] font-semibold text-(--asi-primary)">
                         {item.value}
                       </p>
                     )}
@@ -157,38 +175,37 @@ export function ContactUsPage() {
           </motion.div>
 
           <motion.div className="grid gap-4" variants={containerVariants}>
-            <motion.div className="asi-card bg-white" variants={itemVariants}>
+            <motion.div className="asi-card bg-white px-5 py-5" variants={itemVariants}>
               <div className="flex items-start gap-4">
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                  <MessageSquareMore className="size-6" />
+                <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
+                  <MessageSquareMore className="size-5" />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-(--asi-text)">
-                    Respuesta más rápida
+                  <p className="text-[1.02rem] font-semibold text-(--asi-text)">
+                    Te respondemos por la vía adecuada
                   </p>
                   <p className="mt-2 text-sm leading-7 text-(--asi-text-muted)">
-                    Para consultas generales, membresía, soporte institucional y
-                    seguimiento inicial, usa primero el correo principal o este
-                    formulario.
+                    Si tu consulta es general, de membresía o de seguimiento,
+                    empieza por el correo principal o el formulario.
                   </p>
                 </div>
               </div>
             </motion.div>
 
-            <motion.div className="grid gap-4 sm:grid-cols-2" variants={containerVariants}>
+            <motion.div className="grid gap-3 sm:grid-cols-2" variants={containerVariants}>
               {contactPoints.map((item) => {
                 const Icon = item.icon ?? UsersRound
 
                 return (
                   <motion.article
                     key={item.title}
-                    className="asi-card bg-white/88"
+                    className="asi-card bg-white/88 px-4 py-4 sm:px-5 sm:py-5"
                     variants={itemVariants}
                   >
-                    <div className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
-                      <Icon className="size-5" />
+                    <div className="flex size-10 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
+                      <Icon className="size-4.5" />
                     </div>
-                    <p className="mt-4 text-base font-semibold text-(--asi-text)">
+                    <p className="mt-3 text-[0.98rem] font-semibold text-(--asi-text)">
                       {item.title}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-(--asi-text-muted)">
