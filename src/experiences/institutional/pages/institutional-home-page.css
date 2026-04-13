@@ -29,6 +29,11 @@
   );
 }
 
+.institutional-home__image-backdrop .institutional-home__image-frame {
+  object-fit: contain;
+  object-position: center;
+}
+
 .institutional-home__image-overlay {
   background-image: radial-gradient(
       circle at 20% 32%,
