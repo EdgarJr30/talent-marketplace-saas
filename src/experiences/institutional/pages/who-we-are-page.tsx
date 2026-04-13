@@ -54,14 +54,6 @@ export function WhoWeArePage() {
   const shouldReduceMotion = useReducedMotion();
   const [openResource, setOpenResource] = useState<string | null>(null);
   const [openRegion, setOpenRegion] = useState<string | null>(null);
-  const revealProps = shouldReduceMotion
-    ? {}
-    : {
-        initial: 'hidden',
-        whileInView: 'show',
-        viewport: { once: true, amount: 0.18 },
-        variants: containerVariants,
-      };
 
   const flagFromCode = (code: string) => {
     if (code === 'eu') {
@@ -80,13 +72,18 @@ export function WhoWeArePage() {
       <InstitutionalSection className="overflow-hidden" reveal="mount">
         <motion.div
           className="grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-start lg:gap-12"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
-          <motion.div className="grid gap-5 lg:gap-6" variants={containerVariants}>
-            <motion.div
-              className="p-0 sm:p-0"
-              variants={itemVariants}
-            >
+          <motion.div
+            className="grid gap-5 lg:gap-6"
+            variants={containerVariants}
+          >
+            <motion.div className="p-0 sm:p-0" variants={itemVariants}>
               <motion.p className="asi-kicker" variants={itemVariants}>
                 {whoWeAreHeroContent.eyebrow}
               </motion.p>
@@ -126,7 +123,9 @@ export function WhoWeArePage() {
                 className="mt-8 flex flex-col gap-3 sm:flex-row"
                 variants={itemVariants}
               >
-                <InstitutionalActionLink action={whoWeAreHeroContent.primaryAction} />
+                <InstitutionalActionLink
+                  action={whoWeAreHeroContent.primaryAction}
+                />
                 <InstitutionalActionLink
                   action={whoWeAreHeroContent.secondaryAction}
                 />
@@ -171,12 +170,18 @@ export function WhoWeArePage() {
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
           className="space-y-8"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <InstitutionalLead
             content={{
               eyebrow: 'Acerca de ASI',
-              title: 'Una comunidad adventista que lleva la misión al entorno profesional.',
+              title:
+                'Una comunidad adventista que lleva la misión al entorno profesional.',
               description:
                 'La filosofía de ASI promueve una vida centrada en Cristo, expresada en una relación diaria con Dios y en el deseo de compartir su amor con cada persona encontrada en el trabajo y en la rutina cotidiana. De ahí nace nuestro lema: compartir a Cristo en el mercado.',
             }}
@@ -213,13 +218,19 @@ export function WhoWeArePage() {
       <InstitutionalSection reveal="mount">
         <motion.div
           className="grid gap-8 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:items-center"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <div>
             <InstitutionalLead
               content={{
                 eyebrow: 'Nuestra historia',
-                title: 'El legado de ASI conecta educación, salud, empresa y servicio.',
+                title:
+                  'El legado de ASI conecta educación, salud, empresa y servicio.',
                 description:
                   'La historia de ASI está arraigada en Madison College, una institución adventista de sostén propio fundada en 1904 cerca de Nashville, Tennessee. Con el paso del tiempo, esa visión sembró nuevas escuelas, instituciones y una red que siguió creciendo.',
               }}
@@ -264,7 +275,7 @@ export function WhoWeArePage() {
                   incluir negocios, emprendedores y profesionales adventistas.
                 </p>
                 <p className="text-sm leading-7 text-(--asi-text-muted)">
-                  En 1979, el nombre evolucionó a Adventist-laymen’s Services &
+                  En 1979, el nombre evolucionó a Adventist-laymen's Services &
                   Industries para reflejar con mayor fidelidad esa membresía más
                   diversa y el alcance real de su servicio.
                 </p>
@@ -275,7 +286,15 @@ export function WhoWeArePage() {
       </InstitutionalSection>
 
       <InstitutionalSection tone="brand" reveal="mount">
-        <motion.div className="space-y-8" {...revealProps}>
+        <motion.div
+          className="space-y-8"
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
+        >
           <InstitutionalLead
             content={{
               eyebrow: 'Misión y visión',
@@ -286,7 +305,10 @@ export function WhoWeArePage() {
             }}
             invert
           />
-          <motion.div className="grid gap-4 lg:grid-cols-2" variants={containerVariants}>
+          <motion.div
+            className="grid gap-4 lg:grid-cols-2"
+            variants={containerVariants}
+          >
             {whoWeAreMissionValues.map((item) => {
               const Icon = item.icon;
 
@@ -315,13 +337,19 @@ export function WhoWeArePage() {
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
           className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <div>
             <InstitutionalLead
               content={{
                 eyebrow: 'Recursos',
-                title: 'Documentos que ayudan a entender la organización con más profundidad.',
+                title:
+                  'Documentos que ayudan a entender la organización con más profundidad.',
                 description:
                   'Aquí reunimos materiales clave para que miembros, aliados y visitantes puedan descargar referencias institucionales oficiales con facilidad.',
               }}
@@ -337,7 +365,9 @@ export function WhoWeArePage() {
                   <dt>
                     <button
                       className="flex w-full items-center justify-between gap-4 text-left text-(--asi-text)"
-                      onClick={() => setOpenResource(isOpen ? null : item.title)}
+                      onClick={() =>
+                        setOpenResource(isOpen ? null : item.title)
+                      }
                     >
                       <span className="flex items-center gap-4">
                         <span className="flex size-11 items-center justify-center rounded-2xl bg-(--asi-primary)/8 text-(--asi-primary)">
@@ -402,13 +432,19 @@ export function WhoWeArePage() {
       <InstitutionalSection reveal="mount">
         <motion.div
           className="grid gap-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-start"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <div>
             <InstitutionalLead
               content={{
                 eyebrow: 'ASI en el mundo',
-                title: 'Una misma vocación expresada en regiones y capítulos locales.',
+                title:
+                  'Una misma vocación expresada en regiones y capítulos locales.',
                 description:
                   'Los miembros de Norteamérica participan en proyectos alrededor del mundo y otras divisiones adventistas cuentan con organizaciones ASI propias. Esta sección reúne los destinos regionales relevantes y los enlaces aplicables vistos en elegibilidad.',
               }}
@@ -421,14 +457,16 @@ export function WhoWeArePage() {
               return (
                 <motion.div
                   key={region.title}
-                  className="overflow-hidden rounded-panel outline outline-1 outline-(--asi-outline)"
+                  className="overflow-hidden rounded-panel outline-1 outline-(--asi-outline)"
                   variants={itemVariants}
                 >
                   <button
                     className="flex min-h-16 w-full items-center justify-between gap-4 bg-(--asi-primary) px-5 py-4 text-left text-white"
                     onClick={() => setOpenRegion(isOpen ? null : region.title)}
                   >
-                    <span className="text-lg font-semibold">{region.title}</span>
+                    <span className="text-lg font-semibold">
+                      {region.title}
+                    </span>
                     <span className="flex size-8 items-center justify-center text-[#ffc107]">
                       {isOpen ? (
                         <Minus aria-hidden="true" className="size-6" />
@@ -497,14 +535,20 @@ export function WhoWeArePage() {
       <InstitutionalSection tone="brand" reveal="mount">
         <motion.div
           className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <div>
             <p className="asi-kicker border-white/15 bg-white/10 text-white/82">
               Confianza institucional
             </p>
             <h2 className="asi-heading-lg mt-4 text-white">
-              Una identidad clara que se reconoce en la misión, la estructura y la comunidad.
+              Una identidad clara que se reconoce en la misión, la estructura y
+              la comunidad.
             </h2>
           </div>
           <div className="lg:justify-self-end lg:text-right">
@@ -519,13 +563,11 @@ export function WhoWeArePage() {
         <motion.div
           className="mt-10 grid gap-4 md:grid-cols-2"
           variants={containerVariants}
-          {...(shouldReduceMotion
-            ? {}
-            : {
-                initial: 'hidden',
-                whileInView: 'show',
-                viewport: { once: true, amount: 0.18 },
-              })}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
         >
           {whoWeAreTrustSignals.map((item) => {
             const Icon = item.icon;
@@ -554,7 +596,12 @@ export function WhoWeArePage() {
       <InstitutionalSection reveal="mount">
         <motion.div
           className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end"
-          {...revealProps}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'show'}
+          viewport={
+            shouldReduceMotion ? undefined : { once: true, amount: 0.18 }
+          }
+          variants={shouldReduceMotion ? undefined : containerVariants}
         >
           <div>
             <p className="asi-kicker">Siguiente paso</p>
@@ -564,9 +611,9 @@ export function WhoWeArePage() {
           </div>
           <div className="lg:justify-self-end lg:text-right">
             <p className="asi-copy max-w-2xl text-[1.02rem]">
-              Conocer la historia de ASI prepara el siguiente paso:
-              integrarte a la comunidad o apoyar los proyectos donde esa
-              misión ya está en marcha.
+              Conocer la historia de ASI prepara el siguiente paso: integrarte a
+              la comunidad o apoyar los proyectos donde esa misión ya está en
+              marcha.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:justify-end">
               <InstitutionalActionLink

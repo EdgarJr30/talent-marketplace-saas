@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react';
 import {
   BookOpenText,
   BriefcaseBusiness,
@@ -12,8 +13,69 @@ import {
 } from 'lucide-react';
 
 import { surfacePaths } from '@/app/router/surface-paths';
+import type { InstitutionalAction } from '@/experiences/institutional/content/site-content';
 
-export const whoWeAreHeroContent = {
+interface WhoWeAreHeroContent {
+  eyebrow: string;
+  titleLines: string[];
+  heading: string;
+  description: string;
+  supportTitle: string;
+  supportCopy: string;
+  primaryAction: InstitutionalAction;
+  secondaryAction: InstitutionalAction;
+}
+
+interface WhoWeAreHeroMedia {
+  image: string;
+  imageAlt: string;
+}
+
+interface WhoWeAreStat {
+  value: string;
+  label: string;
+  description: string;
+}
+
+interface WhoWeArePoint {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+interface WhoWeAreTimelineItem {
+  year: string;
+  title: string;
+  description: string;
+}
+
+interface WhoWeAreResource {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  fileLabel: string;
+  url: string;
+}
+
+interface WhoWeAreRegionLink {
+  label: string;
+  url: string;
+  flags: string[];
+}
+
+interface WhoWeAreRegion {
+  title: string;
+  summary: string;
+  links: WhoWeAreRegionLink[];
+}
+
+interface WhoWeAreTrustSignal {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+export const whoWeAreHeroContent: WhoWeAreHeroContent = {
   eyebrow: 'Quiénes somos',
   titleLines: ['Compartiendo', 'el amor de Cristo', 'en el día a día'],
   heading:
@@ -26,29 +88,29 @@ export const whoWeAreHeroContent = {
   primaryAction: {
     label: 'Hazte miembro',
     to: surfacePaths.institutional.membership,
-    variant: 'primary' as const,
+    variant: 'primary',
   },
   secondaryAction: {
     label: 'Explorar proyectos',
     to: surfacePaths.institutional.projects,
-    variant: 'secondary' as const,
+    variant: 'secondary',
   },
-} as const;
+};
 
-export const whoWeAreHeroHighlights = [
+export const whoWeAreHeroHighlights: string[] = [
   'Fe visible en la vida profesional',
   'Apoyo real a la misión global',
   'Comunidad adventista diversa y conectada',
-] as const;
+];
 
-export const whoWeAreHeroMedia = {
+export const whoWeAreHeroMedia: WhoWeAreHeroMedia = {
   image:
     'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80',
   imageAlt:
     'Profesionales y voluntarios compartiendo en una actividad comunitaria',
-} as const;
+};
 
-export const whoWeAreHeroStats = [
+export const whoWeAreHeroStats: WhoWeAreStat[] = [
   {
     value: '1904',
     label: 'Raíces históricas',
@@ -65,11 +127,11 @@ export const whoWeAreHeroStats = [
     value: '1979',
     label: 'Nombre actual',
     description:
-      'La organización adoptó Adventist-laymen’s Services & Industries para reflejar una membresía más amplia y diversa.',
+      'La organización adoptó Adventist-laymen's Services & Industries para reflejar una membresía más amplia y diversa.',
   },
-] as const;
+];
 
-export const whoWeAreAboutPoints = [
+export const whoWeAreAboutPoints: WhoWeArePoint[] = [
   {
     title: 'Vida centrada en Cristo',
     description:
@@ -88,9 +150,9 @@ export const whoWeAreAboutPoints = [
       'Empresarios, profesionales y ministerios de apoyo forman una sola familia adventista desde distintos campos de trabajo.',
     icon: UsersRound,
   },
-] as const;
+];
 
-export const whoWeAreHistoryTimeline = [
+export const whoWeAreHistoryTimeline: WhoWeAreTimelineItem[] = [
   {
     year: '1904',
     title: 'Madison College',
@@ -109,9 +171,9 @@ export const whoWeAreHistoryTimeline = [
     description:
       'La membresía comenzó a incluir negocios, emprendedores y profesionales adventistas, y el nombre evolucionó para reflejar esa realidad.',
   },
-] as const;
+];
 
-export const whoWeAreMissionValues = [
+export const whoWeAreMissionValues: WhoWeArePoint[] = [
   {
     title: 'Desafiar',
     description:
@@ -136,9 +198,9 @@ export const whoWeAreMissionValues = [
       'Todo esto se conecta con el compromiso de apoyar la misión global de la Iglesia Adventista del Séptimo Día.',
     icon: Globe2,
   },
-] as const;
+];
 
-export const whoWeAreResources = [
+export const whoWeAreResources: WhoWeAreResource[] = [
   {
     title: 'Folleto ASI',
     description:
@@ -163,9 +225,9 @@ export const whoWeAreResources = [
     fileLabel: 'ASI Constitution and Bylaws',
     url: 'https://asiministries.org/wp-content/uploads/ASI-Constitution-and-Bylaws-2023_2023-08-02.pdf',
   },
-] as const;
+];
 
-export const whoWeAreGlobalRegions = [
+export const whoWeAreGlobalRegions: WhoWeAreRegion[] = [
   {
     title: 'ASI Europa',
     summary:
@@ -222,9 +284,9 @@ export const whoWeAreGlobalRegions = [
       },
     ],
   },
-] as const;
+];
 
-export const whoWeAreTrustSignals = [
+export const whoWeAreTrustSignals: WhoWeAreTrustSignal[] = [
   {
     title: 'Base adventista clara',
     description:
@@ -237,4 +299,4 @@ export const whoWeAreTrustSignals = [
       'Miembros de Norteamérica participan en proyectos alrededor del mundo y otras divisiones cuentan con organizaciones ASI propias.',
     icon: Globe2,
   },
-] as const;
+];
