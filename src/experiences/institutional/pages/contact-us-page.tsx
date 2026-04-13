@@ -36,6 +36,11 @@ const heroImage = {
   alt: 'Personas dialogando con alegría en un encuentro comunitario',
 } as const
 
+const contactFormImage = {
+  src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80',
+  alt: 'Equipo conversando y colaborando alrededor de una mesa',
+} as const
+
 const quickActions = [
   {
     label: 'Llámanos',
@@ -181,17 +186,36 @@ export function ContactUsPage() {
 
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
-          className="grid gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start"
+          className="grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,0.52fr)_minmax(0,1.16fr)] lg:items-start"
           {...revealProps}
         >
-          <InstitutionalLead
-            content={{
-              eyebrow: 'Formulario',
-              title: 'Déjanos tu mensaje.',
-              description:
-                'Si prefieres escribir con más detalle, completa este formulario y prepararemos tu correo con toda la información básica.',
-            }}
-          />
+          <motion.div variants={itemVariants}>
+            <InstitutionalLead
+              content={{
+                eyebrow: 'Formulario',
+                title: 'Déjanos tu mensaje.',
+                description:
+                  'Si prefieres escribir con más detalle, completa este formulario y prepararemos tu correo con toda la información básica.',
+              }}
+            />
+          </motion.div>
+
+          <motion.div
+            className="hidden lg:block"
+            variants={itemVariants}
+          >
+            <div className="relative sticky top-28 overflow-hidden rounded-[1.5rem] shadow-(--asi-shadow-soft) ring-1 ring-black/8">
+              <img
+                alt={contactFormImage.alt}
+                className="h-[32rem] w-full object-cover"
+                decoding="async"
+                loading="lazy"
+                sizes="(max-width: 1023px) 0px, 22vw"
+                src={contactFormImage.src}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#071327]/50 via-transparent to-transparent" />
+            </div>
+          </motion.div>
 
           <motion.div variants={itemVariants}>
             <InstitutionalCard className="bg-white">
