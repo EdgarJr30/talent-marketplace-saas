@@ -123,6 +123,7 @@
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   cursor: grab;
+  mask-image: radial-gradient(white, black);
   -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
