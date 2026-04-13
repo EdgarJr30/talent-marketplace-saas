@@ -186,34 +186,35 @@ export function ContactUsPage() {
 
       <InstitutionalSection tone="muted" reveal="mount">
         <motion.div
-          className="grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,0.52fr)_minmax(0,1.16fr)] lg:items-start"
+          className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start"
           {...revealProps}
         >
           <motion.div variants={itemVariants}>
-            <InstitutionalLead
-              content={{
-                eyebrow: 'Formulario',
-                title: 'Déjanos tu mensaje.',
-                description:
-                  'Si prefieres escribir con más detalle, completa este formulario y prepararemos tu correo con toda la información básica.',
-              }}
-            />
-          </motion.div>
-
-          <motion.div
-            className="hidden lg:block"
-            variants={itemVariants}
-          >
-            <div className="relative sticky top-28 overflow-hidden rounded-[1.5rem] shadow-(--asi-shadow-soft) ring-1 ring-black/8">
-              <img
-                alt={contactFormImage.alt}
-                className="h-[32rem] w-full object-cover"
-                decoding="async"
-                loading="lazy"
-                sizes="(max-width: 1023px) 0px, 22vw"
-                src={contactFormImage.src}
+            <div className="space-y-6">
+              <InstitutionalLead
+                content={{
+                  eyebrow: 'Formulario',
+                  title: 'Déjanos tu mensaje.',
+                  description:
+                    'Si prefieres escribir con más detalle, completa este formulario y prepararemos tu correo con toda la información básica.',
+                }}
               />
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#071327]/50 via-transparent to-transparent" />
+              <motion.div
+                className="hidden lg:block"
+                variants={itemVariants}
+              >
+                <div className="relative overflow-hidden rounded-[1.5rem] shadow-(--asi-shadow-soft) ring-1 ring-black/8">
+                  <img
+                    alt={contactFormImage.alt}
+                    className="h-[20rem] w-full object-cover"
+                    decoding="async"
+                    loading="lazy"
+                    sizes="(max-width: 1023px) 0px, 42vw"
+                    src={contactFormImage.src}
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#071327]/45 via-transparent to-transparent" />
+                </div>
+              </motion.div>
             </div>
           </motion.div>
 
