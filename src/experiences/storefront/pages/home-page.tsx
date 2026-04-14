@@ -566,26 +566,9 @@ export function HomePage() {
   return (
     <div className="overflow-hidden bg-(--app-canvas)">
       <section className="relative isolate overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-10 h-240 opacity-90 bg-[radial-gradient(circle_at_10%_12%,rgba(57,85,184,0.18),transparent_22%),radial-gradient(circle_at_88%_8%,rgba(111,142,244,0.14),transparent_20%),radial-gradient(circle_at_78%_30%,rgba(143,160,185,0.12),transparent_18%)] dark:bg-[radial-gradient(circle_at_14%_10%,rgba(88,116,214,0.14),transparent_26%),radial-gradient(circle_at_84%_10%,rgba(68,97,194,0.12),transparent_24%),radial-gradient(circle_at_50%_32%,rgba(27,45,92,0.18),transparent_34%)]"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-20 h-136 bg-[linear-gradient(180deg,rgba(244,247,255,0.94)_0%,rgba(255,255,255,0.72)_60%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,rgba(11,18,40,0.96)_0%,rgba(10,17,38,0.76)_42%,rgba(9,17,39,0.18)_74%,rgba(9,17,39,0)_100%)]"
-        />
-
         <div className="mx-auto max-w-392 px-4 pb-14 pt-36 sm:px-6 sm:pb-18 sm:pt-40 lg:px-8 lg:pb-18 lg:pt-40">
           <LandingReveal y={28}>
-            <div className="relative overflow-hidden rounded-4xl border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,250,255,0.82)_100%)] p-5 shadow-(--app-shadow-floating) backdrop-blur-xl dark:border-white/8 dark:bg-[linear-gradient(180deg,rgba(16,29,63,0.9)_0%,rgba(9,17,39,0.88)_100%)] sm:rounded-[40px] sm:p-8 xl:p-9">
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-36 opacity-80"
-                style={{
-                  background:
-                    'radial-gradient(circle at 0% 0%, rgba(57, 85, 184, 0.16), transparent 28%), radial-gradient(circle at 100% 0%, rgba(111, 142, 244, 0.12), transparent 24%)',
-                }}
-              />
+            <div className="relative overflow-hidden rounded-4xl border border-white/60 bg-white/90 p-5 shadow-(--app-shadow-floating) backdrop-blur-xl dark:border-white/8 dark:bg-(--app-surface-elevated) sm:rounded-[40px] sm:p-8 xl:p-9">
               <div
                 aria-hidden="true"
                 className="absolute inset-y-0 right-0 hidden w-[46%] opacity-45 sm:block"
