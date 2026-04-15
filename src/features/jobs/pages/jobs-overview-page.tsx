@@ -204,7 +204,7 @@ function JobEditor({
               <p className="text-xs text-rose-600">{form.formState.errors.title?.message}</p>
             </label>
             <label className="grid gap-2 text-sm">
-              <span>Slug público</span>
+              <span>Slug de oportunidad</span>
               <Input {...form.register('slug')} />
               <p className="text-xs text-rose-600">{form.formState.errors.slug?.message}</p>
             </label>
@@ -265,7 +265,7 @@ function JobEditor({
                 checked={salaryVisible}
                 onChange={(event) => form.setValue('salaryVisible', event.target.checked)}
               />
-              <span>Mostrar rango salarial en la vista pública</span>
+              <span>Mostrar rango salarial a miembros aprobados</span>
             </label>
             {salaryVisible ? (
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -590,11 +590,11 @@ export function JobsOverviewPage() {
     <div className="space-y-6">
       <PageHeader
         eyebrow="Jobs"
-        title={canManageJobs ? 'Gestiona vacantes internas y públicas desde una misma vista' : 'Descubre oportunidades con filtros simples y contexto suficiente'}
+        title={canManageJobs ? 'Gestiona oportunidades internas y publicadas para miembros desde una misma vista' : 'Descubre oportunidades con filtros simples y contexto suficiente'}
         description={
           canManageJobs
-            ? 'Crea borradores, publica cuando corresponda y mantén ordenado el frente público de talento.'
-            : 'Explora vacantes publicadas, guarda las más relevantes y vuelve a ellas con menos fricción.'
+            ? 'Crea borradores, publica cuando corresponda y mantén ordenado el frente de talento aprobado.'
+            : 'Explora oportunidades publicadas para miembros, guarda las más relevantes y vuelve a ellas con menos fricción.'
         }
       />
 
@@ -650,7 +650,7 @@ export function JobsOverviewPage() {
                         </Button>
                       ) : null}
                       <Link className={cn(linkButtonClassName, 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-900')} to={surfacePaths.public.jobDetail(job.slug)}>
-                        Ver publico
+                        Ver oportunidad
                       </Link>
                     </div>
                   </div>
@@ -668,7 +668,7 @@ export function JobsOverviewPage() {
       <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Vacantes publicadas</CardTitle>
+            <CardTitle>Oportunidades para miembros</CardTitle>
             <CardDescription>Busca oportunidades activas, filtra por modalidad o país y guarda las más relevantes.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -685,7 +685,7 @@ export function JobsOverviewPage() {
 
             <div className="space-y-3">
               {publicJobsQuery.isLoading ? (
-                <p className="text-sm text-(--app-text-muted)">Cargando vacantes publicas...</p>
+                <p className="text-sm text-(--app-text-muted)">Cargando oportunidades...</p>
               ) : publicJobsQuery.error ? (
                 <p className="text-sm text-rose-600 dark:text-rose-300">{toErrorMessage(publicJobsQuery.error)}</p>
               ) : publicJobsQuery.data?.jobs.length ? (
@@ -728,7 +728,7 @@ export function JobsOverviewPage() {
                 })
               ) : (
                 <div className="rounded-[24px] border border-dashed border-(--app-border) bg-(--app-surface-muted) px-4 py-6 text-sm text-(--app-text-muted)">
-                  No hay vacantes publicadas que coincidan con estos filtros.
+                  No hay oportunidades publicadas que coincidan con estos filtros.
                 </div>
               )}
             </div>

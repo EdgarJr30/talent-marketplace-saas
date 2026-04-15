@@ -78,6 +78,7 @@ Manual checks remain required for:
 - job lifecycle transitions
 - member-gated jobs listing/detail visibility and saved-jobs ownership rules
 - user approval, ASI membership, and active subscription gates for protected product content
+- schema contract coverage for `tenant_kind`, `opportunity_type`, opportunity stage templates, and anonymous job-access revocation
 - application submission
 - duplicate application policy
 - candidate application history and employer applicant visibility

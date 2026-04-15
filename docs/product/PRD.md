@@ -154,6 +154,7 @@ The MVP should **not** initially include:
 - full candidate profile review from employer side without requiring an application first
 - protected `/platform/jobs` listing and `/platform/jobs/:slug` detail routes that require an approved user, ASI membership, and active subscription
 - opportunity scope covers jobs, projects, volunteering, and professional services
+- opportunity stage templates vary by opportunity type while sharing one MVP application model
 
 ## 8.6 Applications
 - fast apply with stored profile
@@ -327,7 +328,7 @@ The MVP can be considered launch-ready when:
 - a company can sign up and configure workspace
 - tenant roles can be managed from the app
 - already-registered users can be invited into a tenant and pending invites can be revoked
-- a job can be published publicly
+- an opportunity can be published for approved ASI members with active membership and subscription
 - a candidate can create a full profile and upload CV
 - a candidate can save and manage at least one job alert
 - a candidate can apply from mobile without major friction

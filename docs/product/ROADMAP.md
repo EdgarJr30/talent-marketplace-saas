@@ -50,6 +50,7 @@ Establish secure multi-tenant access control.
 - platform admin can approve or reject recruiter request
 - user approval, ASI membership, and active subscription gate protected product content
 - tenant approval creates tenant, tenant profile, and first owner membership
+- `tenant_kind` supports company, ministry, project, field, and generic profile
 - members can be invited
 - roles can be assigned
 - permissions affect UI and backend behavior
@@ -112,13 +113,14 @@ Ship protected opportunity publishing and candidate discovery for approved ASI m
 - recruiter-facing candidate directory for opt-in profiles
 - recruiter candidate detail view with RBAC-protected full profile access
 - opportunity type support for jobs, projects, volunteering, and professional services
+- type-specific opportunity stage templates are seeded for later tenant pipeline customization
 
 ### Exit criteria
-- authorized tenant can publish job
-- approved ASI member with active subscription can browse jobs on mobile
+- authorized tenant can publish an opportunity
+- approved ASI member with active subscription can browse opportunities on mobile
 - guest users cannot browse protected listing/detail routes
 - authorized recruiters can search visible candidates without waiting for an application
-- candidates can save published jobs before the application phase is enabled
+- candidates can save published opportunities before the application phase is enabled
 
 ---
 

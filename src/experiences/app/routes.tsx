@@ -19,7 +19,7 @@ import { RecruiterRequestPage } from '@/features/recruiter-requests/pages/recrui
 import { RecruiterReviewPage } from '@/features/recruiter-requests/pages/recruiter-review-page'
 import { TalentDirectoryPage } from '@/features/talent/pages/talent-directory-page'
 import { WorkspaceOverviewPage } from '@/features/tenants/pages/workspace-overview-page'
-import { RequireAdminAccess, RequireAuth, RequirePermission } from '@/lib/auth/guards'
+import { RequireActiveAsiAccess, RequireAdminAccess, RequireAuth, RequirePermission } from '@/lib/auth/guards'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { SurfaceStatusPage } from '@/app/router/routes/surface-status-page'
 import { AdminShell } from '@/experiences/app/layouts/admin-shell'
@@ -85,7 +85,11 @@ export const applicationRoutes: RouteObject[] = [
       },
       {
         path: 'applications',
-        element: <ApplicationsOverviewPage />
+        element: (
+          <RequireActiveAsiAccess surface="candidate">
+            <ApplicationsOverviewPage />
+          </RequireActiveAsiAccess>
+        )
       },
       {
         path: '*',
@@ -96,9 +100,11 @@ export const applicationRoutes: RouteObject[] = [
   {
     path: surfacePaths.workspace.root,
     element: (
-      <RequirePermission permission="workspace:read">
-        <EmployerShell />
-      </RequirePermission>
+      <RequireActiveAsiAccess surface="workspace">
+        <RequirePermission permission="workspace:read">
+          <EmployerShell />
+        </RequirePermission>
+      </RequireActiveAsiAccess>
     ),
     children: [
       {

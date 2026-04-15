@@ -12,6 +12,7 @@
 6. Tenant staff access is tenant-scoped through memberships.
 7. Authentication does not equal authorization; permissions are checked separately.
 8. Viewing or applying to protected product opportunities requires approved user status, ASI membership, and an active subscription.
+9. Protected content access is granted only when `user_approval_status = approved`, `asi_membership_status in (active, grace_period)`, `user_subscription_status in (trialing, active, grace_period)`, the account itself is active, and any configured membership/subscription expiration has not passed, unless an auditable manual override is still active.
 
 ---
 
@@ -67,6 +68,7 @@
 8. Expiration behavior must be consistent and documented.
 9. Published opportunities must not be discoverable by guest users for now; access requires approved user status, ASI membership, and an active subscription.
 10. Candidates may save published opportunities without immediately entering the application flow.
+11. Opportunity discovery and application submission use `opportunity_type` to distinguish employment, project, volunteer, and professional-service workflows while preserving one shared MVP posting table.
 
 ---
 
@@ -95,6 +97,7 @@
 8. Internal ATS notes and ratings are tenant-collaboration artifacts and are never public candidate content.
 9. Candidate-facing application status may be derived from the internal stage mapping, but the mapping must stay explicit and deterministic.
 10. ATS-lite applies to jobs, projects, volunteering, and professional services, not only employment vacancies.
+11. The MVP seeds stage templates per opportunity type, but applications may continue using the existing shared pipeline until type-specific tenant pipelines are explicitly enabled.
 
 ---
 

@@ -178,7 +178,7 @@ Technical log line for provider attempts, failures, and retries.
 ### Identity & Access
 | Entity | Key fields |
 |---|---|
-| users | id, email, status, membership_status, subscription_status, avatar_path, created_at |
+| users | id, email, status, user_approval_status, asi_membership_status, user_subscription_status, membership_expires_at nullable, subscription_expires_at nullable, manual_access_override fields, avatar_path, created_at |
 | tenants | id, slug, name, status, tenant_kind, created_at |
 | memberships | id, tenant_id, user_id, status, invited_by_user_id nullable, joined_at |
 | platform_roles | id, code, name, is_system |
@@ -207,15 +207,16 @@ Technical log line for provider attempts, failures, and retries.
 ### Employer / Hiring
 | Entity | Key fields |
 |---|---|
-| company_profiles | id, tenant_id, profile_kind, logo_path, description, industry, size_range, website |
+| company_profiles | id, tenant_id, profile_kind, profile_metadata, logo_path, description, industry, size_range, website |
 | talent_directory_search | tenant permission-gated search surface over visible `candidate_profiles` plus skills, languages, and work history |
-| job_postings | id, tenant_id, title, slug, status, opportunity_type, workplace_type, employment_type, location, salary_visible, expires_at |
+| job_postings | id, tenant_id, title, slug, status, opportunity_type, workplace_type, employment_type, compensation_type, compensation fields, opportunity_metadata, location, salary legacy fields, expires_at |
 | job_screening_questions | id, job_posting_id, question_text, answer_type, is_required |
 | saved_jobs | id, candidate_profile_id, job_posting_id |
 | job_alerts | id, candidate_profile_id, criteria_json, frequency, is_active |
 | applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, current_stage_id nullable, status_public legacy candidate-facing status, cover_letter, candidate snapshots, submitted_at |
 | application_answers | id, application_id, screening_question_id, answer_text/json |
 | pipeline_stages | id, tenant_id nullable, code, name, position, color_token, is_system |
+| opportunity_stage_templates | id, opportunity_type, code, name, position, color_token, is_default |
 | application_stage_history | id, application_id, from_stage_id nullable, to_stage_id, changed_by_user_id, note nullable, changed_at |
 | application_notes | id, application_id, author_user_id, body, visibility |
 | application_ratings | id, application_id, author_user_id, score, rubric_json nullable |
@@ -259,12 +260,15 @@ Launch-readiness notes:
 
 ## 6. Recommended enum groups
 - tenant_status
-- tenant_kind
+- tenant_kind: company, ministry, project, field, generic_profile
 - membership_status
-- user_subscription_status
+- asi_membership_status: none, pending, active, grace_period, expired, suspended, revoked
+- user_approval_status: pending_review, needs_more_info, approved, rejected, suspended, revoked
+- user_subscription_status: none, trialing, active, past_due, grace_period, cancelled, ended
 - recruiter_request_status
 - job_status
-- opportunity_type
+- opportunity_type: employment, project, volunteer, professional_service
+- opportunity_compensation_type: salary, stipend, budget, unpaid, donation_based, not_disclosed
 - workplace_type
 - employment_type
 - application_public_status legacy enum name for candidate-facing status
@@ -282,3 +286,4 @@ Launch-readiness notes:
 - Separate candidate-facing application status from internal pipeline stage names if needed.
 - Keep permissions granular enough to support custom roles without exploding complexity too early.
 - Do not model jobs or application statuses as public guest-facing surfaces until product policy explicitly reopens public access.
+- Keep `job_postings` as the technical table for MVP while product copy and new fields model the broader opportunity concept.

@@ -73,7 +73,7 @@ export function AdminConsolePage() {
           <div className="rounded-[24px] border border-white/70 bg-white/85 p-4 dark:border-zinc-800 dark:bg-zinc-950/75">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Aislamiento</p>
             <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
-              La landing comercial, jobs publicos y flujos core ya quedan separados del tooling interno.
+              La landing comercial, oportunidades para miembros y flujos core ya quedan separados del tooling interno.
             </p>
           </div>
         </CardContent>

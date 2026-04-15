@@ -63,7 +63,7 @@ export function JobDetailPage() {
       <Card>
         <CardHeader>
           <CardTitle>Cargando vacante</CardTitle>
-          <CardDescription>Estamos recuperando el detalle publico de esta oportunidad.</CardDescription>
+          <CardDescription>Estamos recuperando el detalle de esta oportunidad.</CardDescription>
         </CardHeader>
       </Card>
     )
@@ -91,7 +91,7 @@ export function JobDetailPage() {
     <div className="space-y-6">
       <Card className="overflow-hidden bg-(--app-surface-muted)">
         <CardHeader className="space-y-3">
-          <Badge variant="soft">Public job detail</Badge>
+          <Badge variant="soft">Oportunidad ASI</Badge>
           <CardTitle className="max-w-3xl text-2xl sm:text-3xl">{job.title}</CardTitle>
           <CardDescription>
             {job.company_profile?.display_name || 'Company'} · {job.workplace_type} · {job.employment_type}

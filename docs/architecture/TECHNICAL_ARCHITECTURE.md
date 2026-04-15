@@ -121,6 +121,7 @@ The jobs/discovery migration must establish:
 - tenant-authorized CRUD for draft/published jobs
 - candidate-owned saved-job records and screening-question groundwork for the apply flow
 - opportunity typing for jobs, projects, volunteering, and professional services
+- `opportunity_stage_templates` so each opportunity type can start with an appropriate candidate-review language without splitting the application model too early
 
 The applications migration must establish:
 - `applications` and `application_answers`
@@ -142,6 +143,13 @@ The platform-ops migration must establish:
 - server-side workflow notifications and email-hook deliveries for key lifecycle events
 - platform snapshot and moderation RPC helpers for in-app admin operations
 - internal-console access helpers that distinguish developer tooling from platform RBAC
+
+The ASI access-gating migration must establish:
+- `tenant_kind`, `opportunity_type`, and generalized compensation enums
+- user approval, ASI membership, and user subscription status columns
+- auditable manual access override fields
+- `has_active_asi_access`, `has_active_tenant_subscription`, and `can_publish_opportunity` helper functions
+- RLS changes that remove anonymous job discovery
 
 ### Security strategy
 - RLS enabled on exposed tables

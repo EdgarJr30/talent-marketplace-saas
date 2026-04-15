@@ -137,7 +137,7 @@ const storefrontCopyByHref: Record<string, Pick<AppNavItem, 'title' | 'descripti
   },
   [surfacePaths.storefront.jobs]: {
     title: 'Jobs',
-    description: 'Vacantes públicas, detalles y acceso al flujo de aplicación'
+    description: 'Oportunidades para miembros, detalles y acceso al flujo de aplicación'
   },
   [surfacePaths.auth.signIn]: {
     title: 'Iniciar sesión',
@@ -668,7 +668,7 @@ function buildWorkspaceConfig(session: ReturnType<typeof useAppSession>) {
     profileHref: surfacePaths.candidate.profile,
     profileMenuLinks: secondaryNav.map((item) => ({ href: item.href, label: item.title })),
     publicActionHref: surfacePaths.storefront.jobs,
-    publicActionLabel: 'Ver job board publico',
+    publicActionLabel: 'Ver oportunidades',
     routeMeta: workspaceCopyByHref,
     routeMetaDefault: {
       title: 'Workspace',
@@ -822,7 +822,7 @@ function buildStorefrontConfig(session: ReturnType<typeof useAppSession>) {
     {
       href: surfacePaths.storefront.jobs,
       title: 'Jobs',
-      description: 'Vacantes públicas, detalles y aplicación',
+      description: 'Oportunidades para miembros, detalles y aplicación',
       icon: BriefcaseBusiness
     },
     ...accountItems
@@ -852,7 +852,7 @@ function buildStorefrontConfig(session: ReturnType<typeof useAppSession>) {
     routeMeta: storefrontCopyByHref,
     routeMetaDefault: {
       title: 'Plataforma',
-      description: 'Acceso público a jobs, pricing y rutas de entrada al producto.'
+      description: 'Acceso a oportunidades para miembros, pricing y rutas de entrada al producto.'
     },
     searchPlaceholder: 'Buscar jobs (próximamente)',
     sidebarGroups: [
@@ -868,7 +868,7 @@ function buildStorefrontConfig(session: ReturnType<typeof useAppSession>) {
     tenantName: session.isAuthenticated
       ? session.activeMembership?.tenantName ?? 'Cuenta ASI'
       : 'Explora la plataforma',
-    topbarEyebrow: 'Plataforma pública'
+    topbarEyebrow: 'Acceso miembros'
   } satisfies ShellConfig
 }
 

@@ -390,7 +390,7 @@ const pricingSections = [
     name: 'Publicación',
     features: [
       {
-        name: 'Vacantes públicas',
+        name: 'Oportunidades para miembros',
         tiers: { Starter: true, Growth: true, Scale: true },
       },
       {
@@ -489,7 +489,7 @@ const footerNavigation = [
 
 const footerSignals = [
   { label: 'Lista para móvil', icon: Smartphone },
-  { label: 'Vacantes públicas', icon: BriefcaseBusiness },
+  { label: 'Oportunidades para miembros', icon: BriefcaseBusiness },
   { label: 'Perfiles reutilizables', icon: Layers3 },
   { label: 'Equipos coordinados', icon: ShieldCheck },
 ] as const;
@@ -2314,9 +2314,9 @@ export function HomePage() {
           </div>
 
           <p className="mt-10 text-center text-sm leading-6 text-(--app-text-muted)">
-            &copy; {footerYear} ASI Rep. Dominicana. Vacantes públicas, perfiles
-            reutilizables y trabajo en equipo en una experiencia de hiring mucho
-            más clara.
+            &copy; {footerYear} ASI Rep. Dominicana. Oportunidades para miembros,
+            perfiles reutilizables y trabajo en equipo en una experiencia de
+            hiring mucho más clara.
           </p>
         </LandingReveal>
       </footer>

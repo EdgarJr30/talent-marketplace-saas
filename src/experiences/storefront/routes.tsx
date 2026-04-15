@@ -5,7 +5,7 @@ import { SurfaceStatusPage } from '@/app/router/routes/surface-status-page'
 import { JobApplicationPage } from '@/features/applications/pages/job-application-page'
 import { JobDetailPage } from '@/features/jobs/pages/job-detail-page'
 import { JobsOverviewPage } from '@/features/jobs/pages/jobs-overview-page'
-import { RequireAuth } from '@/lib/auth/guards'
+import { RequireActiveAsiAccess } from '@/lib/auth/guards'
 import { HomePage } from '@/experiences/storefront/pages/home-page'
 import { OfflinePage } from '@/experiences/storefront/pages/offline-page'
 import { StorefrontPlatformShell } from '@/experiences/storefront/layouts/storefront-platform-shell'
@@ -32,7 +32,11 @@ export const storefrontRoutes: RouteObject[] = [
   },
   {
     path: surfacePaths.storefront.jobsRoot,
-    element: <StorefrontPlatformShell />,
+    element: (
+      <RequireActiveAsiAccess>
+        <StorefrontPlatformShell />
+      </RequireActiveAsiAccess>
+    ),
     children: [
       {
         index: true,
@@ -44,11 +48,7 @@ export const storefrontRoutes: RouteObject[] = [
       },
       {
         path: ':jobSlug/apply',
-        element: (
-          <RequireAuth>
-            <JobApplicationPage />
-          </RequireAuth>
-        )
+        element: <JobApplicationPage />
       }
     ]
   }

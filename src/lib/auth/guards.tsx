@@ -44,6 +44,39 @@ export function RequireAuth({ children }: PropsWithChildren) {
   return children
 }
 
+export function RequireActiveAsiAccess({
+  children,
+  surface = 'storefront'
+}: PropsWithChildren<{
+  surface?: Extract<AppSurface, 'storefront' | 'candidate' | 'workspace'>
+}>) {
+  const session = useAppSession()
+
+  if (session.isLoading) {
+    return <GuardFeedback title="Validando membresia" description="Estamos comprobando tu aprobacion, membresia y suscripcion ASI." />
+  }
+
+  if (!session.isAuthenticated) {
+    return <Navigate replace to="/auth/sign-in" />
+  }
+
+  if (!session.hasActiveAsiAccess) {
+    const content = <SurfaceStatusPage kind="forbidden" surface={surface} />
+
+    if (surface === 'candidate') {
+      return <CandidateShell fallbackContent={content} />
+    }
+
+    if (surface === 'workspace') {
+      return <EmployerShell fallbackContent={content} />
+    }
+
+    return content
+  }
+
+  return children
+}
+
 export function RequirePermission({
   permission,
   children,

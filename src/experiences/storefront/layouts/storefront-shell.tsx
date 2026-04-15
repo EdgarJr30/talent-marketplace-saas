@@ -155,8 +155,8 @@ export function StorefrontShell() {
                     Explora el producto
                   </p>
                   <p className="mt-1 text-sm text-(--app-text-muted)">
-                    Jobs publicos, pricing visible y acceso claro para
-                    candidatos y empresas.
+                    Oportunidades para miembros, pricing visible y acceso claro
+                    para candidatos y empresas.
                   </p>
                 </div>
                 <Button

@@ -784,6 +784,8 @@ export type Database = {
           is_public: boolean
           legal_name: string
           logo_path: string | null
+          profile_kind: Database['public']['Enums']['tenant_kind']
+          profile_metadata: Json
           size_range: string | null
           tenant_id: string
           updated_at: string
@@ -802,6 +804,8 @@ export type Database = {
           is_public?: boolean
           legal_name: string
           logo_path?: string | null
+          profile_kind?: Database['public']['Enums']['tenant_kind']
+          profile_metadata?: Json
           size_range?: string | null
           tenant_id: string
           updated_at?: string
@@ -820,6 +824,8 @@ export type Database = {
           is_public?: boolean
           legal_name?: string
           logo_path?: string | null
+          profile_kind?: Database['public']['Enums']['tenant_kind']
+          profile_metadata?: Json
           size_range?: string | null
           tenant_id?: string
           updated_at?: string
@@ -882,6 +888,10 @@ export type Database = {
           city_name: string | null
           closed_at: string | null
           company_profile_id: string
+          compensation_currency: string | null
+          compensation_max_amount: number | null
+          compensation_min_amount: number | null
+          compensation_type: Database['public']['Enums']['opportunity_compensation_type']
           country_code: string | null
           created_at: string
           created_by_user_id: string | null
@@ -891,6 +901,8 @@ export type Database = {
           expires_at: string | null
           id: string
           is_featured: boolean
+          opportunity_metadata: Json
+          opportunity_type: Database['public']['Enums']['opportunity_type']
           published_at: string | null
           salary_currency: string | null
           salary_max_amount: number | null
@@ -909,6 +921,10 @@ export type Database = {
           city_name?: string | null
           closed_at?: string | null
           company_profile_id: string
+          compensation_currency?: string | null
+          compensation_max_amount?: number | null
+          compensation_min_amount?: number | null
+          compensation_type?: Database['public']['Enums']['opportunity_compensation_type']
           country_code?: string | null
           created_at?: string
           created_by_user_id?: string | null
@@ -918,6 +934,8 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_featured?: boolean
+          opportunity_metadata?: Json
+          opportunity_type?: Database['public']['Enums']['opportunity_type']
           published_at?: string | null
           salary_currency?: string | null
           salary_max_amount?: number | null
@@ -936,6 +954,10 @@ export type Database = {
           city_name?: string | null
           closed_at?: string | null
           company_profile_id?: string
+          compensation_currency?: string | null
+          compensation_max_amount?: number | null
+          compensation_min_amount?: number | null
+          compensation_type?: Database['public']['Enums']['opportunity_compensation_type']
           country_code?: string | null
           created_at?: string
           created_by_user_id?: string | null
@@ -945,6 +967,8 @@ export type Database = {
           expires_at?: string | null
           id?: string
           is_featured?: boolean
+          opportunity_metadata?: Json
+          opportunity_type?: Database['public']['Enums']['opportunity_type']
           published_at?: string | null
           salary_currency?: string | null
           salary_max_amount?: number | null
@@ -1422,8 +1446,10 @@ export type Database = {
           company_website_url: string | null
           created_at: string
           id: string
+          request_metadata: Json
           requested_company_legal_name: string | null
           requested_company_name: string
+          requested_tenant_kind: Database['public']['Enums']['tenant_kind']
           requested_tenant_slug: string
           requester_user_id: string
           review_notes: string | null
@@ -1444,8 +1470,10 @@ export type Database = {
           company_website_url?: string | null
           created_at?: string
           id?: string
+          request_metadata?: Json
           requested_company_legal_name?: string | null
           requested_company_name: string
+          requested_tenant_kind?: Database['public']['Enums']['tenant_kind']
           requested_tenant_slug: string
           requester_user_id: string
           review_notes?: string | null
@@ -1466,8 +1494,10 @@ export type Database = {
           company_website_url?: string | null
           created_at?: string
           id?: string
+          request_metadata?: Json
           requested_company_legal_name?: string | null
           requested_company_name?: string
+          requested_tenant_kind?: Database['public']['Enums']['tenant_kind']
           requested_tenant_slug?: string
           requester_user_id?: string
           review_notes?: string | null
@@ -1669,6 +1699,42 @@ export type Database = {
           }
         ]
       }
+      opportunity_stage_templates: {
+        Row: {
+          code: string
+          color_token: string | null
+          created_at: string
+          id: string
+          is_default: boolean
+          name: string
+          opportunity_type: Database['public']['Enums']['opportunity_type']
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          color_token?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name: string
+          opportunity_type: Database['public']['Enums']['opportunity_type']
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          color_token?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          opportunity_type?: Database['public']['Enums']['opportunity_type']
+          position?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tenants: {
         Row: {
           created_at: string
@@ -1677,6 +1743,7 @@ export type Database = {
           name: string
           slug: string
           status: Database['public']['Enums']['tenant_status']
+          tenant_kind: Database['public']['Enums']['tenant_kind']
           updated_at: string
         }
         Insert: {
@@ -1686,6 +1753,7 @@ export type Database = {
           name: string
           slug: string
           status?: Database['public']['Enums']['tenant_status']
+          tenant_kind?: Database['public']['Enums']['tenant_kind']
           updated_at?: string
         }
         Update: {
@@ -1695,6 +1763,7 @@ export type Database = {
           name?: string
           slug?: string
           status?: Database['public']['Enums']['tenant_status']
+          tenant_kind?: Database['public']['Enums']['tenant_kind']
           updated_at?: string
         }
         Relationships: [
@@ -1808,6 +1877,9 @@ export type Database = {
       users: {
         Row: {
           avatar_path: string | null
+          approval_reviewed_at: string | null
+          approval_reviewed_by_user_id: string | null
+          asi_membership_status: Database['public']['Enums']['asi_membership_status']
           country_code: string | null
           created_at: string
           display_name: string
@@ -1817,12 +1889,22 @@ export type Database = {
           is_internal_developer: boolean
           last_sign_in_at: string | null
           locale: string | null
+          manual_access_override_by_user_id: string | null
+          manual_access_override_reason: string | null
+          manual_access_override_until: string | null
+          membership_expires_at: string | null
           phone: string | null
           status: Database['public']['Enums']['user_status']
+          subscription_expires_at: string | null
           updated_at: string
+          user_approval_status: Database['public']['Enums']['user_approval_status']
+          user_subscription_status: Database['public']['Enums']['user_subscription_status']
         }
         Insert: {
           avatar_path?: string | null
+          approval_reviewed_at?: string | null
+          approval_reviewed_by_user_id?: string | null
+          asi_membership_status?: Database['public']['Enums']['asi_membership_status']
           country_code?: string | null
           created_at?: string
           display_name?: string
@@ -1832,12 +1914,22 @@ export type Database = {
           is_internal_developer?: boolean
           last_sign_in_at?: string | null
           locale?: string | null
+          manual_access_override_by_user_id?: string | null
+          manual_access_override_reason?: string | null
+          manual_access_override_until?: string | null
+          membership_expires_at?: string | null
           phone?: string | null
           status?: Database['public']['Enums']['user_status']
+          subscription_expires_at?: string | null
           updated_at?: string
+          user_approval_status?: Database['public']['Enums']['user_approval_status']
+          user_subscription_status?: Database['public']['Enums']['user_subscription_status']
         }
         Update: {
           avatar_path?: string | null
+          approval_reviewed_at?: string | null
+          approval_reviewed_by_user_id?: string | null
+          asi_membership_status?: Database['public']['Enums']['asi_membership_status']
           country_code?: string | null
           created_at?: string
           display_name?: string
@@ -1847,11 +1939,33 @@ export type Database = {
           is_internal_developer?: boolean
           last_sign_in_at?: string | null
           locale?: string | null
+          manual_access_override_by_user_id?: string | null
+          manual_access_override_reason?: string | null
+          manual_access_override_until?: string | null
+          membership_expires_at?: string | null
           phone?: string | null
           status?: Database['public']['Enums']['user_status']
+          subscription_expires_at?: string | null
           updated_at?: string
+          user_approval_status?: Database['public']['Enums']['user_approval_status']
+          user_subscription_status?: Database['public']['Enums']['user_subscription_status']
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'users_approval_reviewed_by_user_id_fkey'
+            columns: ['approval_reviewed_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'users_manual_access_override_by_user_id_fkey'
+            columns: ['manual_access_override_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
     Views: {
@@ -1878,6 +1992,18 @@ export type Database = {
       }
       has_platform_permission: {
         Args: { permission_code: string }
+        Returns: boolean
+      }
+      has_active_asi_access: {
+        Args: { p_user_id?: string }
+        Returns: boolean
+      }
+      has_active_tenant_subscription: {
+        Args: { p_tenant_id: string }
+        Returns: boolean
+      }
+      can_publish_opportunity: {
+        Args: { p_tenant_id: string }
         Returns: boolean
       }
       can_access_internal_console: {
@@ -1949,8 +2075,10 @@ export type Database = {
           company_website_url: string | null
           created_at: string
           id: string
+          request_metadata: Json
           requested_company_legal_name: string | null
           requested_company_name: string
+          requested_tenant_kind: Database['public']['Enums']['tenant_kind']
           requested_tenant_slug: string
           requester_user_id: string
           review_notes: string | null
@@ -2050,6 +2178,7 @@ export type Database = {
     Enums: {
       application_public_status: 'submitted' | 'in_review' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'hired'
       app_error_severity: 'info' | 'warning' | 'error' | 'fatal'
+      asi_membership_status: 'none' | 'pending' | 'active' | 'grace_period' | 'expired' | 'suspended' | 'revoked'
       feature_scope_type: 'global' | 'plan' | 'tenant'
       job_employment_type: 'full_time' | 'part_time' | 'contract' | 'temporary' | 'internship'
       job_posting_status: 'draft' | 'published' | 'closed' | 'archived'
@@ -2058,6 +2187,8 @@ export type Database = {
       membership_status: 'active' | 'invited' | 'suspended' | 'revoked'
       moderation_action_type: 'note' | 'warn' | 'close_job' | 'suspend_tenant' | 'restore_tenant' | 'dismiss_case'
       moderation_case_status: 'open' | 'under_review' | 'resolved' | 'dismissed'
+      opportunity_compensation_type: 'salary' | 'stipend' | 'budget' | 'unpaid' | 'donation_based' | 'not_disclosed'
+      opportunity_type: 'employment' | 'project' | 'volunteer' | 'professional_service'
       permission_scope: 'platform' | 'tenant' | 'self'
       recruiter_request_status:
         | 'submitted'
@@ -2066,9 +2197,12 @@ export type Database = {
         | 'rejected'
         | 'cancelled'
       subscription_plan_status: 'draft' | 'active' | 'archived'
+      tenant_kind: 'company' | 'ministry' | 'project' | 'field' | 'generic_profile'
       tenant_status: 'active' | 'suspended' | 'archived'
       tenant_subscription_status: 'trialing' | 'active' | 'past_due' | 'cancelled' | 'ended'
+      user_approval_status: 'pending_review' | 'needs_more_info' | 'approved' | 'rejected' | 'suspended' | 'revoked'
       user_status: 'active' | 'suspended' | 'blocked'
+      user_subscription_status: 'none' | 'trialing' | 'active' | 'past_due' | 'grace_period' | 'cancelled' | 'ended'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2184,15 +2318,21 @@ export const Constants = {
   public: {
     Enums: {
       application_public_status: ['submitted', 'in_review', 'interviewing', 'offer', 'rejected', 'withdrawn', 'hired'],
+      asi_membership_status: ['none', 'pending', 'active', 'grace_period', 'expired', 'suspended', 'revoked'],
       job_employment_type: ['full_time', 'part_time', 'contract', 'temporary', 'internship'],
       job_posting_status: ['draft', 'published', 'closed', 'archived'],
       job_screening_answer_type: ['short_text', 'long_text', 'yes_no', 'single_select'],
       job_workplace_type: ['on_site', 'hybrid', 'remote'],
       membership_status: ['active', 'invited', 'suspended', 'revoked'],
+      opportunity_compensation_type: ['salary', 'stipend', 'budget', 'unpaid', 'donation_based', 'not_disclosed'],
+      opportunity_type: ['employment', 'project', 'volunteer', 'professional_service'],
       permission_scope: ['platform', 'tenant', 'self'],
       recruiter_request_status: ['submitted', 'under_review', 'approved', 'rejected', 'cancelled'],
+      tenant_kind: ['company', 'ministry', 'project', 'field', 'generic_profile'],
       tenant_status: ['active', 'suspended', 'archived'],
-      user_status: ['active', 'suspended', 'blocked']
+      user_approval_status: ['pending_review', 'needs_more_info', 'approved', 'rejected', 'suspended', 'revoked'],
+      user_status: ['active', 'suspended', 'blocked'],
+      user_subscription_status: ['none', 'trialing', 'active', 'past_due', 'grace_period', 'cancelled', 'ended']
     }
   }
 } as const

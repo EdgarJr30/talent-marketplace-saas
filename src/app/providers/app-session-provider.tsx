@@ -4,6 +4,7 @@ import { createContext, type PropsWithChildren, useContext, useEffect, useRef, u
 import type { Session, User } from '@supabase/supabase-js'
 
 import { fetchSessionSnapshot, type AppMembership } from '@/features/auth/lib/auth-api'
+import { hasActiveAsiAccess } from '@/lib/auth/asi-access'
 import { supabase } from '@/lib/supabase/client'
 import type { PermissionCode } from '@/shared/constants/permissions'
 import type { Tables } from '@/shared/types/database'
@@ -23,6 +24,7 @@ interface AppSessionContextValue {
   hasMultipleWorkspaceMemberships: boolean
   isPlatformAdmin: boolean
   isInternalDeveloper: boolean
+  hasActiveAsiAccess: boolean
   canAccessAdminConsole: boolean
   canReviewRecruiterRequests: boolean
   canReviewAppErrors: boolean
@@ -52,6 +54,7 @@ function emptyState(session: Session | null): AppSessionContextValue {
     hasMultipleWorkspaceMemberships: false,
     isPlatformAdmin: false,
     isInternalDeveloper: false,
+    hasActiveAsiAccess: false,
     canAccessAdminConsole: false,
     canReviewRecruiterRequests: false,
     canReviewAppErrors: false,
@@ -173,6 +176,7 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
     platformPermissions,
     isPlatformAdmin,
     isInternalDeveloper,
+    hasActiveAsiAccess: hasActiveAsiAccess(profile),
     canAccessAdminConsole: isPlatformAdmin || isInternalDeveloper,
     canReviewRecruiterRequests: permissions.includes('recruiter_request:review'),
     canReviewAppErrors: permissions.includes('audit_log:read'),

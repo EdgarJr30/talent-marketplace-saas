@@ -106,7 +106,7 @@ function getSurfaceStatusContent(surface: AppSurface, kind: SurfaceStatusKind) {
       return {
         eyebrow: 'Ruta no encontrada',
         title: 'No encontramos esta página de plataforma',
-        description: 'La landing comercial y los jobs públicos siguen disponibles dentro de la plataforma, pero esta ruta no forma parte de esa experiencia.',
+        description: 'La landing comercial y las oportunidades para miembros siguen disponibles dentro de la plataforma, pero esta ruta no forma parte de esa experiencia.',
         actionLabel: 'Volver a la plataforma',
         actionHref: surfacePaths.storefront.home
       }

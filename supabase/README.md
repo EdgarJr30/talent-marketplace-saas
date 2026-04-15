@@ -35,6 +35,14 @@ The repository migration `20260314130000_push_delivery_workflow.sql` completes t
 - RPC helpers to upsert preferences, queue notifications, update delivery state, and track clicks
 - support for auditable in-app plus web-push delivery attempts
 
+The repository migration `20260415021000_asi_access_and_opportunity_kinds.sql` aligns the product with ASI member-gated opportunity access:
+
+- tenant kinds for company, ministry, project, field, and generic profile
+- opportunity types for employment, project, volunteer, and professional service postings
+- user approval, ASI membership, and user subscription gates
+- type-specific opportunity stage templates
+- RLS changes that remove anonymous access to job discovery tables
+
 The deployed Edge Function `send-notification` dispatches browser push messages and expects these Supabase project secrets:
 
 - `WEB_PUSH_VAPID_PUBLIC_KEY`

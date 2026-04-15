@@ -34,7 +34,7 @@ export function ApplicationsOverviewPage() {
       <Card>
         <CardHeader>
           <CardTitle>Mi historial</CardTitle>
-          <CardDescription>Encuentra cada vacante, su compañía y el estado público más reciente.</CardDescription>
+          <CardDescription>Encuentra cada vacante, su compañía y el estado más reciente.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {myApplicationsQuery.isLoading ? (

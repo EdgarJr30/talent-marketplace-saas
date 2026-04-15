@@ -50,6 +50,10 @@ const mvpLaunchReadinessMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260315120000_mvp_launch_readiness.sql'
 )
+const asiAccessOpportunityKindsMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260415021000_asi_access_and_opportunity_kinds.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -66,6 +70,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(atsLiteFixMigrationPath)).toBe(true)
     expect(existsSync(platformOpsMigrationPath)).toBe(true)
     expect(existsSync(mvpLaunchReadinessMigrationPath)).toBe(true)
+    expect(existsSync(asiAccessOpportunityKindsMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -142,7 +147,7 @@ describe('supabase schema contract', () => {
     expect(migration).toContain("'candidate_profile_viewed'")
   })
 
-  it('keeps jobs and public discovery foundations aligned with the schema contract', () => {
+  it('keeps jobs and discovery foundations aligned with the schema contract', () => {
     const migration = readFileSync(jobsDiscoveryMigrationPath, 'utf8')
 
     expect(migration).toContain('create type public.job_posting_status as enum')
@@ -152,6 +157,23 @@ describe('supabase schema contract', () => {
     expect(migration).toContain('create table if not exists public.job_alerts')
     expect(migration).toContain('create policy "job_postings_public_or_tenant_read"')
     expect(migration).toContain("select private.attach_audit_trigger('public', 'job_postings')")
+  })
+
+  it('keeps ASI access gates and opportunity kinds aligned with the schema contract', () => {
+    const migration = readFileSync(asiAccessOpportunityKindsMigrationPath, 'utf8')
+
+    expect(migration).toContain('create type public.tenant_kind as enum')
+    expect(migration).toContain('create type public.opportunity_type as enum')
+    expect(migration).toContain('create type public.user_approval_status as enum')
+    expect(migration).toContain('create type public.asi_membership_status as enum')
+    expect(migration).toContain('create type public.user_subscription_status as enum')
+    expect(migration).toContain('add column if not exists tenant_kind public.tenant_kind')
+    expect(migration).toContain('add column if not exists opportunity_type public.opportunity_type')
+    expect(migration).toContain('create table if not exists public.opportunity_stage_templates')
+    expect(migration).toContain('create or replace function public.has_active_asi_access')
+    expect(migration).toContain('create or replace function public.can_publish_opportunity')
+    expect(migration).toContain('create policy "job_postings_protected_or_tenant_read"')
+    expect(migration).toContain('revoke all on public.job_postings from anon')
   })
 
   it('keeps applications foundations aligned with the schema contract', () => {

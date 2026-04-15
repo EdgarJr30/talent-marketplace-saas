@@ -142,6 +142,7 @@ Platform launch-readiness screens must remain split between `platform_dashboard:
 - `analytics:read`
 
 Protected opportunity discovery and application routes must also check approved user status, ASI membership, and active user subscription status before tenant-level or candidate-profile permissions are considered.
+The canonical SQL helper for this prerequisite is `has_active_asi_access(user_id)`. Publishing an opportunity also requires active tenant subscription state through `can_publish_opportunity(tenant_id)`.
 
 ---
 
