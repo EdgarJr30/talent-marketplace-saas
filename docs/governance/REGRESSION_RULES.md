@@ -122,11 +122,11 @@ Under no circumstance may the platform invent, guess, or fabricate the cause of 
 ### R-031 — Talent sourcing is part of the MVP and must remain opt-in
 Do not regress the product back to an applications-only marketplace. The MVP must allow authorized employer users to search candidates directly even if they have not applied, but only when the candidate explicitly opted into recruiter visibility.
 
-### R-032 — Jobs discovery must stay public before applications ship
-Do not hide published jobs behind tenant-only or authenticated-only routing. The MVP must expose public jobs listing and detail views before the application flow is finished, while keeping employer CRUD and saved-jobs ownership under the proper permissions and profile rules.
+### R-032 — Jobs discovery must stay member-gated
+Do not expose published jobs or opportunity detail views to guest users. For now, `/platform/jobs*` must require approved user status, ASI membership, and active subscription status before showing jobs, while keeping tenant CRUD and saved-jobs ownership under the proper permissions and profile rules.
 
 ### R-033 — ATS movement must stay auditable and status-driven
-Do not regress the hiring workflow back to opaque application state toggles. Every application must keep an explicit current pipeline stage, stage changes must write auditable history, and candidate-facing public status must stay synchronized from the verified stage mapping instead of ad hoc UI-only updates.
+Do not regress the hiring workflow back to opaque application state toggles. Every application must keep an explicit current pipeline stage, stage changes must write auditable history, and candidate-facing status must stay synchronized from the verified stage mapping instead of ad hoc UI-only updates. Any legacy `status_public` naming must be treated as candidate-facing only, not guest-public exposure.
 
 ### R-034 — Launch operations must remain server-driven and auditable
 Do not move workflow notifications, moderation side effects, or plan-limit enforcement into client-only logic. Core launch-readiness operations must stay durable in Supabase through audited tables, server-side hooks, or reviewed RPCs so admins can trust them even when a browser session fails.
@@ -267,7 +267,7 @@ Do not leave the institutional ecosystem-style mosaics with placeholder editoria
 Do not reintroduce `@typescript-eslint/no-unsafe-assignment` or `@typescript-eslint/no-unsafe-call` patterns in corrected interactive surfaces such as the institutional home carousel. When browser APIs like `scrollLeft`, `setTimeout`, `requestAnimationFrame`, `ResizeObserver`, or normalization helpers are involved, keep the flow explicit with typed helpers, explicit return types, and typed intermediate values instead of chaining DOM reads and writes inline in page components.
 
 ### R-075 — Experience ownership must stay split between institutional, storefront, and app
-Do not let route-owned code drift back into a single mixed bucket of layouts and top-level pages. The repository must keep three explicit experience ownership zones under `src/experiences`: `institutional` for the ASI portal, `storefront` for product marketing and public jobs, and `app` for authenticated product usage. Shared business logic may stay in `src/features`, but route trees, experience shells, and experience-specific entry pages should live under their owning experience folder so future growth can split deployables or workspaces without untangling mixed ownership again.
+Do not let route-owned code drift back into a single mixed bucket of layouts and top-level pages. The repository must keep three explicit experience ownership zones under `src/experiences`: `institutional` for the ASI portal, `storefront` for product marketing and member-gated job entry, and `app` for authenticated product usage. Shared business logic may stay in `src/features`, but route trees, experience shells, and experience-specific entry pages should live under their owning experience folder so future growth can split deployables or workspaces without untangling mixed ownership again.
 
 ### R-076 — Institutional membership applications must stay gated by eligibility and category filtering
 Do not reintroduce a direct-open institutional membership application route that exposes the full form without a valid eligibility result. The `/membership/apply` surface must require a fresh eligibility token before rendering, redirect back to the eligibility wizard when that token is missing or invalid, and keep the form pre-filtered to the category that the user already qualified for instead of letting applicants browse or switch categories inside the application itself.

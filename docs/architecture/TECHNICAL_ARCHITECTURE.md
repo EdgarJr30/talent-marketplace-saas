@@ -117,9 +117,10 @@ The employer/talent discovery migration must establish:
 
 The jobs/discovery migration must establish:
 - `job_postings`, `job_screening_questions`, `saved_jobs`, and `job_alerts`
-- public read access for published jobs through RLS
+- authenticated, member-gated read access for published jobs through RLS
 - tenant-authorized CRUD for draft/published jobs
 - candidate-owned saved-job records and screening-question groundwork for the apply flow
+- opportunity typing for jobs, projects, volunteering, and professional services
 
 The applications migration must establish:
 - `applications` and `application_answers`
@@ -131,7 +132,7 @@ The ATS-lite migration must establish:
 - `pipeline_stages`, `application_stage_history`, `application_notes`, and `application_ratings`
 - client-side recruiter filters and CSV export over tenant-authorized application datasets
 - a server-validated `move_application_stage(...)` RPC for permission-safe stage transitions
-- deterministic synchronization between internal stages and candidate-facing `status_public`
+- deterministic synchronization between internal stages and candidate-facing `status_public` (legacy column name, not a guest-public status)
 - auditable collaboration artifacts for notes and ratings
 
 The platform-ops migration must establish:
@@ -177,6 +178,7 @@ Use query/mutation patterns for:
 - applications
 - candidate profile
 - tenant data
+- user approval, ASI membership, and subscription status
 - RBAC data
 - notifications
 
@@ -193,7 +195,7 @@ Avoid using a client state store as a shadow backend.
 ### Product experience strategy
 Keep the frontend split into three explicit top-level experiences:
 - institutional portal routes under `/`
-- storefront routes for product landing, pricing, and public jobs under `/platform`
+- storefront routes for product landing, pricing, and member-gated job entry under `/platform`
 - authenticated app routes for product usage
 
 Inside the authenticated app experience, keep explicit route surfaces:

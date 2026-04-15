@@ -20,6 +20,6 @@ Experience split:
 ```text
 src/experiences/
   institutional/  ASI institutional portal under `/`
-  storefront/     product landing, pricing, and public jobs under `/platform`
+  storefront/     product landing, pricing, and member-gated job entry under `/platform`
   app/            authenticated application surfaces under `/auth`, `/candidate`, `/workspace`, and `/admin`
 ```

@@ -74,6 +74,8 @@ Security includes protecting:
 14. Candidate CV files must stay in a private bucket with ownership-based path policies and signed URL access.
 15. Email workflow processors must authenticate with a server-side secret or equivalent non-browser credential and must keep provider keys only in Edge Function secrets.
 16. Internal QA, foundations, and operational tooling must never be publicly exposed by default in the customer-facing app shell or landing routes.
+17. Protected opportunity discovery, including `/platform/jobs*`, must require approved user status, ASI membership, and active subscription status before returning job data.
+18. Pastor and regional administrator validation must be form-backed, admin-reviewed, and auditable before elevated access or tenant-operational privileges are granted.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.
@@ -142,7 +144,7 @@ OSINT may be used only for legitimate moderation, fraud prevention, trust verifi
 - job/application workflow authorization
 - candidate directory visibility enforcement and recruiter permission checks
 - audit trigger coverage and audit log readability
-- public job visibility rules and candidate-owned saved-jobs access
+- member-gated job visibility rules and candidate-owned saved-jobs access
 - application ownership, duplicate prevention, and tenant applicant read authorization
 - ATS stage movement authorization, note/rating attribution, and auditable status synchronization
 - client error logging into Supabase and admin visibility of those logs

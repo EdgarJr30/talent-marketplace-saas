@@ -2,12 +2,13 @@
 
 ## Core loop smoke
 - Registro de usuario base en `/auth`
+- Aprobacion administrativa de usuario, membresia ASI y suscripcion activa antes de acceder a contenido protegido
 - Callback de confirmacion de email en `/auth/confirm`
 - Onboarding base en `/candidate/onboarding`
 - Solicitud recruiter en `/candidate/recruiter-request`
 - Aprobacion admin en `/admin/approvals`
 - Workspace employer en `/workspace`
-- Creacion y publish de job en `/platform/jobs`
+- Creacion y publish de job en `/platform/jobs` con listado protegido para miembros aprobados
 - Apply flow en `/platform/jobs/:slug/apply`
 - Pipeline recruiter en `/workspace/pipeline`
 

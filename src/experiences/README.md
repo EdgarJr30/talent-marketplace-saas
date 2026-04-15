@@ -5,7 +5,7 @@ The source tree is split into three top-level product experiences:
 ```text
 src/experiences/
   institutional/  ASI institutional portal under `/`
-  storefront/     product marketing and public jobs under `/platform`
+  storefront/     product marketing and member-gated job entry under `/platform`
   app/            authenticated application experience
 ```
 

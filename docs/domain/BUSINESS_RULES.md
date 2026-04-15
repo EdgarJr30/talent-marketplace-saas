@@ -2,22 +2,23 @@
 
 ## 1. Identity and accounts
 1. A user may exist in the platform once and still participate in multiple contexts.
-2. Every signup starts as a standard platform user.
-3. A standard user may become employer-side staff only after a platform admin approves a recruiter request and validates the company.
+2. Every signup starts as a standard platform user request and must be approved by an admin before the user can access protected product content.
+3. A standard user may become tenant-side staff only after a platform admin approves an operator request and validates the company, ministry, project, field, or generic profile.
 4. A user may be:
-   - a candidate
-   - a member of one or more employer tenants
+   - a candidate / ASI member
+   - a member of one or more tenants
    - a platform admin if granted
 5. Candidate identity is global.
-6. Employer staff access is tenant-scoped through memberships.
+6. Tenant staff access is tenant-scoped through memberships.
 7. Authentication does not equal authorization; permissions are checked separately.
+8. Viewing or applying to protected product opportunities requires approved user status, ASI membership, and an active subscription.
 
 ---
 
 ## 2. Tenant rules
-1. Every employer workspace is a **tenant**.
-2. A tenant is created only after a recruiter request is approved by an authorized platform admin.
-3. Jobs, hiring pipelines, settings, role assignments, and team data are tenant-scoped.
+1. Every ASI company, ministry, project, field, or generic profile workspace is a **tenant**.
+2. A tenant is created only after an operator request is approved by an authorized platform admin.
+3. Jobs, projects, volunteer opportunities, professional services, hiring pipelines, settings, role assignments, and team data are tenant-scoped.
 4. A tenant must have at least one owner or admin-equivalent role.
 5. Tenant-sensitive data must never leak across tenants.
 6. Plan/feature limits are enforced at tenant level unless otherwise documented.
@@ -28,57 +29,58 @@
 1. A candidate profile is reusable across applications.
 2. A candidate may update profile data over time.
 3. A candidate may upload one or more CV versions, but one may be marked as default.
-4. A candidate may apply to many jobs.
+4. A candidate may apply to many opportunities.
 5. A candidate must be able to review application history.
 6. Sensitive candidate data must be accessible only to authorized parties.
 7. Candidate identity remains global even if the same user later gains recruiter or tenant memberships.
 8. Candidate profile completeness must be derived from persisted candidate data so later workflows can trust it.
 9. Candidate visibility for recruiter discovery must be opt-in and disabled by default.
-10. A candidate may stay hidden from recruiter search and still apply normally to jobs.
+10. A candidate may stay hidden from recruiter search and still apply normally to opportunities.
+11. Candidate opportunity discovery, saved jobs, and application flows are not public guest experiences; they require approved ASI membership and an active subscription.
 
 ---
 
-## 4. Company / employer rules
-1. A company profile belongs to one tenant.
-2. A company cannot appear publicly as an employer until its recruiter request has been approved.
-3. Only authorized tenant members may edit company details.
+## 4. Tenant profile rules
+1. A company, ministry, project, field, or generic profile belongs to one tenant.
+2. A tenant profile cannot become visible in protected opportunity contexts until its operator request has been approved.
+3. Only authorized tenant members may edit tenant profile details.
 4. Branding assets such as logos must follow file and storage rules.
-5. Public company pages expose only intentionally public data.
+5. Public tenant profile pages are out of scope for now; any future public exposure must be intentionally approved and documented.
 6. A tenant may invite multiple internal members.
-7. Employer member invitations are only valid for users who already registered as standard platform users; MVP does not create tenant invites for unknown emails.
-7. Employer-side candidate sourcing is allowed even when the candidate has not applied yet, but only for visible opt-in profiles.
+7. Tenant member invitations are only valid for users who already registered as standard platform users; MVP does not create tenant invites for unknown emails.
+8. Tenant-side candidate sourcing is allowed even when the candidate has not applied yet, but only for visible opt-in profiles.
 
 ---
 
-## 5. Job rules
-1. A job belongs to exactly one tenant.
-2. A job has a lifecycle:
+## 5. Opportunity rules
+1. A job, project, volunteer opportunity, or professional service opportunity belongs to exactly one tenant.
+2. An opportunity has a lifecycle:
    - draft
    - published
    - closed
    - archived
-3. Only authorized tenant roles may create or publish jobs.
-4. A closed or archived job must not accept new applications.
-5. Draft jobs are not public.
-6. Jobs may have screening questions.
+3. Only authorized tenant roles may create or publish opportunities.
+4. A closed or archived opportunity must not accept new applications.
+5. Draft opportunities are not visible to candidates.
+6. Opportunities may have screening questions.
 7. Salary visibility may be optional based on tenant preference and plan.
 8. Expiration behavior must be consistent and documented.
-9. Published jobs must remain publicly discoverable even for guest users.
-10. Candidates may save published jobs without immediately entering the application flow.
+9. Published opportunities must not be discoverable by guest users for now; access requires approved user status, ASI membership, and an active subscription.
+10. Candidates may save published opportunities without immediately entering the application flow.
 
 ---
 
 ## 6. Application rules
-1. An application is created by one candidate for one job.
-2. Duplicate applications for the same candidate and job are controlled by policy.
+1. An application is created by one candidate for one opportunity.
+2. Duplicate applications for the same candidate and opportunity are controlled by policy.
 3. If duplicate applications are blocked, the user must receive clear feedback.
 4. Application submission must snapshot relevant candidate-submitted data required for historical integrity.
-5. Candidate status visibility must reflect the actual pipeline state or its public mapping.
-6. Candidate job alerts are owned by the candidate profile and must remain private to that profile owner.
+5. Candidate status visibility must reflect the actual pipeline state or its candidate-facing mapping.
+6. Candidate opportunity alerts are owned by the candidate profile and must remain private to that profile owner.
 7. Recruiter CSV export must include only fields already authorized by `application:export` and tenant-scoped application visibility.
-6. Only authorized tenant members may view or act on applications for their tenant jobs.
-7. Application review and talent sourcing are related but distinct flows.
-8. Duplicate applications for the same candidate and job must be blocked at the database layer, not only in the UI.
+8. Only authorized tenant members may view or act on applications for their tenant opportunities.
+9. Application review and talent sourcing are related but distinct flows.
+10. Duplicate applications for the same candidate and opportunity must be blocked at the database layer, not only in the UI.
 
 ---
 
@@ -92,6 +94,7 @@
 7. The system should preserve auditability of who moved which candidate and when.
 8. Internal ATS notes and ratings are tenant-collaboration artifacts and are never public candidate content.
 9. Candidate-facing application status may be derived from the internal stage mapping, but the mapping must stay explicit and deterministic.
+10. ATS-lite applies to jobs, projects, volunteering, and professional services, not only employment vacancies.
 
 ---
 
@@ -147,10 +150,11 @@
 ## 12. Billing / plan rules
 1. Tenants may belong to a subscription plan/tier.
 2. Feature access may depend on plan.
-3. Limits may apply to users, jobs, applications, storage, or advanced features.
+3. Limits may apply to users, opportunities, applications, storage, or advanced features.
 4. Plan enforcement must fail predictably and explain the limitation.
 5. Free-plan assumptions must not leak into the core domain model.
-6. New employer tenants must receive a default subscription baseline so plan hooks can operate from day one.
+6. New tenants must receive a default subscription baseline so plan hooks can operate from day one.
+7. User-level ASI membership and subscription status gates protected platform content before tenant-level plan limits are evaluated.
 
 ---
 

@@ -16,7 +16,7 @@ The product has four major domains:
 Global identity record.
 
 ### Tenant
-Employer workspace / company context.
+ASI workspace context. A tenant may represent a company, ministry, project, field, or generic profile. Generic profiles are allowed because they may later convert into company tenants.
 
 ### Membership
 Associates a user with a tenant.
@@ -37,7 +37,10 @@ Join entity between role and permission.
 Tracks row-level changes, request metadata, and governance-sensitive events.
 
 ### RecruiterRequest
-Approval request submitted by a standard user to become an employer-side operator through a validated company.
+Approval request submitted by a standard user to become a tenant-side operator through a validated company, ministry, project, field, or generic profile.
+
+### MembershipApproval
+Administrative approval record or state that confirms the user may access protected ASI product content.
 
 ---
 
@@ -80,7 +83,7 @@ Language records.
 Portfolio / social / website links.
 
 ### SavedJob
-Candidate bookmark of a vacancy.
+Candidate bookmark of an opportunity.
 
 ### JobAlert
 Saved search / alert criteria.
@@ -89,16 +92,16 @@ Saved search / alert criteria.
 
 ## 2.3 Employer / Hiring Domain
 ### CompanyProfile
-Public/private company details for a tenant.
+Tenant profile details. The current table name remains company-oriented, but the business meaning may cover an ASI company, ministry, project, field, or generic profile.
 
 ### JobPosting
-Vacancy owned by a tenant.
+Opportunity owned by a tenant. The opportunity may be an employment job, project, volunteer opening, or professional service need.
 
 ### JobScreeningQuestion
 Question configured for a job.
 
 ### Application
-Candidate application to a job.
+Candidate application to an opportunity.
 
 ### ApplicationAnswer
 Answer to job-specific screening questions.
@@ -158,9 +161,9 @@ Technical log line for provider attempts, failures, and retries.
 - one **User** can have many **RecruiterRequests**
 - one **Tenant** can have many **Memberships**
 - one **User** can own one **CandidateProfile**
-- one **Tenant** has one primary **CompanyProfile**
+- one **Tenant** has one primary **CompanyProfile** / tenant profile
 - one approved **RecruiterRequest** creates one **Tenant**, one **CompanyProfile**, and one initial **Membership**
-- one **Tenant** has many **JobPostings**
+- one **Tenant** has many **JobPostings** / opportunities
 - one **JobPosting** has many **Applications**
 - one **CandidateProfile** can have many **Applications**
 - one **Application** belongs to one current **PipelineStage**
@@ -175,8 +178,8 @@ Technical log line for provider attempts, failures, and retries.
 ### Identity & Access
 | Entity | Key fields |
 |---|---|
-| users | id, email, status, avatar_path, created_at |
-| tenants | id, slug, name, status, created_at |
+| users | id, email, status, membership_status, subscription_status, avatar_path, created_at |
+| tenants | id, slug, name, status, tenant_kind, created_at |
 | memberships | id, tenant_id, user_id, status, invited_by_user_id nullable, joined_at |
 | platform_roles | id, code, name, is_system |
 | tenant_roles | id, tenant_id nullable for system templates, code, name, is_system |
@@ -185,7 +188,7 @@ Technical log line for provider attempts, failures, and retries.
 | tenant_role_permissions | role_id, permission_id |
 | user_platform_roles | user_id, role_id |
 | membership_roles | membership_id, role_id |
-| recruiter_requests | id, requester_user_id, status, requested_company_name, requested_tenant_slug, company_logo_path, verification_document_path, approved_tenant_id nullable |
+| recruiter_requests | id, requester_user_id, status, requested_tenant_kind, requested_company_name, requested_tenant_slug, company_logo_path, verification_document_path, approved_tenant_id nullable |
 | audit_logs | id, actor_user_id, actor_membership_id nullable, tenant_id nullable, event_type, entity_type, entity_id, record_id nullable, old_record jsonb nullable, new_record jsonb nullable, request_headers jsonb, jwt_claims jsonb, created_at |
 
 ### Candidate
@@ -204,13 +207,13 @@ Technical log line for provider attempts, failures, and retries.
 ### Employer / Hiring
 | Entity | Key fields |
 |---|---|
-| company_profiles | id, tenant_id, logo_path, description, industry, size_range, website |
+| company_profiles | id, tenant_id, profile_kind, logo_path, description, industry, size_range, website |
 | talent_directory_search | tenant permission-gated search surface over visible `candidate_profiles` plus skills, languages, and work history |
-| job_postings | id, tenant_id, title, slug, status, workplace_type, employment_type, location, salary_visible, expires_at |
+| job_postings | id, tenant_id, title, slug, status, opportunity_type, workplace_type, employment_type, location, salary_visible, expires_at |
 | job_screening_questions | id, job_posting_id, question_text, answer_type, is_required |
 | saved_jobs | id, candidate_profile_id, job_posting_id |
 | job_alerts | id, candidate_profile_id, criteria_json, frequency, is_active |
-| applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, current_stage_id nullable, status_public, cover_letter, candidate snapshots, submitted_at |
+| applications | id, job_posting_id, candidate_profile_id, submitted_resume_id nullable, current_stage_id nullable, status_public legacy candidate-facing status, cover_letter, candidate snapshots, submitted_at |
 | application_answers | id, application_id, screening_question_id, answer_text/json |
 | pipeline_stages | id, tenant_id nullable, code, name, position, color_token, is_system |
 | application_stage_history | id, application_id, from_stage_id nullable, to_stage_id, changed_by_user_id, note nullable, changed_at |
@@ -222,6 +225,7 @@ Technical log line for provider attempts, failures, and retries.
 |---|---|
 | subscription_plans | id, code, name, status, monthly_price_amount, currency_code, limits_json |
 | tenant_subscriptions | id, tenant_id, plan_id, status, starts_at, ends_at nullable, seat_count, usage_snapshot |
+| user_subscriptions | id, user_id, status, starts_at, ends_at nullable, source, metadata |
 | feature_flags | id, code, scope_type, scope_id nullable, is_enabled, metadata |
 | notifications | id, recipient_user_id, tenant_id nullable, type, title, body, action_url nullable, payload jsonb, read_at nullable |
 | notification_preferences | id, user_id, tenant_id nullable, in_app_enabled, email_enabled, push_enabled, quiet_hours_json |
@@ -240,26 +244,30 @@ Launch-readiness notes:
 
 ## 5. Domain invariants
 1. A tenant-scoped entity must never exist without tenant ownership.
-2. Employer-side access cannot exist without an approved recruiter request and an active membership.
-3. An application must always belong to one job and one candidate profile.
-4. An application must always have exactly one current stage.
-5. Permission checks cannot rely on UI state alone.
-6. File access must map to ownership and policy rules.
-7. Role changes must be auditable.
-8. User corrections to domain assumptions must update this model.
-9. Notification channel attempts and row-level state mutations must be recoverable from audit history.
-10. Candidate profile completeness should stay derivable from database state after row changes in profile sections or resumes.
+2. Tenant-side access cannot exist without an approved operator request and an active membership.
+3. Protected product access cannot exist without approved user status, ASI membership, and active user subscription status.
+4. An application must always belong to one opportunity and one candidate profile.
+5. An application must always have exactly one current stage.
+6. Permission checks cannot rely on UI state alone.
+7. File access must map to ownership and policy rules.
+8. Role changes must be auditable.
+9. User corrections to domain assumptions must update this model.
+10. Notification channel attempts and row-level state mutations must be recoverable from audit history.
+11. Candidate profile completeness should stay derivable from database state after row changes in profile sections or resumes.
 
 ---
 
 ## 6. Recommended enum groups
 - tenant_status
+- tenant_kind
 - membership_status
+- user_subscription_status
 - recruiter_request_status
 - job_status
+- opportunity_type
 - workplace_type
 - employment_type
-- application_public_status
+- application_public_status legacy enum name for candidate-facing status
 - moderation_status
 - notification_type
 - feature_scope_type
@@ -269,7 +277,8 @@ Launch-readiness notes:
 
 ## 7. Modeling notes
 - Consider snapshotting selected candidate data at time of application when historical integrity matters.
-- Keep candidate identity global while employer operations remain tenant-scoped.
-- Keep recruiter conversion approval-driven: signup creates only a standard user, and approval bootstraps tenant + company + first owner membership.
-- Separate public-facing application status from internal pipeline stage names if needed.
+- Keep candidate identity global while tenant operations remain tenant-scoped.
+- Keep tenant operator conversion approval-driven: signup creates only a standard user request, user activation requires admin approval, and tenant approval bootstraps tenant + profile + first owner membership.
+- Separate candidate-facing application status from internal pipeline stage names if needed.
 - Keep permissions granular enough to support custom roles without exploding complexity too early.
+- Do not model jobs or application statuses as public guest-facing surfaces until product policy explicitly reopens public access.

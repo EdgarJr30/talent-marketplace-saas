@@ -4,10 +4,10 @@
 
 This document defines the recommended software architecture for the **asi_do** project.
 
-The system is a **multi-tenant job and talent platform** where:
+The system is a **multi-tenant ASI opportunity and talent platform** where:
 
-- companies can create profiles and publish job vacancies
-- candidates can create professional profiles, upload CVs, and apply to jobs
+- companies, ministries, projects, fields, and generic profiles can create tenant profiles and publish opportunities
+- approved ASI members with active subscriptions can create professional profiles, upload CVs, and apply to opportunities
 - tenant administrators can manage members, roles, permissions, and workflows
 - platform administrators can supervise moderation, subscriptions, and global settings
 
@@ -85,7 +85,7 @@ The platform must be fully role-based from the beginning:
 - permissions must control access to modules, screens, actions, and data
 - roles must be manageable from inside the application
 - the system must support both platform-level and tenant-level roles
-- standard users must not self-assign employer access; recruiter conversion is approval-driven
+- standard users must not self-activate product access or self-assign tenant access; user activation and tenant operator conversion are approval-driven
 
 ### 3.6 Secure multi-tenancy
 The system must isolate data per tenant using a combination of:
@@ -166,8 +166,8 @@ Responsibilities:
 - domain services
 - permission semantics
 - tenant constraints
-- recruiter approval workflow that creates a tenant only after company validation
-- lifecycle logic for jobs, candidates, companies, applications, and subscriptions
+- operator approval workflow that creates a tenant only after company, ministry, project, field, or generic-profile validation
+- lifecycle logic for opportunities, candidates, tenant profiles, applications, and subscriptions
 
 ### 5.4 Infrastructure Layer
 Supabase and related integrations.
@@ -298,7 +298,7 @@ This keeps logic close to the business domain.
 ### 7.2 Experience and route ownership
 The modular monolith must expose three top-level product experiences with explicit ownership:
 - `institutional`: portal, membership, projects, donation, news, media, and contact under `/`
-- `storefront`: product landing, pricing, public jobs, and acquisition flows under `/platform`
+- `storefront`: product landing, pricing, member-gated job entry, and acquisition flows under `/platform`
 - `app`: authenticated product usage
 
 Inside `app`, the runtime must remain route-split:

@@ -2,14 +2,14 @@
 
 ## Espanol
 
-Plataforma SaaS multi-tenant de reclutamiento y empleo con perfiles profesionales reutilizables, CV precargado, aplicacion a vacantes, colaboracion ATS-lite (gestión básica de candidatos) y experiencia PWA mobile-first.
+Plataforma SaaS multi-tenant de reclutamiento, proyectos, voluntariado y servicios profesionales para miembros ASI aprobados, con perfiles profesionales reutilizables, CV precargado, aplicacion a oportunidades, colaboracion ATS-lite (gestión básica de candidatos) y experiencia PWA mobile-first.
 
 ### Objetivo
 
 Construir una base escalable para:
-- empresas que publican vacantes y gestionan postulantes
-- candidatos con perfil profesional y CV reutilizable
-- equipos de contratacion con pipeline, notas y ratings
+- empresas, ministerios, proyectos, campos o perfiles genericos que publican oportunidades y gestionan postulantes
+- miembros ASI aprobados con perfil profesional y CV reutilizable
+- equipos de seleccion y coordinacion con pipeline, notas y ratings
 - administradores de plataforma con moderacion, planes y gobierno
 
 ### Stack oficial
@@ -67,7 +67,7 @@ asi_do/
 ```text
 src/experiences/
   institutional/  portal institucional ASI
-  storefront/     landing, pricing y jobs publicos
+  storefront/     landing, pricing y entrada comercial a jobs protegidos
   app/            aplicacion autenticada
 ```
 

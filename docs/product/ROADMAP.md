@@ -32,9 +32,10 @@ Establish secure multi-tenant access control.
 
 ### Deliverables
 - auth screens
-- standard user registration
-- recruiter request submission
-- platform-admin approval for employer onboarding
+- standard user registration request
+- platform-admin approval for user activation
+- tenant operator request submission
+- platform-admin approval for tenant onboarding
 - tenant creation after approval
 - canonical route-surface model for `public`, `candidate`, `workspace`, and `admin`
 - memberships
@@ -47,7 +48,8 @@ Establish secure multi-tenant access control.
 ### Exit criteria
 - standard user can submit recruiter request
 - platform admin can approve or reject recruiter request
-- approval creates tenant, company profile, and first owner membership
+- user approval, ASI membership, and active subscription gate protected product content
+- tenant approval creates tenant, tenant profile, and first owner membership
 - members can be invited
 - roles can be assigned
 - permissions affect UI and backend behavior
@@ -96,24 +98,25 @@ Enable company workspace setup.
 
 ---
 
-## Phase 4 — Jobs and discovery
+## Phase 4 — Opportunities and discovery
 ### Goal
-Ship public vacancy publishing and candidate discovery.
+Ship protected opportunity publishing and candidate discovery for approved ASI members.
 
 ### Deliverables
 - job CRUD
-- public jobs list
-- public job detail
+- protected jobs list
+- protected job detail
 - search/filter
 - saved jobs
 - basic alerts UI and CRUD
 - recruiter-facing candidate directory for opt-in profiles
 - recruiter candidate detail view with RBAC-protected full profile access
+- opportunity type support for jobs, projects, volunteering, and professional services
 
 ### Exit criteria
 - authorized tenant can publish job
-- candidate can browse jobs on mobile
-- public listing/detail works cleanly
+- approved ASI member with active subscription can browse jobs on mobile
+- guest users cannot browse protected listing/detail routes
 - authorized recruiters can search visible candidates without waiting for an application
 - candidates can save published jobs before the application phase is enabled
 
@@ -153,7 +156,7 @@ Let teams manage applicants in structured stages.
 - permission-aware actions
 - simple recruiter filters and CSV export for authorized roles
 - seeded system stages with tenant override capacity
-- candidate-facing public status synced from internal stage decisions
+- candidate-facing status synced from internal stage decisions
 - auditable pipeline mutations for moves, notes, and ratings
 
 ### Exit criteria
@@ -180,7 +183,7 @@ Operational maturity for launch.
 - seeded free/growth plan catalog plus tenant subscription bootstrap
 - platform feature-flag controls for launch operations
 - release checklist and mobile smoke coverage
-- client-ready public landing with SaaS pricing and donation sections
+- client-ready public landing with SaaS pricing and donation sections, while job discovery remains member-gated
 - admin console isolation for operational and QA-only tooling under `/admin/*`
 
 ### Exit criteria
@@ -227,7 +230,7 @@ Candidate profile + CV
 Company profile + team management
 
 ### Sprint 5
-Job posting + public listing
+Job posting + protected listing
 
 ### Sprint 6
 Application flow

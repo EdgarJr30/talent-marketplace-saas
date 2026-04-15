@@ -1,10 +1,10 @@
 # PRD.md — Product Requirements Document
 
 ## 1. Product summary
-A **multi-tenant ats and recruiting SaaS** that allows:
-- companies to publish jobs and manage applicants
-- candidates to create reusable professional profiles, keep a preloaded CV, and apply quickly
-- hiring teams to collaborate through an ATS-lite workflow
+A **multi-tenant ats and recruiting SaaS for approved ASI members** that allows:
+- companies, ministries, projects, fields, and generic profiles to publish opportunities and manage applicants
+- approved ASI members with active subscriptions to create reusable professional profiles, keep a preloaded CV, and apply quickly
+- hiring, project, volunteer, and services teams to collaborate through an ATS-lite workflow
 - platform admins to govern moderation, plans, and compliance foundations
 
 The product should launch as an **MVP** and scale gradually toward a more complete recruiting ecosystem.
@@ -12,13 +12,13 @@ The product should launch as an **MVP** and scale gradually toward a more comple
 ---
 
 ## 2. Product vision
-Create a modern hiring platform for SMBs and mid-market companies that replaces fragmented hiring via spreadsheets, WhatsApp, email, and generic job boards with one mobile-first, installable, role-aware system.
+Create a modern ASI member platform that replaces fragmented opportunity management via spreadsheets, WhatsApp, email, and generic job boards with one mobile-first, installable, role-aware system.
 
 ---
 
 ## 3. Problem statement
-Many companies still manage recruiting with disconnected tools:
-- job ads posted manually in multiple places
+Many ASI companies, ministries, projects, and fields still manage recruiting or participation workflows with disconnected tools:
+- opportunities posted manually in multiple places
 - CVs arriving by email or chat
 - no structured applicant pipeline
 - poor collaboration and auditability
@@ -36,14 +36,14 @@ Candidates also face friction:
 ---
 
 ## 4. Target users
-### Candidate
-Needs a reusable profile, easy job discovery, fast applications, and status tracking.
+### Candidate / ASI member
+Needs an approved account, active ASI membership, reusable profile, protected opportunity discovery, fast applications, and status tracking.
 
-### Employer tenant owner
-Needs to request company validation, get recruiter access approved, and then configure workspace, team, roles, jobs, and permissions.
+### Tenant owner
+Needs to request validation for an ASI company, ministry, project, field, or generic profile, get operator access approved, and then configure workspace, team, roles, opportunities, and permissions.
 
-### Recruiter / hiring manager
-Needs filtering, review, notes, ratings, and candidate stage movement.
+### Recruiter / coordinator / hiring manager
+Needs filtering, review, notes, ratings, and applicant stage movement across jobs, projects, volunteering, and professional services.
 
 ### Platform admin
 Needs moderation, plan management, support tools, and governance.
@@ -52,11 +52,11 @@ Needs moderation, plan management, support tools, and governance.
 
 ## 5. Jobs to be done
 ### Candidate JTBD
-- When I find a relevant job, I want to apply quickly using my existing profile and CV so I do not repeat information.
+- When I find a relevant opportunity, I want to apply quickly using my existing profile and CV so I do not repeat information.
 - When I manage my career, I want a reusable profile and status history so I can apply with confidence.
 
-### Employer JTBD
-- When my company opens a position, I want to publish a job and receive structured applications so hiring is organized.
+### Tenant operator JTBD
+- When my company, ministry, project, field, or generic profile opens an opportunity, I want to publish it and receive structured applications so selection is organized.
 - When my team evaluates applicants, I want permissions, notes, and stages so we can collaborate safely.
 
 ### Platform JTBD
@@ -67,13 +67,13 @@ Needs moderation, plan management, support tools, and governance.
 ## 6. Product goals
 ### Business goals
 - Reach MVP quickly without compromising architecture
-- Support multi-tenant monetization
-- Enable standard-user registration with admin-approved employer onboarding
+- Support multi-tenant monetization and ASI membership/subscription gating
+- Enable standard-user registration with admin-approved account creation and tenant onboarding
 - Build a foundation for premium plans and advanced recruiting tooling
 
 ### User goals
-- Reduce application friction for candidates
-- Improve hiring visibility and speed for employers
+- Reduce application friction for approved ASI members
+- Improve opportunity visibility and selection speed for tenant operators
 - Make mobile usage excellent
 - Make permissions and team collaboration reliable
 
@@ -103,11 +103,12 @@ The MVP should **not** initially include:
 ## 8. MVP feature set
 ## 8.1 Auth and onboarding
 - sign up / sign in
-- standard user registration for everyone
-- recruiter request submission with company validation data
-- admin approval flow before employer access is activated
+- standard user registration request for everyone
+- administrative approval before a user account becomes active
+- tenant operator request submission with company, ministry, project, field, or generic-profile validation data
+- admin approval flow before tenant operator access is activated
 - candidate account flow
-- employer workspace creation after approval
+- tenant workspace creation after approval
 - platform admin area
 - avatar and document uploads with modern web formats, 5 MB guardrails, and clear validation feedback
 - authenticated app entry redirect that sends employer users to `/workspace` and standard users to `/candidate/profile`
@@ -126,8 +127,8 @@ The MVP should **not** initially include:
 - recruiter visibility toggle that is opt-in by the candidate
 - CV rejection feedback that explains file-size limits and how to fix the problem
 
-## 8.3 Company workspace
-- company profile
+## 8.3 Tenant workspace
+- company, ministry, project, field, or generic profile
 - logo and description
 - industry, size, locations
 - team members
@@ -141,7 +142,7 @@ The MVP should **not** initially include:
 - assign role to tenant members
 - permission-aware navigation and actions
 
-## 8.5 Jobs
+## 8.5 Opportunities
 - create draft job
 - publish/unpublish/close job
 - job detail page
@@ -151,7 +152,8 @@ The MVP should **not** initially include:
 - screening questions
 - recruiter-side candidate directory for visible opt-in profiles
 - full candidate profile review from employer side without requiring an application first
-- public `/platform/jobs` listing and `/platform/jobs/:slug` detail routes usable before the apply flow ships
+- protected `/platform/jobs` listing and `/platform/jobs/:slug` detail routes that require an approved user, ASI membership, and active subscription
+- opportunity scope covers jobs, projects, volunteering, and professional services
 
 ## 8.6 Applications
 - fast apply with stored profile
@@ -207,15 +209,15 @@ The MVP should **not** initially include:
 
 ## 9. Functional requirements
 ### FR-1 Authentication
-The system must support secure sign-up and sign-in for standard platform users, with employer access granted only after approval.
+The system must support secure sign-up and sign-in for standard platform users, with account activation, content access, and tenant operator access granted only after the required administrative approvals.
 
 ### FR-2 Recruiter approval and tenant creation
-A standard user must be able to submit a recruiter request with company data, and a platform admin must approve that request before the tenant/company workspace is created.
+A standard user must be able to submit a tenant operator request with company, ministry, project, field, or generic-profile data, and a platform admin must approve that request before the tenant workspace is created.
 
 ### FR-3 RBAC administration
 Tenant owners/admins must be able to manage tenant roles and assign permissions from the app.
 
-### FR-3.2 Employer team invitations
+### FR-3.2 Tenant team invitations
 Authorized tenant users must be able to invite already-registered platform users into the workspace, assign an initial role, and revoke pending invites.
 
 ### FR-3.1 Admin error operations
@@ -231,13 +233,13 @@ Candidates must be able to control whether their profile appears in recruiter ta
 Candidates must be able to upload and manage CV files, with explicit type and size validation, a maximum size of **5 MB**, and user-facing rejection messages that explain the reason and next step.
 
 ### FR-6 Job publishing
-Authorized tenant users must be able to create, publish, edit, close, and archive vacancies.
+Authorized tenant users must be able to create, publish, edit, close, and archive opportunities across jobs, projects, volunteering, and professional services.
 
 ### FR-7 Search/discovery
-Candidates must be able to browse/search/filter vacancies.
+Approved ASI members with active subscriptions must be able to browse/search/filter opportunities.
 
-### FR-7.1 Candidate job alerts
-Candidates must be able to save, pause, reactivate, and delete basic job alerts based on discovery filters.
+### FR-7.1 Candidate opportunity alerts
+Candidates must be able to save, pause, reactivate, and delete basic opportunity alerts based on discovery filters.
 
 ### FR-8 Application submission
 Candidates must be able to submit applications using existing profile data.

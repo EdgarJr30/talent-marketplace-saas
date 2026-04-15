@@ -33,7 +33,7 @@ Used for cross-platform operations such as:
 ---
 
 ## 2.2 Tenant RBAC
-Used inside a company workspace.
+Used inside an ASI tenant workspace. A tenant may represent a company, ministry, project, field, or generic profile.
 
 ### Example system tenant roles
 - Tenant Owner
@@ -46,7 +46,7 @@ Used inside a company workspace.
 ### Requirement
 Tenant owners/admins must be able to create **custom roles** from the app.
 
-Users do not sign up directly into tenant roles. Everyone enters as a standard platform user, and employer-side access starts only after a platform admin approves a recruiter request and validates the company.
+Users do not sign up directly into tenant roles. Everyone enters as a standard platform user request, protected product access starts only after admin approval plus active ASI membership/subscription, and tenant-side access starts only after a platform admin approves an operator request and validates the company, ministry, project, field, or generic profile.
 
 ---
 
@@ -99,6 +99,9 @@ Examples:
 - `audit_log:read`
 - `user:read`
 - `user:update`
+- `user:approve`
+- `membership:review`
+- `subscription:read`
 - `recruiter_request:read`
 - `recruiter_request:review`
 
@@ -138,6 +141,8 @@ Platform launch-readiness screens must remain split between `platform_dashboard:
 - `notification:manage`
 - `analytics:read`
 
+Protected opportunity discovery and application routes must also check approved user status, ASI membership, and active user subscription status before tenant-level or candidate-profile permissions are considered.
+
 ---
 
 ## 5. Role model rules
@@ -145,12 +150,13 @@ Platform launch-readiness screens must remain split between `platform_dashboard:
 2. Some system roles may be locked.
 3. Custom roles can be created per tenant.
 4. Custom roles can be cloned from existing roles.
-5. The first approved recruiter request for a company must bootstrap an initial owner-level tenant role assignment for the requester.
+5. The first approved operator request for a tenant must bootstrap an initial owner-level tenant role assignment for the requester.
 6. Roles without permissions should not be assignable unless explicitly allowed by product policy.
 7. Role changes must generate audit logs.
 8. Permission changes must be effective consistently across UI and server-side access rules.
 9. Notification-management permissions must control who can create notifications, manage push subscriptions by tenant context, and inspect delivery logs.
 10. Candidate sourcing permissions must be distinct from application review permissions.
+11. Pastor and regional administrator validation flows must collect a form submission and require admin approval before granting elevated or tenant-operational access.
 
 ---
 
@@ -172,6 +178,8 @@ The platform also needs a one-time bootstrap path for the very first platform ow
 
 Internal developer access may also exist as an explicit operational flag on the global user profile. That flag only unlocks the admin console and must not be treated as a substitute for platform RBAC or tenant RBAC.
 
+User approval, ASI membership, and active subscription status are prerequisite gates for protected product content. They do not replace tenant RBAC, and tenant RBAC does not bypass them.
+
 ---
 
 ## 7. UI behavior rules
@@ -181,6 +189,7 @@ Internal developer access may also exist as an explicit operational flag on the 
 4. Unauthorized deep links must fail gracefully.
 5. Permission checks in UI are supportive only; backend and RLS remain authoritative.
 6. Admin console routes under `/admin/*` must require either platform-admin authority or the explicit internal-developer flag, and they must stay hidden from the normal customer navigation model.
+7. `/platform/jobs*` routes must behave as protected member content for now, not guest-visible public browsing.
 
 ---
 

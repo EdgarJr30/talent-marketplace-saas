@@ -101,7 +101,7 @@ The strongest platforms converge around four product layers:
 ## 5. Product implications for this project
 ### Must-have at MVP
 - candidate profile + CV
-- public jobs
+- member-gated jobs and opportunity discovery
 - search/filter
 - quick apply
 - employer workspace
