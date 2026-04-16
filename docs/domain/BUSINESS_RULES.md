@@ -186,10 +186,12 @@
 6. New tenants must receive a default subscription baseline so plan hooks can operate from day one.
 7. User-level ASI membership and subscription status gates protected platform content before tenant-level plan limits are evaluated.
 8. Individual ASI membership/subscription is personal access and must not be treated as a tenant workspace plan.
-9. Tenant plans unlock workspace capacity and features, but they do not activate individual user access by default.
-10. Roles decide what a user can do; plans decide what capacity/features are enabled; both checks are required.
-11. Tenant kind restrictions apply even when a tenant has a paid plan.
-12. The canonical commercial plan model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
+9. The candidate-only individual user who applies to jobs/opportunities without publishing them is the `Joven Profesional` membership path.
+10. Annual membership categories and dues are: Organizacional Sin Fines de Lucro $250, Organizacional Con Fines de Lucro $250, Profesional Ejecutivo $250, Propietario Individual $200, Profesional o Empresario Jubilado $150, Asociado $150, Joven Profesional $25, and Asociado Internacional $250.
+11. Tenant plans unlock workspace capacity and features, but they do not activate individual user access by default.
+12. Roles decide what a user can do; plans decide what capacity/features are enabled; both checks are required.
+13. Tenant kind restrictions apply even when a tenant has a paid plan.
+14. The canonical commercial plan model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
 
 ---
 

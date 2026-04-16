@@ -121,7 +121,7 @@ The MVP should **not** initially include:
 - platform admin area
 - pastor validation form with cedula upload, union, association, district, optional churches, and platform-admin approval before scoped pastor authorization is granted
 - regional administrator validation form with cedula upload, appointment evidence, union/association scope, and platform-admin approval before scoped regional authorization is granted
-- role-scope model that separates super administrator, platform support, platform moderator, readonly platform auditor, regional administrator, pastor administrator, tenant owner, tenant member, tenant billing contact, and professional individual user
+- role-scope model that separates super administrator, platform support, platform moderator, readonly platform auditor, regional administrator, pastor administrator, tenant owner, tenant member, tenant billing contact, Joven Profesional candidate-only users, and other individual ASI members
 - two-step authorization model where pastors or regional administrators may authorize normal users within scope, but final license activation remains limited to the super administrator or platform support
 - avatar and document uploads with modern web formats, 5 MB guardrails, and clear validation feedback
 - authenticated app entry redirect that sends employer users to `/workspace` and standard users to `/candidate/profile`
@@ -299,6 +299,8 @@ Platform admins must be able to take moderation actions on risky or abusive cont
 Platform admins must be able to inspect tenant plan state, seeded limits, and basic launch counters from inside the application.
 
 The commercial model must separate individual ASI membership/subscription from tenant workspace plans. Individual access gates protected content and applications; tenant plans gate workspace capacity, publishing, ATS features, team seats, candidate sourcing, exports, analytics, and plan limits. Roles and plans must both pass before a tenant-scoped action is allowed. The canonical model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
+
+The individual candidate-only user who applies to opportunities but does not publish opportunities is the `Joven Profesional` membership path with an annual dues amount of $25. Other annual membership categories and dues are documented in the commercial model and must not be replaced by generic "student" or generic paid-user labels.
 
 ### FR-13 Error transparency and diagnostics
 Meaningful user-facing failures must provide actionable feedback in the UI and also be logged to Supabase so platform admins can investigate the root cause later.

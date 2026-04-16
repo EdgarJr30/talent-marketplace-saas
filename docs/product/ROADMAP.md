@@ -198,7 +198,8 @@ Operational maturity for launch.
 - critical notice policy for security, access, approvals, membership/subscription, compliance, and role/permission changes
 - moderation dashboard baseline
 - plan/limits hooks
-- commercial plan catalog based on `tenant_baseline`, `tenant_essential`, `tenant_growth`, `tenant_scale`, and `tenant_enterprise`
+- annual membership category catalog based on Organizacional Sin Fines de Lucro, Organizacional Con Fines de Lucro, Profesional Ejecutivo, Propietario Individual, Profesional o Empresario Jubilado, Asociado, Joven Profesional, and Asociado Internacional
+- tenant workspace capacity catalog based on `tenant_baseline`, `tenant_essential`, `tenant_growth`, `tenant_scale`, and `tenant_enterprise`
 - separate individual membership/subscription gates from tenant workspace plan enforcement
 - admin dashboards baseline
 - workflow notifications emitted from durable server-side events

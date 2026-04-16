@@ -1,41 +1,44 @@
 # COMMERCIAL_PLAN_MODEL.md - Commercial Plan and Limits Model
 
 ## 1. Purpose
-This document defines the canonical commercial model for ASI platform access, tenant plans, limits, and payment responsibility.
+This document defines the canonical commercial model for ASI platform access, annual membership categories, tenant workspace plans, limits, and payment responsibility.
 
 The model separates:
-- individual ASI membership / user subscription
-- tenant workspace plan
+- individual ASI annual membership category / user subscription
+- tenant workspace capacity plan
 - tenant role permissions
 - plan limits
 - tenant kind eligibility
 
 Roles answer: "What is this user allowed to do?"
-Plans answer: "Which product capacity and features are enabled?"
+Annual membership categories answer: "What ASI membership dues and personal access path applies?"
+Tenant workspace plans answer: "Which workspace capacity and features are enabled?"
 
-Both checks are required. A role must never bypass plan limits, and a plan must never grant permissions by itself.
+All relevant checks are required. A role must never bypass plan limits, and a plan must never grant permissions by itself.
 
 ---
 
 ## 2. Core commercial principles
 1. Every user who accesses protected product content must have approved user status, active ASI membership, and active user subscription/license state.
-2. Individual membership is personal access. It is not a tenant workspace plan.
-3. Tenant plans unlock workspace capacity, publishing, ATS usage, collaboration, analytics, and tenant-level limits.
-4. Tenant plans do not activate individual user membership by default.
-5. Tenant roles do not replace individual access gates.
-6. User-level access is checked before tenant-level plan limits for protected product content.
-7. Tenant-level publishing and ATS features require both user permission and active tenant subscription state.
-8. Tenant Billing Contact can read plan and billing state, but cannot manage hiring or activate user licenses by default.
-9. Free-plan assumptions must not leak into the core domain. A default tenant baseline may exist for provisioning, but public commercial packaging must remain explicit.
-10. Plan enforcement must fail predictably with actionable user-facing copy.
+2. Individual membership is personal access. It is not a tenant workspace capacity plan.
+3. The candidate-only individual user who applies to opportunities but does not publish opportunities is the `Joven Profesional` membership path.
+4. Tenant workspace plans unlock workspace capacity, publishing, ATS usage, collaboration, analytics, and tenant-level limits.
+5. Tenant workspace plans do not activate individual user membership by default.
+6. Tenant roles do not replace individual access gates.
+7. User-level access is checked before tenant-level plan limits for protected product content.
+8. Tenant-level publishing and ATS features require both user permission and active tenant subscription state.
+9. Tenant Billing Contact can read plan and billing state, but cannot manage hiring or activate user licenses by default.
+10. Free-plan assumptions must not leak into the core domain. A default tenant baseline may exist for provisioning, but public commercial packaging must remain explicit.
+11. Plan enforcement must fail predictably with actionable user-facing copy.
 
 ---
 
 ## 3. Payment responsibility
 
-### Individual user pays or is sponsored for ASI membership
+### Individual user pays or is sponsored for ASI annual membership
 Applies to:
-- Professional Individual User
+- Joven Profesional candidate-only users
+- other approved individual ASI membership categories
 - candidates
 - tenant staff users
 - pastors/regional administrators when they need protected product access
@@ -53,8 +56,9 @@ Important:
 - being paid/active as an individual does not allow job posting
 - being paid/active as an individual does not create a tenant
 - being assigned to a tenant does not remove the individual membership gate
+- `Joven Profesional` is the canonical candidate-only individual membership path for users who only apply to opportunities and do not publish opportunities
 
-### Tenant pays for workspace plan
+### Tenant pays for workspace capacity plan
 Applies to:
 - company tenants
 - ministry tenants
@@ -92,27 +96,30 @@ Future sponsored-seat rules:
 
 ---
 
-## 4. Individual membership categories
-The institutional membership dues already represented in the product remain the source for individual or organization membership qualification.
+## 4. Annual membership categories and dues
+The annual membership categories and dues are the source for individual or organization ASI membership qualification.
 
-Current known membership categories include:
-- Organizational Nonprofit
-- Organizational For Profit
-- Executive Professional
-- Sole Proprietor
-- Retired Professional or Business Owner
-- Associate
-- Student
+| Category | Annual dues | Platform meaning |
+| --- | ---: | --- |
+| Organizacional Sin Fines de Lucro | $250 | Organization membership category; may support tenant approval, but does not replace tenant workspace plan checks |
+| Organizacional Con Fines de Lucro | $250 | Organization membership category; may support company tenant approval, but does not replace tenant workspace plan checks |
+| Profesional Ejecutivo | $250 | Individual executive/professional membership category; may use protected product access when approved and active |
+| Propietario Individual | $200 | Individual business-owner membership category; does not create tenant publishing rights by itself |
+| Profesional o Empresario Jubilado | $150 | Individual retired member category; may use protected product access when approved and active |
+| Asociado | $150 | Individual associate member category; may use protected product access when approved and active |
+| Joven Profesional | $25 | Candidate-only individual path for users who apply to opportunities and do not publish opportunities |
+| Asociado Internacional | $250 | International associate organization category; may require additional review before tenant capabilities |
 
 Commercial rule:
 - these categories determine ASI membership qualification and dues
-- they are not the same thing as tenant SaaS feature plans
-- organization-level membership may support tenant approval, but tenant SaaS capacity still lives in `tenant_subscriptions`
+- they are not the same thing as tenant workspace capacity plans
+- organization-level membership may support tenant approval, but tenant workspace capacity still lives in `tenant_subscriptions`
+- `Joven Profesional` must not receive tenant publishing, tenant plan management, or job creation capability unless separately approved into a tenant role under a valid tenant
 
 ---
 
-## 5. Tenant plan tiers
-The first platform plan model should use explicit SaaS tiers without hardcoding public prices in the domain contract. Prices may be configured in `subscription_plans`.
+## 5. Tenant workspace capacity tiers
+The annual membership categories above are the current public membership dues. Tenant workspace capacity tiers are separate product capacity records used internally or commercially when tenant features are sold or configured. Prices may be configured in `subscription_plans` when finalized.
 
 ### `tenant_baseline`
 Purpose:
@@ -355,11 +362,19 @@ If any step fails, the UI and backend should report the specific recoverable rea
 
 ## 9. Role interaction summary
 
-### Professional Individual User
-- pays or receives individual membership access
+### Joven Profesional
+- pays or receives `Joven Profesional` annual membership access
+- is the canonical individual candidate-only user
 - can discover/apply when active
 - cannot publish opportunities
 - cannot manage tenant plan by default
+- cannot receive tenant publishing capability without a separate tenant approval and tenant role
+
+### Other individual ASI member categories
+- include Profesional Ejecutivo, Propietario Individual, Profesional o Empresario Jubilado, Asociado, and comparable approved individual categories
+- can discover/apply when active
+- cannot publish opportunities merely because their individual membership is active
+- may later participate in a tenant only through a separate tenant membership and role assignment
 
 ### Tenant Owner
 - may manage workspace and team
@@ -402,7 +417,7 @@ If any step fails, the UI and backend should report the specific recoverable rea
 2. Store plan limits in `subscription_plans.limits_json`.
 3. Store current tenant usage in `tenant_subscriptions.usage_snapshot` or computed usage views.
 4. Keep user access in user-level membership/subscription fields.
-5. Do not merge user membership dues with tenant SaaS plans.
+5. Do not merge annual membership dues with tenant workspace capacity plans.
 6. Do not expose a public free plan unless the commercial policy explicitly approves it.
 7. Build plan-limit failures as product states, not generic errors.
 8. Prefer feature flags for staged rollout, not hidden plan behavior.
@@ -411,9 +426,9 @@ If any step fails, the UI and backend should report the specific recoverable rea
 
 ## 11. Future decisions
 These are intentionally not final in v1:
-- exact public prices for tenant plans
+- exact public prices for tenant workspace capacity plans
 - whether tenants can sponsor user memberships
-- whether nonprofit/ministry/project tenants receive discounted tenant SaaS plans
+- whether nonprofit/ministry/project tenants receive discounted tenant workspace capacity plans
 - whether field tenants can centrally pay for child tenants
 - whether application volume is hard-capped, soft-capped, or billed overage
 - whether candidate sourcing views are counted per user or per tenant

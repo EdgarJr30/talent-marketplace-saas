@@ -337,12 +337,13 @@ Why it is included:
 
 ## 6. Standard user roles
 
-### Professional Individual User
+### Joven Profesional
 Scope: own account and candidate profile.
 
 Purpose:
-- pays membership/licensing as an individual professional
-- can view protected opportunities and apply with a reusable profile
+- pays or receives the **Joven Profesional** annual membership category
+- is the canonical individual user who only applies to opportunities and does not publish opportunities
+- can view protected opportunities and apply with a reusable profile after approval and active membership/license gates pass
 
 May:
 - manage own candidate profile and CVs
@@ -355,6 +356,29 @@ May not:
 - create job postings
 - publish opportunities
 - manage a tenant unless separately approved as a tenant owner/member
+- manage tenant plans or billing
+- authorize other users
+
+### Other Individual ASI Member
+Scope: own account and candidate profile unless separately assigned to a tenant.
+
+Purpose:
+- covers individual annual membership categories such as Profesional Ejecutivo, Propietario Individual, Profesional o Empresario Jubilado, and Asociado
+- can view protected opportunities and apply with a reusable profile after approval and active membership/license gates pass
+- may later participate in tenant workflows only through a separate tenant membership and role assignment
+
+May:
+- manage own candidate profile and CVs
+- view protected opportunities after approval, active membership, and active license
+- save opportunities
+- create job alerts
+- apply to opportunities
+
+May not:
+- create job postings merely because individual membership is active
+- publish opportunities merely because individual membership is active
+- manage a tenant unless separately approved as a tenant owner/member
+- manage tenant plans or billing unless separately assigned a tenant billing role
 - authorize other users
 
 ### Company User Without Tenant Ownership
@@ -380,7 +404,7 @@ Only company tenants may create employment job postings.
 
 Other tenant kinds may have future opportunity types, but they must not receive `job:create` or `job:publish` for employment jobs unless product policy explicitly changes.
 
-Professional individual users are never allowed to create job postings merely because they pay membership or hold an approved professional profile.
+Joven Profesional users and other individual ASI members are never allowed to create job postings merely because they pay membership or hold an approved professional profile.
 
 ---
 
@@ -396,14 +420,15 @@ Ship these role presets first:
 - Application Reviewer
 - Platform Moderator
 - Readonly Platform Auditor
-- Professional Individual User
+- Joven Profesional
+- Other Individual ASI Member
 - Tenant Billing Contact
 
 ---
 
 ## 9. Permission matrix
 
-| Capability | Super Admin | Platform Support | Platform Moderator | Readonly Auditor | Regional Admin | Pastor Admin | Tenant Owner | Tenant Admin | Opportunity Manager | Application Reviewer | Tenant Billing Contact | Professional User |
+| Capability | Super Admin | Platform Support | Platform Moderator | Readonly Auditor | Regional Admin | Pastor Admin | Tenant Owner | Tenant Admin | Opportunity Manager | Application Reviewer | Tenant Billing Contact | Joven Profesional |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | Full platform governance | yes | no | no | no | no | no | no | no | no | no | no | no |
 | Support tickets/admin console support | yes | yes | no | read only | no | no | no | no | no | no | no | no |
@@ -417,7 +442,7 @@ Ship these role presets first:
 | Read tenant billing/plan state | yes | yes | no | no by default | no | no | yes | optional | no | no | yes | no |
 | Create employment job postings | no by default | no | no | no | no | no | yes, company tenants only | yes, company tenants only | yes, company tenants only | no | no | no |
 | Review applications | no by default | no | no | no | no | no | yes | yes | yes | yes | no | own applications only |
-| View/apply to opportunities | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes |
+| View/apply to opportunities | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes if member gate passes | yes, candidate-only |
 
 ---
 
@@ -430,4 +455,5 @@ Use customer-facing labels carefully:
 - `Platform Moderator` is an internal trust/safety label.
 - `Readonly Platform Auditor` is an internal read-only governance label.
 - `Tenant Owner`, `Tenant Admin`, `Opportunity Manager`, `Application Reviewer`, and `Tenant Billing Contact` are tenant-side operational labels.
-- `Professional Individual User` is a product/account type, not a platform admin role.
+- `Joven Profesional` is the canonical customer-facing role/category for an individual user who only applies to opportunities and does not publish opportunities.
+- `Other Individual ASI Member` covers other individual annual membership categories and is not a tenant or platform admin role by itself.
