@@ -42,6 +42,7 @@
 9. Candidate visibility for recruiter discovery must be opt-in and disabled by default.
 10. A candidate may stay hidden from recruiter search and still apply normally to opportunities.
 11. Candidate opportunity discovery, saved jobs, and application flows are not public guest experiences; they require approved ASI membership and an active subscription.
+12. A future anonymous opportunity preview is allowed as a deliberately limited public surface, but it must expose only non-sensitive summary information and must not include opportunity detail, saved jobs, application submission, candidate discovery, screening questions, or tenant-private workflow data.
 
 ---
 
@@ -72,12 +73,13 @@
 6. Opportunities may have screening questions.
 7. Salary visibility may be optional based on tenant preference and plan.
 8. Expiration behavior must be consistent and documented.
-9. Published opportunities must not be discoverable by guest users for now; access requires approved user status, ASI membership, and an active subscription.
+9. Published opportunities must not be fully discoverable by guest users for now; access requires approved user status, ASI membership, and an active subscription.
 10. Candidates may save published opportunities without immediately entering the application flow.
 11. Opportunity discovery and application submission use `opportunity_type` to distinguish employment, project, volunteer, and professional-service workflows while preserving one shared MVP posting table.
 12. Minimum opportunity data is enforced by `opportunity_type`: projects require operating scope plus delivery timeline, volunteering requires operating scope plus engagement model, and professional services require service scope.
 13. Only company tenants may create and publish employment job postings.
 14. Professional individual users may view and apply to opportunities when approved and licensed, but may not create or publish job postings.
+15. A future guest-facing opportunity preview may list limited opportunity cards without detail access, but it must be explicitly designed, documented, moderated, and separated from member-gated opportunity discovery.
 
 ---
 

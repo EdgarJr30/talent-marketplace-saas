@@ -132,6 +132,9 @@ Ship protected opportunity publishing and candidate discovery for approved ASI m
 - authorized recruiters can search visible candidates without waiting for an application
 - candidates can save published opportunities before the application phase is enabled
 
+### Future consideration
+- anonymous opportunity preview may later expose limited public summary cards, but full opportunity detail, saved jobs, applications, screening questions, and recruiter/candidate workflows remain member-gated unless a future phase explicitly changes that contract
+
 ---
 
 ## Phase 5 — Applications

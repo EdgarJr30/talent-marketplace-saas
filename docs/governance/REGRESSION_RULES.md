@@ -123,7 +123,7 @@ Under no circumstance may the platform invent, guess, or fabricate the cause of 
 Do not regress the product back to an applications-only marketplace. The MVP must allow authorized employer users to search candidates directly even if they have not applied, but only when the candidate explicitly opted into recruiter visibility.
 
 ### R-032 — Jobs discovery must stay member-gated
-Do not expose published jobs or opportunity detail views to guest users. For now, `/platform/jobs*` must require approved user status, ASI membership, and active subscription status before showing jobs, while keeping tenant CRUD and saved-jobs ownership under the proper permissions and profile rules.
+Do not expose published jobs or opportunity detail views to guest users. For now, `/platform/jobs*` must require approved user status, ASI membership, and active subscription status before showing full jobs, while keeping tenant CRUD and saved-jobs ownership under the proper permissions and profile rules. A future anonymous preview of opportunities is allowed only as a separate limited summary surface, without detail pages, screening questions, applications, saved jobs, candidate discovery, or tenant-private workflow data.
 
 ### R-033 — ATS movement must stay auditable and status-driven
 Do not regress the hiring workflow back to opaque application state toggles. Every application must keep an explicit current pipeline stage, stage changes must write auditable history, and candidate-facing status must stay synchronized from the verified stage mapping instead of ad hoc UI-only updates. Any legacy `status_public` naming must be treated as candidate-facing only, not guest-public exposure.

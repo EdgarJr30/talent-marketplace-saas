@@ -74,13 +74,14 @@ Security includes protecting:
 14. Candidate CV files must stay in a private bucket with ownership-based path policies and signed URL access.
 15. Email workflow processors must authenticate with a server-side secret or equivalent non-browser credential and must keep provider keys only in Edge Function secrets.
 16. Internal QA, foundations, and operational tooling must never be publicly exposed by default in the customer-facing app shell or landing routes.
-17. Protected opportunity discovery, including `/platform/jobs*`, must require approved user status, ASI membership, and active subscription status before returning job data.
+17. Protected opportunity discovery, including `/platform/jobs*`, must require approved user status, ASI membership, and active subscription status before returning full job data.
 18. Pastor and regional administrator validation must be form-backed, admin-reviewed, and auditable before elevated access or tenant-operational privileges are granted.
 19. Anonymous database access to job postings, screening questions, saved jobs, and job alerts must remain revoked while opportunity discovery is member-gated.
 20. Pastor and regional administrator evidence files, including cedula and appointment documents, must live in private storage and be readable only by the requester and authorized reviewers.
 21. Pastor, association administrator, and union administrator decisions must enforce approved territory scope server-side; client filtering is not sufficient.
 22. Pastor/regional authorization must not activate product access by itself. Final license activation must remain a separate audited action limited to super administrators and platform support.
 23. Professional individual users must not be able to create or publish job postings. Employment job creation and publishing must be restricted to approved company tenants with the required tenant permissions.
+24. A future anonymous opportunity preview must be backed by an intentionally public, least-privilege read path that returns only approved summary fields and never exposes full job detail, screening questions, saved jobs, applications, candidate data, or tenant-private workflow state.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.

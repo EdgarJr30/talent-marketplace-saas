@@ -152,6 +152,8 @@ Platform launch-readiness screens must remain split between `platform_dashboard:
 Protected opportunity discovery and application routes must also check approved user status, ASI membership, and active user subscription status before tenant-level or candidate-profile permissions are considered.
 The canonical SQL helper for this prerequisite is `has_active_asi_access(user_id)`. Publishing an opportunity also requires active tenant subscription state through `can_publish_opportunity(tenant_id)`.
 
+A future anonymous opportunity preview may exist only as a separate public summary surface. It must not reuse protected opportunity detail, saved-job, application, screening-question, or recruiter-discovery permissions.
+
 ---
 
 ## 5. Role model rules

@@ -257,6 +257,8 @@ Employment job creation and publishing must be limited to approved company tenan
 ### FR-7 Search/discovery
 Approved ASI members with active subscriptions must be able to browse/search/filter opportunities.
 
+Future scope may add an anonymous opportunity preview that shows limited public opportunity summaries without exposing full details, saved jobs, applications, screening questions, or candidate/recruiter workflows. Full discovery remains member-gated unless that future surface is intentionally designed and documented.
+
 ### FR-7.1 Candidate opportunity alerts
 Candidates must be able to save, pause, reactivate, and delete basic opportunity alerts based on discovery filters.
 
