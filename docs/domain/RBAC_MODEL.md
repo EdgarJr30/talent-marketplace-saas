@@ -23,12 +23,10 @@ Used for cross-platform operations such as:
 - system configuration
 
 ### Example platform roles
-- Platform Owner
-- Platform Admin
-- Trust & Safety Analyst
-- Support Agent
-- Billing Admin
-- Readonly Ops Analyst
+- Super Administrator
+- Platform Support
+- Platform Moderator
+- Readonly Platform Auditor
 
 ---
 
@@ -38,9 +36,8 @@ Used inside an ASI tenant workspace. A tenant may represent a company, ministry,
 ### Example system tenant roles
 - Tenant Owner
 - Tenant Admin
-- Recruiter
-- Hiring Manager
-- Reviewer
+- Opportunity Manager
+- Application Reviewer
 - Readonly Analyst
 
 ### Requirement
@@ -96,6 +93,9 @@ Examples:
 - `feature_flag:read`
 - `feature_flag:update`
 - `support:impersonate_limited` *(only if intentionally allowed later)*
+- `support_ticket:read`
+- `support_ticket:update`
+- `app_error_log:read`
 - `audit_log:read`
 - `user:read`
 - `user:update`
@@ -165,10 +165,12 @@ The canonical SQL helper for this prerequisite is `has_active_asi_access(user_id
 9. Notification-management permissions must control who can create notifications, manage push subscriptions by tenant context, and inspect delivery logs.
 10. Candidate sourcing permissions must be distinct from application review permissions.
 11. Pastor and regional administrator validation flows must collect a form submission and require admin approval before granting elevated or tenant-operational access.
-12. Pastor authorization must be scoped to the approved district/churches and may only authorize standard professional users or company/operator requests inside that scope.
-13. Association administrator authorization must be scoped to the approved association and may review pastors, standard professional users, and company/operator requests inside that association.
-14. Union administrators may review territory-scoped requests across the approved union and may activate licenses only when they also have `license:activate`.
-15. Final license activation is separate from pastor/regional authorization and must remain limited to super administrators or authorized union administrators.
+12. Pastor authorization must be scoped to the approved district/churches and may only authorize standard professional users inside that scope.
+13. Regional administrator authorization must be scoped to the approved union or association and may review pastors and standard professional users inside that territory.
+14. Pastor and regional administrator roles do not authorize company/operator account requests by default.
+15. Final license activation is separate from pastor/regional authorization and must remain limited to super administrators and platform support.
+16. Only company tenants may receive job creation and publishing permissions for employment job postings.
+17. The full role and scope taxonomy is defined in `docs/domain/ROLE_SCOPE_MODEL.md`.
 
 ---
 
@@ -227,16 +229,16 @@ All permission changes must remain aligned with `docs/governance/SECURITY_RULES.
 
 ## 9. Recommended starter role matrix
 
-| Capability | Tenant Owner | Tenant Admin | Recruiter | Hiring Manager | Reviewer |
+| Capability | Tenant Owner | Tenant Admin | Opportunity Manager | Application Reviewer | Readonly Analyst |
 |---|---:|---:|---:|---:|---:|
 | View workspace | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Edit company profile | ✅ | ✅ | ❌ | ❌ | ❌ |
-| Create jobs | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Publish/close jobs | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Create employment jobs | ✅ company tenants only | ✅ company tenants only | ✅ company tenants only | ❌ | ❌ |
+| Publish/close employment jobs | ✅ company tenants only | ✅ company tenants only | ✅ company tenants only | ❌ | ❌ |
 | View applications | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Search visible candidates | ✅ | ✅ | ✅ | ✅ | ❌ |
-| Open full sourced candidate profile | ✅ | ✅ | ✅ | ✅ | ❌ |
-| Move stage | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Search visible candidates | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Open full sourced candidate profile | ✅ | ✅ | ✅ | optional | ❌ |
+| Move stage | ✅ | ✅ | ✅ | optional | ❌ |
 | Add notes | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Rate candidates | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Invite members | ✅ | ✅ | ❌ | ❌ | ❌ |
@@ -245,13 +247,13 @@ All permission changes must remain aligned with `docs/governance/SECURITY_RULES.
 
 ## 9.1 Recommended platform authority matrix
 
-| Capability | Super Admin | Union Admin | Association Admin | Pastor |
+| Capability | Super Admin | Platform Support | Regional Admin | Pastor Admin |
 |---|---:|---:|---:|---:|
-| Review pastor requests | ✅ | ✅ | ✅ within association | ❌ |
-| Review association admin requests | ✅ | ✅ within union | ❌ | ❌ |
-| Authorize professional users | ✅ | ✅ within union | ✅ within association | ✅ within district/church scope |
-| Authorize company/operator requests | ✅ | ✅ within union | ✅ within association | ✅ as pastoral authorization only |
-| Activate final license | ✅ | ✅ with `license:activate` | ❌ | ❌ |
+| Review pastor requests | ✅ | ❌ | ✅ within territory | ❌ |
+| Review regional admin requests | ✅ | ❌ | ❌ | ❌ |
+| Authorize professional users | ✅ | ❌ | ✅ within territory | ✅ within district/church scope |
+| Authorize company/operator requests | ✅ | ❌ | ❌ by default | ❌ by default |
+| Activate final license | ✅ | ✅ | ❌ | ❌ |
 | Grant super administrator access | ✅ | ❌ | ❌ | ❌ |
 
 ---

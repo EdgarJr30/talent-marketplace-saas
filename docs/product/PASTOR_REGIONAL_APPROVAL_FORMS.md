@@ -9,7 +9,7 @@ The approval model has two separate gates:
 - identity and authority validation
 - license activation
 
-A pastor or regional administrator may authorize a user or request inside their approved scope, but final product access still requires the license/subscription gate defined by platform policy.
+A pastor or regional administrator may authorize a normal professional user inside their approved scope, but final product access still requires the license/subscription gate defined by platform policy.
 
 ---
 
@@ -63,13 +63,13 @@ An approved pastor receives a platform-level pastor authorization role scoped to
 
 The pastor may:
 - authorize standard professional users within the approved church/district scope
-- authorize company or organization account requests when the applicant belongs to the approved church/district scope
 - see only the authorization queue and history for their approved scope
 
 The pastor may not:
 - activate a user license or subscription
 - approve another pastor
 - approve a regional administrator
+- authorize company or organization account requests by default
 - grant platform admin permissions
 - bypass ASI membership or subscription requirements
 - see users, companies, or requests outside the approved scope
@@ -105,18 +105,18 @@ An approved regional administrator receives a platform-level administrator role 
 Association-scope administrators may:
 - review and authorize pastors inside their association
 - review and authorize standard professional users inside their association
-- review and authorize company or organization account requests inside their association
 - see only approval queues and history for their association scope
 
 Union-scope administrators may:
 - review and authorize pastors across the union
 - review and authorize association administrators across the union
-- review and authorize standard professional users and company requests across the union
-- activate the final user license when granted the license activation permission
+- review and authorize standard professional users across the union
 
 Regional administrators may not:
 - exceed their approved territory
 - bypass the final license/subscription gate
+- authorize company or organization account requests by default
+- activate the final user license
 - grant super administrator access
 - bypass audit logging
 
@@ -138,10 +138,12 @@ Regional administrators may not:
 ### License activation
 Pastor or regional authorization is not the same as license activation.
 
-For professional users and company/operator accounts:
+For professional users:
 1. Pastor or regional administrator can authorize the user/request within scope.
-2. Super administrator or authorized union administrator activates the user license.
+2. Super administrator or platform support activates the user license.
 3. The user gets product access only after all existing gates pass: approved user status, ASI membership status, active user subscription/license status, active account status, and valid expiration policy.
+
+Company/operator account requests are approved through the tenant/operator approval flow and do not become pastor-authorized by default.
 
 ---
 
@@ -149,9 +151,9 @@ For professional users and company/operator accounts:
 | Actor | Territory scope | Can authorize professionals | Can authorize companies | Can approve pastors | Can approve regional admins | Can activate license |
 |---|---|---:|---:|---:|---:|---:|
 | Super administrator | all platform | yes | yes | yes | yes | yes |
-| Union administrator | approved union | yes | yes | yes | association admins only | yes when granted |
-| Association administrator | approved association | yes | yes | yes, within association | no | no by default |
-| Pastor | approved district/churches | yes | yes, as pastoral authorization only | no | no | no |
+| Platform support | support console | no | no | no | no | yes |
+| Union/regional administrator | approved union or association | yes | no by default | yes, within territory | association admins only | no |
+| Pastor | approved district/churches | yes | no by default | no | no | no |
 
 ---
 
@@ -178,3 +180,4 @@ Identity documents and appointment evidence must live in private storage with re
 - Until that catalog exists, free-text territory fields may be accepted only as a temporary intake layer and must be normalized before granting authority.
 - Do not grant authorization capability from form submission alone; approval must create the scoped authority assignment.
 - Do not let scoped authorization replace platform license activation.
+- Keep the full role and scope taxonomy aligned with `docs/domain/ROLE_SCOPE_MODEL.md`.

@@ -36,7 +36,8 @@ Establish secure multi-tenant access control.
 - platform-admin approval for user activation
 - pastor and regional administrator validation forms
 - scoped pastor/regional authorization workflow
-- final license activation gate for super administrator or authorized union administrator
+- final license activation gate for super administrator or platform support
+- role-scope presets for platform, church-territory, tenant, and professional users
 - tenant operator request submission
 - platform-admin approval for tenant onboarding
 - tenant creation after approval
@@ -53,7 +54,9 @@ Establish secure multi-tenant access control.
 - pastor can submit cedula-backed validation request with union, association, and district scope
 - regional administrator can submit cedula plus appointment-backed validation request with union or association scope
 - approved pastors and regional administrators can authorize only requests inside their approved territory
+- regional administrators authorize pastors and normal professional users only, not companies by default
 - license activation remains separate from pastor/regional authorization
+- only super administrators and platform support can activate final licenses
 - platform admin can approve or reject recruiter request
 - user approval, ASI membership, and active subscription gate protected product content
 - tenant approval creates tenant, tenant profile, and first owner membership

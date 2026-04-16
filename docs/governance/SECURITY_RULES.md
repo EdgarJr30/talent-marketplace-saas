@@ -79,7 +79,8 @@ Security includes protecting:
 19. Anonymous database access to job postings, screening questions, saved jobs, and job alerts must remain revoked while opportunity discovery is member-gated.
 20. Pastor and regional administrator evidence files, including cedula and appointment documents, must live in private storage and be readable only by the requester and authorized reviewers.
 21. Pastor, association administrator, and union administrator decisions must enforce approved territory scope server-side; client filtering is not sufficient.
-22. Pastor/regional authorization must not activate product access by itself. Final license activation must remain a separate audited action limited to super administrators or authorized union administrators.
+22. Pastor/regional authorization must not activate product access by itself. Final license activation must remain a separate audited action limited to super administrators and platform support.
+23. Professional individual users must not be able to create or publish job postings. Employment job creation and publishing must be restricted to approved company tenants with the required tenant permissions.
 
 ### Supabase MCP rules for LLM-assisted development
 - Supabase MCP may be used only as an internal developer tool, never as an end-user or customer-facing capability.

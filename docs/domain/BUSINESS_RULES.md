@@ -14,9 +14,9 @@
 8. Viewing or applying to protected product opportunities requires approved user status, ASI membership, and an active subscription.
 9. Protected content access is granted only when `user_approval_status = approved`, `asi_membership_status in (active, grace_period)`, `user_subscription_status in (trialing, active, grace_period)`, the account itself is active, and any configured membership/subscription expiration has not passed, unless an auditable manual override is still active.
 10. Pastor and regional administrator authority is request-based, evidence-backed, scoped to church territory, and separate from final user license activation.
-11. Pastors may authorize standard professional users and company/operator requests only inside their approved district/church scope, but pastors may not activate licenses or approve other pastors/regional administrators.
-12. Association administrators may authorize pastors, professional users, and company/operator requests only inside their approved association scope, but may not activate licenses by default.
-13. Super administrators and authorized union administrators may activate the final license after the required pastor/regional authorization and platform checks pass.
+11. Pastors may authorize standard professional users only inside their approved district/church scope, but pastors may not activate licenses, authorize companies, or approve other pastors/regional administrators.
+12. Regional administrators may authorize pastors and standard professional users only inside their approved territory, but may not activate licenses or authorize companies by default.
+13. Super administrators and platform support users may activate the final license after the required authorization and platform checks pass.
 
 ---
 
@@ -55,6 +55,7 @@
 7. Tenant member invitations are only valid for users who already registered as standard platform users; MVP does not create tenant invites for unknown emails.
 8. Tenant-side candidate sourcing is allowed even when the candidate has not applied yet, but only for visible opt-in profiles.
 9. Recruiter requests enforce minimum data by `tenant_kind`: company requires legal name, ministry requires legal name plus operating scope, project requires sponsoring entity plus operating scope, field requires field region plus sponsoring entity, and generic profile requires conversion intent.
+10. Tenant ownership does not imply platform authority; tenant owners can manage only their approved tenant scope.
 
 ---
 
@@ -75,6 +76,8 @@
 10. Candidates may save published opportunities without immediately entering the application flow.
 11. Opportunity discovery and application submission use `opportunity_type` to distinguish employment, project, volunteer, and professional-service workflows while preserving one shared MVP posting table.
 12. Minimum opportunity data is enforced by `opportunity_type`: projects require operating scope plus delivery timeline, volunteering requires operating scope plus engagement model, and professional services require service scope.
+13. Only company tenants may create and publish employment job postings.
+14. Professional individual users may view and apply to opportunities when approved and licensed, but may not create or publish job postings.
 
 ---
 
@@ -120,6 +123,7 @@
 10. Internal developer access is a separate operational flag and must not implicitly grant platform or tenant permissions.
 11. Pastor, association administrator, and union administrator permissions must be territory-scoped and auditable.
 12. Pastor or regional authorization must never replace final license activation or subscription checks.
+13. The canonical role taxonomy, scope definitions, and role recommendations live in `docs/domain/ROLE_SCOPE_MODEL.md`.
 
 ---
 

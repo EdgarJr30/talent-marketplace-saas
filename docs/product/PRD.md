@@ -48,11 +48,14 @@ Needs filtering, review, notes, ratings, and applicant stage movement across job
 ### Platform admin
 Needs moderation, plan management, support tools, and governance.
 
+### Platform support
+Needs admin-console access to support tickets, operational errors, diagnostics, account assistance, and license activation without receiving full super administrator authority.
+
 ### Pastor
-Needs a simple validated intake flow to prove pastoral identity, attach cedula evidence, declare union/association/district/church scope, and authorize professional or company account requests only inside that approved scope.
+Needs a simple validated intake flow to prove pastoral identity, attach cedula evidence, declare union/association/district/church scope, and authorize normal professional users only inside that approved scope.
 
 ### Regional administrator
-Needs a validated intake flow to prove administrative appointment, attach cedula plus official authorization evidence, declare union or association scope, and review pastors, professionals, or company requests only inside that approved territory.
+Needs a validated intake flow to prove administrative appointment, attach cedula plus official authorization evidence, declare union or association scope, and review pastors or normal professional users only inside that approved territory.
 
 ---
 
@@ -118,7 +121,8 @@ The MVP should **not** initially include:
 - platform admin area
 - pastor validation form with cedula upload, union, association, district, optional churches, and platform-admin approval before scoped pastor authorization is granted
 - regional administrator validation form with cedula upload, appointment evidence, union/association scope, and platform-admin approval before scoped regional authorization is granted
-- two-step authorization model where pastors or regional administrators may authorize users/companies within scope, but final license activation remains limited to the super administrator or an authorized union administrator
+- role-scope model that separates super administrator, platform support, regional administrator, pastor administrator, tenant owner, tenant member, and professional individual user
+- two-step authorization model where pastors or regional administrators may authorize normal users within scope, but final license activation remains limited to the super administrator or platform support
 - avatar and document uploads with modern web formats, 5 MB guardrails, and clear validation feedback
 - authenticated app entry redirect that sends employer users to `/workspace` and standard users to `/candidate/profile`
 
@@ -247,6 +251,8 @@ Candidates must be able to upload and manage CV files, with explicit type and si
 
 ### FR-6 Job publishing
 Authorized tenant users must be able to create, publish, edit, close, and archive opportunities across jobs, projects, volunteering, and professional services.
+
+Employment job creation and publishing must be limited to approved company tenants with the required tenant permissions. Professional individual users may view and apply to opportunities, but may not create or publish job postings.
 
 ### FR-7 Search/discovery
 Approved ASI members with active subscriptions must be able to browse/search/filter opportunities.

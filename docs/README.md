@@ -14,6 +14,7 @@ This folder contains the canonical Markdown documentation for the repository.
 - `domain/BUSINESS_RULES.md`
 - `domain/DOMAIN_MODEL.md`
 - `domain/RBAC_MODEL.md`
+- `domain/ROLE_SCOPE_MODEL.md`
 
 ### `architecture/`
 - `architecture/TECHNICAL_ARCHITECTURE.md`
