@@ -139,6 +139,9 @@ Plan definition.
 ### TenantSubscription
 Tenant-to-plan assignment.
 
+### UserSubscription
+User-level access/license state for protected ASI product access.
+
 ### FeatureFlag
 Capability toggle.
 
@@ -173,6 +176,8 @@ Technical log line for provider attempts, failures, and retries.
 - one **Tenant** has one primary **CompanyProfile** / tenant profile
 - one approved **RecruiterRequest** creates one **Tenant**, one **CompanyProfile**, and one initial **Membership**
 - one **Tenant** has many **JobPostings** / opportunities
+- one **Tenant** has one current **TenantSubscription**
+- one **User** has user-level membership/subscription state for protected product access
 - one **JobPosting** has many **Applications**
 - one **CandidateProfile** can have many **Applications**
 - one **Application** belongs to one current **PipelineStage**
@@ -262,6 +267,7 @@ Technical log line for provider attempts, failures, and retries.
 Launch-readiness notes:
 - `memberships.status = invited` is a first-class MVP state used by employer invitations and invite revocation.
 - `job_alerts.criteria_json` stores the current MVP discovery filters: query, workplace type, and country code.
+- Commercial plan behavior must follow `docs/product/COMMERCIAL_PLAN_MODEL.md`; individual user subscriptions and tenant subscriptions must remain separate concepts.
 - Email workflow notifications remain durable in `notification_deliveries` until the processor marks them `sent` or `failed` and writes `notification_delivery_logs`.
 - Notification events, preferences, templates, inbox items, deliveries, and push subscriptions must evolve according to `docs/product/NOTIFICATION_IMPLEMENTATION_PLAN.md`.
 - `recruiter_requests.request_metadata` stores tenant-kind-specific onboarding data such as `operating_scope`, `sponsoring_entity`, `field_region`, and `conversion_intent`.

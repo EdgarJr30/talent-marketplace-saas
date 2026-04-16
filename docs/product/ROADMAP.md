@@ -198,9 +198,11 @@ Operational maturity for launch.
 - critical notice policy for security, access, approvals, membership/subscription, compliance, and role/permission changes
 - moderation dashboard baseline
 - plan/limits hooks
+- commercial plan catalog based on `tenant_baseline`, `tenant_essential`, `tenant_growth`, `tenant_scale`, and `tenant_enterprise`
+- separate individual membership/subscription gates from tenant workspace plan enforcement
 - admin dashboards baseline
 - workflow notifications emitted from durable server-side events
-- seeded free/growth plan catalog plus tenant subscription bootstrap
+- seeded tenant plan catalog plus tenant subscription bootstrap
 - platform feature-flag controls for launch operations
 - release checklist and mobile smoke coverage
 - client-ready public landing with SaaS pricing and donation sections, while job discovery remains member-gated
@@ -214,6 +216,7 @@ Operational maturity for launch.
 - push notifications require explicit consent and can be revoked
 - moderation actions work
 - basic plan enforcement hooks exist
+- individual access, tenant plan, tenant kind, and RBAC checks remain separate and explainable
 - platform admins can inspect launch-health counters from inside the app
 - customer-facing entrypoints no longer expose internal launch tooling
 

@@ -185,6 +185,11 @@
 5. Free-plan assumptions must not leak into the core domain model.
 6. New tenants must receive a default subscription baseline so plan hooks can operate from day one.
 7. User-level ASI membership and subscription status gates protected platform content before tenant-level plan limits are evaluated.
+8. Individual ASI membership/subscription is personal access and must not be treated as a tenant workspace plan.
+9. Tenant plans unlock workspace capacity and features, but they do not activate individual user access by default.
+10. Roles decide what a user can do; plans decide what capacity/features are enabled; both checks are required.
+11. Tenant kind restrictions apply even when a tenant has a paid plan.
+12. The canonical commercial plan model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
 
 ---
 

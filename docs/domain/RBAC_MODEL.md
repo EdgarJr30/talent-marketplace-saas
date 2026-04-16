@@ -197,6 +197,8 @@ Internal developer access may also exist as an explicit operational flag on the 
 
 User approval, ASI membership, and active subscription status are prerequisite gates for protected product content. They do not replace tenant RBAC, and tenant RBAC does not bypass them.
 
+Commercial plan checks are separate from RBAC checks. Roles grant permission to attempt an action, while tenant plans and tenant-kind rules decide whether the workspace has capacity or eligibility for that action. The canonical commercial model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
+
 ---
 
 ## 7. UI behavior rules

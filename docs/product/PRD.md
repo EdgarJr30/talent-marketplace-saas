@@ -208,6 +208,8 @@ The MVP should **not** initially include:
 - usage counters / plan hooks
 - feature flag toggles for launch operations
 - seeded plan catalog with tenant subscription baseline
+- commercial model that separates individual ASI membership/subscription from tenant workspace plans
+- tenant limits by plan, tenant kind, role, and feature eligibility
 - release checklist plus mobile smoke coverage for launch QA
 
 ## 8.10 PWA foundations
@@ -295,6 +297,8 @@ Platform admins must be able to take moderation actions on risky or abusive cont
 
 ### FR-12.1 Plan operations
 Platform admins must be able to inspect tenant plan state, seeded limits, and basic launch counters from inside the application.
+
+The commercial model must separate individual ASI membership/subscription from tenant workspace plans. Individual access gates protected content and applications; tenant plans gate workspace capacity, publishing, ATS features, team seats, candidate sourcing, exports, analytics, and plan limits. Roles and plans must both pass before a tenant-scoped action is allowed. The canonical model lives in `docs/product/COMMERCIAL_PLAN_MODEL.md`.
 
 ### FR-13 Error transparency and diagnostics
 Meaningful user-facing failures must provide actionable feedback in the UI and also be logged to Supabase so platform admins can investigate the root cause later.
