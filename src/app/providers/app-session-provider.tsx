@@ -160,6 +160,20 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
   }, [])
 
   const activeMembership = resolveActiveMembership(memberships)
+  const hasAdminConsolePermission = permissions.some((permission) =>
+    [
+      'platform_dashboard:read',
+      'recruiter_request:review',
+      'user:approve',
+      'pastor_authority_request:review',
+      'regional_authority_request:review',
+      'scoped_user_authorization:review',
+      'support_ticket:read',
+      'moderation:read',
+      'app_error_log:read',
+      'audit_log:read'
+    ].includes(permission)
+  )
 
   const contextValue: AppSessionContextValue = {
     activeMembership,
@@ -177,7 +191,7 @@ export function AppSessionProvider({ children }: PropsWithChildren) {
     isPlatformAdmin,
     isInternalDeveloper,
     hasActiveAsiAccess: hasActiveAsiAccess(profile),
-    canAccessAdminConsole: isPlatformAdmin || isInternalDeveloper,
+    canAccessAdminConsole: isPlatformAdmin || isInternalDeveloper || hasAdminConsolePermission,
     canReviewRecruiterRequests: permissions.includes('recruiter_request:review'),
     canReviewAppErrors: permissions.includes('audit_log:read'),
     refresh

@@ -47,6 +47,12 @@ export const candidateNavigationItems: NavigationItem[] = [
     href: '/candidate/recruiter-request',
     description: 'Lleva tu empresa a la plataforma',
     requiresAuth: true
+  },
+  {
+    title: 'Autorización territorial',
+    href: '/candidate/authority-request',
+    description: 'Solicita validación pastoral o regional',
+    requiresAuth: true
   }
 ]
 
@@ -98,9 +104,8 @@ export const adminNavigationItems: NavigationItem[] = [
   {
     title: 'Approvals',
     href: surfacePaths.admin.approvals,
-    description: 'Solicitudes de operador',
-    requiresAuth: true,
-    requiredPermission: 'recruiter_request:review'
+    description: 'Operador, membresía y autoridad territorial',
+    requiresAuth: true
   },
   {
     title: 'Platform',

@@ -58,6 +58,10 @@ const asiTypeRequirementsMigrationPath = resolve(
   repoRoot,
   'supabase/migrations/20260415031500_asi_type_requirements.sql'
 )
+const asiMembershipAuthorityMigrationPath = resolve(
+  repoRoot,
+  'supabase/migrations/20260415050000_asi_membership_and_authority_requests.sql'
+)
 
 describe('supabase schema contract', () => {
   it('keeps the identity, notification, and push workflow migrations in place', () => {
@@ -76,6 +80,7 @@ describe('supabase schema contract', () => {
     expect(existsSync(mvpLaunchReadinessMigrationPath)).toBe(true)
     expect(existsSync(asiAccessOpportunityKindsMigrationPath)).toBe(true)
     expect(existsSync(asiTypeRequirementsMigrationPath)).toBe(true)
+    expect(existsSync(asiMembershipAuthorityMigrationPath)).toBe(true)
   })
 
   it('defines the core identity, approval, and storage foundations', () => {
@@ -191,6 +196,20 @@ describe('supabase schema contract', () => {
     expect(migration).toContain('Project opportunities require delivery_timeline metadata')
     expect(migration).toContain('Volunteer opportunities require engagement_model metadata')
     expect(migration).toContain('create trigger job_postings_validate_requirements')
+  })
+
+  it('keeps membership persistence and authority-request foundations aligned with the schema contract', () => {
+    const migration = readFileSync(asiMembershipAuthorityMigrationPath, 'utf8')
+
+    expect(migration).toContain('create table if not exists public.institutional_membership_applications')
+    expect(migration).toContain('create table if not exists public.pastor_authority_requests')
+    expect(migration).toContain('create table if not exists public.regional_administrator_authority_requests')
+    expect(migration).toContain('create table if not exists public.user_authority_scopes')
+    expect(migration).toContain("('license:activate', 'license', 'activate', 'platform'")
+    expect(migration).toContain("create or replace function public.review_pastor_authority_request(")
+    expect(migration).toContain("create or replace function public.review_regional_authority_request(")
+    expect(migration).toContain("create or replace function public.validate_job_posting_tenant_kind()")
+    expect(migration).toContain('Only company tenants may create or publish employment opportunities')
   })
 
   it('keeps applications foundations aligned with the schema contract', () => {

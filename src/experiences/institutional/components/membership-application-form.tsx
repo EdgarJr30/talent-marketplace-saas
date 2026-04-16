@@ -9,10 +9,13 @@ import {
 } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { CheckCircle2, CircleAlert, LockKeyhole, PencilLine } from 'lucide-react'
 import { useForm, useWatch } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { useAppSession } from '@/app/providers/app-session-provider'
 import type { EligibilityToken } from '@/experiences/institutional/content/eligibility-content'
 import type { MembershipCategoryInfo } from '@/experiences/institutional/content/eligibility-content'
 import {
@@ -27,6 +30,11 @@ import {
   volunteerOptions,
   youngProfessionalStageOptions,
 } from '@/experiences/institutional/content/membership-application-content'
+import {
+  submitInstitutionalMembershipApplication,
+  toErrorMessage,
+} from '@/features/auth/lib/auth-api'
+import type { Json } from '@/shared/types/database'
 import { cn } from '@/lib/utils/cn'
 
 const DEFAULT_COUNTRY = 'República Dominicana'
@@ -118,6 +126,12 @@ export interface MembershipApplicationValues {
 
 type SubmissionSnapshot = MembershipApplicationValues & {
   resolvedBillingAddress: string[]
+}
+
+interface PersistedSubmission {
+  snapshot: SubmissionSnapshot
+  status: 'submitted'
+  submittedAt: string
 }
 
 type StringFieldName = {
@@ -838,9 +852,11 @@ function SubmissionSuccess({
   submission,
   onEdit,
 }: {
-  submission: SubmissionSnapshot
+  submission: PersistedSubmission
   onEdit: () => void
 }) {
+  const summary = submission.snapshot
+
   return (
     <div className="space-y-6 rounded-[1.75rem] border border-(--asi-outline) bg-(--asi-surface-raised) p-6 shadow-(--asi-shadow-soft) sm:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -850,13 +866,16 @@ function SubmissionSuccess({
           </div>
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-(--asi-secondary)">
-              Formulario listo
+              Expediente recibido
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-(--asi-text)">
-              Resumen preliminar preparado
+              Solicitud enviada a revisión
             </h2>
             <p className="mt-2 max-w-[58ch] text-sm leading-7 text-(--asi-text-muted)">
-              Tus respuestas quedaron validadas para la categoría seleccionada. El siguiente paso sigue siendo la revisión del capítulo local, la referencia pastoral y la coordinación del pago anual.
+              Tu expediente quedó persistido con estado real `submitted`. El siguiente paso sigue siendo la revisión del capítulo local, la referencia pastoral y la coordinación del pago anual.
+            </p>
+            <p className="mt-3 text-xs font-medium uppercase tracking-[0.18em] text-(--asi-text-muted)">
+              Enviado: {new Date(submission.submittedAt).toLocaleString()}
             </p>
           </div>
         </div>
@@ -876,25 +895,25 @@ function SubmissionSuccess({
             Solicitante
           </p>
           <p className="mt-2 text-lg font-semibold text-(--asi-text)">
-            {submission.firstName} {submission.lastName}
+            {summary.firstName} {summary.lastName}
           </p>
-          <p className="mt-1 text-sm text-(--asi-text-muted)">{submission.email}</p>
-          <p className="mt-1 text-sm text-(--asi-text-muted)">{submission.cellPhone}</p>
+          <p className="mt-1 text-sm text-(--asi-text-muted)">{summary.email}</p>
+          <p className="mt-1 text-sm text-(--asi-text-muted)">{summary.cellPhone}</p>
         </div>
         <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--asi-text-muted)">
             Categoría y cuota
           </p>
           <p className="mt-2 text-lg font-semibold text-(--asi-text)">
-            {submission.categoryName}
+            {summary.categoryName}
           </p>
-          <p className="mt-1 text-sm text-(--asi-text-muted)">Cuota anual: {submission.dues}</p>
+          <p className="mt-1 text-sm text-(--asi-text-muted)">Cuota anual: {summary.dues}</p>
           <p className="mt-1 text-sm text-(--asi-text-muted)">
-            {submission.categorySlug === ORGANIZATIONAL_FOR_PROFIT_SLUG
+            {summary.categorySlug === ORGANIZATIONAL_FOR_PROFIT_SLUG
               ? 'Tipo de pago: eCheck'
               : `Coordinación de pago: ${
                   paymentPreferenceOptions.find(
-                    (option) => option.value === submission.paymentPreference
+                    (option) => option.value === summary.paymentPreference
                   )?.label ?? 'Pendiente'
                 }`}
           </p>
@@ -904,17 +923,17 @@ function SubmissionSuccess({
             Referencia pastoral
           </p>
           <p className="mt-2 text-lg font-semibold text-(--asi-text)">
-            {submission.pastorName}
+            {summary.pastorName}
           </p>
-          <p className="mt-1 text-sm text-(--asi-text-muted)">{submission.pastorEmail}</p>
-          <p className="mt-1 text-sm text-(--asi-text-muted)">{submission.pastorPhone}</p>
+          <p className="mt-1 text-sm text-(--asi-text-muted)">{summary.pastorEmail}</p>
+          <p className="mt-1 text-sm text-(--asi-text-muted)">{summary.pastorPhone}</p>
         </div>
         <div className="rounded-2xl border border-(--asi-outline) bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--asi-text-muted)">
             Dirección de facturación
           </p>
           <div className="mt-2 space-y-1 text-sm text-(--asi-text-muted)">
-            {submission.resolvedBillingAddress.map((line) => (
+            {summary.resolvedBillingAddress.map((line) => (
               <p key={line}>{line}</p>
             ))}
           </div>
@@ -938,11 +957,12 @@ export function MembershipApplicationForm({
   token: EligibilityToken
   categoryInfo: MembershipCategoryInfo
 }) {
+  const session = useAppSession()
   const variant = getMembershipApplicationVariant(token.categorySlug)
   const isOrganizationalForProfit =
     token.categorySlug === ORGANIZATIONAL_FOR_PROFIT_SLUG
   const draftKey = `asi:membership_application_draft:${token.categorySlug}`
-  const [submission, setSubmission] = useState<SubmissionSnapshot | null>(null)
+  const [submission, setSubmission] = useState<PersistedSubmission | null>(null)
 
   const defaultValues = useMemo(() => {
     const initial = createDefaultValues(token)
@@ -1041,6 +1061,59 @@ export function MembershipApplicationForm({
 
   const errors = form.formState.errors
 
+  const submitMutation = useMutation({
+    mutationFn: async (values: MembershipApplicationValues) => {
+      const snapshot = buildSubmissionSnapshot(values)
+      const persisted = await submitInstitutionalMembershipApplication({
+        requesterUserId: session.authUser?.id ?? null,
+        categorySlug: values.categorySlug,
+        categoryName: values.categoryName,
+        dues: values.dues,
+        applicantFirstName: values.firstName,
+        applicantLastName: values.lastName,
+        applicantEmail: values.email,
+        applicantPhone: values.cellPhone,
+        pastorName: values.pastorName,
+        pastorEmail: values.pastorEmail,
+        pastorPhone: values.pastorPhone,
+        homeChurchName: values.homeChurchName,
+        churchCity: values.churchCity,
+        churchStateProvince: values.churchStateProvince,
+        conferenceName: values.conference,
+        submittedFormSnapshot: snapshot as unknown as Json,
+        eligibilitySnapshot: {
+          category: token.category,
+          categorySlug: token.categorySlug,
+          dues: token.dues,
+        } as Json,
+      })
+
+      return {
+        snapshot,
+        status: persisted.status,
+        submittedAt: persisted.submittedAt,
+      } satisfies PersistedSubmission
+    },
+    onSuccess: (persistedSubmission) => {
+      setSubmission(persistedSubmission)
+
+      try {
+        sessionStorage.removeItem(draftKey)
+      } catch {
+        // no-op
+      }
+
+      toast.success('Solicitud enviada', {
+        description: 'Tu expediente institucional quedó persistido y entró en revisión inicial.',
+      })
+    },
+    onError: (error) => {
+      toast.error('No pudimos enviar tu solicitud', {
+        description: toErrorMessage(error),
+      })
+    },
+  })
+
   useEffect(() => {
     if (!isOrganizationalForProfit) return
 
@@ -1067,15 +1140,7 @@ export function MembershipApplicationForm({
   }
 
   function handlePrepareSubmission(values: MembershipApplicationValues) {
-    const snapshot = buildSubmissionSnapshot(values)
-
-    setSubmission(snapshot)
-
-    try {
-      sessionStorage.removeItem(draftKey)
-    } catch {
-      return
-    }
+    submitMutation.mutate(values)
   }
 
   if (!variant) {
@@ -1104,6 +1169,12 @@ export function MembershipApplicationForm({
         note={categoryInfo.note ?? variant.note}
         requirements={categoryInfo.requirements}
       />
+
+      {submitMutation.isError ? (
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-7 text-red-700">
+          No pudimos guardar la solicitud real. Revisa los datos o vuelve a intentar.
+        </div>
+      ) : null}
 
       <ApplicationSection
         title="Datos de contacto"
@@ -2052,9 +2123,10 @@ export function MembershipApplicationForm({
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
         <button
           type="submit"
-          className="asi-button asi-button-primary w-full justify-center sm:w-auto"
+          disabled={submitMutation.isPending}
+          className="asi-button asi-button-primary w-full justify-center disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
         >
-          Preparar solicitud
+          {submitMutation.isPending ? 'Enviando solicitud...' : 'Enviar solicitud'}
         </button>
       </div>
     </form>

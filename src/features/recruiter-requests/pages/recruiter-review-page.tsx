@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { useAppSession } from '@/app/providers/app-session-provider'
 import { surfacePaths } from '@/app/router/surface-paths'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,45 +11,131 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import {
   createPrivateFileUrl,
+  listPendingInstitutionalMembershipApplications,
+  listPendingPastorAuthorityRequests,
   listPendingRecruiterRequests,
+  listPendingRegionalAuthorityRequests,
+  reviewInstitutionalMembershipApplication,
+  reviewPastorAuthorityRequest,
   reviewRecruiterRequest,
-  toErrorMessage
+  reviewRegionalAuthorityRequest,
+  toErrorMessage,
 } from '@/features/auth/lib/auth-api'
-import { reportErrorWithToast } from '@/lib/errors/error-reporting'
 import { getTenantKindLabel } from '@/features/opportunities/lib/opportunity-taxonomy'
 import { RecruiterRequestStatusBadge } from '@/features/recruiter-requests/components/recruiter-request-status-badge'
-import { useAppSession } from '@/app/providers/app-session-provider'
+import { reportErrorWithToast } from '@/lib/errors/error-reporting'
 
-const PENDING_REQUESTS_QUERY_KEY = ['recruiter-requests', 'pending'] as const
+const PENDING_RECRUITER_REQUESTS_QUERY_KEY = ['recruiter-requests', 'pending'] as const
+const PENDING_MEMBERSHIP_APPLICATIONS_QUERY_KEY = ['membership-applications', 'pending'] as const
+const PENDING_PASTOR_REQUESTS_QUERY_KEY = ['pastor-authority-requests', 'pending'] as const
+const PENDING_REGIONAL_REQUESTS_QUERY_KEY = ['regional-authority-requests', 'pending'] as const
+
+function getWorkflowBadgeClassName(status: string) {
+  switch (status) {
+    case 'approved':
+      return 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/25 dark:bg-emerald-500/12 dark:text-emerald-200'
+    case 'rejected':
+      return 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/25 dark:bg-rose-500/12 dark:text-rose-200'
+    case 'needs_more_info':
+      return 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/25 dark:bg-amber-500/12 dark:text-amber-200'
+    case 'under_review':
+      return 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/25 dark:bg-sky-500/12 dark:text-sky-200'
+    default:
+      return ''
+  }
+}
+
+function getWorkflowLabel(status: string) {
+  switch (status) {
+    case 'submitted':
+      return 'Enviada'
+    case 'under_review':
+      return 'En revisión'
+    case 'needs_more_info':
+      return 'Más información'
+    case 'approved':
+      return 'Aprobada'
+    case 'rejected':
+      return 'Rechazada'
+    default:
+      return status
+  }
+}
+
+function ApprovalActionRow({
+  disabled,
+  onApprove,
+  onNeedsMoreInfo,
+  onReject,
+  approveLabel = 'Aprobar',
+}: {
+  disabled: boolean
+  onApprove: () => void
+  onNeedsMoreInfo: () => void
+  onReject: () => void
+  approveLabel?: string
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row">
+      <Button className="sm:flex-1" disabled={disabled} onClick={onApprove}>
+        {approveLabel}
+      </Button>
+      <Button className="sm:flex-1" disabled={disabled} variant="outline" onClick={onNeedsMoreInfo}>
+        Solicitar más información
+      </Button>
+      <Button className="sm:flex-1" disabled={disabled} variant="danger" onClick={onReject}>
+        Rechazar
+      </Button>
+    </div>
+  )
+}
 
 export function RecruiterReviewPage() {
   const session = useAppSession()
   const queryClient = useQueryClient()
   const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({})
 
-  const pendingRequestsQuery = useQuery({
-    queryKey: PENDING_REQUESTS_QUERY_KEY,
-    queryFn: listPendingRecruiterRequests
+  const canReviewRecruiterRequests = session.permissions.includes('recruiter_request:review')
+  const canReviewMembershipApplications = session.permissions.includes('user:approve')
+  const canReviewPastorRequests = session.permissions.includes('pastor_authority_request:review')
+  const canReviewRegionalRequests = session.permissions.includes('regional_authority_request:review')
+
+  const recruiterRequestsQuery = useQuery({
+    queryKey: PENDING_RECRUITER_REQUESTS_QUERY_KEY,
+    queryFn: listPendingRecruiterRequests,
+    enabled: canReviewRecruiterRequests,
   })
 
-  const reviewMutation = useMutation({
-    mutationFn: async (values: {
-      requestId: string
-      decision: 'approved' | 'rejected'
-      reviewNotes: string
-    }) => reviewRecruiterRequest(values),
+  const membershipApplicationsQuery = useQuery({
+    queryKey: PENDING_MEMBERSHIP_APPLICATIONS_QUERY_KEY,
+    queryFn: listPendingInstitutionalMembershipApplications,
+    enabled: canReviewMembershipApplications,
+  })
+
+  const pastorRequestsQuery = useQuery({
+    queryKey: PENDING_PASTOR_REQUESTS_QUERY_KEY,
+    queryFn: listPendingPastorAuthorityRequests,
+    enabled: canReviewPastorRequests,
+  })
+
+  const regionalRequestsQuery = useQuery({
+    queryKey: PENDING_REGIONAL_REQUESTS_QUERY_KEY,
+    queryFn: listPendingRegionalAuthorityRequests,
+    enabled: canReviewRegionalRequests,
+  })
+
+  const recruiterReviewMutation = useMutation({
+    mutationFn: async (values: { requestId: string; decision: 'approved' | 'rejected'; reviewNotes: string }) =>
+      reviewRecruiterRequest(values),
     onSuccess: async (_data, variables) => {
-      await queryClient.invalidateQueries({ queryKey: PENDING_REQUESTS_QUERY_KEY })
+      await queryClient.invalidateQueries({ queryKey: PENDING_RECRUITER_REQUESTS_QUERY_KEY })
       toast.success(variables.decision === 'approved' ? 'Solicitud aprobada' : 'Solicitud rechazada', {
         description:
           variables.decision === 'approved'
             ? 'El tenant y la membership inicial se crearon correctamente.'
-            : 'La solicitud se marco como rechazada y queda auditada.'
+            : 'La solicitud se marcó como rechazada y queda auditada.',
       })
-      setReviewNotes((previous) => ({
-        ...previous,
-        [variables.requestId]: ''
-      }))
+      setReviewNotes((previous) => ({ ...previous, [variables.requestId]: '' }))
     },
     onError: async (error) => {
       await reportErrorWithToast({
@@ -58,9 +145,60 @@ export function RecruiterReviewPage() {
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),
-        userMessage: 'No pudimos actualizar la solicitud de operador.'
+        userMessage: 'No pudimos actualizar la solicitud de operador.',
       })
-    }
+    },
+  })
+
+  const membershipReviewMutation = useMutation({
+    mutationFn: async (values: {
+      applicationId: string
+      decision: 'under_review' | 'needs_more_info' | 'approved' | 'rejected'
+      reviewNotes: string
+    }) =>
+      reviewInstitutionalMembershipApplication({
+        applicationId: values.applicationId,
+        decision: values.decision,
+        reviewNotes: values.reviewNotes,
+        reviewerUserId: session.authUser?.id ?? null,
+      }),
+    onSuccess: async (_data, variables) => {
+      await queryClient.invalidateQueries({ queryKey: PENDING_MEMBERSHIP_APPLICATIONS_QUERY_KEY })
+      toast.success('Expediente actualizado', {
+        description: `La solicitud institucional quedó en estado ${getWorkflowLabel(variables.decision).toLowerCase()}.`,
+      })
+      setReviewNotes((previous) => ({ ...previous, [variables.applicationId]: '' }))
+    },
+  })
+
+  const pastorReviewMutation = useMutation({
+    mutationFn: async (values: {
+      requestId: string
+      decision: 'approved' | 'needs_more_info' | 'rejected'
+      reviewNotes: string
+    }) => reviewPastorAuthorityRequest(values),
+    onSuccess: async (_data, variables) => {
+      await queryClient.invalidateQueries({ queryKey: PENDING_PASTOR_REQUESTS_QUERY_KEY })
+      toast.success('Solicitud pastoral actualizada', {
+        description: `La solicitud quedó en estado ${getWorkflowLabel(variables.decision).toLowerCase()}.`,
+      })
+      setReviewNotes((previous) => ({ ...previous, [variables.requestId]: '' }))
+    },
+  })
+
+  const regionalReviewMutation = useMutation({
+    mutationFn: async (values: {
+      requestId: string
+      decision: 'approved' | 'needs_more_info' | 'rejected'
+      reviewNotes: string
+    }) => reviewRegionalAuthorityRequest(values),
+    onSuccess: async (_data, variables) => {
+      await queryClient.invalidateQueries({ queryKey: PENDING_REGIONAL_REQUESTS_QUERY_KEY })
+      toast.success('Solicitud regional actualizada', {
+        description: `La solicitud quedó en estado ${getWorkflowLabel(variables.decision).toLowerCase()}.`,
+      })
+      setReviewNotes((previous) => ({ ...previous, [variables.requestId]: '' }))
+    },
   })
 
   async function openPrivateAsset(path: string) {
@@ -70,180 +208,413 @@ export function RecruiterReviewPage() {
     } catch (error) {
       await reportErrorWithToast({
         title: 'No pudimos abrir el archivo',
-        source: 'admin.recruiter-request-asset-open',
+        source: 'admin.approvals-asset-open',
         route: surfacePaths.admin.approvals,
         userId: session.authUser?.id ?? null,
         error,
         description: toErrorMessage(error),
-        userMessage: 'No pudimos abrir el archivo privado de la solicitud.',
+        userMessage: 'No pudimos abrir el archivo privado asociado a la solicitud.',
         metadata: {
-          assetPath: path
-        }
+          assetPath: path,
+        },
       })
     }
   }
 
-  const pendingRequests = pendingRequestsQuery.data ?? []
+  const pendingRecruiterRequests = recruiterRequestsQuery.data ?? []
+  const pendingMembershipApplications = membershipApplicationsQuery.data ?? []
+  const pendingPastorRequests = pastorRequestsQuery.data ?? []
+  const pendingRegionalRequests = regionalRequestsQuery.data ?? []
+  const totalQueues =
+    pendingRecruiterRequests.length +
+    pendingMembershipApplications.length +
+    pendingPastorRequests.length +
+    pendingRegionalRequests.length
 
   return (
     <div className="space-y-4">
       <Card className="bg-(--app-surface-muted)">
         <CardHeader>
           <Badge variant="soft">Revision admin</Badge>
-          <CardTitle>Revision de solicitudes de operador</CardTitle>
+          <CardTitle>Cola unificada de aprobaciones</CardTitle>
           <CardDescription>
-            Esta vista usa `recruiter_request:review` y la RPC de aprobacion para crear el tenant solo cuando el admin lo confirme.
+            Esta vista consolida solicitudes de operador, expedientes institucionales y validaciones pastorales/regionales según tus permisos activos.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-3">
+        <CardContent className="grid gap-3 sm:grid-cols-4">
           <div className="rounded-3xl border border-zinc-200 bg-white/85 px-4 py-4 dark:border-zinc-800 dark:bg-zinc-950/80">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Pendientes</p>
-            <p className="mt-2 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{pendingRequests.length}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Total pendientes</p>
+            <p className="mt-2 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{totalQueues}</p>
           </div>
           <div className="rounded-3xl border border-zinc-200 bg-white/85 px-4 py-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400">
-            Al aprobar se crea `tenant`, `company_profile` y la primera `membership` owner.
+            Operador: {pendingRecruiterRequests.length}
           </div>
           <div className="rounded-3xl border border-zinc-200 bg-white/85 px-4 py-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400">
-            Los archivos siguen privados y solo se abren con signed URLs temporales.
+            Membresía: {pendingMembershipApplications.length}
+          </div>
+          <div className="rounded-3xl border border-zinc-200 bg-white/85 px-4 py-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400">
+            Autoridad: {pendingPastorRequests.length + pendingRegionalRequests.length}
           </div>
         </CardContent>
       </Card>
 
-      {pendingRequestsQuery.isLoading ? (
+      {canReviewRecruiterRequests ? (
         <Card>
-          <CardContent className="py-8 text-sm text-zinc-500">Cargando solicitudes pendientes...</CardContent>
+          <CardHeader>
+            <Badge variant="outline">Operadores</Badge>
+            <CardTitle>Solicitudes de operador</CardTitle>
+            <CardDescription>Aprueba la creación del tenant solo cuando la verificación administrativa esté completa.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {recruiterRequestsQuery.isLoading ? (
+              <p className="text-sm text-zinc-500">Cargando solicitudes pendientes...</p>
+            ) : pendingRecruiterRequests.length === 0 ? (
+              <p className="text-sm text-zinc-500">No hay solicitudes de operador pendientes.</p>
+            ) : (
+              pendingRecruiterRequests.map((request) => {
+                const requestMetadata =
+                  request.request_metadata && typeof request.request_metadata === 'object' && !Array.isArray(request.request_metadata)
+                    ? (request.request_metadata as Record<string, unknown>)
+                    : {}
+
+                return (
+                  <div key={request.id} className="space-y-4 rounded-3xl border border-zinc-200 px-4 py-4 dark:border-zinc-800">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="space-y-1">
+                        <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{request.requested_company_name}</p>
+                        <p className="text-sm text-zinc-500">
+                          {getTenantKindLabel(request.requested_tenant_kind)} · {request.requested_company_legal_name || 'Sin razón social'} · `{request.requested_tenant_slug}`
+                        </p>
+                      </div>
+                      <RecruiterRequestStatusBadge status={request.status} />
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
+                        <p className="font-semibold text-zinc-900 dark:text-zinc-50">Contacto</p>
+                        <p className="mt-1">{request.company_email || 'Sin email corporativo'}</p>
+                        <p>{request.company_phone || 'Sin teléfono'}</p>
+                        <p>{request.company_country_code || 'Sin país'}</p>
+                      </div>
+                      <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
+                        <p className="font-semibold text-zinc-900 dark:text-zinc-50">Datos de tipo</p>
+                        <p className="mt-1">Website: {request.company_website_url || 'Sin website'}</p>
+                        {typeof requestMetadata.operating_scope === 'string' ? <p>Alcance: {requestMetadata.operating_scope}</p> : null}
+                        {typeof requestMetadata.sponsoring_entity === 'string' ? <p>Patrocinador: {requestMetadata.sponsoring_entity}</p> : null}
+                        {typeof requestMetadata.field_region === 'string' ? <p>Campo o región: {requestMetadata.field_region}</p> : null}
+                        {typeof requestMetadata.conversion_intent === 'string' ? <p>Conversión futura: {requestMetadata.conversion_intent}</p> : null}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {request.company_logo_path ? (
+                          <Button variant="outline" onClick={() => void openPrivateAsset(request.company_logo_path as string)}>
+                          Abrir logo temporal
+                        </Button>
+                      ) : null}
+                      {request.verification_document_path ? (
+                          <Button variant="outline" onClick={() => void openPrivateAsset(request.verification_document_path as string)}>
+                          Abrir documento de verificación
+                        </Button>
+                      ) : null}
+                    </div>
+
+                    <label className="block space-y-2">
+                      <span className="text-sm font-medium text-zinc-800 dark:text-zinc-100">Notas de revisión</span>
+                      <Textarea
+                        placeholder="Observaciones de validación, contexto del rechazo o decisiones tomadas."
+                        value={reviewNotes[request.id] ?? ''}
+                        onChange={(event) => setReviewNotes((previous) => ({ ...previous, [request.id]: event.target.value }))}
+                      />
+                    </label>
+
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                      <Button
+                        className="sm:flex-1"
+                        disabled={recruiterReviewMutation.isPending}
+                        onClick={() =>
+                          recruiterReviewMutation.mutate({
+                            requestId: request.id,
+                            decision: 'approved',
+                            reviewNotes: reviewNotes[request.id] ?? '',
+                          })
+                        }
+                      >
+                        Aprobar y crear tenant
+                      </Button>
+                      <Button
+                        className="sm:flex-1"
+                        disabled={recruiterReviewMutation.isPending}
+                        variant="danger"
+                        onClick={() =>
+                          recruiterReviewMutation.mutate({
+                            requestId: request.id,
+                            decision: 'rejected',
+                            reviewNotes: reviewNotes[request.id] ?? '',
+                          })
+                        }
+                      >
+                        Rechazar solicitud
+                      </Button>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </CardContent>
         </Card>
-      ) : pendingRequests.length === 0 ? (
+      ) : null}
+
+      {canReviewMembershipApplications ? (
         <Card>
-          <CardContent className="py-8 text-sm text-zinc-500">No hay solicitudes de operador pendientes en este momento.</CardContent>
+          <CardHeader>
+            <Badge variant="outline">Membresía</Badge>
+            <CardTitle>Expedientes institucionales</CardTitle>
+            <CardDescription>Gestiona el estado real del expediente preliminar y su referencia pastoral vinculada.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {membershipApplicationsQuery.isLoading ? (
+              <p className="text-sm text-zinc-500">Cargando expedientes...</p>
+            ) : pendingMembershipApplications.length === 0 ? (
+              <p className="text-sm text-zinc-500">No hay expedientes institucionales pendientes.</p>
+            ) : (
+              pendingMembershipApplications.map((application) => (
+                <div key={application.id} className="space-y-4 rounded-3xl border border-zinc-200 px-4 py-4 dark:border-zinc-800">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                        {application.applicant_first_name} {application.applicant_last_name}
+                      </p>
+                      <p className="text-sm text-zinc-500">
+                        {application.category_name} · {application.applicant_email} · {application.applicant_phone}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className={getWorkflowBadgeClassName(application.status)}>
+                      {getWorkflowLabel(application.status)}
+                    </Badge>
+                  </div>
+
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-50">Referencia pastoral</p>
+                      <p className="mt-1">{application.pastor_name}</p>
+                      <p>{application.pastor_email}</p>
+                      <p>{application.pastor_phone}</p>
+                    </div>
+                    <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-50">Territorio base</p>
+                      <p className="mt-1">{application.home_church_name}</p>
+                      <p>
+                        {application.church_city}, {application.church_state_province}
+                      </p>
+                      <p>{application.conference_name}</p>
+                    </div>
+                  </div>
+
+                  <label className="block space-y-2">
+                    <span className="text-sm font-medium text-zinc-800 dark:text-zinc-100">Notas de revisión</span>
+                    <Textarea
+                      placeholder="Próximo paso, dudas con referencia pastoral o aclaraciones pendientes."
+                      value={reviewNotes[application.id] ?? ''}
+                      onChange={(event) => setReviewNotes((previous) => ({ ...previous, [application.id]: event.target.value }))}
+                    />
+                  </label>
+
+                  <ApprovalActionRow
+                    disabled={membershipReviewMutation.isPending}
+                    approveLabel="Aprobar expediente"
+                    onApprove={() =>
+                      membershipReviewMutation.mutate({
+                        applicationId: application.id,
+                        decision: 'approved',
+                        reviewNotes: reviewNotes[application.id] ?? '',
+                      })
+                    }
+                    onNeedsMoreInfo={() =>
+                      membershipReviewMutation.mutate({
+                        applicationId: application.id,
+                        decision: 'needs_more_info',
+                        reviewNotes: reviewNotes[application.id] ?? '',
+                      })
+                    }
+                    onReject={() =>
+                      membershipReviewMutation.mutate({
+                        applicationId: application.id,
+                        decision: 'rejected',
+                        reviewNotes: reviewNotes[application.id] ?? '',
+                      })
+                    }
+                  />
+                </div>
+              ))
+            )}
+          </CardContent>
         </Card>
-      ) : (
-        pendingRequests.map((request) => {
-          const requestMetadata =
-            request.request_metadata && typeof request.request_metadata === 'object' && !Array.isArray(request.request_metadata)
-              ? (request.request_metadata as Record<string, unknown>)
-              : {}
+      ) : null}
 
-          return (
-            <Card key={request.id}>
-              <CardHeader>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div className="space-y-1">
-                  <CardTitle>{request.requested_company_name}</CardTitle>
-                  <CardDescription>
-                    {getTenantKindLabel(request.requested_tenant_kind)} · {request.requested_company_legal_name || 'Sin razon social'} · `{request.requested_tenant_slug}`
-                  </CardDescription>
+      {canReviewPastorRequests ? (
+        <Card>
+          <CardHeader>
+            <Badge variant="outline">Pastores</Badge>
+            <CardTitle>Solicitudes pastorales</CardTitle>
+            <CardDescription>Valida la autoridad distrital o de iglesias antes de crear el scope aprobado.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {pastorRequestsQuery.isLoading ? (
+              <p className="text-sm text-zinc-500">Cargando solicitudes pastorales...</p>
+            ) : pendingPastorRequests.length === 0 ? (
+              <p className="text-sm text-zinc-500">No hay solicitudes pastorales pendientes.</p>
+            ) : (
+              pendingPastorRequests.map((request) => (
+                <div key={request.id} className="space-y-4 rounded-3xl border border-zinc-200 px-4 py-4 dark:border-zinc-800">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                        {request.first_names} {request.last_names}
+                      </p>
+                      <p className="text-sm text-zinc-500">{request.phone_number}</p>
+                    </div>
+                    <Badge variant="outline" className={getWorkflowBadgeClassName(request.status)}>
+                      {getWorkflowLabel(request.status)}
+                    </Badge>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" onClick={() => void openPrivateAsset(request.identity_document_file_path)}>
+                      Abrir cédula
+                    </Button>
+                  </div>
+
+                  <label className="block space-y-2">
+                    <span className="text-sm font-medium text-zinc-800 dark:text-zinc-100">Notas de revisión</span>
+                    <Textarea
+                      placeholder="Indica el alcance aprobado o la evidencia faltante."
+                      value={reviewNotes[request.id] ?? ''}
+                      onChange={(event) => setReviewNotes((previous) => ({ ...previous, [request.id]: event.target.value }))}
+                    />
+                  </label>
+
+                  <ApprovalActionRow
+                    disabled={pastorReviewMutation.isPending}
+                    approveLabel="Aprobar alcance pastoral"
+                    onApprove={() =>
+                      pastorReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'approved',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                    onNeedsMoreInfo={() =>
+                      pastorReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'needs_more_info',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                    onReject={() =>
+                      pastorReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'rejected',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                  />
                 </div>
-                <RecruiterRequestStatusBadge status={request.status} />
-              </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
-                  <p className="font-semibold text-zinc-900 dark:text-zinc-50">Contacto</p>
-                  <p className="mt-1">{request.company_email || 'Sin email corporativo'}</p>
-                  <p>{request.company_phone || 'Sin telefono'}</p>
-                  <p>{request.company_country_code || 'Sin pais'}</p>
+              ))
+            )}
+          </CardContent>
+        </Card>
+      ) : null}
+
+      {canReviewRegionalRequests ? (
+        <Card>
+          <CardHeader>
+            <Badge variant="outline">Regionales</Badge>
+            <CardTitle>Solicitudes regionales</CardTitle>
+            <CardDescription>Valida el territorio y el nombramiento oficial antes de crear el scope regional.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {regionalRequestsQuery.isLoading ? (
+              <p className="text-sm text-zinc-500">Cargando solicitudes regionales...</p>
+            ) : pendingRegionalRequests.length === 0 ? (
+              <p className="text-sm text-zinc-500">No hay solicitudes regionales pendientes.</p>
+            ) : (
+              pendingRegionalRequests.map((request) => (
+                <div key={request.id} className="space-y-4 rounded-3xl border border-zinc-200 px-4 py-4 dark:border-zinc-800">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                        {request.first_names} {request.last_names}
+                      </p>
+                      <p className="text-sm text-zinc-500">
+                        {request.position_title} · {request.admin_scope_type}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className={getWorkflowBadgeClassName(request.status)}>
+                      {getWorkflowLabel(request.status)}
+                    </Badge>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" onClick={() => void openPrivateAsset(request.identity_document_file_path)}>
+                      Abrir cédula
+                    </Button>
+                    <Button variant="outline" onClick={() => void openPrivateAsset(request.appointment_document_file_path)}>
+                      Abrir nombramiento
+                    </Button>
+                  </div>
+
+                  <label className="block space-y-2">
+                    <span className="text-sm font-medium text-zinc-800 dark:text-zinc-100">Notas de revisión</span>
+                    <Textarea
+                      placeholder="Indica el territorio aprobado o la evidencia faltante."
+                      value={reviewNotes[request.id] ?? ''}
+                      onChange={(event) => setReviewNotes((previous) => ({ ...previous, [request.id]: event.target.value }))}
+                    />
+                  </label>
+
+                  <ApprovalActionRow
+                    disabled={regionalReviewMutation.isPending}
+                    approveLabel="Aprobar alcance regional"
+                    onApprove={() =>
+                      regionalReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'approved',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                    onNeedsMoreInfo={() =>
+                      regionalReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'needs_more_info',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                    onReject={() =>
+                      regionalReviewMutation.mutate({
+                        requestId: request.id,
+                        decision: 'rejected',
+                        reviewNotes: reviewNotes[request.id] ?? '',
+                      })
+                    }
+                  />
                 </div>
-                <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
-                  <p className="font-semibold text-zinc-900 dark:text-zinc-50">Fechas</p>
-                  <p className="mt-1">Enviada: {new Date(request.submitted_at).toLocaleString()}</p>
-                  <p>Ultima actualizacion: {new Date(request.updated_at).toLocaleString()}</p>
-                </div>
-              </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+      ) : null}
 
-              <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
-                <p className="font-semibold text-zinc-900 dark:text-zinc-50">Datos del tipo de tenant</p>
-                <div className="mt-2 grid gap-2 md:grid-cols-2">
-                  <p>Tipo: {getTenantKindLabel(request.requested_tenant_kind)}</p>
-                  <p>Website: {request.company_website_url || 'Sin website'}</p>
-                  {typeof requestMetadata.operating_scope === 'string' ? (
-                    <p>Alcance: {requestMetadata.operating_scope}</p>
-                  ) : null}
-                  {typeof requestMetadata.sponsoring_entity === 'string' ? (
-                    <p>Patrocinador: {requestMetadata.sponsoring_entity}</p>
-                  ) : null}
-                  {typeof requestMetadata.field_region === 'string' ? (
-                    <p>Campo o región: {requestMetadata.field_region}</p>
-                  ) : null}
-                  {typeof requestMetadata.conversion_intent === 'string' ? (
-                    <p>Conversión futura: {requestMetadata.conversion_intent}</p>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="rounded-3xl bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300">
-                <p className="font-semibold text-zinc-900 dark:text-zinc-50">Descripcion</p>
-                <p className="mt-1 whitespace-pre-wrap">{request.company_description || 'Sin descripcion.'}</p>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {request.company_logo_path ? (
-                  <Button
-                    variant="outline"
-                    onClick={() => void openPrivateAsset(request.company_logo_path as string)}
-                  >
-                    Abrir logo temporal
-                  </Button>
-                ) : null}
-                {request.verification_document_path ? (
-                  <Button
-                    variant="outline"
-                    onClick={() => void openPrivateAsset(request.verification_document_path as string)}
-                  >
-                    Abrir documento de verificacion
-                  </Button>
-                ) : null}
-              </div>
-
-              <label className="block space-y-2">
-                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-100">Notas de revision</span>
-                <Textarea
-                  placeholder="Observaciones de validacion, contexto del rechazo o decisiones tomadas."
-                  value={reviewNotes[request.id] ?? ''}
-                  onChange={(event) =>
-                    setReviewNotes((previous) => ({
-                      ...previous,
-                      [request.id]: event.target.value
-                    }))
-                  }
-                />
-              </label>
-
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  className="sm:flex-1"
-                  disabled={reviewMutation.isPending}
-                  onClick={() =>
-                    reviewMutation.mutate({
-                      requestId: request.id,
-                      decision: 'approved',
-                      reviewNotes: reviewNotes[request.id] ?? ''
-                    })
-                  }
-                >
-                  Aprobar y crear tenant
-                </Button>
-                <Button
-                  className="sm:flex-1"
-                  disabled={reviewMutation.isPending}
-                  variant="danger"
-                  onClick={() =>
-                    reviewMutation.mutate({
-                      requestId: request.id,
-                      decision: 'rejected',
-                      reviewNotes: reviewNotes[request.id] ?? ''
-                    })
-                  }
-                >
-                  Rechazar solicitud
-                </Button>
-              </div>
-              </CardContent>
-            </Card>
-          )
-        })
-      )}
+      {!canReviewRecruiterRequests &&
+      !canReviewMembershipApplications &&
+      !canReviewPastorRequests &&
+      !canReviewRegionalRequests ? (
+        <Card>
+          <CardContent className="py-8 text-sm text-zinc-500">
+            Tu sesión no tiene permisos de revisión para ninguna de las colas activas.
+          </CardContent>
+        </Card>
+      ) : null}
     </div>
   )
 }

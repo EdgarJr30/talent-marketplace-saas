@@ -6,7 +6,7 @@ import { toErrorMessage } from '@/lib/errors/error-utils'
 import { supabase } from '@/lib/supabase/client'
 import { env } from '@/shared/config/env'
 import { isPermissionCode, type PermissionCode } from '@/shared/constants/permissions'
-import type { Tables } from '@/shared/types/database'
+import type { Json, Tables, TablesInsert } from '@/shared/types/database'
 
 export type PrivateStorageBucket = 'candidate-resumes' | 'user-media' | 'verification-documents'
 
@@ -59,15 +59,26 @@ const platformPermissionChecks = [
   'platform_dashboard:read',
   'tenant:read',
   'user:read',
+  'user:approve',
+  'license:activate',
   'recruiter_request:read',
   'recruiter_request:review',
+  'pastor_authority_request:read',
+  'pastor_authority_request:review',
+  'regional_authority_request:read',
+  'regional_authority_request:review',
+  'scoped_user_authorization:read',
+  'scoped_user_authorization:review',
   'moderation:read',
   'moderation:act',
+  'support_ticket:read',
+  'support_ticket:update',
   'plan:read',
   'plan:update',
   'billing:read',
   'feature_flag:read',
   'feature_flag:update',
+  'app_error_log:read',
   'audit_log:read'
 ] as const satisfies readonly PermissionCode[]
 
@@ -456,6 +467,106 @@ export async function submitRecruiterRequest(values: {
   return response.data
 }
 
+export interface MembershipApplicationSubmissionResult {
+  status: Tables<'institutional_membership_applications'>['status']
+  submittedAt: string
+}
+
+export async function submitInstitutionalMembershipApplication(values: {
+  requesterUserId?: string | null
+  categorySlug: string
+  categoryName: string
+  dues: string
+  applicantFirstName: string
+  applicantLastName: string
+  applicantEmail: string
+  applicantPhone: string
+  pastorName: string
+  pastorEmail: string
+  pastorPhone: string
+  homeChurchName: string
+  churchCity: string
+  churchStateProvince: string
+  conferenceName: string
+  submittedFormSnapshot: Json
+  eligibilitySnapshot: Json
+}) {
+  const client = requireSupabase()
+  const submittedAt = new Date().toISOString()
+  const payload = {
+    requester_user_id: values.requesterUserId ?? null,
+    category_slug: values.categorySlug,
+    category_name: values.categoryName,
+    dues: values.dues,
+    applicant_first_name: values.applicantFirstName,
+    applicant_last_name: values.applicantLastName,
+    applicant_email: values.applicantEmail,
+    applicant_phone: values.applicantPhone,
+    pastor_name: values.pastorName,
+    pastor_email: values.pastorEmail,
+    pastor_phone: values.pastorPhone,
+    home_church_name: values.homeChurchName,
+    church_city: values.churchCity,
+    church_state_province: values.churchStateProvince,
+    conference_name: values.conferenceName,
+    submitted_form_snapshot: values.submittedFormSnapshot,
+    eligibility_snapshot: values.eligibilitySnapshot,
+    submitted_at: submittedAt
+  } satisfies TablesInsert<'institutional_membership_applications'>
+
+  const response = await client.from('institutional_membership_applications').insert(payload)
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return {
+    status: 'submitted',
+    submittedAt
+  } satisfies MembershipApplicationSubmissionResult
+}
+
+export async function listPendingInstitutionalMembershipApplications() {
+  const client = requireSupabase()
+  const response = await client
+    .from('institutional_membership_applications')
+    .select('*')
+    .in('status', ['submitted', 'under_review', 'needs_more_info'])
+    .order('submitted_at', { ascending: true })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function reviewInstitutionalMembershipApplication(values: {
+  applicationId: string
+  decision: Extract<Tables<'institutional_membership_applications'>['status'], 'under_review' | 'needs_more_info' | 'approved' | 'rejected'>
+  reviewerUserId?: string | null
+  reviewNotes?: string
+}) {
+  const client = requireSupabase()
+  const response = await client
+    .from('institutional_membership_applications')
+    .update({
+      status: values.decision,
+      review_notes: values.reviewNotes?.trim() || null,
+      reviewed_at: new Date().toISOString(),
+      reviewed_by_user_id: values.reviewerUserId ?? null
+    })
+    .eq('id', values.applicationId)
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
 export async function listMyRecruiterRequests(userId: string) {
   const client = requireSupabase()
   const response = await client
@@ -493,6 +604,234 @@ export async function reviewRecruiterRequest(values: {
 }) {
   const client = requireSupabase()
   const response = await client.rpc('review_recruiter_request', {
+    p_request_id: values.requestId,
+    p_decision: values.decision,
+    p_review_notes: values.reviewNotes?.trim() || undefined
+  })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export interface AuthorityHierarchyBundle {
+  unions: Tables<'church_unions'>[]
+  associations: Tables<'church_associations'>[]
+  districts: Tables<'church_districts'>[]
+  churches: Tables<'churches'>[]
+}
+
+export async function fetchAuthorityHierarchy(): Promise<AuthorityHierarchyBundle> {
+  const client = requireSupabase()
+  const [unionsResponse, associationsResponse, districtsResponse, churchesResponse] = await Promise.all([
+    client.from('church_unions').select('*').order('name', { ascending: true }),
+    client.from('church_associations').select('*').order('name', { ascending: true }),
+    client.from('church_districts').select('*').order('name', { ascending: true }),
+    client.from('churches').select('*').order('name', { ascending: true })
+  ])
+
+  if (unionsResponse.error) {
+    throw unionsResponse.error
+  }
+
+  if (associationsResponse.error) {
+    throw associationsResponse.error
+  }
+
+  if (districtsResponse.error) {
+    throw districtsResponse.error
+  }
+
+  if (churchesResponse.error) {
+    throw churchesResponse.error
+  }
+
+  return {
+    unions: unionsResponse.data ?? [],
+    associations: associationsResponse.data ?? [],
+    districts: districtsResponse.data ?? [],
+    churches: churchesResponse.data ?? []
+  }
+}
+
+export async function submitPastorAuthorityRequest(values: {
+  requesterUserId: string
+  identityDocumentNumber: string
+  identityDocumentFilePath: string
+  firstNames: string
+  lastNames: string
+  phoneNumber: string
+  unionId: string
+  associationId: string
+  districtId: string
+  churchIds: string[]
+  pastorStatusAttestation: boolean
+  notes?: string
+  submittedFormSnapshot: Json
+}) {
+  const client = requireSupabase()
+  const payload = {
+    requester_user_id: values.requesterUserId,
+    identity_document_number: values.identityDocumentNumber,
+    identity_document_file_path: values.identityDocumentFilePath,
+    first_names: values.firstNames,
+    last_names: values.lastNames,
+    phone_number: values.phoneNumber,
+    union_id: values.unionId,
+    association_id: values.associationId,
+    district_id: values.districtId,
+    church_ids: values.churchIds,
+    pastor_status_attestation: values.pastorStatusAttestation,
+    notes: values.notes?.trim() || null,
+    submitted_form_snapshot: values.submittedFormSnapshot
+  } satisfies TablesInsert<'pastor_authority_requests'>
+
+  const response = await client
+    .from('pastor_authority_requests')
+    .insert(payload)
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function submitRegionalAuthorityRequest(values: {
+  requesterUserId: string
+  identityDocumentNumber: string
+  identityDocumentFilePath: string
+  firstNames: string
+  lastNames: string
+  phoneNumber: string
+  adminScopeType: Extract<Tables<'regional_administrator_authority_requests'>['admin_scope_type'], 'union' | 'association'>
+  unionId: string
+  associationId?: string | null
+  positionTitle: string
+  appointmentDocumentFilePath: string
+  notes?: string
+  submittedFormSnapshot: Json
+}) {
+  const client = requireSupabase()
+  const payload = {
+    requester_user_id: values.requesterUserId,
+    identity_document_number: values.identityDocumentNumber,
+    identity_document_file_path: values.identityDocumentFilePath,
+    first_names: values.firstNames,
+    last_names: values.lastNames,
+    phone_number: values.phoneNumber,
+    admin_scope_type: values.adminScopeType,
+    union_id: values.unionId,
+    association_id: values.associationId ?? null,
+    position_title: values.positionTitle,
+    appointment_document_file_path: values.appointmentDocumentFilePath,
+    notes: values.notes?.trim() || null,
+    submitted_form_snapshot: values.submittedFormSnapshot
+  } satisfies TablesInsert<'regional_administrator_authority_requests'>
+
+  const response = await client
+    .from('regional_administrator_authority_requests')
+    .insert(payload)
+    .select('*')
+    .single()
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function listMyPastorAuthorityRequests(userId: string) {
+  const client = requireSupabase()
+  const response = await client
+    .from('pastor_authority_requests')
+    .select('*')
+    .eq('requester_user_id', userId)
+    .order('submitted_at', { ascending: false })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function listMyRegionalAuthorityRequests(userId: string) {
+  const client = requireSupabase()
+  const response = await client
+    .from('regional_administrator_authority_requests')
+    .select('*')
+    .eq('requester_user_id', userId)
+    .order('submitted_at', { ascending: false })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function listPendingPastorAuthorityRequests() {
+  const client = requireSupabase()
+  const response = await client
+    .from('pastor_authority_requests')
+    .select('*')
+    .in('status', ['submitted', 'under_review', 'needs_more_info'])
+    .order('submitted_at', { ascending: true })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function listPendingRegionalAuthorityRequests() {
+  const client = requireSupabase()
+  const response = await client
+    .from('regional_administrator_authority_requests')
+    .select('*')
+    .in('status', ['submitted', 'under_review', 'needs_more_info'])
+    .order('submitted_at', { ascending: true })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function reviewPastorAuthorityRequest(values: {
+  requestId: string
+  decision: Extract<Tables<'pastor_authority_requests'>['status'], 'approved' | 'rejected' | 'needs_more_info'>
+  reviewNotes?: string
+}) {
+  const client = requireSupabase()
+  const response = await client.rpc('review_pastor_authority_request', {
+    p_request_id: values.requestId,
+    p_decision: values.decision,
+    p_review_notes: values.reviewNotes?.trim() || undefined
+  })
+
+  if (response.error) {
+    throw response.error
+  }
+
+  return response.data
+}
+
+export async function reviewRegionalAuthorityRequest(values: {
+  requestId: string
+  decision: Extract<Tables<'regional_administrator_authority_requests'>['status'], 'approved' | 'rejected' | 'needs_more_info'>
+  reviewNotes?: string
+}) {
+  const client = requireSupabase()
+  const response = await client.rpc('review_regional_authority_request', {
     p_request_id: values.requestId,
     p_decision: values.decision,
     p_review_notes: values.reviewNotes?.trim() || undefined

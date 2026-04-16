@@ -1053,6 +1053,243 @@ export type Database = {
           }
         ]
       }
+      church_associations: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          union_id: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          union_id: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          union_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'church_associations_union_id_fkey'
+            columns: ['union_id']
+            isOneToOne: false
+            referencedRelation: 'church_unions'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      church_districts: {
+        Row: {
+          association_id: string
+          code: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          association_id: string
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          association_id?: string
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'church_districts_association_id_fkey'
+            columns: ['association_id']
+            isOneToOne: false
+            referencedRelation: 'church_associations'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      church_unions: {
+        Row: {
+          code: string
+          country_code: string | null
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      churches: {
+        Row: {
+          city: string | null
+          code: string
+          created_at: string
+          district_id: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          code: string
+          created_at?: string
+          district_id: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          code?: string
+          created_at?: string
+          district_id?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'churches_district_id_fkey'
+            columns: ['district_id']
+            isOneToOne: false
+            referencedRelation: 'church_districts'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      institutional_membership_applications: {
+        Row: {
+          applicant_email: string
+          applicant_first_name: string
+          applicant_last_name: string
+          applicant_phone: string
+          category_name: string
+          category_slug: string
+          church_city: string
+          church_state_province: string
+          conference_name: string
+          created_at: string
+          dues: string
+          eligibility_snapshot: Json
+          home_church_name: string
+          id: string
+          pastoral_reference_status: Database['public']['Enums']['pastoral_reference_status']
+          pastor_email: string
+          pastor_name: string
+          pastor_phone: string
+          requester_user_id: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by_user_id: string | null
+          status: Database['public']['Enums']['review_workflow_status']
+          submitted_at: string
+          submitted_form_snapshot: Json
+          updated_at: string
+        }
+        Insert: {
+          applicant_email: string
+          applicant_first_name: string
+          applicant_last_name: string
+          applicant_phone: string
+          category_name: string
+          category_slug: string
+          church_city: string
+          church_state_province: string
+          conference_name: string
+          created_at?: string
+          dues: string
+          eligibility_snapshot?: Json
+          home_church_name: string
+          id?: string
+          pastoral_reference_status?: Database['public']['Enums']['pastoral_reference_status']
+          pastor_email: string
+          pastor_name: string
+          pastor_phone: string
+          requester_user_id?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          updated_at?: string
+        }
+        Update: {
+          applicant_email?: string
+          applicant_first_name?: string
+          applicant_last_name?: string
+          applicant_phone?: string
+          category_name?: string
+          category_slug?: string
+          church_city?: string
+          church_state_province?: string
+          conference_name?: string
+          created_at?: string
+          dues?: string
+          eligibility_snapshot?: Json
+          home_church_name?: string
+          id?: string
+          pastoral_reference_status?: Database['public']['Enums']['pastoral_reference_status']
+          pastor_email?: string
+          pastor_name?: string
+          pastor_phone?: string
+          requester_user_id?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'institutional_membership_applications_requester_user_id_fkey'
+            columns: ['requester_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'institutional_membership_applications_reviewed_by_user_id_fkey'
+            columns: ['reviewed_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       membership_roles: {
         Row: {
           assigned_at: string
@@ -1434,6 +1671,221 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      pastor_authority_requests: {
+        Row: {
+          approved_scope_id: string | null
+          association_id: string | null
+          church_ids: string[]
+          created_at: string
+          district_id: string | null
+          first_names: string
+          id: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes: string | null
+          pastor_status_attestation: boolean
+          phone_number: string
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by_user_id: string | null
+          status: Database['public']['Enums']['review_workflow_status']
+          submitted_at: string
+          submitted_form_snapshot: Json
+          union_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_scope_id?: string | null
+          association_id?: string | null
+          church_ids?: string[]
+          created_at?: string
+          district_id?: string | null
+          first_names: string
+          id?: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes?: string | null
+          pastor_status_attestation?: boolean
+          phone_number: string
+          requester_user_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          union_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_scope_id?: string | null
+          association_id?: string | null
+          church_ids?: string[]
+          created_at?: string
+          district_id?: string | null
+          first_names?: string
+          id?: string
+          identity_document_file_path?: string
+          identity_document_number?: string
+          last_names?: string
+          notes?: string | null
+          pastor_status_attestation?: boolean
+          phone_number?: string
+          requester_user_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          union_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'pastor_authority_requests_association_id_fkey'
+            columns: ['association_id']
+            isOneToOne: false
+            referencedRelation: 'church_associations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'pastor_authority_requests_district_id_fkey'
+            columns: ['district_id']
+            isOneToOne: false
+            referencedRelation: 'church_districts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'pastor_authority_requests_requester_user_id_fkey'
+            columns: ['requester_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'pastor_authority_requests_reviewed_by_user_id_fkey'
+            columns: ['reviewed_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'pastor_authority_requests_union_id_fkey'
+            columns: ['union_id']
+            isOneToOne: false
+            referencedRelation: 'church_unions'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      regional_administrator_authority_requests: {
+        Row: {
+          admin_scope_type: Database['public']['Enums']['authority_scope_type']
+          approved_scope_id: string | null
+          appointment_document_file_path: string
+          association_id: string | null
+          created_at: string
+          first_names: string
+          id: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes: string | null
+          phone_number: string
+          position_title: string
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by_user_id: string | null
+          status: Database['public']['Enums']['review_workflow_status']
+          submitted_at: string
+          submitted_form_snapshot: Json
+          union_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          admin_scope_type: Database['public']['Enums']['authority_scope_type']
+          approved_scope_id?: string | null
+          appointment_document_file_path: string
+          association_id?: string | null
+          created_at?: string
+          first_names: string
+          id?: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes?: string | null
+          phone_number: string
+          position_title: string
+          requester_user_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          union_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          admin_scope_type?: Database['public']['Enums']['authority_scope_type']
+          approved_scope_id?: string | null
+          appointment_document_file_path?: string
+          association_id?: string | null
+          created_at?: string
+          first_names?: string
+          id?: string
+          identity_document_file_path?: string
+          identity_document_number?: string
+          last_names?: string
+          notes?: string | null
+          phone_number?: string
+          position_title?: string
+          requester_user_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by_user_id?: string | null
+          status?: Database['public']['Enums']['review_workflow_status']
+          submitted_at?: string
+          submitted_form_snapshot?: Json
+          union_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'regional_administrator_authority_requests_association_id_fkey'
+            columns: ['association_id']
+            isOneToOne: false
+            referencedRelation: 'church_associations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'regional_administrator_authority_requests_requester_user_id_fkey'
+            columns: ['requester_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'regional_administrator_authority_requests_reviewed_by_user_id_fkey'
+            columns: ['reviewed_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'regional_administrator_authority_requests_union_id_fkey'
+            columns: ['union_id']
+            isOneToOne: false
+            referencedRelation: 'church_unions'
+            referencedColumns: ['id']
+          }
+        ]
       }
       recruiter_requests: {
         Row: {
@@ -1967,6 +2419,112 @@ export type Database = {
           }
         ]
       }
+      user_authority_scopes: {
+        Row: {
+          association_id: string | null
+          authority_role: Database['public']['Enums']['authority_role_type']
+          church_ids: string[]
+          created_at: string
+          district_id: string | null
+          granted_at: string
+          granted_by_user_id: string | null
+          id: string
+          notes: string | null
+          revoked_at: string | null
+          revoked_by_user_id: string | null
+          scope_type: Database['public']['Enums']['authority_scope_type']
+          source_request_id: string
+          source_request_type: string
+          status: Database['public']['Enums']['authority_scope_status']
+          union_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          association_id?: string | null
+          authority_role: Database['public']['Enums']['authority_role_type']
+          church_ids?: string[]
+          created_at?: string
+          district_id?: string | null
+          granted_at?: string
+          granted_by_user_id?: string | null
+          id?: string
+          notes?: string | null
+          revoked_at?: string | null
+          revoked_by_user_id?: string | null
+          scope_type: Database['public']['Enums']['authority_scope_type']
+          source_request_id: string
+          source_request_type: string
+          status?: Database['public']['Enums']['authority_scope_status']
+          union_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          association_id?: string | null
+          authority_role?: Database['public']['Enums']['authority_role_type']
+          church_ids?: string[]
+          created_at?: string
+          district_id?: string | null
+          granted_at?: string
+          granted_by_user_id?: string | null
+          id?: string
+          notes?: string | null
+          revoked_at?: string | null
+          revoked_by_user_id?: string | null
+          scope_type?: Database['public']['Enums']['authority_scope_type']
+          source_request_id?: string
+          source_request_type?: string
+          status?: Database['public']['Enums']['authority_scope_status']
+          union_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'user_authority_scopes_association_id_fkey'
+            columns: ['association_id']
+            isOneToOne: false
+            referencedRelation: 'church_associations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'user_authority_scopes_district_id_fkey'
+            columns: ['district_id']
+            isOneToOne: false
+            referencedRelation: 'church_districts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'user_authority_scopes_granted_by_user_id_fkey'
+            columns: ['granted_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'user_authority_scopes_revoked_by_user_id_fkey'
+            columns: ['revoked_by_user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'user_authority_scopes_union_id_fkey'
+            columns: ['union_id']
+            isOneToOne: false
+            referencedRelation: 'church_unions'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'user_authority_scopes_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -2059,6 +2617,16 @@ export type Database = {
         Args: { p_tenant_id: string }
         Returns: Json
       }
+      has_active_authority_scope: {
+        Args: {
+          p_association_id?: string
+          p_church_id?: string
+          p_district_id?: string
+          p_role: Database['public']['Enums']['authority_role_type']
+          p_union_id?: string
+        }
+        Returns: boolean
+      }
       review_recruiter_request: {
         Args: {
           p_decision: Database['public']['Enums']['recruiter_request_status']
@@ -2092,6 +2660,80 @@ export type Database = {
         SetofOptions: {
           from: '*'
           to: 'recruiter_requests'
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      review_pastor_authority_request: {
+        Args: {
+          p_decision: Database['public']['Enums']['review_workflow_status']
+          p_request_id: string
+          p_review_notes?: string
+        }
+        Returns: {
+          approved_scope_id: string | null
+          association_id: string | null
+          church_ids: string[]
+          created_at: string
+          district_id: string | null
+          first_names: string
+          id: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes: string | null
+          pastor_status_attestation: boolean
+          phone_number: string
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by_user_id: string | null
+          status: Database['public']['Enums']['review_workflow_status']
+          submitted_at: string
+          submitted_form_snapshot: Json
+          union_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: '*'
+          to: 'pastor_authority_requests'
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      review_regional_authority_request: {
+        Args: {
+          p_decision: Database['public']['Enums']['review_workflow_status']
+          p_request_id: string
+          p_review_notes?: string
+        }
+        Returns: {
+          admin_scope_type: Database['public']['Enums']['authority_scope_type']
+          approved_scope_id: string | null
+          appointment_document_file_path: string
+          association_id: string | null
+          created_at: string
+          first_names: string
+          id: string
+          identity_document_file_path: string
+          identity_document_number: string
+          last_names: string
+          notes: string | null
+          phone_number: string
+          position_title: string
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by_user_id: string | null
+          status: Database['public']['Enums']['review_workflow_status']
+          submitted_at: string
+          submitted_form_snapshot: Json
+          union_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: '*'
+          to: 'regional_administrator_authority_requests'
           isOneToOne: true
           isSetofReturn: false
         }
@@ -2176,6 +2818,9 @@ export type Database = {
       }
     }
     Enums: {
+      authority_role_type: 'pastor_administrator' | 'regional_administrator'
+      authority_scope_status: 'active' | 'revoked'
+      authority_scope_type: 'union' | 'association' | 'district' | 'church'
       application_public_status: 'submitted' | 'in_review' | 'interviewing' | 'offer' | 'rejected' | 'withdrawn' | 'hired'
       app_error_severity: 'info' | 'warning' | 'error' | 'fatal'
       asi_membership_status: 'none' | 'pending' | 'active' | 'grace_period' | 'expired' | 'suspended' | 'revoked'
@@ -2190,9 +2835,17 @@ export type Database = {
       opportunity_compensation_type: 'salary' | 'stipend' | 'budget' | 'unpaid' | 'donation_based' | 'not_disclosed'
       opportunity_type: 'employment' | 'project' | 'volunteer' | 'professional_service'
       permission_scope: 'platform' | 'tenant' | 'self'
+      pastoral_reference_status: 'pending' | 'contacted' | 'endorsed' | 'declined' | 'waived'
       recruiter_request_status:
         | 'submitted'
         | 'under_review'
+        | 'approved'
+        | 'rejected'
+        | 'cancelled'
+      review_workflow_status:
+        | 'submitted'
+        | 'under_review'
+        | 'needs_more_info'
         | 'approved'
         | 'rejected'
         | 'cancelled'
@@ -2317,6 +2970,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      authority_role_type: ['pastor_administrator', 'regional_administrator'],
+      authority_scope_status: ['active', 'revoked'],
+      authority_scope_type: ['union', 'association', 'district', 'church'],
       application_public_status: ['submitted', 'in_review', 'interviewing', 'offer', 'rejected', 'withdrawn', 'hired'],
       asi_membership_status: ['none', 'pending', 'active', 'grace_period', 'expired', 'suspended', 'revoked'],
       job_employment_type: ['full_time', 'part_time', 'contract', 'temporary', 'internship'],
@@ -2327,7 +2983,9 @@ export const Constants = {
       opportunity_compensation_type: ['salary', 'stipend', 'budget', 'unpaid', 'donation_based', 'not_disclosed'],
       opportunity_type: ['employment', 'project', 'volunteer', 'professional_service'],
       permission_scope: ['platform', 'tenant', 'self'],
+      pastoral_reference_status: ['pending', 'contacted', 'endorsed', 'declined', 'waived'],
       recruiter_request_status: ['submitted', 'under_review', 'approved', 'rejected', 'cancelled'],
+      review_workflow_status: ['submitted', 'under_review', 'needs_more_info', 'approved', 'rejected', 'cancelled'],
       tenant_kind: ['company', 'ministry', 'project', 'field', 'generic_profile'],
       tenant_status: ['active', 'suspended', 'archived'],
       user_approval_status: ['pending_review', 'needs_more_info', 'approved', 'rejected', 'suspended', 'revoked'],

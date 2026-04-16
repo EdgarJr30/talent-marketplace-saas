@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import { tenantKindValues } from '@/features/opportunities/lib/opportunity-taxonomy'
 
+const authorityScopeTypeValues = ['union', 'association'] as const
+
 export const signInSchema = z.object({
   email: z.email('Escribe un correo valido.'),
   password: z.string().min(8, 'La contrasena debe tener al menos 8 caracteres.')
@@ -108,8 +110,51 @@ export const recruiterReviewSchema = z.object({
   reviewNotes: z.string().trim().optional()
 })
 
+export const pastorAuthorityRequestSchema = z.object({
+  identityDocumentNumber: z.string().trim().min(6, 'Ingresa la cédula o documento de identidad.'),
+  firstNames: z.string().trim().min(2, 'Ingresa tus nombres.'),
+  lastNames: z.string().trim().min(2, 'Ingresa tus apellidos.'),
+  phoneNumber: z.string().trim().min(7, 'Ingresa un teléfono de contacto.'),
+  unionId: z.string().trim().uuid('Selecciona la unión.'),
+  associationId: z.string().trim().uuid('Selecciona la asociación.'),
+  districtId: z.string().trim().uuid('Selecciona el distrito.'),
+  churchIds: z.array(z.string().uuid()),
+  pastorStatusAttestation: z.boolean(),
+  notes: z.string().trim().optional()
+}).superRefine((values, context) => {
+  if (!values.pastorStatusAttestation) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['pastorStatusAttestation'],
+      message: 'Debes confirmar la declaración de estatus pastoral.'
+    })
+  }
+})
+
+export const regionalAuthorityRequestSchema = z.object({
+  identityDocumentNumber: z.string().trim().min(6, 'Ingresa la cédula o documento de identidad.'),
+  firstNames: z.string().trim().min(2, 'Ingresa tus nombres.'),
+  lastNames: z.string().trim().min(2, 'Ingresa tus apellidos.'),
+  phoneNumber: z.string().trim().min(7, 'Ingresa un teléfono de contacto.'),
+  adminScopeType: z.enum(authorityScopeTypeValues),
+  unionId: z.string().trim().uuid('Selecciona la unión.'),
+  associationId: z.string().trim().optional(),
+  positionTitle: z.string().trim().min(2, 'Indica el cargo administrativo.'),
+  notes: z.string().trim().optional()
+}).superRefine((values, context) => {
+  if (values.adminScopeType === 'association' && !values.associationId?.trim()) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['associationId'],
+      message: 'La asociación es obligatoria para ese alcance.'
+    })
+  }
+})
+
 export type SignInValues = z.infer<typeof signInSchema>
 export type SignUpValues = z.infer<typeof signUpSchema>
 export type OnboardingValues = z.infer<typeof onboardingSchema>
 export type RecruiterRequestValues = z.infer<typeof recruiterRequestSchema>
 export type RecruiterReviewValues = z.infer<typeof recruiterReviewSchema>
+export type PastorAuthorityRequestValues = z.infer<typeof pastorAuthorityRequestSchema>
+export type RegionalAuthorityRequestValues = z.infer<typeof regionalAuthorityRequestSchema>

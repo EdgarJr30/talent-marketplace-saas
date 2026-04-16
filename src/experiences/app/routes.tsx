@@ -7,6 +7,7 @@ import { BootstrapOwnerPage } from '@/features/auth/pages/bootstrap-owner-page'
 import { OnboardingPage } from '@/features/auth/pages/onboarding-page'
 import { SignInPage } from '@/features/auth/pages/sign-in-page'
 import { SignUpPage } from '@/features/auth/pages/sign-up-page'
+import { AuthorityRequestPage } from '@/features/authority-requests/pages/authority-request-page'
 import { CandidateProfilePage } from '@/features/candidate-profile/pages/candidate-profile-page'
 import { ErrorLogReviewPage } from '@/features/error-monitoring/pages/error-log-review-page'
 import { AdminConsolePage } from '@/features/internal/pages/admin-console-page'
@@ -78,6 +79,10 @@ export const applicationRoutes: RouteObject[] = [
       {
         path: 'recruiter-request',
         element: <RecruiterRequestPage />
+      },
+      {
+        path: 'authority-request',
+        element: <AuthorityRequestPage />
       },
       {
         path: 'profile',
@@ -159,11 +164,7 @@ export const applicationRoutes: RouteObject[] = [
       },
       {
         path: 'approvals',
-        element: (
-          <RequirePermission permission="recruiter_request:review" surface="admin">
-            <RecruiterReviewPage />
-          </RequirePermission>
-        )
+        element: <RecruiterReviewPage />
       },
       {
         path: 'platform',
