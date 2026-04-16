@@ -102,6 +102,13 @@ Examples:
 - `user:approve`
 - `membership:review`
 - `subscription:read`
+- `license:activate`
+- `pastor_authority_request:read`
+- `pastor_authority_request:review`
+- `regional_authority_request:read`
+- `regional_authority_request:review`
+- `scoped_user_authorization:read`
+- `scoped_user_authorization:review`
 - `recruiter_request:read`
 - `recruiter_request:review`
 
@@ -158,6 +165,10 @@ The canonical SQL helper for this prerequisite is `has_active_asi_access(user_id
 9. Notification-management permissions must control who can create notifications, manage push subscriptions by tenant context, and inspect delivery logs.
 10. Candidate sourcing permissions must be distinct from application review permissions.
 11. Pastor and regional administrator validation flows must collect a form submission and require admin approval before granting elevated or tenant-operational access.
+12. Pastor authorization must be scoped to the approved district/churches and may only authorize standard professional users or company/operator requests inside that scope.
+13. Association administrator authorization must be scoped to the approved association and may review pastors, standard professional users, and company/operator requests inside that association.
+14. Union administrators may review territory-scoped requests across the approved union and may activate licenses only when they also have `license:activate`.
+15. Final license activation is separate from pastor/regional authorization and must remain limited to super administrators or authorized union administrators.
 
 ---
 
@@ -231,6 +242,17 @@ All permission changes must remain aligned with `docs/governance/SECURITY_RULES.
 | Invite members | ✅ | ✅ | ❌ | ❌ | ❌ |
 | Manage roles | ✅ | ✅ | ❌ | ❌ | ❌ |
 | Export applications | ✅ | ✅ | ✅ | ❌ | ❌ |
+
+## 9.1 Recommended platform authority matrix
+
+| Capability | Super Admin | Union Admin | Association Admin | Pastor |
+|---|---:|---:|---:|---:|
+| Review pastor requests | ✅ | ✅ | ✅ within association | ❌ |
+| Review association admin requests | ✅ | ✅ within union | ❌ | ❌ |
+| Authorize professional users | ✅ | ✅ within union | ✅ within association | ✅ within district/church scope |
+| Authorize company/operator requests | ✅ | ✅ within union | ✅ within association | ✅ as pastoral authorization only |
+| Activate final license | ✅ | ✅ with `license:activate` | ❌ | ❌ |
+| Grant super administrator access | ✅ | ❌ | ❌ | ❌ |
 
 ---
 

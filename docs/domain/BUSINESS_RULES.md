@@ -13,6 +13,10 @@
 7. Authentication does not equal authorization; permissions are checked separately.
 8. Viewing or applying to protected product opportunities requires approved user status, ASI membership, and an active subscription.
 9. Protected content access is granted only when `user_approval_status = approved`, `asi_membership_status in (active, grace_period)`, `user_subscription_status in (trialing, active, grace_period)`, the account itself is active, and any configured membership/subscription expiration has not passed, unless an auditable manual override is still active.
+10. Pastor and regional administrator authority is request-based, evidence-backed, scoped to church territory, and separate from final user license activation.
+11. Pastors may authorize standard professional users and company/operator requests only inside their approved district/church scope, but pastors may not activate licenses or approve other pastors/regional administrators.
+12. Association administrators may authorize pastors, professional users, and company/operator requests only inside their approved association scope, but may not activate licenses by default.
+13. Super administrators and authorized union administrators may activate the final license after the required pastor/regional authorization and platform checks pass.
 
 ---
 
@@ -114,6 +118,17 @@
 8. Navigation must not expose protected destinations unless intentionally designed.
 9. Candidate directory search and full candidate detail require explicit tenant permissions separate from application review.
 10. Internal developer access is a separate operational flag and must not implicitly grant platform or tenant permissions.
+11. Pastor, association administrator, and union administrator permissions must be territory-scoped and auditable.
+12. Pastor or regional authorization must never replace final license activation or subscription checks.
+
+---
+
+## 8.1 Church territory and validation rules
+1. Church territory follows `Union -> Association -> District -> Church`.
+2. For the Dominican Republic launch, the union represents the country, and associations such as Sur, Norte, and Sureste belong under that union.
+3. Pastor validation requires cedula evidence, names, phone, district, association, and union; churches may be attached when known.
+4. Regional administrator validation requires cedula evidence, names, phone, official position, appointment evidence, and union or association scope.
+5. The exact MVP form contract is documented in `docs/product/PASTOR_REGIONAL_APPROVAL_FORMS.md`.
 
 ---
 

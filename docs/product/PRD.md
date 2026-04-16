@@ -48,6 +48,12 @@ Needs filtering, review, notes, ratings, and applicant stage movement across job
 ### Platform admin
 Needs moderation, plan management, support tools, and governance.
 
+### Pastor
+Needs a simple validated intake flow to prove pastoral identity, attach cedula evidence, declare union/association/district/church scope, and authorize professional or company account requests only inside that approved scope.
+
+### Regional administrator
+Needs a validated intake flow to prove administrative appointment, attach cedula plus official authorization evidence, declare union or association scope, and review pastors, professionals, or company requests only inside that approved territory.
+
 ---
 
 ## 5. Jobs to be done
@@ -110,6 +116,9 @@ The MVP should **not** initially include:
 - candidate account flow
 - tenant workspace creation after approval
 - platform admin area
+- pastor validation form with cedula upload, union, association, district, optional churches, and platform-admin approval before scoped pastor authorization is granted
+- regional administrator validation form with cedula upload, appointment evidence, union/association scope, and platform-admin approval before scoped regional authorization is granted
+- two-step authorization model where pastors or regional administrators may authorize users/companies within scope, but final license activation remains limited to the super administrator or an authorized union administrator
 - avatar and document uploads with modern web formats, 5 MB guardrails, and clear validation feedback
 - authenticated app entry redirect that sends employer users to `/workspace` and standard users to `/candidate/profile`
 
@@ -214,6 +223,9 @@ The system must support secure sign-up and sign-in for standard platform users, 
 
 ### FR-2 Recruiter approval and tenant creation
 A standard user must be able to submit a tenant operator request with company, ministry, project, field, or generic-profile data, and a platform admin must approve that request before the tenant workspace is created.
+
+### FR-2.1 Pastor and regional administrator validation
+Pastors and regional administrators must submit form-backed validation requests before receiving authorization duties. Pastor requests require cedula evidence, names, phone, district, association, and union. Regional administrator requests require cedula evidence, names, phone, official position, appointment evidence, and union or association scope. Approval must grant only scoped authorization permissions and must not activate product access licenses by itself.
 
 ### FR-3 RBAC administration
 Tenant owners/admins must be able to manage tenant roles and assign permissions from the app.

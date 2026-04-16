@@ -42,6 +42,15 @@ Approval request submitted by a standard user to become a tenant-side operator t
 ### MembershipApproval
 Administrative approval record or state that confirms the user may access protected ASI product content.
 
+### ChurchTerritory
+Canonical hierarchy used to scope pastor and regional administrator authority: union, association, district, and church.
+
+### PastorAuthorityRequest
+Evidence-backed request submitted by a user who needs pastor authorization capability. The request captures cedula evidence, legal names, phone, union, association, district, optional churches, reviewer decision, and resulting scoped authority.
+
+### RegionalAdministratorAuthorityRequest
+Evidence-backed request submitted by a user who needs union or association administrator capability. The request captures cedula evidence, legal names, phone, position title, appointment evidence, territory scope, reviewer decision, and resulting scoped authority.
+
 ---
 
 ## 2.2 Candidate Domain
@@ -170,6 +179,11 @@ Technical log line for provider attempts, failures, and retries.
 - one **Application** has many **ApplicationStageHistory** entries
 - one **Role** has many **Permissions** through join tables
 - one **Tenant** belongs to one active **TenantSubscription** at a time
+- one **Union** has many **Associations**
+- one **Association** has many **Districts**
+- one **District** has many **Churches**
+- one approved **PastorAuthorityRequest** grants scoped authorization to one user for one district and optional churches
+- one approved **RegionalAdministratorAuthorityRequest** grants scoped authorization to one user for one union or association
 
 ---
 
@@ -189,6 +203,13 @@ Technical log line for provider attempts, failures, and retries.
 | user_platform_roles | user_id, role_id |
 | membership_roles | membership_id, role_id |
 | recruiter_requests | id, requester_user_id, status, requested_tenant_kind, requested_company_name, requested_tenant_slug, company_logo_path, verification_document_path, approved_tenant_id nullable |
+| unions | id, name, country_code, status |
+| associations | id, union_id, name, status |
+| districts | id, association_id, name, status |
+| churches | id, district_id, name, city_name nullable, status |
+| pastor_authority_requests | id, requester_user_id, status, identity_document_number, identity_document_file_path, first_names, last_names, phone_number, union_id, association_id, district_id, church_ids metadata, attestation_accepted, reviewer_user_id nullable, reviewed_at nullable, decision_notes nullable |
+| regional_administrator_authority_requests | id, requester_user_id, status, admin_scope_type, identity_document_number, identity_document_file_path, first_names, last_names, phone_number, union_id, association_id nullable, position_title, appointment_document_file_path, reviewer_user_id nullable, reviewed_at nullable, decision_notes nullable |
+| user_authority_scopes | id, user_id, authority_type, union_id nullable, association_id nullable, district_id nullable, church_id nullable, source_request_type, source_request_id, starts_at, ends_at nullable, status |
 | audit_logs | id, actor_user_id, actor_membership_id nullable, tenant_id nullable, event_type, entity_type, entity_id, record_id nullable, old_record jsonb nullable, new_record jsonb nullable, request_headers jsonb, jwt_claims jsonb, created_at |
 
 ### Candidate
@@ -256,6 +277,8 @@ Launch-readiness notes:
 9. User corrections to domain assumptions must update this model.
 10. Notification channel attempts and row-level state mutations must be recoverable from audit history.
 11. Candidate profile completeness should stay derivable from database state after row changes in profile sections or resumes.
+12. Pastor and regional administrator authority must be scoped to the approved church territory and must not grant access outside that scope.
+13. Pastor/regional authorization and final license activation are separate domain events.
 
 ---
 
@@ -277,6 +300,9 @@ Launch-readiness notes:
 - notification_type
 - feature_scope_type
 - permission_scope
+- authority_request_status: pending_review, needs_more_info, approved, rejected, suspended, revoked
+- authority_type: pastor, association_administrator, union_administrator
+- admin_scope_type: union, association
 
 ---
 
