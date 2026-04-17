@@ -122,9 +122,15 @@ alter table public.recruiter_requests
   add column if not exists requested_tenant_kind public.tenant_kind,
   add column if not exists request_metadata jsonb not null default '{}'::jsonb;
 
+alter table public.recruiter_requests
+  disable trigger recruiter_requests_guard_update;
+
 update public.recruiter_requests
 set requested_tenant_kind = coalesce(requested_tenant_kind, 'company'::public.tenant_kind)
 where requested_tenant_kind is null;
+
+alter table public.recruiter_requests
+  enable trigger recruiter_requests_guard_update;
 
 alter table public.recruiter_requests
   alter column requested_tenant_kind set default 'company',
